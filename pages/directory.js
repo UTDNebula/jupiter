@@ -19,7 +19,7 @@ export default function Directory() {
                             lg={{ span: 3 }} xl={{ span: 2 }}>
                             <div className="OrgListing">
                                 <Link href="/organization">
-                                    <a><OrganizationCard name={org.name} imageLink={org.imageLink} /></a>
+                                    <a><OrganizationCard name={org.name} imageLink={org.imageLink} tags={org.tags} /></a>
                                 </Link>
                             </div>
                         </Col>

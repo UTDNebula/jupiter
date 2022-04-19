@@ -1,9 +1,9 @@
 [
-    { "name": "Nebula Labs", "imageLink": "https://about.utdnebula.com/assets/images/nebula-logo-wordmark-dark-0b2813eedf7447691178ca82b5f53dce.png"},
-    { "name": "ACM UTD", "imageLink": "https://utdallas-cdn.presence.io/organization-photos/e84b1f83-51b3-4fcd-8fd6-e0d4e2be5e31/f4f72894-067c-4a97-91fa-9ecc7f3e347b.png"},
-    { "name": "Aluben After Hours", "imageLink": "https://about.utdnebula.com/assets/images/nebula-logo-wordmark-dark-0b2813eedf7447691178ca82b5f53dce.png"},
-    { "name": "UTD Mercury", "imageLink":"https://utdallas-cdn.presence.io/organization-photos/e84b1f83-51b3-4fcd-8fd6-e0d4e2be5e31/a32f9a46-9898-46de-9677-06f2f885a5c3.png"},
-    { "name": "AIS", "imageLink": "https://utdallas-cdn.presence.io/organization-photos/e84b1f83-51b3-4fcd-8fd6-e0d4e2be5e31/ae343204-192f-4edf-9a31-585918c4f140.png"},
-    { "name": "UTD Tech Store", "imageLink": "https://utdallas-cdn.presence.io/organization-photos/e84b1f83-51b3-4fcd-8fd6-e0d4e2be5e31/6cc19b23-568f-49f2-9491-9e715960ac6b.png"},
-    { "name": "UTD FOCUS", "imageLink": "https://utdallas-cdn.presence.io/organization-photos/e84b1f83-51b3-4fcd-8fd6-e0d4e2be5e31/6cc19b23-568f-49f2-9491-9e715960ac6b.png"}
+    { "name": "Nebula Labs", "imageLink": "https://about.utdnebula.com/assets/images/nebula-logo-wordmark-dark-0b2813eedf7447691178ca82b5f53dce.png", "tags": ["awesome"]},
+    { "name": "ACM UTD", "imageLink": "https://utdallas-cdn.presence.io/organization-photos/e84b1f83-51b3-4fcd-8fd6-e0d4e2be5e31/f4f72894-067c-4a97-91fa-9ecc7f3e347b.png", "tags": ["technology"]},
+    { "name": "Aluben After Hours", "imageLink": "https://about.utdnebula.com/assets/images/nebula-logo-wordmark-dark-0b2813eedf7447691178ca82b5f53dce.png", "tags": ["social", "guitar", "coding"]},
+    { "name": "UTD Mercury", "imageLink":"https://utdallas-cdn.presence.io/organization-photos/e84b1f83-51b3-4fcd-8fd6-e0d4e2be5e31/a32f9a46-9898-46de-9677-06f2f885a5c3.png", "tags": ["test"]},
+    { "name": "AIS", "imageLink": "https://utdallas-cdn.presence.io/organization-photos/e84b1f83-51b3-4fcd-8fd6-e0d4e2be5e31/ae343204-192f-4edf-9a31-585918c4f140.png", "tags": ["test"]},
+    { "name": "UTD Tech Store", "imageLink": "https://utdallas-cdn.presence.io/organization-photos/e84b1f83-51b3-4fcd-8fd6-e0d4e2be5e31/6cc19b23-568f-49f2-9491-9e715960ac6b.png", "tags": ["test"]},
+    { "name": "UTD FOCUS", "imageLink": "https://utdallas-cdn.presence.io/organization-photos/e84b1f83-51b3-4fcd-8fd6-e0d4e2be5e31/6cc19b23-568f-49f2-9491-9e715960ac6b.png", "tags": ["test"]}
   ]
