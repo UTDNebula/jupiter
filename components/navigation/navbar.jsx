@@ -51,8 +51,8 @@ export default function Navbar() {
                       <NavLink to="/about">
                           About
                       </NavLink>
-                      <Link className='signUpButton' href="/">
-                            Sign Up
+                      <Link href="/">
+                           <p class="signUpButton">Sign Up</p>
                         </Link>
                   </div>
               </div>

@@ -373,6 +373,7 @@ module.exports = {
         '"Courier New"',
         'monospace',
       ],
+      jost: ['Jost', 'Roboto', 'ui-sans-serif', 'system-ui'],
     },
     fontSize: {
       xs: ['0.75rem', { lineHeight: '1rem' }],

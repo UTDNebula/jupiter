@@ -14,7 +14,7 @@ export default function Home() {
 
       <div className="bannerImage">
         <p style={{ position: 'relative', left: '30%', top: '25%', color: 'white', fontSize: 110 }} >Jupiter</p>
-        <p style={{ position: 'absolute', left: '30%', top: '55%', color: 'white', fontSize: 25 }} >Here is a tagline. I&apos;m not a designer nor a writer.</p>
+        <p style={{ position: 'absolute', left: '30%', top: '55%', color: 'white', fontSize: 25 }} >Get Connected on Campus. Here is a tagline. <br /> I&apos; m not a designer nor a writer.</p>
       </div>
 
       <main className={styles.main}>

@@ -43,7 +43,12 @@ a {
 .signUpButton {
   background-color: #4659A7;
   border-width: 1px;
-  color: #4659A7;
+  border-radius: 8px;
+  color: white;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 
 .orgTag  {
