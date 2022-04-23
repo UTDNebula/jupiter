@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.4",
+    "cross-env": "^7.0.3",
     "eslint": "8.11.0",
     "eslint-config-next": "12.1.0",
     "postcss": "^8.4.12",
