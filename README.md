@@ -1,8 +1,28 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Jupiter
+
+_A tool to find ways to get involved on campus._
+
+![Vercel](https://vercelbadge.vercel.app/api/UTDNebula/jupiter])
 
 ## Getting Started
 
-First, run the development server:
+This project requires a working [Node.js](https://nodejs.org/en/) installation
+(at least v14) with NPM, which comes bundled with Node.js (at least v8). (If you
+use Yarn, that's fine, too. Just beware of the commands.)
+
+First, clone the repository.
+
+```bash
+git checkout https://github.com/UTDNebula/jupiter.git
+```
+
+Make sure to install the dependencies:
+
+```bash
+npm install
+```
+
+Now you can run the development server:
 
 ```bash
 npm run dev
@@ -27,8 +47,11 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The `develop` branch for this repository is automatically deployed to Vercel at [dev.jupiter.utdnebula.com][site].
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The live, production version of the site is accessible at [jupiter.utdnebula.com][deployment]
+
+[dev deployment][dev.jupiter.utdnebula.com]
+[deployment][jupiter.utdnebula.com]
