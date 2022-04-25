@@ -12,12 +12,12 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="bannerImage"> 
-        <p style={{position: 'relative', left: '30%', top: '25%', color: 'white', fontSize:110}} >Jupiter</p>
-        <p style={{position: 'absolute', left: '30%', top: '55%', color: 'white', fontSize:25}} >Here is a tagline. I'm not a designer nor a writer.</p>
+      <div className="bannerImage">
+        <p style={{ position: 'relative', left: '30%', top: '25%', color: 'white', fontSize: 110 }} >Jupiter</p>
+        <p style={{ position: 'absolute', left: '30%', top: '55%', color: 'white', fontSize: 25 }} >Here is a tagline. I&apos;m not a designer nor a writer.</p>
       </div>
 
-     <main className={styles.main}>
+      <main className={styles.main}>
       </main>
 
       <footer className={styles.footer}>
