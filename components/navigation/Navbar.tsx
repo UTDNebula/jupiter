@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 import logo from '../../assets/media/icons/Jupiter.png';
+import Image from "next/image"
 
 interface MobileNavProps {
   open: boolean;
@@ -17,7 +18,7 @@ function MobileNav({ open, setOpen }: MobileNavProps) {
       <div className="flex items-center justify-center filter bg-white h-20">
         {' '}
         {/*logo container*/}
-        <img src={logo} />
+        <Image src={logo} alt="Jupiter" width={120} height={40}></Image>
       </div>
       <div className="flex flex-col ml-4">
         <a
@@ -54,7 +55,7 @@ export default function Navbar() {
       <MobileNav open={open} setOpen={setOpen} />
       <div className="w-3/12 flex items-center">
         <Link href="/">
-          <img src={logo} alt="Jupiter" width={130} />
+          <Image src={logo} alt="Jupiter" width={120} height={40}></Image>
         </Link>
       </div>
       <div className="w-9/12 flex justify-end items-center">
@@ -83,8 +84,8 @@ export default function Navbar() {
         </div>
         <NavLink to="/directory">Directory</NavLink>
         <NavLink to="/events">Events</NavLink>
-        <div className="hidden md:flex">
           <NavLink to="/about">About</NavLink>
+        <div className="hidden md:flex">
           <Link href="/">
             <p className="signUpButton">Sign Up</p>
           </Link>
