@@ -33,6 +33,18 @@ a {
   height: 200;
 }
 
+.detail-org-image-container {
+  height: 350px;
+  width: 350px;
+  padding-left: 20px;
+}
+
+.detail-org-image {
+  background: rgb(185, 184, 184);
+  height: 350px;
+  width: 350px;
+}
+
 .rectangle {
   width: 150px;
   height: 150px;
