@@ -20,12 +20,14 @@ a {
   height:250px;
   padding-top:10px;
   padding-left:5px;
+  padding-right:0px;
 }
 
 .organizations-grid {
   padding-left: 20px;
   padding-right: 10px;
   justify-content: space-evenly;
+  width:100%;
 }
 
 .org-image {
@@ -84,6 +86,20 @@ a {
   background-image: 
   linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)),
    url('../public/banner.png');
+}
+
+.onboardingImage {
+  height:500px;
+  width:100vw;
+  background-size: 100vw;
+  background-clip: border-box;
+  position: absolute;
+  display: flex;
+  font-family: 'Jost', sans-serif;
+  background-blend-mode:darken;
+  left: -0px; /* this must be TWICE the required offset distance*/
+  background-position-x: left;
+  background-image: url('../public/banner.png');
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Jost&display=swap');

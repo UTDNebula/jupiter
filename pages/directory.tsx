@@ -30,10 +30,10 @@ export default function Directory() {
           {orgList.map((org) => (
             <Col
               key={org.name}
-              xs={{ span: 2 }}
+              xs={{ span: 4 }}
               sm={{ span: 3 }}
               md={{ span: 3 }}
-              lg={{ span: 3 }}
+              lg={{ span: 2 }}
               xl={{ span: 2 }}
             >
               <div className="OrgListing">
