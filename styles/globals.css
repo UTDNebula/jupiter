@@ -76,6 +76,19 @@ a {
   border-radius:10px;
 }
 
+.contactButton {
+  display: inline;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 1px;
+  font-size: 35px;
+  padding-bottom: 2px;
+  position: relative;
+  background: #75ACFF;
+  color: white;
+  border-radius:10px;
+}
+
 .tagContainer {
   display: inline-block;
   padding-left:3px;
