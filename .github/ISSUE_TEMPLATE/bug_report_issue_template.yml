@@ -1,6 +1,5 @@
 name: Bug Report
 description: File a bug report
-title: ''
 labels: ['Type: Bug Report']
 assignees:
   - WillieCubed
@@ -49,9 +48,10 @@ body:
         - Microsoft Edge
   - type: textarea
     id: logs
-    attributes: Please copy and paste any relevant log output. This will be
-      automatically formatted into code, so no need for backticks.
-    render: shell
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
   - type: checkboxes
     id: terms
     attributes:
