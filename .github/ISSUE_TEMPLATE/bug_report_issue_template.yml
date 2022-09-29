@@ -1,8 +1,6 @@
 name: Bug Report
 description: File a bug report
 labels: ['Type: Bug Report']
-assignees:
-  - WillieCubed
 body:
   - type: markdown
     attributes:
