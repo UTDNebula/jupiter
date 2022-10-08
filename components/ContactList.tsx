@@ -1,20 +1,22 @@
-import React from 'react';
-import OrgDirectoryTag from './OrgDirectoryTag';
+import React, { FC } from 'react';
 
 interface ContactListProps {
   contactMethods: string[];
 }
 
-export default function ContactList({
-  contactMethods
-}: ContactListProps) {
+const ContactList: FC<ContactListProps> = ({ contactMethods }) => {
   return (
-    <div>
-      {contactMethods.map((contact) => (
-          <div>
-            <p className="contactButton">{contact}</p>
-          </div>
+    <>
+      {contactMethods.map((contact, i) => (
+        <div
+          key={i}
+          className="flex flex-row justify-center items-center p-3 m-3 rounded-2xl bg-gray-200"
+        >
+          <p className="contactButton">{contact}</p>
+        </div>
       ))}
-    </div>
+    </>
   );
-}
+};
+
+export default ContactList;

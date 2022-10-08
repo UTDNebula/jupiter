@@ -1,8 +1,1 @@
-    {
-      "name": "Project Nebula",
-      "memberCount": 40,
-      "images": {
-        "logo":""
-      }
-
-    }
+    { "name": "Nebula Labs", "imageLink": "https://about.utdnebula.com/img/logos/nebula-logo.svg", "tags": ["awesome"]}
