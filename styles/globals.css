@@ -15,33 +15,13 @@ a {
   box-sizing: border-box;
 }
 
-.org-card {
-  width:150px;
-  height:250px;
-  padding-top:10px;
-  padding-left:5px;
-}
-
-.organizations-grid {
-  padding-left: 20px;
-  padding-right: 10px;
-  justify-content: space-evenly;
-}
-
 .org-image {
   background: rgb(185, 184, 184);
   height: 200;
 }
 
-.rectangle {
-  width: 150px;
-  height: 150px;
-  padding-bottom:10px;
-  background: rgb(185, 184, 184);
-}
-
 .signUpButton {
-  background-color: #4659A7;
+  background-color: #4659a7;
   border-width: 1px;
   border-radius: 8px;
   color: white;
@@ -51,7 +31,7 @@ a {
   padding-bottom: 4px;
 }
 
-.orgTag  {
+.orgTag {
   display: inline;
   width: 50px;
   height: 18px;
@@ -60,30 +40,29 @@ a {
   padding-top: 1px;
   padding-bottom: 2px;
   position: relative;
-  background: #75ACFF;
-  border-radius:10px;
+  background: #75acff;
+  border-radius: 10px;
 }
 
 .tagContainer {
   display: inline-block;
-  padding-left:3px;
-  padding-right:3px;
+  padding-left: 3px;
+  padding-right: 3px;
 }
 
 .bannerImage {
-  height:500px;
-  width:100vw;
+  height: 500px;
+  width: 100vw;
   background-size: 100vw;
   background-clip: border-box;
   position: absolute;
   display: flex;
   font-family: 'Jost', sans-serif;
-  background-blend-mode:darken;
+  background-blend-mode: darken;
   left: -0px; /* this must be TWICE the required offset distance*/
   background-position-x: left;
-  background-image: 
-  linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)),
-   url('../public/banner.png');
+  background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)),
+    url('../public/banner.png');
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Jost&display=swap');
