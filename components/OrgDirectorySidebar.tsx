@@ -17,7 +17,7 @@ const DropDown = () => (
 
 const OrgDirectorySidebar = () => {
   return (
-    <div className="flex flex-col col-start-1 col-end-2 row-start-2 row-end-2 w-full mb-5">
+    <div className="md:flex hidden flex-col md:col-start-1 md:col-end-2 md:row-start-2 md:row-end-2 w-full mb-5">
       <div className="flex flex-col mb-5 text-2xl font-ligh">
         <h3>Filters</h3>
       </div>
