@@ -8,7 +8,7 @@ interface Props {
 }
 const OrgDirectoryCards: FC<Props> = ({ org }) => {
   return (
-    <div className="md:w-full h-auto flex flex-col justify-between items-center p-5 m-5 rounded-2xl bg-white shadow-md hover:shadow-lg hover:cursor-pointer">
+    <div className="md:w-full h-auto flex flex-col justify-between items-center p-5 m-5 rounded-2xl">
       <h4 className="text-lg font-bold text-center">{org.name}</h4>
       <div className="w-full h-40 relative justify-center">
         <Image
