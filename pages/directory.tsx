@@ -18,7 +18,7 @@ export default function Directory() {
     <>
       <DirectoryHead />
       <main>
-        <div className="grid md:grid-cols-6 grid-cols-3 gap-x-4 md:grid-rows-4 grid-rows-6 items-center justify-center h-full p-5 w-full">
+        <div className="grid md:grid-cols-6 grid-cols-3 gap-x-4 md:grid-rows-4 grid-rows-6 items-center h-full p-5 w-full">
           <OrgDirectoryHeader />
           <OrgDirectoryTags />
           <div className="flex flex-col row-start-1 col-start-[-2] md:col-end-[-2] col-end-[-1] w-full align-middle">

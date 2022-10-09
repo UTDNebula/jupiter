@@ -18,7 +18,7 @@ const X = () => (
 
 const OrgDirectoryTags = () => {
   return (
-    <div className="flex flex-col row-start-1 col-start-1 col-end-2 md:col-start-2 md:col-end-[-1] w-full h-full justify-center p-3">
+    <div className="flex flex-col row-start-1 col-start-1 col-end-2 md:col-start-2 md:col-end-[-1] w-full justify-center p-3">
       <p className="text-sm font-light">Tags:</p>
       <div className="flex md:flex-wrap">
         {mockTags.map((tag, i) => (
