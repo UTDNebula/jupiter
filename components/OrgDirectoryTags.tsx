@@ -1,4 +1,5 @@
 import React from 'react';
+
 const mockTags = ['Tag'];
 const X = () => (
   <svg
@@ -17,20 +18,20 @@ const X = () => (
 
 const OrgDirectoryTags = () => {
   return (
-    <div className="flex flex-col row-start-1 col-start-2 col-end-[-1] w-full h-full justify-center p-3">
+    <div className="flex flex-col row-start-1 col-start-1 col-end-2 md:col-start-2 md:col-end-[-1] w-full h-full justify-center p-3">
       <p className="text-sm font-light">Tags:</p>
-      <div className="flex flex-wrap">
+      <div className="flex md:flex-wrap">
         {mockTags.map((tag, i) => (
           <div
             key={i}
-            className="flex justify-between items-center w-24 h-8 m-1 text-sm p-4 font-light rounded-2xl bg-blue-400 hover:bg-blue-500 hover:cursor-pointer"
+            className="flex justify-between items-center md:w-24 w-auto h-8 m-1 text-sm p-4 font-light rounded-2xl bg-blue-400 hover:bg-blue-500 hover:cursor-pointer"
           >
             {tag}
             <X />
           </div>
         ))}
-        <button className="flex justify-between items-center w-24 h-8 m-1 text-sm p-4 font-light rounded-2xl bg-gray-400 hover:bg-gray-500 hover:cursor-pointer">
-          <p>Add Tags</p>
+        <button className="flex justify-between items-center w-auto h-8 m-1 text-sm p-4 font-light rounded-2xl bg-gray-400 hover:bg-gray-500 hover:cursor-pointer">
+          <p>+</p>
         </button>
       </div>
     </div>

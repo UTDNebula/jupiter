@@ -18,10 +18,10 @@ export default function Directory() {
     <>
       <DirectoryHead />
       <main>
-        <div className="grid grid-cols-6 gap-x-4 grid-rows-4 items-center justify-center w-full h-full p-5">
+        <div className="grid md:grid-cols-6 grid-cols-3 gap-x-4 md:grid-rows-4 grid-rows-6 items-center justify-center h-full p-5 w-full">
           <OrgDirectoryHeader />
           <OrgDirectoryTags />
-          <div className="flex flex-col row-start-1 col-start-[-2] col-end-[-2] w-full align-middle">
+          <div className="flex flex-col row-start-1 col-start-[-2] md:col-end-[-2] col-end-[-1] w-full align-middle">
             <p>Filter</p>
           </div>
           <OrgDirectorySidebar />
