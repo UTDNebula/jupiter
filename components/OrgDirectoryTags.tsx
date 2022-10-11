@@ -1,7 +1,7 @@
 import React from 'react';
 
 const mockTags = ['Tag'];
-const X = () => (
+const XButton = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className="h-4 w-4"
@@ -27,7 +27,7 @@ const OrgDirectoryTags = () => {
             className="flex justify-between items-center md:w-24 w-auto h-8 m-1 text-sm p-4 font-light rounded-2xl bg-blue-400 hover:bg-blue-500 hover:cursor-pointer"
           >
             {tag}
-            <X />
+            <XButton />
           </div>
         ))}
         <button className="flex justify-between items-center w-auto h-8 m-1 text-sm p-4 font-light rounded-2xl bg-gray-400 hover:bg-gray-500 hover:cursor-pointer">
