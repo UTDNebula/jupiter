@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['about.utdnebula.com', 'utdallas-cdn.presence.io'],
+    domains: ['about.utdnebula.com', 'utdallas-cdn.presence.io', `github.com`],
   },
 };
 
