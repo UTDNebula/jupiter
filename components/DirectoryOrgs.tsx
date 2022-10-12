@@ -19,7 +19,7 @@ const OrgDirectoryCards: FC<Props> = ({ org }) => {
           className="rectangle"
         />
       </div>
-      <div className="flex flex-wrap md:flex-row align-middle justify-center w-full">
+      <div className="flex flex-wrap content-start justify-center h-[5vh] w-full">
         {org.tags.map((tag, i) => (
           <DirectoryOrgTags key={i} tag={tag} />
         ))}
