@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import React from 'react';
 import ContactList from '../components/ContactList';
 import orgData from '../demoOrgPageData.json';
@@ -96,6 +97,11 @@ import React, { FC } from 'react';
 import ContactList from '../components/ContactList';
 import DirectoryOrgTags from '../components/DirectoryOrgTags';
 >>>>>>> 4727fe7 (Update grid to be more responsive and further break down org cards and org tags with small updates)
+=======
+import DirectoryOrgHeader from '../components/DirectoryOrgHeader';
+import React, { FC } from 'react';
+import ContactList from '../components/ContactList';
+>>>>>>> 51458e7 (First draft of org page)
 import orgData from '../demoOrgPageData.json';
 import Image from 'next/image';
 
@@ -128,8 +134,10 @@ interface Props {
 const Directory: FC<Props> = ({ org }) => {
   return (
     <main>
-      <div className="grid grid-cols-6 gap-4 p-3 align-middle">
+      <div className="grid grid-cols-6 gap-4 p-3">
         <DirectoryOrgHeader name={orgData.name} tags={orgData.tags} />
+      </div>
+      <div className="grid grid-cols-6 gap-4 p-3 align-middle">
         <div className="col-span-2 p-3">
           <h1 className="text-3xl font-bold">About Us</h1>
           <Image
@@ -139,7 +147,7 @@ const Directory: FC<Props> = ({ org }) => {
             alt={orgData.name}
           />
         </div>
-        <div className="flex col-span-3 p-3 justify-center">
+        <div className="flex col-span-2 p-3 justify-center">
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat,
             ut. Aliquid est et laboriosam nulla minima deleniti id, nostrum sint

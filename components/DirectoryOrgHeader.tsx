@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import DirectoryOrgTags from './components/DirectoryOrgTags';
+import DirectoryOrgTags from './DirectoryOrgTags';
 
 interface Props {
   name: string;
