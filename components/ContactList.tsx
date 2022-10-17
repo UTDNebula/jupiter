@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import OrgDirectoryTag from './OrgDirectoryTag';
 
 interface ContactListProps {
   contactMethods: string[];
