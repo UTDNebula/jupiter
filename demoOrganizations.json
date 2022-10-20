@@ -1,9 +1,12 @@
 [
-    { "name": "Nebula Labs", "imageLink": "https://about.utdnebula.com/img/logos/nebula-logo.svg", "tags": ["awesome"]},
+    { "name": "Nebula Labs", "imageLink": "https://about.utdnebula.com/img/logos/nebula-logo.svg", "tags": ["awesome", "super fun"]},
     { "name": "ACM UTD", "imageLink": "https://github.com/acmutd/brand-kit/blob/c41a67dc03d09444535a22dea11cebea52ae65be/General/Assets/Logos/acm-new-logo-black.png?raw=true", "tags": ["technology"]},
     { "name": "Aluben After Hours", "imageLink": "https://about.utdnebula.com/img/logos/nebula-logo.svg", "tags": ["social", "guitar", "coding"]},
     { "name": "UTD Mercury", "imageLink":"/utd-monogram-solid-rgb.jpg", "tags": ["test"]},
     { "name": "AIS", "imageLink": "/utd-monogram-solid-rgb.jpg", "tags": ["test"]},
     { "name": "UTD Tech Store", "imageLink": "/utd-monogram-solid-rgb.jpg", "tags": ["UTD"]},
-    { "name": "UTD FOCUS", "imageLink": "/utd-monogram-solid-rgb.jpg", "tags": ["test"]}
+    { "name": "UTD FOCUS", "imageLink": "/utd-monogram-solid-rgb.jpg", "tags": ["test"]},
+    { "name": "SHPE UTD", "imageLink": "/utd-monogram-solid-rgb.jpg", "tags": ["Professional"]},
+    { "name": "AIAA", "imageLink":"/utd-monogram-solid-rgb.jpg", "tags":["test","Engineering"]},
+    { "name": "CSG","imageLink":"/utd-monogram-solid-rgb.jpg", "tags":["cyber security"]}
   ]
