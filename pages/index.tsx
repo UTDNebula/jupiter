@@ -33,11 +33,11 @@ export default function Home() {
             left: '30%',
             top: '55%',
             color: 'white',
-            fontSize: 25,
+            fontSize: 30,
+            letterSpacing: '2px',
           }}
         >
-          Get Connected on Campus. Here is a tagline. <br /> I'm not a designer
-          nor a writer.
+          Get Connected on Campus.
         </p>
       </div>
 
