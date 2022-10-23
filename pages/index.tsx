@@ -1,9 +1,12 @@
-import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
-import styles from "../styles/Home.module.css";
+import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
+import EventCard from '../components/EventCard';
+import styles from '../styles/Home.module.css';
 
 export default function Home() {
+  const events = ['Event 1', 'Event 2', 'Event 3', 'Event 4'];
+
   return (
     <div className={styles.container}>
       <Head>
@@ -15,10 +18,10 @@ export default function Home() {
       <div className="bannerImage">
         <p
           style={{
-            position: "relative",
-            left: "30%",
-            top: "25%",
-            color: "white",
+            position: 'relative',
+            left: '30%',
+            top: '25%',
+            color: 'white',
             fontSize: 110,
           }}
         >
@@ -26,10 +29,10 @@ export default function Home() {
         </p>
         <p
           style={{
-            position: "absolute",
-            left: "30%",
-            top: "55%",
-            color: "white",
+            position: 'absolute',
+            left: '30%',
+            top: '55%',
+            color: 'white',
             fontSize: 25,
           }}
         >
@@ -38,7 +41,13 @@ export default function Home() {
         </p>
       </div>
 
-      <main className={styles.main}></main>
+      <main className={styles.main}>
+        <div className="grid grid-cols-4 grid-flow-row gap-2 w-full h-max">
+          {events.map((event, key) => {
+            return <EventCard key={key} name={event} />;
+          })}
+        </div>
+      </main>
 
       <footer className={styles.footer}>
         <a
@@ -46,7 +55,7 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{" "}
+          Powered by{' '}
           <span className={styles.logo}>
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
