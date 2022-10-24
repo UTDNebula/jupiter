@@ -55,10 +55,12 @@ export default function Navbar() {
     <nav className="flex filter bg-white px-4 py-4 h-20 items-center">
       <MobileNav open={open} setOpen={setOpen} />
       <div className="w-3/12 flex items-center">
-        <Link href="/">
-          <Image src={logo} alt="Jupiter" width={120} height={40}></Image>
+        <Link passHref href="/">
+          <Image src={logo} alt="Jupiter" width={120} height={40} />
         </Link>
-        <NavLink to="/">Explore</NavLink>
+        <div className="hidden md:block">
+          <NavLink to="/">Explore</NavLink>
+        </div>
       </div>
       <div className="w-9/12 flex justify-end items-center">
         <div
@@ -84,11 +86,11 @@ export default function Navbar() {
             }`}
           />
         </div>
-        <NavLink to="/directory">Directory</NavLink>
-        <NavLink to="/events">Events</NavLink>
-        <NavLink to="/about">About</NavLink>
         <div className="hidden md:flex">
-          <Link href="/">
+          <NavLink to="/directory">Directory</NavLink>
+          <NavLink to="/events">Events</NavLink>
+          <NavLink to="/about">About</NavLink>
+          <Link passHref href="/">
             <p className="signUpButton">Sign Up</p>
           </Link>
         </div>
