@@ -7,6 +7,8 @@
     { "name": "UTD Tech Store", "imageLink": "/utd-monogram-solid-rgb.jpg", "tags": ["UTD"]},
     { "name": "UTD FOCUS", "imageLink": "/utd-monogram-solid-rgb.jpg", "tags": ["test"]},
     { "name": "SHPE UTD", "imageLink": "/utd-monogram-solid-rgb.jpg", "tags": ["Professional"]},
-    { "name": "AIAA", "imageLink":"/utd-monogram-solid-rgb.jpg", "tags":["test","Engineering"]},
-    { "name": "CSG","imageLink":"/utd-monogram-solid-rgb.jpg", "tags":["cyber security"]}
+    { "name": "AIAA", "imageLink": "/utd-monogram-solid-rgb.jpg", "tags": ["Engineering"]},
+    { "name": "CSG", "imageLink": "/utd-monogram-solid-rgb.jpg", "tags": ["cyber security"]},
+    { "name": "SWE", "imageLink": "/utd-monogram-solid-rgb.jpg","tags": ["Professional"]},
+    { "name": "EPICS", "imageLink": "/utd-monogram-solid-rgb.jpg", "tags": ["UTD"]}
   ]
