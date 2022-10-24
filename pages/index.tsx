@@ -42,7 +42,8 @@ export default function Home() {
       </div>
 
       <main className={styles.main}>
-        <div className="grid grid-cols-4 grid-flow-row gap-2 w-full h-max">
+        <h1 className="text-2xl font-semibold">Events</h1>
+        <div className="grid grid-cols-4 grid-flow-row gap-2 w-full h-fit">
           {events.map((event, key) => {
             return <EventCard key={key} name={event} />;
           })}
