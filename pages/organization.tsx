@@ -1,4 +1,4 @@
-import DirectoryOrgHeader from '../components/DirectoryOrgHeader';
+import OrgHeader from '../components/OrgHeader';
 import React, { FC } from 'react';
 import ContactList from '../components/ContactList';
 import orgData from '../demoOrgPageData.json';
@@ -16,7 +16,7 @@ const Directory: FC<Props> = ({ org }) => {
   return (
     <main>
       <div className="flex md:grid md:grid-cols-6 gap-4 p-3">
-        <DirectoryOrgHeader name={orgData.name} tags={orgData.tags} />
+        <OrgHeader name={orgData.name} tags={orgData.tags} />
       </div>
       <div className="md:grid md:grid-cols-6 gap-4 p-3 align-middle">
         <div className="col-span-2 p-3">
