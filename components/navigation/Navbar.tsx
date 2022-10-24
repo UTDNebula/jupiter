@@ -1,14 +1,15 @@
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import logo from '../../assets/media/icons/Jupiter.png';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 interface MobileNavProps {
   open: boolean;
   setOpen: (isOpen: boolean) => void;
 }
 
-function MobileNav({ open, setOpen }: MobileNavProps) {
+const MobileNav: FC<MobileNavProps> = ({ open, setOpen }) => {
   return (
     <div
       className={`absolute top-0 left-0 h-screen w-screen bg-white transform ${
@@ -22,42 +23,57 @@ function MobileNav({ open, setOpen }: MobileNavProps) {
         <NavLink to="/">Explore</NavLink>
       </div>
       <div className="flex flex-col ml-4">
-        <a
-          className="text-xl font-medium my-4"
-          href="/about"
-          onClick={() =>
-            setTimeout(() => {
-              setOpen(!open);
-            }, 100)
-          }
-        >
-          About
-        </a>
-        <a
-          className="text-xl font-normal my-4"
-          href="/contact"
-          onClick={() =>
-            setTimeout(() => {
-              setOpen(!open);
-            }, 100)
-          }
-        >
-          Contact
-        </a>
+        <Link passHref href="/about">
+          <p
+            className="text-xl font-medium my-4"
+            onClick={() =>
+              setTimeout(() => {
+                setOpen(!open);
+              }, 100)
+            }
+          >
+            About
+          </p>
+        </Link>
+        <Link passHref href="/contact">
+          <p
+            className="text-xl font-normal my-4"
+            onClick={() =>
+              setTimeout(() => {
+                setOpen(!open);
+              }, 100)
+            }
+          >
+            Contact
+          </p>
+        </Link>
       </div>
     </div>
   );
-}
+};
 
 export default function Navbar() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  // Temporary login/logout button
+  const handleLogin = () => {
+    setLoggedIn(!loggedIn);
+  };
+
   return (
     <nav className="flex filter bg-white px-4 py-4 h-20 items-center">
       <MobileNav open={open} setOpen={setOpen} />
       <div className="w-3/12 flex items-center">
-        <Link passHref href="/">
-          <Image src={logo} alt="Jupiter" width={120} height={40} />
-        </Link>
+        <Image
+          src={logo}
+          alt="Jupiter"
+          width={120}
+          height={40}
+          onClick={() => router.push('/')}
+          className="cursor-pointer"
+        />
         <div className="hidden md:block">
           <NavLink to="/">Explore</NavLink>
         </div>
@@ -86,18 +102,43 @@ export default function Navbar() {
             }`}
           />
         </div>
-        <div className="hidden md:flex">
+        <div className="hidden md:flex align-middle">
           <NavLink to="/directory">Directory</NavLink>
           <NavLink to="/events">Events</NavLink>
           <NavLink to="/about">About</NavLink>
-          <Link passHref href="/">
-            <p className="signUpButton">Sign Up</p>
-          </Link>
+          <Profile handleLogin={handleLogin} loggedIn={loggedIn} />
         </div>
       </div>
     </nav>
   );
 }
+
+interface ProfileProps {
+  loggedIn: boolean;
+  handleLogin: () => void;
+}
+
+const Profile: FC<ProfileProps> = ({ loggedIn, handleLogin }) => {
+  return !loggedIn ? (
+    <button
+      className="bg-blue-700 text-white px-4 py-2 rounded-lg ml-4 align-middle"
+      onClick={handleLogin}
+    >
+      Sign In
+    </button>
+  ) : (
+    <div className="flex items-center">
+      {/* Temporary gray circle for user pfp */}
+      <div className="bg-gray-400 rounded-full w-10 h-10 ml-4"></div>
+      <button
+        className="bg-blue-700 text-white px-4 py-2 rounded-lg ml-4 align-middle"
+        onClick={handleLogin}
+      >
+        Sign Out
+      </button>
+    </div>
+  );
+};
 
 interface NavLinkProps {
   to: string;
@@ -105,8 +146,8 @@ interface NavLinkProps {
 
 function NavLink({ to, children }: React.PropsWithChildren<NavLinkProps>) {
   return (
-    <a href={to} className={`mx-4`} style={{ color: '#4659A7' }}>
-      {children}
-    </a>
+    <Link href={to} passHref>
+      <button className="mx-4 text-blue-700 cursor-pointer">{children}</button>
+    </Link>
   );
 }
