@@ -63,9 +63,9 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="flex filter bg-white px-4 py-4 h-20 items-center">
+    <nav className="flex filter bg-white px-4 py-4 h-20 items-center align-middle">
       <MobileNav open={open} setOpen={setOpen} />
-      <div className="w-3/12 flex items-center">
+      <div className="flex items-center">
         <Image
           src={logo}
           alt="Jupiter"
