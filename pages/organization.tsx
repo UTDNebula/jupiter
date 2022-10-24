@@ -15,10 +15,10 @@ interface Props {
 const Directory: FC<Props> = ({ org }) => {
   return (
     <main>
-      <div className="grid grid-cols-6 gap-4 p-3">
+      <div className="flex md:grid md:grid-cols-6 gap-4 p-3">
         <DirectoryOrgHeader name={orgData.name} tags={orgData.tags} />
       </div>
-      <div className="grid grid-cols-6 gap-4 p-3 align-middle">
+      <div className="md:grid md:grid-cols-6 gap-4 p-3 align-middle">
         <div className="col-span-2 p-3">
           <h1 className="text-3xl font-bold">About Us</h1>
           <Image
