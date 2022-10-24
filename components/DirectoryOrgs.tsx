@@ -8,18 +8,12 @@ interface Props {
 }
 const OrgDirectoryCards: FC<Props> = ({ org }) => {
   return (
-    <div className="md:w-full h-auto flex flex-col justify-between items-center p-5 m-5 rounded-2xl">
-      <h4 className="text-lg font-bold text-center">{org.name}</h4>
-      <div className="w-full h-40 relative justify-center">
-        <Image
-          src={org.imageLink}
-          width="100%"
-          height="100%"
-          alt={org.name}
-          className="rectangle"
-        />
+    <div className="md:w-full h-auto flex flex-col justify-between p-5 m-5 rounded-2xl">
+      <h4 className="text-xl font-bold text-center md:text-left">{org.name}</h4>
+      <div className="w-auto h-40 relative justify-center rounded-sm p-2">
+        <Image src={org.imageLink} width={200} height={150} alt={org.name} />
       </div>
-      <div className="flex flex-wrap content-start justify-center h-[5vh] w-full">
+      <div className="flex flex-wrap content-start h-[5vh] w-full">
         {org.tags.map((tag, i) => (
           <DirectoryOrgTags key={i} tag={tag} />
         ))}
