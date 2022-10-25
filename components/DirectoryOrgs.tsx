@@ -6,7 +6,7 @@ import Image from 'next/image';
 interface Props {
   org: Org;
 }
-const OrgDirectoryCards: FC<Props> = ({ org }) => {
+const DirectoryOrgs: FC<Props> = ({ org }) => {
   return (
     <div className="md:w-full h-auto flex flex-col justify-between p-5 m-5 rounded-2xl">
       <h4 className="text-xl font-bold text-center md:text-left">{org.name}</h4>
@@ -22,4 +22,4 @@ const OrgDirectoryCards: FC<Props> = ({ org }) => {
   );
 };
 
-export default OrgDirectoryCards;
+export default DirectoryOrgs;
