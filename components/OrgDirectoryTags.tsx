@@ -4,7 +4,7 @@ const mockTags = ['Tag'];
 const XButton = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="h-4 w-4"
+    className="h-4 w-4 text-gray-500"
     viewBox="0 0 20 20"
     fill="currentColor"
   >
@@ -18,7 +18,7 @@ const XButton = () => (
 
 const OrgDirectoryTags = () => {
   return (
-    <div className="flex flex-col row-start-1 col-start-1 col-end-2 md:col-start-2 md:col-end-[-1] w-full justify-center p-3">
+    <div className="flex flex-col row-start-1 col-start-1 col-end-2 md:col-start-2 md:col-end-[-1] w-full justify-center">
       <p className="text-sm font-light">Tags:</p>
       <div className="flex md:flex-wrap">
         {mockTags.map((tag, i) => (
@@ -26,12 +26,12 @@ const OrgDirectoryTags = () => {
             key={i}
             className="flex justify-between items-center md:w-24 w-auto h-8 m-1 text-sm p-4 font-light rounded-2xl bg-blue-400 hover:bg-blue-500 hover:cursor-pointer"
           >
-            {tag}
+            <p className="text-white font-bold">{tag}</p>
             <XButton />
           </div>
         ))}
         <button className="flex justify-between items-center w-auto h-8 m-1 text-sm p-4 font-light rounded-2xl bg-gray-400 hover:bg-gray-500 hover:cursor-pointer">
-          <p>+</p>
+          <p className="text-white font-bold">+</p>
         </button>
       </div>
     </div>
