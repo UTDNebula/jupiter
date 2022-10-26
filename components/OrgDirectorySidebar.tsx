@@ -1,4 +1,4 @@
-import { DropDownIcon } from './../Dropdown';
+import { DropDownIcon } from './Dropdown';
 import React from 'react';
 
 const OrgDirectorySidebar = () => {
