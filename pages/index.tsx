@@ -20,6 +20,7 @@ export default function Home() {
             objectFit="cover"
             objectPosition="center"
             style={{ zIndex: -5 }}
+            priority
           />
         </div>
         <div className="justify-center flex flex-col min-h-[45vh] mx-auto md:w-[55vw] w-[75vw]">
