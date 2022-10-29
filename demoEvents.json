@@ -1,5 +1,5 @@
 [
-    {"eventTitle": "Test Event", "Date": "2035-01-01", "Time": "12:00 PM", "Location": "Test Location", "Description": "Test Description", "OrgImage": ""},
-    {"eventTitle": "Test Event 2", "Date": "2035-01-01", "Time": "12:00 PM", "Location": "Test Location", "Description": "Test Description", "OrgImage": ""},
-    {"eventTitle": "Test Event 3", "Date": "2035-01-01", "Time": "12:00 PM", "Location": "Test Location", "Description": "Test Description", "OrgImage": ""}
+    {"title": "Test Event", "date": "2035-01-01", "time": "12:00 PM", "location": "Test Location", "description": "Test Description", "image": ""},
+    {"title": "Test Event 2", "date": "2035-01-01", "time": "12:00 PM", "location": "Test Location", "description": "Test Description", "image": ""},
+    {"title": "Test Event 3", "date": "2035-01-01", "time": "12:00 PM", "location": "Test Location", "description": "Test Description", "image": ""}
   ]

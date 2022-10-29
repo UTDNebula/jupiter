@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import demoEvents from '../demoEvents.json';
 import Image from 'next/image';
+
 interface Props {
   event: typeof demoEvents[0];
 }
@@ -25,25 +26,25 @@ const Event: FC<Props> = ({ event }) => {
             src={'/utd-monogram-solid-rgb.jpg'}
             width={400}
             height={400}
-            alt={event.eventTitle}
+            alt={event.title}
           />
         </div>
       </div>
       <div className="col-start-2 col-end-[-2]">
         <h4 className="text-xl font-bold text-center md:text-left">
-          {event.eventTitle}
+          {event.title}
         </h4>
         <p className="text-lg font-light text-center md:text-left">
-          {event.Description}
+          {event.title}
         </p>
         <p className="text-lg font-light text-center md:text-left">
-          {event.Date}
+          {event.date}
         </p>
         <p className="text-lg font-light text-center md:text-left">
-          {event.Time}
+          {event.time}
         </p>
         <p className="text-lg font-light text-center md:text-left">
-          {event.Location}
+          {event.location}
         </p>
       </div>
       <div className="col-start-3 col-end-[-1] flex flex-col justify-center items-center">
