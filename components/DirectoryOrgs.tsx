@@ -30,4 +30,4 @@ const OrgDirectoryCards: FC<Props> = ({ org }) => {
   );
 };
 
-export default DirectoryOrgs;
+export default OrgDirectoryCards;
