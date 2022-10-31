@@ -1,9 +1,8 @@
 import React from 'react';
 import Head from 'next/head';
-import OrgDirectoryHeader from '../components/OrgDirectoryHeader';
-import OrgDirectoryTags from '../components/OrgDirectoryTags';
-import OrgDirectorySidebar from '../components/OrgDirectorySidebar';
-import OrgDirectoryGrid from '../components/OrgDirectoryGrid';
+import OrgDirectoryHeader from '../../components/OrgDirectoryHeader';
+import OrgDirectorySidebar from '../../components/OrgDirectorySidebar';
+import OrgDirectoryGrid from '../../components/OrgDirectoryGrid';
 
 const DirectoryHead = () => (
   <Head>

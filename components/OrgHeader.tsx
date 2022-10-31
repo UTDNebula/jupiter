@@ -9,10 +9,10 @@ interface Props {
 const DirectoryOrgHeader: FC<Props> = ({ name, tags }) => {
   return (
     <>
-      <div className="md:col-span-3 p-3">
+      <div className="md:col-span-4">
         <h1 className="text-2xl md:text-5xl font-bold">{name}</h1>
       </div>
-      <div className="md:col-start-[-1] p-3">
+      <div className="md:col-start-[-1] p-3 flex">
         {tags.map((tag, i) => (
           <DirectoryOrgTags key={i} tag={tag} />
         ))}
