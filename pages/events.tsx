@@ -13,7 +13,7 @@ export default function Events() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <div className="p-5">
+        <div className="grid md:grid-cols-6 gap-x-4 p-5">
           <EventsHeader />
         </div>
         <div className="grid md:grid-cols-6 gap-x-4 p-5">
