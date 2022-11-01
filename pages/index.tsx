@@ -2,8 +2,11 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from '../styles/Home.module.css';
+import EventCard from '../components/EventCard';
 
 export default function Home() {
+  const events = ['Event 1', 'Event 2', 'Event 3', 'Event 4'];
+
   return (
     <>
       <Head>
@@ -34,6 +37,14 @@ export default function Home() {
             className="relative mt-5 md:mt-10 rounded-md md:text-2xl w-full h-12 md:h-16 px-4 md:px-8 bg-white"
             placeholder="Search Organizations"
           />
+        </div>
+        <div className="p-8">
+          <h1 className="font-medium text-2xl">Events</h1>
+          <div className="grid grid-cols-4 grid-flow-row gap-4 w-full h-max">
+            {events.map((event, key) => {
+              return <EventCard key={key} name={event} />;
+            })}
+          </div>
         </div>
       </main>
     </>
