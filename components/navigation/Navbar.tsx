@@ -119,6 +119,13 @@ interface ProfileProps {
 }
 
 const Profile: FC<ProfileProps> = ({ loggedIn, handleLogin }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleProfileClick = () => {
+    setMenuOpen(!menuOpen);
+    console.log(menuOpen);
+  };
+
   return !loggedIn ? (
     <button
       className="bg-blue-700 text-white px-4 py-2 rounded-lg ml-4 align-middle"
@@ -129,7 +136,21 @@ const Profile: FC<ProfileProps> = ({ loggedIn, handleLogin }) => {
   ) : (
     <div className="flex items-center">
       {/* Temporary gray circle for user pfp */}
-      <div className="bg-gray-400 rounded-full w-10 h-10 ml-4"></div>
+      <div className="flex flex-col justify-start text-center items-center relative">
+        <div
+          className="bg-gray-400 rounded-full w-10 h-10"
+          onClick={handleProfileClick}
+        ></div>
+        <div
+          className={`${
+            menuOpen ? 'visible' : 'invisible'
+          } absolute mt-14 bg-gray-200 w-32 p-3 rounded-sm`}
+        >
+          <NavLink to="/">Username</NavLink>
+          <NavLink to="/">Settings</NavLink>
+          <NavLink to="/">Sign Out</NavLink>
+        </div>
+      </div>
       <button
         className="bg-blue-700 text-white px-4 py-2 rounded-lg ml-4 align-middle"
         onClick={handleLogin}
