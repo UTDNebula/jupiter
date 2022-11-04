@@ -11,7 +11,7 @@ const OrganizationPage = () => {
   const orgName = router.query.orgName as string;
   const org = orgData.find((org) => org.name === orgName);
   if (!org) {
-    //router.back();
+    ////router.back();
     return null;
   }
   return (
