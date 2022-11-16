@@ -1,8 +1,7 @@
 import Head from 'next/head';
 import Image from 'next/image';
-import Link from 'next/link';
-import styles from '../styles/Home.module.css';
 import EventCard from '../components/EventCard';
+import banner from '../public/banner.png';
 
 export default function Home() {
   const events = ['Event 1', 'Event 2', 'Event 3', 'Event 4'];
@@ -17,12 +16,13 @@ export default function Home() {
       <main>
         <div className="z-[-5] absolute min-h-[45vh] w-screen">
           <Image
-            src="/banner.png"
+            src={banner}
             alt="Jupiter"
             layout="fill"
             objectFit="cover"
             objectPosition="center"
             style={{ zIndex: -5 }}
+            priority
           />
         </div>
         <div className="justify-center flex flex-col min-h-[45vh] mx-auto md:w-[55vw] w-[75vw]">
