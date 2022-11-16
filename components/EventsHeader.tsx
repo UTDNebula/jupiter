@@ -1,6 +1,6 @@
 const EventsHeader = () => {
   return (
-    <div className="navbar bg-base">
+    <div className="navbar">
       <h1 className="navbar-start md:text-2xl">Events</h1>
       <input
         className="navbar-end input input-primary input-sm"

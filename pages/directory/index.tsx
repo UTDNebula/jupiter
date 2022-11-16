@@ -20,7 +20,7 @@ export default function Directory() {
         <div className="p-5">
           <OrgDirectoryHeader />
         </div>
-        <div className="grid md:grid-cols-6 grid-cols-3 gap-x-4 grid-rows-2 items-center h-full p-5 w-full">
+        <div className="md:flex md:flex-row">
           <OrgDirectorySidebar />
           <OrgDirectoryGrid />
         </div>

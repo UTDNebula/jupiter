@@ -13,18 +13,25 @@ const OrgDirectoryCards: FC<Props> = ({ org }) => {
     router.push(`/directory/${org.name}`);
   };
   return (
-    <div
-      className="md:w-full h-auto flex flex-col justify-between p-5 m-5 rounded-2xl cursor-pointer hover:bg-gray-100"
-      onClick={onClick}
-    >
-      <h4 className="text-xl font-bold text-center md:text-left">{org.name}</h4>
+    <div className="card card-normal" onClick={onClick}>
       <div className="w-auto h-40 relative justify-center rounded-sm p-2">
-        <Image src={org.imageLink} alt={org.name} sizes='100vw' layout='fill' objectFit='contain'/>
+        <figure>
+          <Image
+            src={org.imageLink}
+            alt={org.name}
+            sizes="100vw"
+            layout="fill"
+            objectFit="contain"
+          />
+        </figure>
       </div>
-      <div className="flex flex-wrap content-start h-[5vh] w-full">
-        {org.tags.map((tag, i) => (
-          <DirectoryOrgTags key={i} tag={tag} />
-        ))}
+      <div className="card-body">
+        <h4 className="card-title">{org.name}</h4>
+        <div className="card-actions">
+          {org.tags.map((tag, i) => (
+            <DirectoryOrgTags key={i} tag={tag} />
+          ))}
+        </div>
       </div>
     </div>
   );

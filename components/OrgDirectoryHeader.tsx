@@ -2,12 +2,10 @@ import React from 'react';
 
 const OrgDirectoryHeader = () => {
   return (
-    <div className="md:flex md:justify-between md:pl-10">
-      <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
-        Organization Directory
-      </h1>
+    <div className="navbar">
+      <h1 className="navbar-start md:text-2xl font-bold">Organizations</h1>
       <input
-        className="h-10 px-2 rounded-md border border-gray-300"
+        className="navbar-end input input-primary"
         type="text"
         placeholder="Search Organizations"
       />
