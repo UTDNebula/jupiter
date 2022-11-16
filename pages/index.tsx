@@ -4,7 +4,15 @@ import EventCard from '../components/EventCard';
 import banner from '../public/banner.png';
 
 export default function Home() {
-  const events = ['Event 1', 'Event 2', 'Event 3', 'Event 4'];
+  const events = [
+    'Event 1',
+    'Event 2',
+    'Event 3',
+    'Event 4',
+    'Event 5',
+    'Event 6',
+    'Event 7',
+  ];
 
   return (
     <>
@@ -33,13 +41,14 @@ export default function Home() {
             Get Connected on Campus.
           </p>
           <input
-            className="relative mt-5 md:mt-10 rounded-md md:text-2xl w-full h-12 md:h-16 px-4 md:px-8 bg-white"
+            className="input input-lg"
             placeholder="Search Organizations"
+            type="text"
           />
         </div>
-        <div className="p-8">
+        <div className="p-8 w-full">
           <h1 className="font-medium text-2xl">Events</h1>
-          <div className="grid grid-cols-4 grid-flow-row gap-4 w-full h-max">
+          <div className="carousel carousel-center p-4 space-x-4 bg-neutral rounded-box">
             {events.map((event, key) => {
               return <EventCard key={key} name={event} />;
             })}

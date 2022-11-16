@@ -18,7 +18,13 @@ const MobileNav: FC<MobileNavProps> = ({ open, setOpen }) => {
       <div className="flex flex-col justify-center filter bg-white py-2">
         {' '}
         {/*logo container*/}
-        <Image src={logo} alt="Jupiter" width={120} height={40}></Image>
+        <Image
+          src={logo}
+          alt="Jupiter"
+          width={120}
+          height={40}
+          className="btn btn-ghost"
+        />
         <div className="btn btn-ghost">
           <Link href="/">Explore</Link>
         </div>
