@@ -144,11 +144,11 @@ const Profile: FC<ProfileProps> = ({ loggedIn, handleLogin }) => {
         <div
           className={`${
             menuOpen ? 'visible' : 'invisible'
-          } absolute mt-14 bg-gray-200 w-32 p-3 rounded-sm`}
+          } absolute mt-14 bg-white w-32 p-1 rounded-sm border-2 border-gray-200`}
         >
-          <NavLink to="/">Username</NavLink>
-          <NavLink to="/">Settings</NavLink>
-          <NavLink to="/">Sign Out</NavLink>
+          <DropDownLink to="/">Username</DropDownLink>
+          <DropDownLink to="/">Settings</DropDownLink>
+          <DropDownLink to="/">Sign Out</DropDownLink>
         </div>
       </div>
       <button
@@ -160,6 +160,21 @@ const Profile: FC<ProfileProps> = ({ loggedIn, handleLogin }) => {
     </div>
   );
 };
+
+interface DropDownLinkProps {
+  to: string;
+}
+
+function DropDownLink({
+  to,
+  children,
+}: React.PropsWithChildren<DropDownLinkProps>) {
+  return (
+    <Link href={to} passHref>
+      <button className="hover:bg-gray-100 w-full">{children}</button>
+    </Link>
+  );
+}
 
 interface NavLinkProps {
   to: string;
