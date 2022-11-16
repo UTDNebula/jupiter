@@ -18,42 +18,39 @@ const Event: FC<Props> = ({ event }) => {
   };
 
   return (
-    <div className="md:grid md:grid-cols-3 justify-between p-5 m-5 rounded-2xl border-2 border-blue-600">
-      <div className="col-span-1">
+    <div className="carousel-item p-5">
+      <div className="card md:card-side bg-base-200 w-full">
         {/* Mock gray rectangle  */}
-        <div className="w-40 h-40 relative justify-center rounded-sm p-2">
+        <figure>
           <Image
             src={'/utd-monogram-solid-rgb.jpg'}
-            width={400}
-            height={400}
             alt={event.title}
+            height={200}
+            width={200}
           />
+        </figure>
+        <div className="card-body md:flex-row justify-between">
+          <div className="flex flex-col">
+            <h4 className="card-title text-center">{event.title}</h4>
+            <p className="text-lg font-light text-center md:text-left">
+              {event.title}
+            </p>
+            <p className="text-lg font-light text-center md:text-left">
+              {event.date}
+            </p>
+            <p className="text-lg font-light text-center md:text-left">
+              {event.time}
+            </p>
+            <p className="text-lg font-light text-center md:text-left">
+              {event.location}
+            </p>
+          </div>
+          <div className="card-actions justify-center content-center">
+            <button onClick={onClick} className="btn btn-primary">
+              {text}
+            </button>
+          </div>
         </div>
-      </div>
-      <div className="col-start-2 col-end-[-2]">
-        <h4 className="text-xl font-bold text-center md:text-left">
-          {event.title}
-        </h4>
-        <p className="text-lg font-light text-center md:text-left">
-          {event.title}
-        </p>
-        <p className="text-lg font-light text-center md:text-left">
-          {event.date}
-        </p>
-        <p className="text-lg font-light text-center md:text-left">
-          {event.time}
-        </p>
-        <p className="text-lg font-light text-center md:text-left">
-          {event.location}
-        </p>
-      </div>
-      <div className="col-start-3 col-end-[-1] flex flex-col justify-center items-center">
-        <button
-          onClick={onClick}
-          className="bg-blue-600 text-white rounded-md p-2 m-2"
-        >
-          {text}
-        </button>
       </div>
     </div>
   );

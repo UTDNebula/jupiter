@@ -41,7 +41,7 @@ export default function Home() {
             Get Connected on Campus.
           </p>
           <input
-            className="input input-lg"
+            className="input md:input-lg"
             placeholder="Search Organizations"
             type="text"
           />
