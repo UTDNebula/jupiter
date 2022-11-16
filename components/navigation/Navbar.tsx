@@ -2,7 +2,6 @@ import Link from 'next/link';
 import React, { FC, useState } from 'react';
 import logo from '../../assets/media/icons/Jupiter.png';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 
 interface MobileNavProps {
   open: boolean;
@@ -12,20 +11,22 @@ interface MobileNavProps {
 const MobileNav: FC<MobileNavProps> = ({ open, setOpen }) => {
   return (
     <div
-      className={`absolute top-0 left-0 h-screen w-screen bg-white transform ${
+      className={`absolute top-0 left-0 h-screen bg-white transform w-40 z-10 flex flex-col ${
         open ? '-translate-x-0' : '-translate-x-full'
       } transition-transform duration-300 ease-in-out filter drop-shadow-md `}
     >
-      <div className="flex items-center justify-center filter bg-white h-20">
+      <div className="flex flex-col justify-center filter bg-white py-2">
         {' '}
         {/*logo container*/}
         <Image src={logo} alt="Jupiter" width={120} height={40}></Image>
-        <NavLink to="/">Explore</NavLink>
+        <div className="btn btn-ghost">
+          <Link href="/">Explore</Link>
+        </div>
       </div>
       <div className="flex flex-col ml-4">
         <Link passHref href="/about">
           <p
-            className="text-xl font-medium my-4"
+            className="text-xl font-medium my-4 btn btn-ghost"
             onClick={() =>
               setTimeout(() => {
                 setOpen(!open);
@@ -37,7 +38,7 @@ const MobileNav: FC<MobileNavProps> = ({ open, setOpen }) => {
         </Link>
         <Link passHref href="/contact">
           <p
-            className="text-xl font-normal my-4"
+            className="text-xl font-normal my-4 btn btn-ghost"
             onClick={() =>
               setTimeout(() => {
                 setOpen(!open);
@@ -53,7 +54,6 @@ const MobileNav: FC<MobileNavProps> = ({ open, setOpen }) => {
 };
 
 export default function Navbar() {
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -63,22 +63,23 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="flex filter bg-white px-4 py-4 h-20 items-center align-middle">
+    <div className="navbar bg-base-100">
       <MobileNav open={open} setOpen={setOpen} />
-      <div className="w-3/12 flex items-center">
-        <Image
-          src={logo}
-          alt="Jupiter"
-          width={120}
-          height={40}
-          onClick={() => router.push('/')}
-          className="cursor-pointer"
-        />
-        <div className="hidden md:block">
-          <NavLink to="/">Explore</NavLink>
+      <div className="navbar-start">
+        <Link href="/" passHref>
+          <Image
+            src={logo}
+            alt="Jupiter"
+            width={120}
+            height={40}
+            className="cursor-pointer"
+          />
+        </Link>
+        <div className="hidden md:flex btn btn-ghost px-3">
+          <Link href="/">Explore</Link>
         </div>
       </div>
-      <div className="w-9/12 flex justify-end items-center">
+      <div className="navbar-end">
         <div
           className="z-50 flex relative w-8 h-8 flex-col justify-between items-center md:hidden"
           onClick={() => {
@@ -102,14 +103,20 @@ export default function Navbar() {
             }`}
           />
         </div>
-        <div className="hidden md:flex align-middle">
-          <NavLink to="/directory">Directory</NavLink>
-          <NavLink to="/events">Events</NavLink>
-          <NavLink to="/about">About</NavLink>
+        <div className="hidden md:flex">
+          <div className="btn btn-ghost">
+            <Link href="/directory">Directory</Link>
+          </div>
+          <div className="btn btn-ghost">
+            <Link href="/events">Events</Link>
+          </div>
+          <div className="btn btn-ghost">
+            <Link href="/about">About</Link>
+          </div>
           <Profile handleLogin={handleLogin} loggedIn={loggedIn} />
         </div>
       </div>
-    </nav>
+    </div>
   );
 }
 
@@ -120,34 +127,16 @@ interface ProfileProps {
 
 const Profile: FC<ProfileProps> = ({ loggedIn, handleLogin }) => {
   return !loggedIn ? (
-    <button
-      className="bg-blue-700 text-white px-4 py-2 rounded-lg ml-4 align-middle"
-      onClick={handleLogin}
-    >
+    <button className="btn btn-primary" onClick={handleLogin}>
       Sign In
     </button>
   ) : (
     <div className="flex items-center">
       {/* Temporary gray circle for user pfp */}
-      <div className="bg-gray-400 rounded-full w-10 h-10 ml-4"></div>
-      <button
-        className="bg-blue-700 text-white px-4 py-2 rounded-lg ml-4 align-middle"
-        onClick={handleLogin}
-      >
+      <div className="bg-gray-400 rounded-full w-10 h-10 mx-4"></div>
+      <button className="btn btn-secondary" onClick={handleLogin}>
         Sign Out
       </button>
     </div>
   );
 };
-
-interface NavLinkProps {
-  to: string;
-}
-
-function NavLink({ to, children }: React.PropsWithChildren<NavLinkProps>) {
-  return (
-    <Link href={to} passHref>
-      <button className="mx-4 text-blue-700 cursor-pointer">{children}</button>
-    </Link>
-  );
-}
