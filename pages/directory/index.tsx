@@ -17,7 +17,7 @@ export default function Directory() {
     <>
       <DirectoryHead />
       <main>
-        <div className="p-5">
+        <div className="grid md:grid-cols-6 gap-x-4 p-5">
           <OrgDirectoryHeader />
         </div>
         <div className="grid md:grid-cols-6 grid-cols-3 gap-x-4 grid-rows-2 items-center h-full p-5 w-full">
