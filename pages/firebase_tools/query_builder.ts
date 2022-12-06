@@ -1,6 +1,7 @@
 import { error } from "console"
 import { collection, DocumentData, Firestore, getDocs, getFirestore, Query, query, QueryConstraint, QueryDocumentSnapshot, where } from "firebase/firestore"
-import FirebaseApp from "./firebase_app"
+import FirebaseApp from "./firebase"
+
 
 class QueryBuilder {
     query_constraints?: QueryConstraint[]

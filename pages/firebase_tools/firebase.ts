@@ -1,4 +1,5 @@
-import Firebase from "firebase/app"
+import { initializeApp, getApps } from "firebase/app"
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,
@@ -7,11 +8,8 @@ const firebaseConfig = {
     storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
     messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
     appId: process.env.FIREBASE_APP_ID,
-    measurementId: process.env.FIREBASE_MEASUREMENT_ID
 };
 
-if (Firebase.getApps().length === 0) {
-    Firebase.initializeApp(firebaseConfig)
-}
+const FirebaseApp = getApps().length == 0 ? initializeApp(firebaseConfig) : getApps()[0]
 
-export default Firebase;
+export default FirebaseApp;

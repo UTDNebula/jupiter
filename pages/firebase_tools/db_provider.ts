@@ -1,7 +1,8 @@
 import { doc, Firestore, getFirestore, setDoc, updateDoc, collection, addDoc, getDoc, DocumentData, query, Query, where, getDocs, QueryDocumentSnapshot } from "firebase/firestore"
 import Club from "../../models/club";
 import User from "../../models/user";
-import FirebaseApp from "./firebase_app";
+import FirebaseApp from "./firebase";
+
 
 
 class DbProvider {
@@ -10,6 +11,8 @@ class DbProvider {
     club_path: string = "Clubs"
     async saveUser(user: User): Promise<boolean> {
         try {
+
+
             const userCollection = collection(this.db, this.user_path)
             await addDoc(userCollection, user);
             return true;
@@ -22,8 +25,11 @@ class DbProvider {
 
     async createClub(club: Club): Promise<boolean> {
         try {
-            const clubCollection = collection(this.db, this.user_path)
+            const clubCollection = collection(this.db, this.club_path)
+            //const docu = doc(this.db, this.club_path, club.name)
+
             await addDoc(clubCollection, club);
+
             return true;
 
         } catch (error) {
@@ -39,7 +45,7 @@ class DbProvider {
     }
 
     async getClub(clubid: string): Promise<DocumentData> {
-        const clubReference = doc(this.db, this.user_path, clubid)
+        const clubReference = doc(this.db, this.club_path, clubid)
         const ref = await getDoc<DocumentData>(clubReference)
         return ref.data;
     }
