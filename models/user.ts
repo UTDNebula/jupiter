@@ -11,7 +11,7 @@ interface User {
     year: Year
     role: Role
     career: Career
-    clubs: [Club]
+    clubs?: [Club]
 }
 
 export default User

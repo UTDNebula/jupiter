@@ -3,6 +3,10 @@ import Club from "../models/club"
 import DbProvider from "../pages/firebase_tools/db_provider"
 import { config } from "dotenv"
 import Firebase from "../pages/firebase_tools/firebase"
+import User from "../models/user"
+import Year from "../models/year"
+import Role from "../models/role"
+import Career from "../models/career"
 
 
 // const firebaseConfig = {
@@ -19,11 +23,11 @@ import Firebase from "../pages/firebase_tools/firebase"
 
 
 //test to create a user
-describe("This is to create a user on firebase", () => {
-    it("should create a new user", (done) => {
+describe("This is to create a club on firebase", () => {
+    it("should create a new club", (done) => {
 
         const prov = new DbProvider()
-        const club: Club = { name: "ACM maybe" }
+        const club: Club = { name: "ACM" }
 
         const answer = prov.createClub(club).then(val => {
             assert.isTrue(val)
@@ -33,4 +37,55 @@ describe("This is to create a user on firebase", () => {
 
     }).timeout(5000)
 
+    it("Should delete the created club", (done) => {
+        const prov = new DbProvider()
+        prov.deleteClub("ACM").then(val => {
+            assert.isTrue(val)
+            done()
+        })
+    }).timeout(3000)
+
 })
+
+describe("This is to create a user on firebase", () => {
+    it("should create a new user", (done) => {
+
+        const prov = new DbProvider()
+        const user: User = {
+            first_name: "Michael",
+            last_name: "Bee",
+            major: "Computer science",
+            year: Year.freshman,
+            role: Role.Student,
+            career: Career.Engineering,
+
+
+        }
+        const answer = prov.createUser(user).then(val => {
+            assert.isTrue(val)
+            done()
+        })
+    })
+}).timeout(5000)
+
+describe("This is to query for the club `Nebula`", () => {
+    it("Should retrieve the nebula object in the databaase", done => {
+        const prov = new DbProvider()
+        const club = prov.getClubsByName("Nebula")
+        club.then(val => {
+            //need a way to get the club object from the db
+
+            assert.equal(val[0].name, "Nebula")
+            done()
+        })
+    })
+}).timeout(5000)
+
+
+
+/*
+events (post and get)
+more tests
+get clubs if no query, random clubs
+profile pictures
+*/
