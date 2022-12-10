@@ -1,9 +1,9 @@
 import { doc, Firestore, getFirestore, setDoc, updateDoc, addDoc, getDoc, DocumentData, Query, where, getDocs, QueryDocumentSnapshot, query, QuerySnapshot, deleteDoc, collection, arrayUnion } from "firebase/firestore"
-import Club from "../../models/club";
-import User from "../../models/user";
+import Club from "../models/club";
+import User from "../models/user";
 import FirebaseApp from "./firebase";
-import Event from "../../models/event";
-import QueryBuilder from "./query_builder";
+import Event from "../models/event";
+
 
 
 class DbProvider {
@@ -43,13 +43,13 @@ class DbProvider {
     async getUser(userid: string): Promise<User> {
         const userReference = doc(this.db, this.user_path, userid)
         const ref = await getDoc<DocumentData>(userReference)
-        return ref.data as unknown as User;
+        return ref.data() as unknown as User;
     }
 
     async getClub(club_name: string): Promise<Club> {
         const clubReference = doc(this.db, this.club_path, club_name)
         const ref = await getDoc<DocumentData>(clubReference)
-        return ref.data as Club;
+        return ref.data() as Club;
     }
 
     async getSomeClubs(): Promise<Club[] | null> {
@@ -58,7 +58,7 @@ class DbProvider {
         const snapshot = await getDocs(q)
         try {
 
-            const documentList: Club[] = snapshot.docs.map(doc => doc.data as Club)
+            const documentList: Club[] = snapshot.docs.map(doc => doc.data() as Club)
             return documentList
         } catch (error) {
             console.error(error)
