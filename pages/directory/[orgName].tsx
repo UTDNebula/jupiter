@@ -30,7 +30,7 @@ const OrganizationPage = () => {
             <h1 className="text-2xl md:text-3xl font-bold">About Us</h1>
           </div>
           <div className="col-start-[-3] col-span-2 text-left">
-            <h1 className="text-2xl md:text-3xl font-bold">Contact Us</h1>
+            <h1 className="text-2xl md:text-3xl font-bold px-3">Contact Us</h1>
           </div>
         </div>
         <div className="flex md:grid md:grid-cols-6 gap-4 p-10">
