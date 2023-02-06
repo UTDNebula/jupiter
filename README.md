@@ -2,8 +2,6 @@
 
 _A tool to find ways to get involved on campus._
 
-![Vercel](https://vercelbadge.vercel.app/api/UTDNebula/jupiter])
-
 ## Getting Started
 
 This project requires a working [Node.js](https://nodejs.org/en/) installation
