@@ -18,7 +18,7 @@ const OrgDirectoryCards: FC<Props> = ({ org }) => {
     >
       <h4 className="text-xl font-bold text-center md:text-left">{org.name}</h4>
       <div className="w-auto h-40 relative justify-center rounded-sm p-2">
-        <Image src={org.imageLink} width={200} height={150} alt={org.name} />
+        <Image src={org.imageLink} alt={org.name} sizes='100vw' layout='fill' objectFit='contain'/>
       </div>
     </div>
   );
