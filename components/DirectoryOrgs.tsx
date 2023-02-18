@@ -1,4 +1,3 @@
-import DirectoryOrgTags from './DirectoryOrgTags';
 import React, { FC } from 'react';
 import { Org } from '../types/orgs';
 import Image from 'next/image';
@@ -20,11 +19,6 @@ const OrgDirectoryCards: FC<Props> = ({ org }) => {
       <h4 className="text-xl font-bold text-center md:text-left">{org.name}</h4>
       <div className="w-auto h-40 relative justify-center rounded-sm p-2">
         <Image src={org.imageLink} alt={org.name} sizes='100vw' layout='fill' objectFit='contain'/>
-      </div>
-      <div className="flex flex-wrap content-start h-[5vh] w-full">
-        {org.tags.map((tag, i) => (
-          <DirectoryOrgTags key={i} tag={tag} />
-        ))}
       </div>
     </div>
   );
