@@ -4,7 +4,7 @@ class PictureUploader {
     image_path = "images"
 
     /// Uploads an image to our storage bucket
-    /// if image name is undefined, it 
+    /// if image name is undefined, it will be left as an empty string
     async uploadImage(image: Blob, subpath: string, image_name?: string): Promise<UploadResult> {
         const pad: string = image_name !== undefined ? `/${image_name}.jpg` : ""
         const storageRef = ref(this.storage, `${this.image_path}/${subpath}${pad}`)
