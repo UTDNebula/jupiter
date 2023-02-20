@@ -1,9 +1,10 @@
 import { DocumentReference, DocumentData } from "firebase/firestore"
 import Contacts from "./contacts"
+import Event from "./event"
 
 interface Club {
     name: string
-    events?: DocumentReference<DocumentData>[] //references to other events
+    events?: Event[] //references to other events
     description: string,
     contacts: Contacts
 }
