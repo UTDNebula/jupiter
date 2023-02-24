@@ -1,10 +1,11 @@
-{"Discord":{
-  "bg":"#7289da",
-  "text":"white"
-},
-"Instagram": {
-  "bg":"#E138B6",
-  "text":"white"
-}, "Default":
 {
-}}
+  "Discord": {
+    "bg": "#7289da",
+    "text": "text-white"
+  },
+  "Instagram": {
+    "bg": "#E138B6",
+    "text": "text-white"
+  },
+  "Email": {}
+}

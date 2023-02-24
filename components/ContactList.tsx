@@ -2,23 +2,33 @@ import React, { FC } from 'react';
 import OrgDirectoryTag from './OrgDirectoryTag';
 import contactStyles from '../contactButtonStyles.json';
 
+type methods = keyof typeof contactStyles;
 interface ContactListProps {
-  contactMethods: string[];
+  contactMethods: methods[];
 }
 
 const ContactList: FC<ContactListProps> = ({ contactMethods }) => {
   return (
     <>
-      {contactMethods.map((contact, i) => (
-        <a href="https://www.utdnebula.com">
-        <div
-          key={i}
-          className="flex flex-row justify-center items-center p-3 m-3 rounded-2xl bg-gray-200 hover:bg-gray-300 cursor-pointer"
-          style={{backgroundColor:(contactStyles[contact] ?? contactStyles["Default"]).bg, color:(contactStyles[contact] ?? contactStyles["Default"]).text}}  >
-          <p className="text-2xl font-bold">{contact}</p>
-        </div>
-        </a>
-      ))}
+      {contactMethods.map((contact, i) => {
+        const style = contactStyles[contact];
+        let color = 'text-gray-800';
+        let bgColor = '#fff';
+        // Assert that the style has keys of text and bg
+        if (style && 'text' in style && 'bg' in style) {
+          color = style.text;
+          bgColor = style.bg;
+        }
+        return (
+          <a href="https://www.utdnebula.com" key={i}>
+            <div
+              className={`flex flex-row justify-center items-center p-3 m-3 rounded-2xl bg-[${bgColor}] cursor-pointer ${color}`}
+            >
+              <p className="text-2xl font-bold">{contact}</p>
+            </div>
+          </a>
+        );
+      })}
     </>
   );
 };
