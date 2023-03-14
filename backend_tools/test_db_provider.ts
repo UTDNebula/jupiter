@@ -1,8 +1,8 @@
-import DbProvider from "./db_provider";
+import DbProvider from './db_provider';
 
 class DbTestProvider extends DbProvider {
-    user_path: string = "TestUsers"
-    club_path : string = "TestClubs"
-    event_path : string = "TestEvents"
+  userPath: string = 'TestUsers';
+  clubPath: string = 'TestClubs';
+  eventPath: string = 'TestEvents';
 }
-export default DbTestProvider
+export default DbTestProvider;

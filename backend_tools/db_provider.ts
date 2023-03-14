@@ -24,47 +24,47 @@ import Event from '../models/event';
 
 class DbProvider {
   db: Firestore = getFirestore(FirebaseApp);
-  user_path: string = 'Users';
-  club_path: string = 'Clubs';
-  event_path: string = 'Events';
-  async createUser(user: User): Promise<boolean> {
+  userPath: string = 'Users';
+  clubPath: string = 'Clubs';
+  eventPath: string = 'Events';
+  async createUser(user: User): Promise<string | undefined> {
     try {
-      const userCollection = collection(this.db, this.user_path);
-      await addDoc(userCollection, user);
-      return true;
+      const userCollection = collection(this.db, this.userPath);
+      const ref = await addDoc(userCollection, user);
+      return ref.id;
     } catch (error) {
       console.error(`failure saving user, got error: ${error}`);
-      return false;
+      return undefined;
     }
   }
 
-  async createClub(club: Club): Promise<boolean> {
+  async createClub(club: Club): Promise<string | undefined> {
     try {
-      const docu = doc(this.db, this.club_path, club.name);
+      const docu = doc(this.db, this.clubPath, club.name);
 
       await setDoc(docu, club);
 
-      return true;
+      return club.name;
     } catch (error) {
       console.error(`failure saving club, got error: ${error}`);
-      return false;
+      return undefined;
     }
   }
 
-  async getUser(userid: string): Promise<User> {
-    const userReference = doc(this.db, this.user_path, userid);
+  async getUser(userid: string): Promise<User | undefined> {
+    const userReference = doc(this.db, this.userPath, userid);
     const ref = await getDoc<DocumentData>(userReference);
-    return ref.data() as unknown as User;
+    return ref.data() as User;
   }
 
   async getClub(club_name: string): Promise<Club> {
-    const clubReference = doc(this.db, this.club_path, club_name);
+    const clubReference = doc(this.db, this.clubPath, club_name);
     const ref = await getDoc<DocumentData>(clubReference);
     return ref.data() as Club;
   }
 
   async getAllClubs(): Promise<Club[] | null> {
-    const clubRef = collection(this.db, this.club_path);
+    const clubRef = collection(this.db, this.clubPath);
     const q = query(clubRef);
     const snapshot = await getDocs(q);
     try {
@@ -79,7 +79,7 @@ class DbProvider {
   }
 
   async getClubsByName(name: string): Promise<Club[]> {
-    const clubRef = collection(this.db, this.club_path);
+    const clubRef = collection(this.db, this.clubPath);
     const q: Query<DocumentData> = query(clubRef, where('name', '==', name));
     const snapshot = await getDocs(q);
     const clubs = snapshot.docs.map((club) => club.data() as Club);
@@ -87,7 +87,7 @@ class DbProvider {
   }
 
   async deleteClub(club_name: string): Promise<boolean> {
-    const docRef = doc(this.db, this.club_path, club_name);
+    const docRef = doc(this.db, this.clubPath, club_name);
     await deleteDoc(docRef);
     return true;
   }
@@ -100,18 +100,18 @@ class DbProvider {
     //this function is a bit more tricky, we need to update that this club has an event
     //and we need to create the event in our db
     //save event into db
-    const eventsCollection = collection(this.db, this.event_path);
+    const eventsCollection = collection(this.db, this.eventPath);
     const eventRef = addDoc(eventsCollection, event);
 
     //update club
-    const club = doc(this.db, this.club_path, event.hostclub);
+    const club = doc(this.db, this.clubPath, event.hostclub);
     await updateDoc(club, {
       events: arrayUnion(eventRef),
     });
   }
 
   private async deleteEvent(eventId: string) {
-    const docRef = doc(this.db, this.event_path, eventId);
+    const docRef = doc(this.db, this.eventPath, eventId);
     await deleteDoc(docRef);
   }
 
