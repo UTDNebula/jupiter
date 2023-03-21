@@ -80,7 +80,16 @@ class DbProvider {
 
   async getClubsByName(name: string): Promise<Club[]> {
     const clubRef = collection(this.db, this.clubPath);
-    const q: Query<DocumentData> = query(clubRef, where('name', '==', name));
+    // const q: Query<DocumentData> = query(clubRef, );
+    // Do a fuzzy search on the name of the club (disregard case)
+    const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
+
+    const q: Query<DocumentData> = query(
+      clubRef,
+      where('name', '>=', capitalizedName),
+      where('name', '<=', capitalizedName + '\uf8ff'),
+    );
+
     const snapshot = await getDocs(q);
     const clubs = snapshot.docs.map((club) => club.data() as Club);
     return clubs;

@@ -1,4 +1,4 @@
-import DirectorySearch from './../DirectorySearch';
+import DirectorySearch from '../components/DirectorySearch';
 import Head from 'next/head';
 import Image from 'next/image';
 import EventCard from '../components/EventCard';
