@@ -20,8 +20,7 @@ describe("This is to create a club on Firebase", () => {
         const answer = provider.createClub(club).then(orgName => {
             assert.isDefined(orgName)
             done()
-        })
-
+        }).catch(done);
 
     }).timeout(5000)
 
@@ -30,7 +29,7 @@ describe("This is to create a club on Firebase", () => {
         provider.deleteClub("Nebula Labs").then(val => {
             assert.isTrue(val)
             done()
-        })
+        }).catch(done);
     }).timeout(3000)
 
 })
@@ -38,7 +37,6 @@ describe("This is to create a club on Firebase", () => {
 describe("This is to create a user on Firebase", () => {
     it("should create a new user", (done) => {
 
-        provider
         const user: User = {
             first_name: "Michael",
             last_name: "Bee",
@@ -52,12 +50,12 @@ describe("This is to create a user on Firebase", () => {
         const answer = provider.createUser(user).then(val => {
             assert.isDefined(val)
             done()
-        })
+        }).catch(done);
     })
 }).timeout(5000)
 
 describe("This is to query for the club `Nebula (Test)`", () => {
-    it("Should retrieve the Nebula object in the databaase", done => {
+    it("Should retrieve the Nebula object in the databaase", (done) => {
 
         const club = provider.getClubsByName("Nebula (Test)")
         club.then(val => {
@@ -65,7 +63,7 @@ describe("This is to query for the club `Nebula (Test)`", () => {
 
             assert.equal(val[0].name, "Nebula (Test)")
             done()
-        })
+        }).catch(done);
     })
 }).timeout(5000)
 
