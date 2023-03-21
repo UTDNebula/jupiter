@@ -7,17 +7,16 @@ export default async function handler(
 ) {
   // Get the name from request
   const name = req.query['name'];
-  console.log({ name });
 
   if (!name || name instanceof Array) {
     req.statusCode = 400;
-    return res.send('Invalid name provided');
+    return res.json('Invalid name provided');
   }
 
   const db = new DbProvider();
   const clubs = await db.getClubsByName(name);
+  console.log(clubs);
 
   req.statusCode = 200;
-  res.send({ clubs });
-  return;
+  return res.send({ clubs });
 }

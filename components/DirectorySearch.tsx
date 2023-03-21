@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { ChangeEvent, useEffect, useState } from 'react';
 import Club from '../models/club';
 
@@ -11,6 +12,11 @@ const fetchResults = async (name: string) => {
 const DirectorySearch = () => {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState<Club[]>([]);
+  const router = useRouter();
+  const onClick = (name: string) => {
+    console.log(`Redirecting to ${name}}`);
+    router.push(`/directory/${name}`);
+  };
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -43,9 +49,13 @@ const DirectorySearch = () => {
           onChange={handleSearch}
         />
         {results.length > 0 && (
-          <div className="absolute px-5 z-1 bg-slate-100 w-full rounded-sm">
+          <div className="absolute px-5 z-1 bg-slate-100 w-full rounded-sm h-7 align-middle cursor-pointer hover:bg-slate-300">
             {results.map((club, key) => (
-              <div key={key} className="w-max">
+              <div
+                key={key}
+                className="w-max"
+                onClick={() => onClick(club.name)}
+              >
                 {club.name}
               </div>
             ))}

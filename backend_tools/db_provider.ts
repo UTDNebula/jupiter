@@ -11,11 +11,11 @@ import {
   where,
   getDocs,
   QueryDocumentSnapshot,
-  query,
   QuerySnapshot,
   deleteDoc,
   collection,
   arrayUnion,
+  query,
 } from 'firebase/firestore';
 import Club from '../models/club';
 import User from '../models/user';
@@ -80,8 +80,6 @@ class DbProvider {
 
   async getClubsByName(name: string): Promise<Club[]> {
     const clubRef = collection(this.db, this.clubPath);
-    // const q: Query<DocumentData> = query(clubRef, );
-    // Do a fuzzy search on the name of the club (disregard case)
     const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
 
     const q: Query<DocumentData> = query(

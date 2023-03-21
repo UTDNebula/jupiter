@@ -5,15 +5,14 @@ import orgData from '../../demoOrganizations.json';
 import Head from 'next/head';
 import Image from 'next/image';
 import ContactList from '../../components/ContactList';
+import DbProvider from '../../backend_tools/db_provider';
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
+import Club from '../../models/club';
 
-const OrganizationPage = () => {
-  const router = useRouter();
-  const orgName = router.query.orgName as string;
-  const org = orgData.find((org) => org.name === orgName);
-  if (!org) {
-    //router.back();
-    return null;
-  }
+const OrganizationPage = (
+  props: InferGetStaticPropsType<typeof getStaticProps>,
+) => {
+  const org = props.club;
   return (
     <>
       <Head>
@@ -23,7 +22,7 @@ const OrganizationPage = () => {
       </Head>
       <main>
         <div className="flex md:grid md:grid-cols-6 gap-4 p-10">
-          <DirectoryOrgHeader name={org.name} tags={org.tags} />
+          <DirectoryOrgHeader name={org.name} tags={[]} />
         </div>
         <div className="flex md:grid md:grid-cols-6 gap-4 px-10">
           <div className="md:col-span-3">
@@ -34,14 +33,6 @@ const OrganizationPage = () => {
           </div>
         </div>
         <div className="flex md:grid md:grid-cols-6 gap-4 p-10">
-          <div className="md:col-span-2">
-            <Image
-              src={org.imageLink}
-              alt={org.name}
-              width={250}
-              height={250}
-            />
-          </div>
           <div className="md:col-span-2">
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse
@@ -60,3 +51,36 @@ const OrganizationPage = () => {
 };
 
 export default OrganizationPage;
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const db = new DbProvider();
+  const clubs = await db.getAllClubs();
+  if (!clubs)
+    return {
+      paths: [],
+      fallback: false,
+    };
+  const paths = clubs.map((club) => ({
+    params: { orgName: club.name },
+  }));
+
+  return { paths, fallback: false };
+};
+
+export const getStaticProps: GetStaticProps<{ club: Club }> = async (ctx) => {
+  const db = new DbProvider();
+  const orgName = ctx?.params?.orgName as string;
+  const clubs = await db.getClubsByName(orgName);
+  const club = clubs[0];
+
+  if (!club)
+    return {
+      notFound: true,
+    };
+
+  return {
+    props: {
+      club,
+    },
+  };
+};
