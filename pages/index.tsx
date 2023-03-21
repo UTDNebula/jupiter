@@ -1,4 +1,4 @@
-import DirectorySearch from '../components/DirectorySearch';
+import ExploreSearchBar from '../components/ExploreSearchBar';
 import Head from 'next/head';
 import Image from 'next/image';
 import EventCard from '../components/EventCard';
@@ -25,7 +25,7 @@ export default function Home() {
             priority
           />
         </div>
-        <DirectorySearch />
+        <ExploreSearchBar />
         <div className="p-8">
           <h1 className="font-medium text-2xl">Events</h1>
           <div className="grid grid-cols-4 grid-flow-row gap-4 w-full h-max">

@@ -7,7 +7,7 @@ import Image from 'next/image';
 import ContactList from '../../components/ContactList';
 import DbProvider from '../../backend_tools/db_provider';
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
-import Club from '../../models/club';
+import Club, { getImage } from '../../models/club';
 
 const OrganizationPage = (
   props: InferGetStaticPropsType<typeof getStaticProps>,
@@ -34,12 +34,15 @@ const OrganizationPage = (
         </div>
         <div className="flex md:grid md:grid-cols-6 gap-4 p-10">
           <div className="md:col-span-2">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse
-              eaque illum natus voluptatum adipisci quisquam. Autem nulla eos
-              amet itaque assumenda praesentium cupiditate? Illum nesciunt neque
-              vero, odio saepe ipsum.
-            </p>
+            <Image
+              src={getImage(org)}
+              alt={org.name}
+              width={250}
+              height={250}
+            />
+          </div>
+          <div className="md:col-span-2">
+            <p>{org.description}</p>
           </div>
           <div className="md:col-span-2">
             <ContactList contactMethods={['Discord', 'Email', 'Instagram']} />
@@ -52,14 +55,19 @@ const OrganizationPage = (
 
 export default OrganizationPage;
 
+// This function is called at build time
+// Ensures that the page is generated for each club
 export const getStaticPaths: GetStaticPaths = async () => {
   const db = new DbProvider();
+  // Grab all the clubs
   const clubs = await db.getAllClubs();
   if (!clubs)
     return {
       paths: [],
       fallback: false,
     };
+
+  // Create an array of paths for each club
   const paths = clubs.map((club) => ({
     params: { orgName: club.name },
   }));
@@ -67,12 +75,15 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return { paths, fallback: false };
 };
 
+// This function is called at build time
+// It is used to generate the props for the page
 export const getStaticProps: GetStaticProps<{ club: Club }> = async (ctx) => {
   const db = new DbProvider();
   const orgName = ctx?.params?.orgName as string;
   const clubs = await db.getClubsByName(orgName);
   const club = clubs[0];
 
+  // If the club doesn't exist, return a 404
   if (!club)
     return {
       notFound: true,

@@ -9,12 +9,11 @@ const fetchResults = async (name: string) => {
   return data.clubs;
 };
 
-const DirectorySearch = () => {
+const ExploreSearchBar = () => {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState<Club[]>([]);
   const router = useRouter();
   const onClick = (name: string) => {
-    console.log(`Redirecting to ${name}}`);
     router.push(`/directory/${name}`);
   };
 
@@ -66,4 +65,4 @@ const DirectorySearch = () => {
   );
 };
 
-export default DirectorySearch;
+export default ExploreSearchBar;

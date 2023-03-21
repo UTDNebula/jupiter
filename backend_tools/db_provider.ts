@@ -80,7 +80,13 @@ class DbProvider {
 
   async getClubsByName(name: string): Promise<Club[]> {
     const clubRef = collection(this.db, this.clubPath);
-    const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
+
+    // Split the name into words, capitalize the first letter of each word, and join them back together
+    const splitName = name.split(' ');
+    const titleCaseName = splitName.map(
+      (word) => word[0].toUpperCase() + word.slice(1).toLowerCase(),
+    );
+    const capitalizedName = titleCaseName.join(' ');
 
     const q: Query<DocumentData> = query(
       clubRef,
