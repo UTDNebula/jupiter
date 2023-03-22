@@ -121,10 +121,7 @@ const Navbar = () => {
 const Profile = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const { data: session, status } = useSession();
-
-  const handleProfileClick = () => {
-    setMenuOpen(!menuOpen);
-  };
+  const handleProfileClick = () => setMenuOpen((prev) => !prev);
 
   return status === 'unauthenticated' ? (
     <button
@@ -151,7 +148,9 @@ const Profile = () => {
           } absolute mt-14 bg-white w-32 p-1 rounded-sm border-2 border-gray-200`}
         >
           <div>{session?.user?.name}</div>
-          <div>Settings</div>
+          <Link href="/settings" passHref>
+            <div className="hover:bg-gray-100 cursor-pointer">Settings</div>
+          </Link>
           <button
             className="hover:bg-gray-100 w-full select-none"
             onClick={() => signOut()}

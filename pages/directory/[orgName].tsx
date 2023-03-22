@@ -1,7 +1,5 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 import DirectoryOrgHeader from '../../components/OrgHeader';
-import orgData from '../../demoOrganizations.json';
 import Head from 'next/head';
 import Image from 'next/image';
 import ContactList from '../../components/ContactList';

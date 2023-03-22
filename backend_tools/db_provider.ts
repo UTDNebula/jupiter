@@ -27,11 +27,11 @@ class DbProvider {
   userPath: string = 'Users';
   clubPath: string = 'Clubs';
   eventPath: string = 'Events';
-  async createUser(user: User): Promise<string | undefined> {
+  async createUser(user: Partial<User>): Promise<string | undefined> {
     try {
       const userCollection = collection(this.db, this.userPath);
-      const ref = await addDoc(userCollection, user);
-      return ref.id;
+      await setDoc(doc(userCollection, user.id), user);
+      return user.id;
     } catch (error) {
       console.error(`failure saving user, got error: ${error}`);
       return undefined;
@@ -133,6 +133,17 @@ class DbProvider {
 
     const club = await this.getClub(clubName);
     return club.events;
+  }
+
+  public async updateUser(user_id: string, user: Partial<User>) {
+    const userRef = doc(this.db, this.userPath, user_id);
+    try {
+      await updateDoc(userRef, user);
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   }
 }
 export default DbProvider;
