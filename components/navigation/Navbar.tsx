@@ -3,11 +3,18 @@ import React, { FC, useState } from 'react';
 import logo from '../../assets/media/icons/Jupiter.png';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 interface MobileNavProps {
   open: boolean;
   setOpen: (isOpen: boolean) => void;
 }
+
+const links = [
+  { href: '/directory', label: 'Directory' },
+  { href: '/events', label: 'Events' },
+  { href: '/about', label: 'About' },
+];
 
 const MobileNav: FC<MobileNavProps> = ({ open, setOpen }) => {
   return (
@@ -20,7 +27,7 @@ const MobileNav: FC<MobileNavProps> = ({ open, setOpen }) => {
         {' '}
         {/*logo container*/}
         <Image src={logo} alt="Jupiter" width={120} height={40}></Image>
-        <NavLink to="/">Explore</NavLink>
+        <div>Explore</div>
       </div>
       <div className="flex flex-col ml-4">
         <Link passHref href="/about">
@@ -52,15 +59,9 @@ const MobileNav: FC<MobileNavProps> = ({ open, setOpen }) => {
   );
 };
 
-export default function Navbar() {
+const Navbar = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  // Temporary login/logout button
-  const handleLogin = () => {
-    setLoggedIn(!loggedIn);
-  };
 
   return (
     <nav className="flex filter bg-white px-4 py-4 h-20 items-center align-middle">
@@ -74,9 +75,9 @@ export default function Navbar() {
           onClick={() => router.push('/')}
           className="cursor-pointer"
         />
-        <div className="hidden md:block">
-          <NavLink to="/">Explore</NavLink>
-        </div>
+        <Link href="/" passHref className="hidden md:block select-none">
+          <div className="flex m-2 items-center cursor-pointer">Explore</div>
+        </Link>
       </div>
       <div className="w-9/12 flex justify-end items-center">
         <div
@@ -102,34 +103,33 @@ export default function Navbar() {
             }`}
           />
         </div>
-        <div className="hidden md:flex align-middle">
-          <NavLink to="/directory">Directory</NavLink>
-          <NavLink to="/events">Events</NavLink>
-          <NavLink to="/about">About</NavLink>
-          <Profile handleLogin={handleLogin} loggedIn={loggedIn} />
+        <div className="hidden md:flex select-none">
+          {links.map(({ href, label }) => (
+            <Link href={href} passHref key={href}>
+              <div className="flex m-2 items-center cursor-pointer">
+                {label}
+              </div>
+            </Link>
+          ))}
+          <Profile />
         </div>
       </div>
     </nav>
   );
-}
+};
 
-interface ProfileProps {
-  loggedIn: boolean;
-  handleLogin: () => void;
-}
-
-const Profile: FC<ProfileProps> = ({ loggedIn, handleLogin }) => {
+const Profile = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { data: session, status } = useSession();
 
   const handleProfileClick = () => {
     setMenuOpen(!menuOpen);
-    console.log(menuOpen);
   };
 
-  return !loggedIn ? (
+  return status === 'unauthenticated' ? (
     <button
       className="bg-blue-700 text-white px-4 py-2 rounded-lg ml-4 align-middle"
-      onClick={handleLogin}
+      onClick={() => signIn()}
     >
       Sign In
     </button>
@@ -137,23 +137,32 @@ const Profile: FC<ProfileProps> = ({ loggedIn, handleLogin }) => {
     <div className="flex items-center">
       {/* Temporary gray circle for user pfp */}
       <div className="flex flex-col justify-start text-center items-center relative">
-        <div
-          className="bg-gray-400 rounded-full w-10 h-10"
+        <Image
+          src={session?.user?.image || logo}
+          alt="User Profile Picture"
+          width={40}
+          height={40}
+          className="rounded-full"
           onClick={handleProfileClick}
-        ></div>
+        />
         <div
           className={`${
             menuOpen ? 'visible' : 'invisible'
           } absolute mt-14 bg-white w-32 p-1 rounded-sm border-2 border-gray-200`}
         >
-          <DropDownLink to="/">Username</DropDownLink>
-          <DropDownLink to="/">Settings</DropDownLink>
-          <DropDownLink to="/">Sign Out</DropDownLink>
+          <div>{session?.user?.name}</div>
+          <div>Settings</div>
+          <button
+            className="hover:bg-gray-100 w-full select-none"
+            onClick={() => signOut()}
+          >
+            Log Out
+          </button>
         </div>
       </div>
       <button
-        className="bg-blue-700 text-white px-4 py-2 rounded-lg ml-4 align-middle"
-        onClick={handleLogin}
+        className="bg-blue-700 text-white px-4 py-2 rounded-lg ml-4 align-middle select-none"
+        onClick={() => signOut()}
       >
         Sign Out
       </button>
@@ -161,29 +170,4 @@ const Profile: FC<ProfileProps> = ({ loggedIn, handleLogin }) => {
   );
 };
 
-interface DropDownLinkProps {
-  to: string;
-}
-
-function DropDownLink({
-  to,
-  children,
-}: React.PropsWithChildren<DropDownLinkProps>) {
-  return (
-    <Link href={to} passHref>
-      <button className="hover:bg-gray-100 w-full">{children}</button>
-    </Link>
-  );
-}
-
-interface NavLinkProps {
-  to: string;
-}
-
-function NavLink({ to, children }: React.PropsWithChildren<NavLinkProps>) {
-  return (
-    <Link href={to} passHref>
-      <button className="mx-4 text-blue-700 cursor-pointer">{children}</button>
-    </Link>
-  );
-}
+export default Navbar;
