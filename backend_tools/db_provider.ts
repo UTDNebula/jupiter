@@ -21,6 +21,7 @@ import Club from '../models/club';
 import User from '../models/user';
 import FirebaseApp from './firebase';
 import Event from '../models/event';
+import Fuse from 'fuse.js';
 
 class DbProvider {
   db: Firestore = getFirestore(FirebaseApp);
@@ -85,27 +86,11 @@ class DbProvider {
   }
 
   async getClubsByName(name: string): Promise<Club[]> {
-    const clubRef = collection(this.db, this.clubPath);
-
-    // Split the name into words, capitalize the first letter of each word, and join them back together
-    const splitName = name.split(' ');
-    const titleCaseName = splitName.map(
-      (word) => word[0].toUpperCase() + word.slice(1).toLowerCase(),
-    );
-    const capitalizedName = titleCaseName.join(' ');
-
-    const q: Query<DocumentData> = query(
-      clubRef,
-      where('name', '>=', capitalizedName),
-      where('name', '<=', capitalizedName + '\uf8ff'),
-    );
-
-    const snapshot = await getDocs(q);
-    const clubs = snapshot.docs.map((club) => ({
-      ...(club.data() as Club),
-      id: club.id,
-    }));
-    return clubs;
+    const clubs = await this.getAllClubs();
+    if (!clubs) return [];
+    const fuse = new Fuse(clubs, { keys: ['name'] });
+    const result = fuse.search(name);
+    return result.map((club) => club.item);
   }
 
   async deleteClub(club_name: string): Promise<boolean> {
