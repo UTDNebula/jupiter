@@ -13,7 +13,7 @@ const ContactList: FC<ContactListProps> = ({ contactMethods }) => {
       {contactMethods.map((contact, i) => {
         const style = contactStyles[contact];
         let color = 'text-gray-800';
-        let bgColor = '#fff';
+        let bgColor = '#D3D3D3'; //Default to gray
         // Assert that the style has keys of text and bg
         if (style && 'text' in style && 'bg' in style) {
           color = style.text;
@@ -22,7 +22,8 @@ const ContactList: FC<ContactListProps> = ({ contactMethods }) => {
         return (
           <a href="https://www.utdnebula.com" key={i}>
             <div
-              className={`flex flex-row justify-center items-center p-3 m-3 rounded-2xl bg-[${bgColor}] cursor-pointer ${color}`}
+              className={`flex flex-row justify-center items-center p-3 m-3 rounded-2xl cursor-pointer ${color}`}
+              style ={{backgroundColor: bgColor}}
             >
               <p className="text-2xl font-bold">{contact}</p>
             </div>
