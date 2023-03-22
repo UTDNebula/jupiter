@@ -22,6 +22,12 @@ Make sure to install the dependencies:
 npm install
 ```
 
+## Firebase
+- Need to get the service account key from the Firebase console
+- Insert location of the certificate in the .env file
+  - GOOGLE_APPLICATION_CREDENTIALS = /path/to/serviceAccountKey.json
+
+
 Now you can run the development server:
 
 ```bash
