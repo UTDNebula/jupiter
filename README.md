@@ -2,8 +2,6 @@
 
 _A tool to find ways to get involved on campus._
 
-![Vercel](https://vercelbadge.vercel.app/api/UTDNebula/jupiter])
-
 ## Getting Started
 
 This project requires a working [Node.js](https://nodejs.org/en/) installation
@@ -49,9 +47,4 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 ## Deployment
 
-The `develop` branch for this repository is automatically deployed to Vercel at [dev.jupiter.utdnebula.com][site].
-
-The live, production version of the site is accessible at [jupiter.utdnebula.com][deployment]
-
-[dev deployment][dev.jupiter.utdnebula.com]
-[deployment][jupiter.utdnebula.com]
+The `develop` branch for this repository is automatically deployed to Vercel at [dev.jupiter.utdnebula.com](https://dev.jupiter.utdnebula.com).
