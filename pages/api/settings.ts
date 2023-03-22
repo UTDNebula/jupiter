@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
-import { getSession, useSession } from 'next-auth/react';
 import DbProvider from '../../backend_tools/db_provider';
 import User from '../../models/user';
 import { authOps } from './auth/[...nextauth]';

@@ -1,4 +1,4 @@
-enum Career {
+export const enum Career {
   Healthcare,
   ArtAndMusic,
   Engineering,
@@ -6,37 +6,25 @@ enum Career {
   Sciences,
   PublicService,
 }
-export default Career;
+
+const careerMap: Record<string, Career> = {
+  Healthcare: Career.Healthcare,
+  'Art and Music': Career.ArtAndMusic,
+  Engineering: Career.Engineering,
+  Business: Career.Business,
+  Sciences: Career.Sciences,
+  'Public Service': Career.PublicService,
+};
 
 export const toCareer = (
   career: FormDataEntryValue | null | string,
 ): Career | undefined => {
-  switch (career) {
-    case 'Healthcare':
-      return Career.Healthcare;
-    case 'Art and Music':
-      return Career.ArtAndMusic;
-    case 'Engineering':
-      return Career.Engineering;
-    case 'Business':
-      return Career.Business;
-    case 'Sciences':
-      return Career.Sciences;
-    case 'Public Service':
-      return Career.PublicService;
-    default:
-      return undefined;
+  if (typeof career === 'string' && career in careerMap) {
+    return careerMap[career];
   }
+  return undefined;
 };
 
-// Returns the careers as a string array
 export const getCareers = (): string[] => {
-  return [
-    'Healthcare',
-    'Art and Music',
-    'Engineering',
-    'Business',
-    'Sciences',
-    'Public Service',
-  ];
+  return Object.keys(careerMap);
 };
