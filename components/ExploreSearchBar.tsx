@@ -3,33 +3,32 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import Club from '../models/club';
 
 const fetchResults = async (name: string) => {
+  if (name.length === 0) return [];
   const res = await fetch(`/api/club?name=${name}`);
   const data = await res.json();
-  if (!data?.clubs || name === '') return [];
-  return data.clubs;
+  return data?.clubs ?? [];
 };
 
 const ExploreSearchBar = () => {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState<Club[]>([]);
   const router = useRouter();
-  const onClick = (name: string) => {
-    router.push(`/directory/${name}`);
-  };
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
   useEffect(() => {
-    // Debounce
-    const timeout = setTimeout(
-      () => fetchResults(search).then((res) => setResults(res)),
-      250,
-    );
+    const debounceTimer = setTimeout(() => {
+      fetchResults(search).then((res) => setResults(res));
+    }, 250);
 
-    return () => clearTimeout(timeout);
+    return () => clearTimeout(debounceTimer);
   }, [search]);
+
+  const onClick = (id: string) => {
+    router.push(`/directory/${id}`);
+  };
 
   return (
     <div className="justify-center flex flex-col min-h-[45vh] mx-auto md:w-[55vw] w-[75vw]">
@@ -48,15 +47,15 @@ const ExploreSearchBar = () => {
           onChange={handleSearch}
         />
         {results.length > 0 && (
-          <div className="absolute px-5 z-1 bg-slate-100 w-full rounded-sm h-7 align-middle cursor-pointer hover:bg-slate-300">
-            {results.map((club, key) => (
-              <div
-                key={key}
-                className="w-max"
-                onClick={() => onClick(club.name)}
+          <div className="absolute px-5 z-1 bg-slate-100 w-full rounded-sm mt-1">
+            {results.map((club) => (
+              <button
+                key={club.name}
+                className="block w-full text-left py-1 hover:bg-slate-300"
+                onClick={() => onClick(club.id)}
               >
                 {club.name}
-              </div>
+              </button>
             ))}
           </div>
         )}

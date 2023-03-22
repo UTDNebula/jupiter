@@ -9,6 +9,7 @@ interface Club {
   contacts: Contacts;
   tags?: string[];
   image?: string;
+  id: string;
 }
 
 export default Club;

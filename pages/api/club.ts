@@ -8,20 +8,22 @@ import DbProvider from '../../backend_tools/db_provider';
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
+  dbProvider: DbProvider = new DbProvider(),
 ) {
-  // Get the name from request
-  const name = req.query['name'];
+  try {
+    const { name } = req.query;
 
-  // Check if name is valid
-  if (!name || name instanceof Array) {
-    req.statusCode = 400;
-    return res.json('Invalid name provided');
+    // Check if name is valid
+    if (!name || Array.isArray(name)) {
+      return res.status(400).json({ message: 'Invalid name provided' });
+    }
+
+    const clubs = await dbProvider.getClubsByName(name);
+
+    // Return the clubs and status code
+    return res.status(200).json({ clubs });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal Server Error' });
   }
-
-  const db = new DbProvider();
-  const clubs = await db.getClubsByName(name);
-
-  // Return the clubs and status code
-  req.statusCode = 200;
-  return res.send({ clubs });
 }

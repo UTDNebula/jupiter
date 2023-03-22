@@ -57,10 +57,13 @@ class DbProvider {
     return ref.data() as User;
   }
 
-  async getClub(club_name: string): Promise<Club> {
-    const clubReference = doc(this.db, this.clubPath, club_name);
+  async getClubById(id: string): Promise<Club> {
+    const clubReference = doc(this.db, this.clubPath, id);
     const ref = await getDoc<DocumentData>(clubReference);
-    return ref.data() as Club;
+    return {
+      ...(ref.data() as Club),
+      id: ref.id,
+    };
   }
 
   async getAllClubs(): Promise<Club[] | null> {
@@ -68,9 +71,12 @@ class DbProvider {
     const q = query(clubRef);
     const snapshot = await getDocs(q);
     try {
-      const documentList: Club[] = snapshot.docs.map(
-        (doc) => doc.data() as Club,
-      );
+      const documentList: Club[] = snapshot.docs.map((doc) => {
+        return {
+          ...(doc.data() as Club),
+          id: doc.id,
+        };
+      });
       return documentList;
     } catch (error) {
       console.error(error);
@@ -95,7 +101,10 @@ class DbProvider {
     );
 
     const snapshot = await getDocs(q);
-    const clubs = snapshot.docs.map((club) => club.data() as Club);
+    const clubs = snapshot.docs.map((club) => ({
+      ...(club.data() as Club),
+      id: club.id,
+    }));
     return clubs;
   }
 
@@ -131,7 +140,7 @@ class DbProvider {
   private async getEventRefsFromClub(clubName: string) {
     throw new Error('Unfinished');
 
-    const club = await this.getClub(clubName);
+    const club = await this.getClubById(clubName);
     return club.events;
   }
 }
