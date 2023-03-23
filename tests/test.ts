@@ -11,35 +11,32 @@ import DbTestProvider from "../backend_tools/test_db_provider"
 
 const provider = new DbTestProvider()
 
-//test to create a user
-describe("This is to create a club on firebase", () => {
+//Test to create an organization
+describe("This is to create a club on Firebase", () => {
     it("should create a new club", (done) => {
 
+        const club: Club = { name: "Nebula Labs", description: "Computer science club at UTD", contacts: { email: "deadmail@deadmail.com" } }
 
-        const club: Club = { name: "ACM", description: "Computer science club at UTD", contacts: { email: "deadmail@deadmail.com" } }
-
-        const answer = provider.createClub(club).then(val => {
-            assert.isTrue(val)
+        const answer = provider.createClub(club).then(orgName => {
+            assert.isDefined(orgName)
             done()
-        })
-
+        }).catch(done);
 
     }).timeout(5000)
 
     it("Should delete the created club", (done) => {
 
-        provider.deleteClub("ACM").then(val => {
+        provider.deleteClub("Nebula Labs").then(val => {
             assert.isTrue(val)
             done()
-        })
+        }).catch(done);
     }).timeout(3000)
 
 })
 
-describe("This is to create a user on firebase", () => {
+describe("This is to create a user on Firebase", () => {
     it("should create a new user", (done) => {
 
-        provider
         const user: User = {
             first_name: "Michael",
             last_name: "Bee",
@@ -51,22 +48,22 @@ describe("This is to create a user on firebase", () => {
 
         }
         const answer = provider.createUser(user).then(val => {
-            assert.isTrue(val)
+            assert.isDefined(val)
             done()
-        })
+        }).catch(done);
     })
 }).timeout(5000)
 
-describe("This is to query for the club `Nebula`", () => {
-    it("Should retrieve the nebula object in the databaase", done => {
+describe("This is to query for the club `Nebula (Test)`", () => {
+    it("Should retrieve the Nebula object in the databaase", (done) => {
 
-        const club = provider.getClubsByName("Nebula")
+        const club = provider.getClubsByName("Nebula (Test)")
         club.then(val => {
             //need a way to get the club object from the db
 
-            assert.equal(val[0].name, "Nebula")
+            assert.equal(val[0].name, "Nebula (Test)")
             done()
-        })
+        }).catch(done);
     })
 }).timeout(5000)
 
