@@ -2,8 +2,10 @@ import Head from 'next/head';
 import OrgDirectoryHeader from '../../components/OrgDirectoryHeader';
 import OrgDirectorySidebar from '../../components/OrgDirectorySidebar';
 import OrgDirectoryGrid from '../../components/OrgDirectoryGrid';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Club from '../../models/club';
+import Image from 'next/image';
+import { GetStaticProps, InferGetStaticPropsType } from 'next';
 
 const DirectoryHead = () => (
   <Head>
@@ -19,8 +21,10 @@ const query = async (searchTerm: string) => {
   return json;
 };
 
-export default function Directory() {
-  const [clubs, setClubs] = useState<Club[]>([]);
+const Directory = ({
+  initialClubs,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const [clubs, setClubs] = useState<Club[]>(initialClubs);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
@@ -35,17 +39,34 @@ export default function Directory() {
     <>
       <DirectoryHead />
       <main>
-        <div className="grid md:grid-cols-6 gap-x-4 p-5">
+        <div className="grid md:grid-cols-6 gap-4 p-5">
           <OrgDirectoryHeader
             setSearchTerm={setSearchTerm}
             searchTerm={searchTerm}
           />
         </div>
-        <div className="grid md:grid-cols-6 grid-cols-3 gap-x-4 grid-rows-2 items-center h-full p-5 w-full">
-          <OrgDirectorySidebar />
-          <OrgDirectoryGrid clubs={clubs} />
+        <div className="grid md:grid-cols-6 grid-cols-3 gap-4 md:grid-rows-1 grid-rows-2 items-center h-max p-5 w-full">
+          <div className="hidden md:block">
+            <OrgDirectorySidebar />
+          </div>
+          <div className="col-span-3 md:col-span-4">
+            <OrgDirectoryGrid clubs={clubs} />
+          </div>
         </div>
       </main>
     </>
   );
-}
+};
+
+export default Directory;
+
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  const res = await fetch('http://localhost:3000/api/club?name= ');
+  const json = await res.json();
+  console.log(json);
+  return {
+    props: {
+      initialClubs: json?.clubs,
+    },
+  };
+};
