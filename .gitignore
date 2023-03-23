@@ -37,4 +37,6 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# Cert from Firebase
 jupiter-cert.json

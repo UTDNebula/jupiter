@@ -1,8 +1,9 @@
-import React from 'react';
 import Head from 'next/head';
 import OrgDirectoryHeader from '../../components/OrgDirectoryHeader';
 import OrgDirectorySidebar from '../../components/OrgDirectorySidebar';
 import OrgDirectoryGrid from '../../components/OrgDirectoryGrid';
+import { useEffect, useState } from 'react';
+import Club from '../../models/club';
 
 const DirectoryHead = () => (
   <Head>
@@ -12,17 +13,37 @@ const DirectoryHead = () => (
   </Head>
 );
 
+const query = async (searchTerm: string) => {
+  const res = await fetch(`/api/club?name=${searchTerm}`);
+  const json = await res.json();
+  return json;
+};
+
 export default function Directory() {
+  const [clubs, setClubs] = useState<Club[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    const debounceTimer = setTimeout(() => {
+      query(searchTerm).then((res) => setClubs(res?.clubs));
+    }, 250);
+
+    return () => clearTimeout(debounceTimer);
+  }, [searchTerm]);
+
   return (
     <>
       <DirectoryHead />
       <main>
         <div className="grid md:grid-cols-6 gap-x-4 p-5">
-          <OrgDirectoryHeader />
+          <OrgDirectoryHeader
+            setSearchTerm={setSearchTerm}
+            searchTerm={searchTerm}
+          />
         </div>
         <div className="grid md:grid-cols-6 grid-cols-3 gap-x-4 grid-rows-2 items-center h-full p-5 w-full">
           <OrgDirectorySidebar />
-          <OrgDirectoryGrid />
+          <OrgDirectoryGrid clubs={clubs} />
         </div>
       </main>
     </>

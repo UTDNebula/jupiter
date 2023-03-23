@@ -13,10 +13,9 @@ export default async function handler(
   try {
     const { name } = req.query;
 
-    // Check if name is valid
-    if (!name || Array.isArray(name)) {
-      return res.status(400).json({ message: 'Invalid name provided' });
-    }
+    // Try to parse name into a string
+    if (typeof name !== 'string')
+      return res.status(400).json({ message: 'Bad Request' });
 
     const clubs = await dbProvider.getClubsByName(name);
 

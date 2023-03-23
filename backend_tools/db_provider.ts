@@ -88,6 +88,7 @@ class DbProvider {
   async getClubsByName(name: string): Promise<Club[]> {
     const clubs = await this.getAllClubs();
     if (!clubs) return [];
+    if (name === '') return clubs;
     const fuse = new Fuse(clubs, { keys: ['name'] });
     const result = fuse.search(name);
     return result.map((club) => club.item);
