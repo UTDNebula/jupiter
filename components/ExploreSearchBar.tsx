@@ -47,14 +47,14 @@ const ExploreSearchBar = () => {
           onChange={handleSearch}
         />
         {results.length > 0 && (
-          <div className="absolute px-5 z-1 bg-slate-100 w-full rounded-sm mt-1">
+          <div className="absolute z-10 top-full left-0 right-0 rounded-sm mt-1 overflow-hidden shadow-lg">
             {results.map((club) => (
               <button
                 key={club.name}
-                className="block w-full text-left py-1 hover:bg-slate-300"
+                className="block w-full text-left pb-2 px-4 bg-gray-50 hover:bg-gray-200 text-lg"
                 onClick={() => onClick(club.id)}
               >
-                {club.name}
+                <p className="text-sm font-semibold">{club.name}</p>
               </button>
             ))}
           </div>
