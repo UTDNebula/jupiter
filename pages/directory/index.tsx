@@ -2,10 +2,10 @@ import Head from 'next/head';
 import OrgDirectoryHeader from '../../components/OrgDirectoryHeader';
 import OrgDirectorySidebar from '../../components/OrgDirectorySidebar';
 import OrgDirectoryGrid from '../../components/OrgDirectoryGrid';
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Club from '../../models/club';
-import Image from 'next/image';
 import { GetStaticProps, InferGetStaticPropsType } from 'next';
+import DbProvider from '../../backend_tools/db_provider';
 
 const DirectoryHead = () => (
   <Head>
@@ -38,18 +38,18 @@ const Directory = ({
   return (
     <>
       <DirectoryHead />
-      <main>
-        <div className="grid md:grid-cols-6 gap-4 p-5">
+      <main className="p-5">
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
           <OrgDirectoryHeader
             setSearchTerm={setSearchTerm}
             searchTerm={searchTerm}
           />
         </div>
-        <div className="grid md:grid-cols-6 grid-cols-3 gap-4 md:grid-rows-1 grid-rows-2 items-center h-max p-5 w-full">
-          <div className="hidden md:block">
+        <div className="grid grid-cols-3 md:grid-cols-6 gap-4 md:grid-rows-1 grid-rows-2 items-center">
+          <div className="hidden md:block h-full w-full">
             <OrgDirectorySidebar />
           </div>
-          <div className="col-span-3 md:col-span-4">
+          <div className="col-span-3 md:col-span-4 h-full w-full overflow-y-scroll">
             <OrgDirectoryGrid clubs={clubs} />
           </div>
         </div>
@@ -60,13 +60,14 @@ const Directory = ({
 
 export default Directory;
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
-  const res = await fetch('http://localhost:3000/api/club?name= ');
-  const json = await res.json();
-  console.log(json);
+export const getStaticProps: GetStaticProps = async (
+  ctx,
+  db_provider = new DbProvider(),
+) => {
+  const clubs = await db_provider.getAllClubs();
   return {
     props: {
-      initialClubs: json?.clubs,
+      initialClubs: clubs || [],
     },
   };
 };

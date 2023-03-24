@@ -7,11 +7,14 @@ import Club, { getImage } from '../models/club';
 interface Props {
   club: Club;
 }
+
 const OrgDirectoryCards: FC<Props> = ({ club }) => {
   const router = useRouter();
+
   const onClick = () => {
     router.push(`/directory/${club.id}`);
   };
+
   return (
     <div
       className="w-full h-auto flex flex-col justify-between p-5 m-5 rounded-2xl cursor-pointer hover:bg-gray-100"
