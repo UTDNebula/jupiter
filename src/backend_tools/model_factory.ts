@@ -1,0 +1,48 @@
+import Career from '../models/career';
+import type Club from '../models/club';
+import type Contacts from '../models/contacts';
+import Role from '../models/role';
+import type User from '../models/user';
+import Year from '../models/year';
+
+class Factory {
+  static buildClub(
+    name: string,
+    description: string,
+    contacts: Contacts,
+    id: string,
+  ): Club {
+    const club: Club = {
+      name: name,
+      description: description,
+      contacts: contacts,
+      id,
+    };
+    return club;
+  }
+
+  static buildUser(
+    first_name: string,
+    last_name: string,
+    major: string,
+    year: Year = Year.freshman,
+    role: Role = Role.Student,
+    career: Career = Career.Engineering,
+  ): User {
+    const user: User = {
+      first_name: first_name,
+      last_name: last_name,
+      major: major,
+      year: year,
+      role: role,
+      career: career,
+    };
+    return user;
+  }
+
+  static buildEvent() {
+    throw new Error('Unimplemented');
+  }
+}
+
+export default Factory;
