@@ -1,8 +1,8 @@
-import EventsSidebar from './../components/EventsSidebar';
-import EventsHeader from '../components/EventsHeader';
+import EventsSidebar from '../../components/EventsSidebar';
+import EventsHeader from '../../components/EventsHeader';
 import React from 'react';
 import Head from 'next/head';
-import EventList from '../components/EventList';
+import EventList from '../../components/EventList';
 
 export default function Events() {
   return (

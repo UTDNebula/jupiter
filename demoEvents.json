@@ -1,5 +1,5 @@
 [
-    {"title": "Test Event", "date": "2035-01-01", "time": "12:00 PM", "location": "Test Location", "description": "Test Description", "image": ""},
-    {"title": "Test Event 2", "date": "2035-01-01", "time": "12:00 PM", "location": "Test Location", "description": "Test Description", "image": ""},
-    {"title": "Test Event 3", "date": "2035-01-01", "time": "12:00 PM", "location": "Test Location", "description": "Test Description", "image": ""}
+    {"title": "Test Event", "date": "2035-01-01", "time": "12:00 PM", "location": "Test Location", "org": "ACM UTD", "description": "Test Description", "image": "https://github.com/acmutd/brand-kit/blob/c41a67dc03d09444535a22dea11cebea52ae65be/General/Assets/Logos/acm-new-logo-black.png?raw=true"},
+    {"title": "Test Event 2", "date": "2035-01-01", "time": "12:00 PM", "location": "Test Location", "org": "", "description": "Test Description", "image": ""},
+    {"title": "Test Event 3", "date": "2035-01-01", "time": "12:00 PM", "location": "Test Location", "org": "", "description": "Test Description", "image": ""}
   ]

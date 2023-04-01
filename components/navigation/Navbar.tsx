@@ -104,7 +104,7 @@ export default function Navbar() {
         </div>
         <div className="hidden md:flex align-middle">
           <NavLink to="/directory">Directory</NavLink>
-          <NavLink to="/events">Events</NavLink>
+          <NavLink to="/events/events">Events</NavLink>
           <NavLink to="/about">About</NavLink>
           <Profile handleLogin={handleLogin} loggedIn={loggedIn} />
         </div>

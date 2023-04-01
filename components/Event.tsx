@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import demoEvents from '../demoEvents.json';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface Props {
   event: typeof demoEvents[0];
@@ -31,9 +32,11 @@ const Event: FC<Props> = ({ event }) => {
         </div>
       </div>
       <div className="col-start-2 col-end-[-2]">
-        <h4 className="text-xl font-bold text-center md:text-left">
-          {event.title}
-        </h4>
+        <Link href={`/events/${event.title}`} passHref>
+          <h4 className="text-xl font-bold text-center md:text-left">
+            {event.title}
+          </h4>
+        </Link>
         <p className="text-lg font-light text-center md:text-left">
           {event.title}
         </p>
