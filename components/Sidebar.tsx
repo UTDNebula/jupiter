@@ -14,6 +14,7 @@ const routeMap: {
   Events: '/events',
 };
 
+// Keep in mind that in all routes we need pl-40 for the sidebar
 const Sidebar = () => {
   const router = useRouter();
 
