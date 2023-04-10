@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import EventCard from '../components/EventCard';
 import banner from '../public/banner.png';
+import Sidebar from '../components/Sidebar';
 export default function Home() {
   const events = ['Event 1', 'Event 2', 'Event 3', 'Event 4'];
 
@@ -25,7 +26,6 @@ export default function Home() {
             priority
           />
         </div>
-        <DirectorySearch />
         <div className="p-8">
           <h1 className="font-medium text-2xl">Events</h1>
           <div className="grid grid-cols-4 grid-flow-row gap-4 w-full h-max">
