@@ -30,7 +30,7 @@ const EventCalendar: React.FC<{ index: number }> = ({ index }) => {
       {thisWeek(index).map((day, key) => (
         <div className="flex flex-col items-center" key={key}>
           <div
-            className={`w-36 h-36 rounded-md flex flex-col justify-center items-center p-5 m-1 ${
+            className={`w-36 h-16 rounded-md flex flex-col justify-center items-center p-5 m-1 ${
               new Date().getDay() === day.getDay() && index === 0
                 ? 'bg-blue-500'
                 : 'bg-slate-100'
