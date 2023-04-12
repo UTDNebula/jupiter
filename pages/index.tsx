@@ -6,6 +6,7 @@ import banner from '../public/banner.png';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import Carousel from '../components/Carousel';
+import TagFilter from '../components/TagFilter';
 export default function Home() {
   const events = ['Event 1', 'Event 2', 'Event 3', 'Event 4'];
 
@@ -18,9 +19,8 @@ export default function Home() {
       </Head>
       <main className="pl-40">
         <Header />
-        <div className="h-32 relative">
-          <Carousel />
-        </div>
+        <Carousel />
+        <TagFilter />
       </main>
     </>
   );
