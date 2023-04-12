@@ -13,24 +13,24 @@ const tags = [
 
 const TagFilter = () => {
   const [selected, setSelected] = React.useState('All');
+
   const onClick = (tag: string) => setSelected(tag);
 
   return (
-    <div className="pt-60">
-      <div className="flex flex-row justify-center">
+    <div className="pt-52">
+      <div className="flex justify-center space-x-2">
         {tags.map((tag, key) => (
-          <div key={key} className="mx-2">
-            <button
-              className={`${
-                selected === tag
-                  ? 'bg-blue-300 hover:bg-blue-400'
-                  : 'bg-slate-300 hover:bg-slate-400'
-              } text-slate-800 font-bold py-2 px-4 rounded-full`}
-              onClick={() => onClick(tag)}
-            >
-              {tag}
-            </button>
-          </div>
+          <button
+            key={key}
+            className={`${
+              selected === tag
+                ? 'bg-blue-300 hover:bg-blue-400'
+                : 'bg-slate-300 hover:bg-slate-400'
+            } text-slate-800 font-bold py-2 px-4 rounded-full`}
+            onClick={() => onClick(tag)}
+          >
+            {tag}
+          </button>
         ))}
       </div>
     </div>
