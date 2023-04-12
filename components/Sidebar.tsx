@@ -12,6 +12,9 @@ const routeMap: {
   History: '/history',
   Liked: '/liked',
   Events: '/events',
+  Settings: '/settings',
+  About: '/about',
+  Feedback: '/feedback',
 };
 
 // Keep in mind that in all routes we need pl-72 for the sidebar
@@ -36,13 +39,15 @@ const Sidebar = () => {
                   router.pathname === routeMap[cat]
                     ? 'bg-white'
                     : 'bg-transparent'
-                } w-95 h-10 flex items-center justify-start px-3 cursor-pointer hover:bg-slate-100 rounded-lg`}
+                } w-95 h-10 flex items-center justify-start px-3 cursor-pointer rounded-lg`}
                 onClick={() => router.push(routeMap[cat])}
               >
                 {/* Route Icon :) */}
                 <h1
-                  className={`text-sm font-medium capitalize text-slate-500 ${
-                    router.pathname === routeMap[cat] ? 'text-blue-400' : ''
+                  className={`text-sm font-medium capitalize ${
+                    router.pathname === routeMap[cat]
+                      ? 'text-blue-400'
+                      : 'text-slate-500'
                   }`}
                 >
                   {cat}
@@ -62,15 +67,17 @@ const Sidebar = () => {
                 key={key}
                 className={`${
                   router.pathname === routeMap[cat]
-                    ? 'bg-white'
+                    ? 'bg-white text-blue-400'
                     : 'bg-transparent'
-                } w-95 h-10 flex items-center justify-start px-3 cursor-pointer hover:bg-slate-100 rounded-lg`}
+                } w-95 h-10 flex items-center justify-start px-3 cursor-pointer rounded-lg`}
                 onClick={() => router.push(routeMap[cat])}
               >
                 {/* Route Icon :) */}
                 <h1
-                  className={`text-sm font-medium capitalize text-slate-500 ${
-                    router.pathname === routeMap[cat] ? 'text-blue-400' : ''
+                  className={`text-sm font-medium capitalize ${
+                    router.pathname === routeMap[cat]
+                      ? 'text-blue-400'
+                      : 'bg-transparent text-slate-500'
                   }`}
                 >
                   {cat}
