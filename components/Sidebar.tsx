@@ -19,7 +19,7 @@ const Sidebar = () => {
   const router = useRouter();
 
   return (
-    <div className="h-screen w-72 bg-slate-100 absolute z-10">
+    <div className="h-full w-72 bg-slate-100 absolute z-10">
       <div className="w-full py-10">
         <h1 className="text-2xl font-medium text-center">Jupiter</h1>
       </div>

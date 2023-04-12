@@ -7,7 +7,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Sidebar />
-      <Component {...pageProps} />
+      <div className="overflow-y-scroll max-h-screen">
+        <Component {...pageProps} />
+      </div>
     </>
   );
 }
