@@ -1,9 +1,4 @@
-import DirectorySearch from './../DirectorySearch';
 import Head from 'next/head';
-import Image from 'next/image';
-import EventCard from '../components/EventCard';
-import banner from '../public/banner.png';
-import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import Carousel from '../components/Carousel';
 import TagFilter from '../components/TagFilter';
@@ -13,8 +8,6 @@ import Club from '../models/club';
 import OrgDirectoryGrid from '../components/OrgDirectoryGrid';
 
 const Home = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const events = ['Event 1', 'Event 2', 'Event 3', 'Event 4'];
-
   return (
     <>
       <Head>

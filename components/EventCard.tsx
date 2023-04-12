@@ -1,19 +1,15 @@
 import React from 'react';
-import Image from 'next/image';
 
-type Props = { name: string };
-
-export const EventCard = ({ name }: Props) => {
+const EventCard = () => {
   return (
-    <div className="flex flex-col justify-center w-full h-full text-center">
-      <Image
-        src="https://about.utdnebula.com/assets/images/nebula-logo-wordmark-dark-0b2813eedf7447691178ca82b5f53dce.png"
-        height={200}
-        width={200}
-        className="bg-gray-300"
-      />
-      <div>{name}</div>
+    <div className="w-36 text-center rounded-md items-center p-5 bg-orange-500 m-2">
+      <div className="flex justify-between">
+        <p className="text-xs font-semibold">Event Name</p>
+        <p className="text-xs">11:00</p>
+      </div>
+      <p className="text-xs mt-2">Lorem ipsum dolor sit amet consectetur</p>
     </div>
   );
 };
+
 export default EventCard;
