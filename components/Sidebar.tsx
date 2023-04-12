@@ -19,7 +19,7 @@ const Sidebar = () => {
   const router = useRouter();
 
   return (
-    <div className="h-full w-72 bg-slate-100 absolute z-10">
+    <div className="h-full w-72 bg-slate-100 absolute z-10 md:block hidden">
       <div className="w-full py-10">
         <h1 className="text-2xl font-medium text-center">Jupiter</h1>
       </div>
@@ -36,7 +36,7 @@ const Sidebar = () => {
                   router.pathname === routeMap[cat]
                     ? 'bg-white'
                     : 'bg-transparent'
-                } w-[95%] h-10 flex items-center justify-start px-3 cursor-pointer hover:bg-slate-100 rounded-lg`}
+                } w-95 h-10 flex items-center justify-start px-3 cursor-pointer hover:bg-slate-100 rounded-lg`}
                 onClick={() => router.push(routeMap[cat])}
               >
                 {/* Route Icon :) */}
@@ -64,7 +64,7 @@ const Sidebar = () => {
                   router.pathname === routeMap[cat]
                     ? 'bg-white'
                     : 'bg-transparent'
-                } w-[95%] h-10 flex items-center justify-start px-3 cursor-pointer hover:bg-slate-100 rounded-lg`}
+                } w-95 h-10 flex items-center justify-start px-3 cursor-pointer hover:bg-slate-100 rounded-lg`}
                 onClick={() => router.push(routeMap[cat])}
               >
                 {/* Route Icon :) */}

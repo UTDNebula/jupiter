@@ -16,7 +16,7 @@ const Carousel: FC = () => {
   };
 
   return (
-    <div className="w-4/5 mx-auto h-96 relative">
+    <div className="w-11/12 mx-auto sm:w-10/12 md:w-8/12 lg:w-7/12 xl:w-6/12 h-96 relative">
       <div className="w-full h-auto relative">
         {clubs.map((club, key) => (
           <div
@@ -27,10 +27,11 @@ const Carousel: FC = () => {
           >
             <Image
               src="/banner.png"
-              alt="Picture of the author"
+              alt="Picture of the club"
               width={1920}
               height={1080}
               className="rounded-lg w-full h-full object-cover"
+              priority
             />
             <div className="text-slate-300 text-lg px-2 py-4 absolute bottom-2 w-full text-center">
               Caption Text for {club}
