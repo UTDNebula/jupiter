@@ -39,7 +39,7 @@ const Sidebar = () => {
                   router.pathname === routeMap[cat]
                     ? 'bg-white'
                     : 'bg-transparent'
-                } w-95 h-10 flex items-center justify-start px-3 cursor-pointer rounded-lg`}
+                } w-64 h-10 flex items-center justify-start px-3 cursor-pointer rounded-lg`}
                 onClick={() => router.push(routeMap[cat])}
               >
                 {/* Route Icon :) */}
@@ -69,7 +69,7 @@ const Sidebar = () => {
                   router.pathname === routeMap[cat]
                     ? 'bg-white text-blue-400'
                     : 'bg-transparent'
-                } w-95 h-10 flex items-center justify-start px-3 cursor-pointer rounded-lg`}
+                } w-64 h-10 flex items-center justify-start px-3 cursor-pointer rounded-lg`}
                 onClick={() => router.push(routeMap[cat])}
               >
                 {/* Route Icon :) */}

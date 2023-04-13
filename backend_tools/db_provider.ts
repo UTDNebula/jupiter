@@ -69,7 +69,11 @@ class DbProvider {
     const snapshot = await getDocs(q);
     try {
       const documentList: Club[] = snapshot.docs.map(
-        (doc) => doc.data() as Club,
+        (doc) =>
+          ({
+            id: doc.id,
+            ...doc.data(),
+          } as Club),
       );
       return documentList;
     } catch (error) {

@@ -8,6 +8,7 @@ interface Club {
   description: string;
   contacts: Contacts;
   imageLink?: string;
+  id: string;
 }
 
 export default Club;

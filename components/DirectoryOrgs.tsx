@@ -11,7 +11,7 @@ const OrgDirectoryCards: React.FC<Props> = ({ club }) => {
   const [liked, setLiked] = React.useState(false);
   const router = useRouter();
 
-  const onClick = () => router.push(`/directory/${club.name}`);
+  const onClick = () => router.push(`/directory/${club.id}`);
 
   const like = () => setLiked((prev) => !prev);
 
@@ -51,7 +51,10 @@ const OrgDirectoryCards: React.FC<Props> = ({ club }) => {
         <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-2xl mr-2">
           Join
         </button>
-        <button className="bg-blue-100 hover:bg-blue-200 text-slate-800 font-bold py-2 px-4 rounded-2xl">
+        <button
+          className="bg-blue-100 hover:bg-blue-200 text-slate-800 font-bold py-2 px-4 rounded-2xl"
+          onClick={onClick}
+        >
           Learn More
         </button>
       </div>
