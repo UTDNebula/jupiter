@@ -27,7 +27,7 @@ const DirectoryOrgHeader: FC<{ club: Club }> = ({ club }) => {
         <h1 className="text-4xl text-slate-100 font-bold m-5">{club.name}</h1>
       </div>
       <div className="absolute right-0 bottom-0  -translate-y-1/2">
-        <button className="bg-slate-100 text-slate-900 font-semibold rounded-full px-4 py-2 m-5 hover:bg-slate-300">
+        <button className="bg-slate-100 text-slate-900 font-semibold rounded-full px-4 py-2 m-5 hover:bg-slate-300 transition-colors">
           Join
         </button>
       </div>
