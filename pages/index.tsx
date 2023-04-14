@@ -17,7 +17,7 @@ const Home = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {
       </Head>
       <main className="md:pl-72">
         <Header />
-        <div className="relative h-96 w-full block">
+        <div className="relative w-full block">
           <Carousel />
         </div>
         <TagFilter />
