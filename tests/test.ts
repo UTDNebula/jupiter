@@ -1,13 +1,13 @@
 import { assert, expect } from 'chai';
-import Club from '../src/models/club';
-import DbProvider from '../src/backend_tools/db_provider';
+import type Club from '../models/club';
+import DbProvider from '../backend_tools/db_provider';
 import { config } from 'dotenv';
-import Firebase from '../src/backend_tools/firebase';
-import User from '../src/models/user';
-import Year from '../src/models/year';
-import Role from '../src/models/role';
-import Career from '../src/models/career';
-import DbTestProvider from '../src/backend_tools/test_db_provider';
+import Firebase from '../backend_tools/firebase';
+import type User from '../models/user';
+import Year from '../models/year';
+import Role from '../models/role';
+import Career from '../models/career';
+import DbTestProvider from '../backend_tools/test_db_provider';
 
 const provider = new DbTestProvider();
 
