@@ -9,15 +9,15 @@ const tags = [
   'Fraternity',
   'Sorority',
   'Other',
-];
+] as const;
 
 const TagFilter = () => {
-  const [selected, setSelected] = useState('All');
+  const [selected, setSelected] = useState<(typeof tags)[number]>('All');
 
-  const onClick = (tag: string) => setSelected(tag);
+  const onClick = (tag: (typeof tags)[number]) => setSelected(tag);
   return (
     <div className="flex justify-center">
-      <div className="flex overflow-x-auto space-x-2">
+      <div className="flex overflow-x-auto md:space-x-2 space-x-1">
         {tags.map((tag, key) => (
           <button
             key={key}
