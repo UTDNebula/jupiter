@@ -30,9 +30,7 @@ const OrgDirectoryCards: React.FC<Props> = ({ club }) => {
         </div>
         <button
           className={`absolute top-2 right-2 text-slate-800 font-bold py-1 px-2 rounded-lg  transition-colors ${
-            liked
-              ? 'bg-red-500 hover:bg-slate-400'
-              : 'bg-slate-300 hover:bg-red-200'
+            liked ? 'bg-red-500' : 'bg-slate-300'
           }`}
           onClick={() => like()}
         >

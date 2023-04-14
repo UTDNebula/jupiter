@@ -37,7 +37,7 @@ const Sidebar = () => {
                 key={key}
                 className={`${
                   router.pathname === routeMap[cat]
-                    ? 'bg-white'
+                    ? 'bg-white shadow-md'
                     : 'bg-transparent'
                 } w-64 h-10 flex items-center justify-start px-3 cursor-pointer rounded-lg`}
                 onClick={() => router.push(routeMap[cat])}
@@ -67,7 +67,7 @@ const Sidebar = () => {
                 key={key}
                 className={`${
                   router.pathname === routeMap[cat]
-                    ? 'bg-white text-blue-400'
+                    ? 'bg-white text-blue-400 shadow-md'
                     : 'bg-transparent'
                 } w-64 h-10 flex items-center justify-start px-3 cursor-pointer rounded-lg`}
                 onClick={() => router.push(routeMap[cat])}
