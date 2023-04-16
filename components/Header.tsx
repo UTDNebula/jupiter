@@ -2,7 +2,7 @@ import React from 'react';
 
 const Header = () => {
   return (
-    <div className="w-full h-16 bg-white flex items-center justify-between px-5 content-between py-3">
+    <div className="w-full h-16 flex items-center justify-between px-5 content-between py-3">
       <input
         type="text"
         placeholder="Search for clubs"
@@ -29,7 +29,7 @@ const nextMonths = (num: number) => {
 export const EventHeader = () => {
   return (
     <>
-      <div className="w-full h-16 bg-white flex items-center justify-between px-5 content-between py-3">
+      <div className="w-full h-16 flex items-center justify-between px-5 content-between py-3">
         <input
           type="text"
           placeholder="Search for events"

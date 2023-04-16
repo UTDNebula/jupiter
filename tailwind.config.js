@@ -41,6 +41,7 @@ module.exports = {
       fuchsia: colors.fuchsia,
       pink: colors.pink,
       rose: colors.rose,
+      events: '#FF6633',
     }),
     columns: {
       auto: 'auto',

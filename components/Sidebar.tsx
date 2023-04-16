@@ -1,5 +1,15 @@
 import { useRouter } from 'next/router';
 import React from 'react';
+import {
+  AboutIcon,
+  EventsIcon,
+  FeedbackIcon,
+  HistoryIcon,
+  HomeIcon,
+  IconType,
+  LikedIcon,
+  SettingsIcon,
+} from './Icons';
 
 const mainCats = ['Home', 'History', 'Liked', 'Events'] as const;
 const moreCats = ['Settings', 'About', 'Feedback'] as const;
@@ -17,6 +27,18 @@ const routeMap: {
   Feedback: '/feedback',
 };
 
+const IconMap: {
+  [key in union[number]]: IconType;
+} = {
+  Home: HomeIcon,
+  History: HistoryIcon,
+  Liked: LikedIcon,
+  Events: EventsIcon,
+  Settings: SettingsIcon,
+  About: AboutIcon,
+  Feedback: FeedbackIcon,
+};
+
 // Keep in mind that in all routes we need pl-72 for the sidebar
 const Sidebar = () => {
   const router = useRouter();
@@ -32,17 +54,26 @@ const Sidebar = () => {
         </h1>
         <div className="my-2">
           {mainCats.map((cat, key) => {
+            const Icon = IconMap[cat];
             return (
               <div
                 key={key}
                 className={`${
                   router.pathname === routeMap[cat]
-                    ? 'bg-white shadow-md'
+                    ? 'bg-white shadow-md scale-105'
                     : 'bg-transparent'
-                } w-64 h-10 flex items-center justify-start px-3 cursor-pointer rounded-lg`}
+                } w-64 h-10 flex items-center justify-start px-3 cursor-pointer rounded-lg transition-transform`}
                 onClick={() => router.push(routeMap[cat])}
               >
-                {/* Route Icon :) */}
+                {Icon && (
+                  <Icon
+                    fill={`${
+                      router.pathname === routeMap[cat]
+                        ? 'fill-blue-400'
+                        : 'fill-slate-500'
+                    }`}
+                  />
+                )}
                 <h1
                   className={`text-sm font-medium capitalize ${
                     router.pathname === routeMap[cat]
@@ -62,17 +93,26 @@ const Sidebar = () => {
         <h1 className="text-xs font-light capitalize text-slate-500">More</h1>
         <div className="my-2">
           {moreCats.map((cat, key) => {
+            const Icon = IconMap[cat];
             return (
               <div
                 key={key}
                 className={`${
                   router.pathname === routeMap[cat]
-                    ? 'bg-white text-blue-400 shadow-md'
+                    ? 'bg-white text-blue-400 shadow-md scale-105'
                     : 'bg-transparent'
-                } w-64 h-10 flex items-center justify-start px-3 cursor-pointer rounded-lg`}
+                } w-64 h-10 flex items-center justify-start px-3 cursor-pointer rounded-lg transition-transform`}
                 onClick={() => router.push(routeMap[cat])}
               >
-                {/* Route Icon :) */}
+                {Icon && (
+                  <Icon
+                    fill={`${
+                      router.pathname === routeMap[cat]
+                        ? 'fill-blue-400'
+                        : 'fill-slate-500'
+                    }`}
+                  />
+                )}
                 <h1
                   className={`text-sm font-medium capitalize ${
                     router.pathname === routeMap[cat]
