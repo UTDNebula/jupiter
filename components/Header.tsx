@@ -1,21 +1,24 @@
-import React from 'react';
-
+import { SearchIcon } from './Icons';
 const Header = () => {
   return (
     <div className="w-full h-16 flex items-center justify-between px-5 content-between py-3">
-      <input
-        type="text"
-        placeholder="Search for clubs"
-        className="w-1/2 md:w-1/3 lg:w-1/4 h-10 rounded-lg border border-gray-300 px-3 focus:outline-none"
-        tabIndex={0}
-      />
+      <div className="relative w-full max-w-xs md:max-w-sm lg:max-w-md">
+        <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
+          <SearchIcon />
+        </span>
+        <input
+          type="text"
+          placeholder="Search for clubs"
+          className="w-full h-10 rounded-full pl-10 pr-3 border focus:outline-none"
+          tabIndex={0}
+        />
+      </div>
       <div className="flex items-center justify-center">
         <div className="w-10 h-10 rounded-full bg-gray-300"></div>
       </div>
     </div>
   );
 };
-
 const nextMonths = (num: number) => {
   const months = [];
   const date = new Date();
@@ -30,12 +33,17 @@ export const EventHeader = () => {
   return (
     <>
       <div className="w-full h-16 flex items-center justify-between px-5 content-between py-3">
-        <input
-          type="text"
-          placeholder="Search for events"
-          className="w-1/2 md:w-1/3 lg:w-1/4 h-10 rounded-lg border border-gray-300 px-3 focus:outline-none"
-          tabIndex={0}
-        />
+        <div className="relative w-full max-w-xs md:max-w-sm lg:max-w-md">
+          <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
+            <SearchIcon />
+          </span>
+          <input
+            type="text"
+            placeholder="Search for events"
+            className="w-full h-10 rounded-full pl-10 pr-3 border focus:outline-none"
+            tabIndex={0}
+          />
+        </div>
         <div className="flex items-center justify-center">
           <div className="w-10 h-10 rounded-full bg-gray-300"></div>
         </div>
