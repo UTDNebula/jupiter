@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Club, { getImageLink } from '../models/club';
+import { HeartIcon } from './Icons';
 
 interface Props {
   club: Club;
@@ -29,12 +30,10 @@ const OrgDirectoryCards: React.FC<Props> = ({ club }) => {
           {30} Members
         </div>
         <button
-          className={`absolute top-2 right-2 text-slate-800 font-bold py-1 px-2 rounded-lg  transition-colors ${
-            liked ? 'bg-red-500' : 'bg-slate-300'
-          }`}
+          className="absolute top-2 right-2 text-slate-800 font-bold py-1 px-2 rounded-lg  transition-colors"
           onClick={() => like()}
         >
-          {'<3'}
+          <HeartIcon fill={liked ? 'fill-red-500' : undefined} />
         </button>
       </div>
       <div className="p-4 flex-grow">
