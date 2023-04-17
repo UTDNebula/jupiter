@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import {
   AboutIcon,
+  ArrowIcon,
   EventsIcon,
   FeedbackIcon,
   HistoryIcon,
@@ -62,28 +63,30 @@ const Sidebar = () => {
                   router.pathname === routeMap[cat]
                     ? 'bg-white shadow-md scale-105'
                     : 'bg-transparent'
-                } w-64 h-10 flex items-center justify-start px-3 cursor-pointer rounded-lg transition-transform`}
+                } w-64 h-10 flex items-center justify-between px-3 cursor-pointer rounded-lg transition-transform`}
                 onClick={() => router.push(routeMap[cat])}
               >
-                {Icon && (
-                  <Icon
-                    fill={`${
+                <div className="flex items-center gap-x-4">
+                  {Icon && (
+                    <Icon
+                      fill={`${
+                        router.pathname === routeMap[cat]
+                          ? 'fill-blue-400'
+                          : 'fill-slate-500'
+                      }`}
+                    />
+                  )}
+                  <h1
+                    className={`text-sm font-medium capitalize ${
                       router.pathname === routeMap[cat]
-                        ? 'fill-blue-400'
-                        : 'fill-slate-500'
+                        ? 'text-blue-400'
+                        : 'text-slate-500'
                     }`}
-                  />
-                )}
-                <h1
-                  className={`text-sm font-medium capitalize ${
-                    router.pathname === routeMap[cat]
-                      ? 'text-blue-400'
-                      : 'text-slate-500'
-                  }`}
-                >
-                  {cat}
-                  {/* Small chevron here :) */}
-                </h1>
+                  >
+                    {cat}
+                  </h1>
+                </div>
+                <ArrowIcon />
               </div>
             );
           })}
@@ -101,28 +104,30 @@ const Sidebar = () => {
                   router.pathname === routeMap[cat]
                     ? 'bg-white text-blue-400 shadow-md scale-105'
                     : 'bg-transparent'
-                } w-64 h-10 flex items-center justify-start px-3 cursor-pointer rounded-lg transition-transform`}
+                } w-64 h-10 flex items-center justify-between px-3 cursor-pointer rounded-lg transition-transform`}
                 onClick={() => router.push(routeMap[cat])}
               >
-                {Icon && (
-                  <Icon
-                    fill={`${
+                <div className="flex gap-x-4 items-center">
+                  {Icon && (
+                    <Icon
+                      fill={`${
+                        router.pathname === routeMap[cat]
+                          ? 'fill-blue-400'
+                          : 'fill-slate-500'
+                      }`}
+                    />
+                  )}
+                  <h1
+                    className={`text-sm font-medium capitalize ${
                       router.pathname === routeMap[cat]
-                        ? 'fill-blue-400'
-                        : 'fill-slate-500'
+                        ? 'text-blue-400'
+                        : 'bg-transparent text-slate-500'
                     }`}
-                  />
-                )}
-                <h1
-                  className={`text-sm font-medium capitalize ${
-                    router.pathname === routeMap[cat]
-                      ? 'text-blue-400'
-                      : 'bg-transparent text-slate-500'
-                  }`}
-                >
-                  {cat}
-                  {/* Small chevron here :) */}
-                </h1>
+                  >
+                    {cat}
+                  </h1>
+                </div>
+                <ArrowIcon />
               </div>
             );
           })}
