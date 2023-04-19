@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 // Cert file env variables
-const certFile = z.object({
+export const certFile = z.object({
   type: z.string().min(1),
   project_id: z.string().min(1),
   private_key_id: z.string().min(1),
