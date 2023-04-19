@@ -1,5 +1,19 @@
 import { z } from 'zod';
 
+// Cert file env variables
+const certFile = z.object({
+  type: z.string().min(1),
+  project_id: z.string().min(1),
+  private_key_id: z.string().min(1),
+  private_key: z.string().min(1),
+  client_email: z.string().min(1),
+  client_id: z.string().min(1),
+  auth_uri: z.string().min(1),
+  token_uri: z.string().min(1),
+  auth_provider_x509_cert_url: z.string().min(1),
+  client_x509_cert_url: z.string().min(1),
+});
+
 /**
  * Specify your server-side environment variables schema here. This way you can ensure the app isn't
  * built with invalid env vars.
@@ -27,6 +41,9 @@ const server = z.object({
   GOOGLE_CLIENT_ID: z.string().min(1),
   GOOGLE_CLIENT_SECRET: z.string().min(1),
   GOOGLE_APPLICATION_CREDENTIALS: z.string().min(1),
+  // This is going to be a bit jank but it's the only way to validate the cert file
+  // without having to manually parse it.
+  JUPITER_CERT_FILE: z.string().min(1),
 });
 
 /**
@@ -57,7 +74,20 @@ const processEnv = {
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   GOOGLE_APPLICATION_CREDENTIALS: process.env.GOOGLE_APPLICATION_CREDENTIALS,
-  // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
+  // This will be a stringified JSON object
+  JUPITER_CERT_FILE: JSON.stringify({
+    type: process.env.JUPITER_CERT_FILE_TYPE,
+    project_id: process.env.JUPITER_CERT_FILE_PROJECT_ID,
+    private_key_id: process.env.JUPITER_CERT_FILE_PRIVATE_KEY_ID,
+    private_key: process.env.JUPITER_CERT_FILE_PRIVATE_KEY,
+    client_email: process.env.JUPITER_CERT_FILE_CLIENT_EMAIL,
+    client_id: process.env.JUPITER_CERT_FILE_CLIENT_ID,
+    auth_uri: process.env.JUPITER_CERT_FILE_AUTH_URI,
+    token_uri: process.env.JUPITER_CERT_FILE_TOKEN_URI,
+    auth_provider_x509_cert_url:
+      process.env.JUPITER_CERT_FILE_AUTH_PROVIDER_X509_CERT_URL,
+    client_x509_cert_url: process.env.JUPITER_CERT_FILE_CLIENT_X509_CERT_URL,
+  }),
 };
 
 // Don't touch the part below
