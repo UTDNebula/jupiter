@@ -1,6 +1,6 @@
-import OrgInfo from '../../components/OrgInfo';
+import OrgInfoSegment from '../../components/OrgInfoSegment';
 import React from 'react';
-import DirectoryOrgHeader from '../../components/OrgHeader';
+import OrgHeader from '../../components/OrgHeader';
 import Head from 'next/head';
 import ClubDocuments from '../../components/ClubDocuments';
 
@@ -15,8 +15,8 @@ const OrganizationPage = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="md:pl-72">
-        <DirectoryOrgHeader club={club} />
-        <OrgInfo club={club} />
+        <OrgHeader club={club} />
+        <OrgInfoSegment club={club} />
         <ClubDocuments />
       </main>
     </>
@@ -48,8 +48,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
     fallback: false,
   };
 };
-export const getStaticProps: GetStaticProps<{ club: Club }> = async (ctx) => {
-  const clubId = ctx.params?.clubId as string;
+export const getStaticProps: GetStaticProps<{ club: Club }> = async (
+  context,
+) => {
+  const clubId = context.params?.clubId as string;
   const db = new DbProvider();
   const club = await db.getClub(clubId);
 

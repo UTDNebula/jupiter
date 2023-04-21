@@ -122,7 +122,7 @@ export const FeedbackIcon: IconType = ({ fill = defaultFill }) => (
   </svg>
 );
 
-export const ArrowIcon = () => (
+export const RightChevron = () => (
   <svg
     width="30"
     height="30"

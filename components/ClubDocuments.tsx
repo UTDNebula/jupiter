@@ -5,7 +5,7 @@ const ClubDocuments: FC = () => {
     <div className="w-11/12 mx-auto bg-slate-100 rounded-lg p-10 m-5">
       <h1 className="text-2xl font-medium mt-5">Club Documents</h1>
       <p className="text-md font-thin mt-5">
-        Here you can find all the documents related to your club. You can view
+        Here you can find all the documents related to this club. You can view
         them or download them.
       </p>
       <div className="flex flex-col md:grid md:grid-cols-2 gap-5 mt-5">

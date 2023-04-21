@@ -1,8 +1,9 @@
+import SidebarItems from './SidebarItems';
 import { useRouter } from 'next/router';
 import React from 'react';
 import {
   AboutIcon,
-  ArrowIcon,
+  RightChevron,
   EventsIcon,
   FeedbackIcon,
   HistoryIcon,
@@ -54,83 +55,25 @@ const Sidebar = () => {
           Main Categories
         </h1>
         <div className="my-2">
-          {mainCats.map((cat, key) => {
-            const Icon = IconMap[cat];
-            return (
-              <div
-                key={key}
-                className={`${
-                  router.pathname === routeMap[cat]
-                    ? 'bg-white shadow-md scale-105'
-                    : 'bg-transparent'
-                } w-64 h-10 flex items-center justify-between px-3 cursor-pointer rounded-lg transition-transform`}
-                onClick={() => router.push(routeMap[cat])}
-              >
-                <div className="flex items-center gap-x-4">
-                  {Icon && (
-                    <Icon
-                      fill={`${
-                        router.pathname === routeMap[cat]
-                          ? 'fill-blue-400'
-                          : 'fill-slate-500'
-                      }`}
-                    />
-                  )}
-                  <h1
-                    className={`text-sm font-medium capitalize ${
-                      router.pathname === routeMap[cat]
-                        ? 'text-blue-400'
-                        : 'text-slate-500'
-                    }`}
-                  >
-                    {cat}
-                  </h1>
-                </div>
-                <ArrowIcon />
-              </div>
-            );
-          })}
+          {mainCats.map((cat) => (
+            <SidebarItems
+              key={cat}
+              active={router.pathname === routeMap[cat]}
+              cat={cat}
+            />
+          ))}
         </div>
       </div>
       <div className="w-full py-5 pl-5">
         <h1 className="text-xs font-light capitalize text-slate-500">More</h1>
         <div className="my-2">
-          {moreCats.map((cat, key) => {
-            const Icon = IconMap[cat];
-            return (
-              <div
-                key={key}
-                className={`${
-                  router.pathname === routeMap[cat]
-                    ? 'bg-white text-blue-400 shadow-md scale-105'
-                    : 'bg-transparent'
-                } w-64 h-10 flex items-center justify-between px-3 cursor-pointer rounded-lg transition-transform`}
-                onClick={() => router.push(routeMap[cat])}
-              >
-                <div className="flex gap-x-4 items-center">
-                  {Icon && (
-                    <Icon
-                      fill={`${
-                        router.pathname === routeMap[cat]
-                          ? 'fill-blue-400'
-                          : 'fill-slate-500'
-                      }`}
-                    />
-                  )}
-                  <h1
-                    className={`text-sm font-medium capitalize ${
-                      router.pathname === routeMap[cat]
-                        ? 'text-blue-400'
-                        : 'bg-transparent text-slate-500'
-                    }`}
-                  >
-                    {cat}
-                  </h1>
-                </div>
-                <ArrowIcon />
-              </div>
-            );
-          })}
+          {moreCats.map((cat, key) => (
+            <SidebarItems
+              key={cat}
+              active={router.pathname === routeMap[cat]}
+              cat={cat}
+            />
+          ))}
         </div>
       </div>
     </div>

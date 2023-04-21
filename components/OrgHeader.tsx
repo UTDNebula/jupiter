@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import Club from '../models/club';
 import Image from 'next/image';
 
-const DirectoryOrgHeader: FC<{ club: Club }> = ({ club }) => {
+const OrgHeader: FC<{ club: Club }> = ({ club }) => {
   return (
     <div className="relative m-5">
       <Image
@@ -26,7 +26,7 @@ const DirectoryOrgHeader: FC<{ club: Club }> = ({ club }) => {
       <div className="absolute bottom-0 left-0 -translate-y-5">
         <h1 className="text-4xl text-slate-100 font-bold m-5">{club.name}</h1>
       </div>
-      <div className="absolute right-0 bottom-0  -translate-y-1/2">
+      <div className="absolute right-0 bottom-0  -translate-y-5">
         <button className="bg-slate-100 text-slate-900 font-semibold rounded-full px-4 py-2 m-5 hover:bg-slate-300 transition-colors">
           Join
         </button>
@@ -35,4 +35,4 @@ const DirectoryOrgHeader: FC<{ club: Club }> = ({ club }) => {
   );
 };
 
-export default DirectoryOrgHeader;
+export default OrgHeader;

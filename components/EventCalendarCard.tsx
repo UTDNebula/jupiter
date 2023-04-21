@@ -1,6 +1,6 @@
 import React from 'react';
 
-const EventCard = () => {
+const EventCalendarCard = () => {
   return (
     <div className="w-36 text-center rounded-lg items-center p-2 bg-events m-2 select-none">
       <div className="flex justify-between p-2 -m-2">
@@ -14,4 +14,4 @@ const EventCard = () => {
   );
 };
 
-export default EventCard;
+export default EventCalendarCard;

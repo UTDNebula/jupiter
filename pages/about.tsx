@@ -19,9 +19,7 @@ const About = () => {
             <h1 className="text-2xl font-medium text-slate-500">
               Project Jupiter
             </h1>
-            <h3 className="font-light text-slate-500 mt-4">
-              Project description
-            </h3>
+            <h3 className="font-light text-slate-500 mt-4">Project goal</h3>
             <p className="text-sm font-light text-slate-500 mt-2">
               Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rem
               tenetur, consequatur quaerat quos rerum quia corporis aliquid

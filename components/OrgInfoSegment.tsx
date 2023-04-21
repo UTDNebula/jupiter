@@ -2,7 +2,7 @@ import Image from 'next/image';
 import React, { FC } from 'react';
 import Club, { getImageLink } from '../models/club';
 
-const OrgInfo: FC<{ club: Club }> = ({ club }) => {
+const OrgInfoSegment: FC<{ club: Club }> = ({ club }) => {
   return (
     <div className="w-11/12 mx-auto bg-slate-100 rounded-lg p-10">
       <div className="flex flex-col md:flex-row justify-between items-start">
@@ -74,4 +74,4 @@ const OrgInfo: FC<{ club: Club }> = ({ club }) => {
   );
 };
 
-export default OrgInfo;
+export default OrgInfoSegment;

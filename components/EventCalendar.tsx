@@ -1,5 +1,5 @@
 import React from 'react';
-import EventCard from './EventCard';
+import EventCalendarCard from './EventCalendarCard';
 
 const weekDays = [
   'Sunday',
@@ -42,10 +42,10 @@ const EventCalendar: React.FC<{ index: number }> = ({ index }) => {
               {day.getMonth() + 1} - {day.getDate()}
             </p>
           </div>
-          <div className="py-2">
-            {Array.from({ length: Math.floor(Math.random() * 3) + 1 }).map(
+          <div className="py-2 overflow-y-scroll h-60">
+            {Array.from({ length: Math.floor(Math.random() * 5) + 1 }).map(
               (_, key) => (
-                <EventCard key={key} />
+                <EventCalendarCard key={key} />
               ),
             )}
           </div>
