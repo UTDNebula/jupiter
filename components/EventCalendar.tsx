@@ -25,13 +25,14 @@ const thisWeek = (index: number = 0): Date[] => {
 };
 
 const EventCalendar: React.FC<{ index: number }> = ({ index }) => {
+  const today = new Date();
   return (
     <div className="w-full flex justify-between p-2">
       {thisWeek(index).map((day, key) => (
         <div className="flex flex-col items-center select-none" key={key}>
           <div
             className={`w-36 h-16 rounded-md flex flex-col justify-center items-center p-5 m-1 ${
-              new Date().getDay() === day.getDay() && index === 0
+              today.getDay() === day.getDay() && index === 0
                 ? 'bg-blue-500'
                 : 'bg-slate-100'
             }`}
