@@ -1,12 +1,12 @@
+import Club from '../models/club';
 import DirectoryOrgs from './DirectoryOrgs';
-import React from 'react';
-import demoOrganizations from '../demoOrganizations.json';
+import React, { FC } from 'react';
 
-const OrgDirectoryGrid = () => {
+const OrgDirectoryGrid: FC<{ clubs: Club[] }> = ({ clubs }) => {
   return (
-    <div className="col-start-1 md:col-start-2 col-end-[-1] row-start-1 row-end-[-1] md:w-full grid grid-cols-1 md:grid-cols-4 h-full md:h-[70vh] overflow-y-scroll">
-      {demoOrganizations.map((org, i) => (
-        <DirectoryOrgs key={i} org={org} />
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-2 py-3 px-2 justify-items-center items-center">
+      {clubs.map((club, key) => (
+        <DirectoryOrgs key={key} club={club} />
       ))}
     </div>
   );
