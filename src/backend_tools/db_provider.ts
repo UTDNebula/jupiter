@@ -13,11 +13,11 @@ import {
   arrayUnion,
   query,
 } from 'firebase/firestore';
-import type Club from '../models/club';
-import type User from '../models/user';
 import FirebaseApp from './firebase';
-import type Event from '../models/event';
 import Fuse from 'fuse.js';
+import IUser, { type User } from '@src/models/user';
+import IClub, { type Club } from '@src/models/club';
+import { type Event } from '@src/models/event';
 
 class DbProvider {
   db: Firestore = getFirestore(FirebaseApp);
@@ -34,7 +34,6 @@ class DbProvider {
       return undefined;
     }
   }
-
   async createClub(club: Club): Promise<string | undefined> {
     try {
       const docu = doc(this.db, this.clubPath, club.name);
@@ -51,43 +50,43 @@ class DbProvider {
   async getUser(userid: string): Promise<User | undefined> {
     const userReference = doc(this.db, this.userPath, userid);
     const ref = await getDoc<DocumentData>(userReference);
-    return ref.data() as User;
+    const user = IUser.parse({ id: ref.id, ...ref.data() });
+    return user;
   }
 
   async getClubById(id: string): Promise<Club> {
     const clubReference = doc(this.db, this.clubPath, id);
     const ref = await getDoc<DocumentData>(clubReference);
-    return {
-      ...(ref.data() as Club),
-      id: ref.id,
-    };
+    const club = IClub.parse({ id: ref.id, ...ref.data() });
+    return club;
   }
 
   async getAllClubs(): Promise<Club[] | null> {
     const clubRef = collection(this.db, this.clubPath);
     const q = query(clubRef);
     const snapshot = await getDocs(q);
-    try {
-      const documentList: Club[] = snapshot.docs.map((doc) => {
-        return {
-          ...(doc.data() as Club),
-          id: doc.id,
-        };
-      });
-      return documentList;
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
+    const clubs: Club[] = [];
+    snapshot.forEach((doc) => {
+      const club = IClub.parse({ id: doc.id, ...doc.data() });
+      clubs.push(club);
+    });
+    return clubs;
   }
 
   async getClubsByName(name: string): Promise<Club[]> {
     const clubs = await this.getAllClubs();
     if (!clubs) return [];
     if (name === '') return clubs;
-    const fuse = new Fuse(clubs, { keys: ['name'] });
+
+    // IDK why typescript is complaining about this but this is the fix :)
+    let fuse: Fuse<Club> | null = null;
+    fuse = new Fuse(clubs, {
+      keys: ['name'],
+    });
+
     const result = fuse.search(name);
-    return result.map((club) => club.item);
+    // Change to return top 5 results
+    return result.map((club) => club.item).slice(0, Math.min(5, result.length));
   }
 
   async deleteClub(club_name: string): Promise<boolean> {
@@ -109,7 +108,7 @@ class DbProvider {
     const eventRef = addDoc(eventsCollection, event);
 
     //update club
-    const club = doc(this.db, this.clubPath, event.hostclub);
+    const club = doc(this.db, this.clubPath, event.hostClub);
     await updateDoc(club, {
       events: arrayUnion(eventRef),
     });

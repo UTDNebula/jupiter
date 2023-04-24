@@ -1,7 +1,5 @@
-enum Role {
-    Student,
-    StudentOrganizer,
-    Administrator
-}
+import { z } from 'zod';
 
-export default Role;
+const ERole = z.enum(['Student', 'Student Organizer', 'Administrator']);
+export default ERole;
+export type Role = z.infer<typeof ERole>;

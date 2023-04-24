@@ -8,7 +8,7 @@
 const config = {
   reactStrictMode: true,
   images: {
-    domains: ['about.utdnebula.com', `github.com`],
+    domains: ['about.utdnebula.com', `github.com`, 'via.placeholder.com'],
   },
   /**
    * If you have the "experimental: { appDir: true }" setting enabled, then you

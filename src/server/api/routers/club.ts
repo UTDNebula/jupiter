@@ -1,12 +1,12 @@
-import { createTRPCRouter, publicProcedure } from "../trpc";
-import { z } from "zod";
+import { createTRPCRouter, publicProcedure } from '../trpc';
+import { z } from 'zod';
 
 const byNameSchema = z.object({
-  name: z.string().default(""),
+  name: z.string().default(''),
 });
 
 const byIdSchema = z.object({
-  id: z.string().default(""),
+  id: z.string().default(''),
 });
 
 export const clubRouter = createTRPCRouter({
@@ -23,6 +23,14 @@ export const clubRouter = createTRPCRouter({
     const { id } = input;
     try {
       return await ctx.dbProvider.getClubById(id);
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+  }),
+  all: publicProcedure.query(async ({ ctx }) => {
+    try {
+      return await ctx.dbProvider.getAllClubs();
     } catch (e) {
       console.log(e);
       return [];

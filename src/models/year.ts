@@ -1,8 +1,12 @@
-enum Year {
-    freshman,
-    sophomore,
-    junior,
-    senior,
-    grad_student
-}
-export default Year
+import { z } from 'zod';
+
+const EYear = z.enum([
+  'Freshman',
+  'Sophomore',
+  'Junior',
+  'Senior',
+  'Grad Student',
+]);
+
+export default EYear;
+export type Year = z.infer<typeof EYear>;
