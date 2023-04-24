@@ -158,7 +158,7 @@ export const HeartIcon: IconType = ({ fill = defaultHeartFill }) => (
   </svg>
 );
 
-export const SearchIcon: IconType = ({ fill = defaultFill }) => (
+export const SearchIcon: IconType = () => (
   <svg
     width="18"
     height="18"

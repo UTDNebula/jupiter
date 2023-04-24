@@ -15,7 +15,7 @@ import { useRouter } from 'next/router';
 const mainCats = ['Home', 'History', 'Liked', 'Events'] as const;
 const moreCats = ['Settings', 'About', 'Feedback'] as const;
 
-type union = typeof mainCats[number] | typeof moreCats[number];
+type union = (typeof mainCats)[number] | (typeof moreCats)[number];
 const IconMap: {
   [key in union[number]]: IconType;
 } = {
@@ -46,12 +46,18 @@ const SidebarItems: FC<{ cat: union[number]; active: boolean }> = ({
 }) => {
   const Icon = IconMap[cat];
   const router = useRouter();
+  const route = routeMap[cat];
+
+  // This should never happen
+  // Just so  TS doesn't complain
+  if (!route) return null;
+
   return (
     <div
       className={`${
         active ? 'bg-white shadow-md scale-105' : 'bg-transparent'
       } w-64 h-10 flex items-center justify-between px-3 cursor-pointer rounded-lg transition-transform`}
-      onClick={() => void router.push(routeMap[cat]!)}
+      onClick={() => void router.push(route)}
     >
       <div className="flex items-center gap-x-4">
         {Icon && (
