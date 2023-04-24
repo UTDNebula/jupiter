@@ -15,8 +15,8 @@ import {
 } from 'firebase/firestore';
 import FirebaseApp from './firebase';
 import Fuse from 'fuse.js';
-import { type User } from '@src/models/user';
-import { type Club } from '@src/models/club';
+import IUser, { type User } from '@src/models/user';
+import IClub, { type Club } from '@src/models/club';
 import { type Event } from '@src/models/event';
 
 class DbProvider {
@@ -34,18 +34,6 @@ class DbProvider {
       return undefined;
     }
   }
-
-  async getClub(id: string): Promise<Club | undefined> {
-    const clubReference = doc(this.db, this.clubPath, id);
-
-    const ref = await getDoc<DocumentData>(clubReference);
-
-    return {
-      ...(ref.data() as Club),
-      id: ref.id,
-    };
-  }
-
   async createClub(club: Club): Promise<string | undefined> {
     try {
       const docu = doc(this.db, this.clubPath, club.name);
@@ -62,34 +50,27 @@ class DbProvider {
   async getUser(userid: string): Promise<User | undefined> {
     const userReference = doc(this.db, this.userPath, userid);
     const ref = await getDoc<DocumentData>(userReference);
-    return ref.data() as User;
+    const user = IUser.parse({ id: ref.id, ...ref.data() });
+    return user;
   }
 
   async getClubById(id: string): Promise<Club> {
     const clubReference = doc(this.db, this.clubPath, id);
     const ref = await getDoc<DocumentData>(clubReference);
-    return {
-      ...(ref.data() as Club),
-      id: ref.id,
-    };
+    const club = IClub.parse({ id: ref.id, ...ref.data() });
+    return club;
   }
 
   async getAllClubs(): Promise<Club[] | null> {
     const clubRef = collection(this.db, this.clubPath);
     const q = query(clubRef);
     const snapshot = await getDocs(q);
-    try {
-      const documentList: Club[] = snapshot.docs.map((doc) => {
-        return {
-          ...(doc.data() as Club),
-          id: doc.id,
-        };
-      });
-      return documentList;
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
+    const clubs: Club[] = [];
+    snapshot.forEach((doc) => {
+      const club = IClub.parse({ id: doc.id, ...doc.data() });
+      clubs.push(club);
+    });
+    return clubs;
   }
 
   async getClubsByName(name: string): Promise<Club[]> {
@@ -104,7 +85,8 @@ class DbProvider {
     });
 
     const result = fuse.search(name);
-    return result.map((club) => club.item);
+    // Change to return top 5 results
+    return result.map((club) => club.item).slice(0, Math.min(5, result.length));
   }
 
   async deleteClub(club_name: string): Promise<boolean> {

@@ -9,9 +9,9 @@ const IUser = z.object({
   last_name: z.string(),
   major: z.string(),
   minor: z.string().optional(),
-  year: Year,
-  role: Role,
-  career: Career,
+  year: Year.default('Freshman'),
+  role: Role.default('Student'),
+  career: Career.default('Engineering'),
   clubs: z.array(Club).optional(),
 });
 

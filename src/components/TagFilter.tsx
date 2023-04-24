@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 const tags = [
   'All',
@@ -38,12 +38,6 @@ const TagFilter = () => {
     if (!container) return;
     container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
   };
-
-  useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (!container) return;
-  }, []);
-
   return (
     <div className="flex justify-center w-full">
       <div className="relative flex items-center space-x-1 w-full">
@@ -54,7 +48,7 @@ const TagFilter = () => {
           {'<'}
         </button>
         <div
-          className="flex space-x-1 flex-1 overflow-x-auto overflow-y-hidden"
+          className="flex space-x-1 flex-1 overflow-x-auto overflow-y-hidden tag-container"
           ref={scrollContainerRef}
         >
           {tags.map((tag, key) => (
