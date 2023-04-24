@@ -5,8 +5,12 @@ import Head from 'next/head';
 import ClubDocuments from '@src/components/ClubDocuments';
 
 const OrganizationPage = ({
-  club,
+  clubId,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const { data: club } = api.club.byId.useQuery({ id: clubId });
+  if (!club) {
+    return <div>Club not found</div>;
+  }
   return (
     <>
       <Head>
@@ -27,11 +31,14 @@ export default OrganizationPage;
 
 import {
   type GetStaticPaths,
-  type GetStaticProps,
   type InferGetStaticPropsType,
+  type GetServerSidePropsContext,
 } from 'next';
 import DbProvider from '../../backend_tools/db_provider';
-import type Club from '../../models/club';
+import { createServerSideHelpers } from '@trpc/react-query/server';
+import { appRouter } from '@src/server/api/root';
+import { createInnerTRPCContext } from '@src/server/api/trpc';
+import { api } from '@src/utils/api';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const db = new DbProvider();
@@ -52,20 +59,24 @@ export const getStaticPaths: GetStaticPaths = async () => {
     fallback: false,
   };
 };
-export const getStaticProps: GetStaticProps<{ club: Club }> = async (
-  context,
+export const getStaticProps = async (
+  ctx: GetServerSidePropsContext<{ clubId: string }>,
 ) => {
-  const clubId = context.params?.clubId as string;
-  const db = new DbProvider();
-  const club = await db.getClub(clubId);
-  if (!club)
+  const helper = createServerSideHelpers({
+    router: appRouter,
+    ctx: createInnerTRPCContext({ session: null }),
+  });
+  const clubId = ctx.params?.clubId;
+  if (typeof clubId !== 'string')
     return {
       notFound: true,
     };
 
+  await helper.club.byId.prefetch({ id: clubId });
   return {
     props: {
-      club,
+      trpcState: helper.dehydrate(),
+      clubId,
     },
   };
 };

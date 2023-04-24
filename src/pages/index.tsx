@@ -2,12 +2,14 @@ import Head from 'next/head';
 import Header from '../components/Header';
 import Carousel from '../components/Carousel';
 import TagFilter from '../components/TagFilter';
-import { type GetStaticProps, type InferGetStaticPropsType } from 'next';
-import DbProvider from '../backend_tools/db_provider';
-import type Club from '../models/club';
 import OrgDirectoryGrid from '@src/components/OrgDirectoryGrid';
+import { createServerSideHelpers } from '@trpc/react-query/server';
+import { appRouter } from '@src/server/api/root';
+import { createInnerTRPCContext } from '@src/server/api/trpc';
+import { api } from '@src/utils/api';
 
-const Home = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Home = () => {
+  const { data } = api.club.all.useQuery();
   return (
     <>
       <Head>
@@ -21,24 +23,22 @@ const Home = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {
           <Carousel />
         </div>
         <TagFilter />
-        <OrgDirectoryGrid clubs={data} />
+        <OrgDirectoryGrid clubs={data || []} />
       </main>
     </>
   );
 };
 
-export const getStaticProps: GetStaticProps<{ data: Club[] }> = async (ctx) => {
-  const db = new DbProvider();
-  const clubs = await db.getAllClubs();
+export const getStaticProps = async () => {
+  const helpers = createServerSideHelpers({
+    router: appRouter,
+    ctx: createInnerTRPCContext({ session: null }),
+  });
 
-  if (!clubs)
-    return {
-      notFound: true,
-    };
-
+  await helpers.club.all.prefetch();
   return {
     props: {
-      data: clubs,
+      trpcState: helpers.dehydrate(),
     },
   };
 };

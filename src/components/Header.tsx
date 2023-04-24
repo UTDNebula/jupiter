@@ -1,5 +1,30 @@
+import { type ChangeEvent, useState } from 'react';
 import { SearchIcon } from './Icons';
+import type Club from 'models/club';
+import { api } from '@src/utils/api';
+import { useRouter } from 'next/router';
 const Header = () => {
+  const [focused, setFocused] = useState(false);
+  const [search, setSearch] = useState('');
+  const [res, setRes] = useState<Club[]>([]);
+  api.club.byName.useQuery(
+    { name: search },
+    {
+      onSuccess: (data) => {
+        setTimeout(() => setRes(data), 300);
+        return data;
+      },
+    },
+  );
+  const router = useRouter();
+
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
+  const onClick = (id: string) => {
+    void router.push(`/directory/${id}`);
+  };
   return (
     <div className="w-full h-16 flex items-center justify-between px-5 content-between py-3">
       <div className="relative w-full max-w-xs md:max-w-sm lg:max-w-md">
@@ -11,7 +36,23 @@ const Header = () => {
           placeholder="Search for clubs"
           className="w-full h-10 rounded-full pl-10 pr-3 border focus:outline-none"
           tabIndex={0}
+          onChange={handleSearch}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setTimeout(() => setFocused(false), 300)}
         />
+        {focused && res.length > 0 && (
+          <div className="absolute top-full left-0 right-0 z-10 mt-1 overflow-hidden rounded-sm shadow-lg">
+            {res.map((club) => (
+              <button
+                key={club.name}
+                className="block w-full bg-gray-50 px-4 pb-2 text-left text-lg hover:bg-gray-200"
+                onClick={() => onClick(club.id)}
+              >
+                <p className="text-sm font-semibold">{club.name}</p>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
       <div className="flex items-center justify-center">
         <div className="w-10 h-10 rounded-full bg-gray-300"></div>

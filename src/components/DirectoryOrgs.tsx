@@ -46,11 +46,11 @@ const OrgDirectoryCards: React.FC<Props> = ({ club }) => {
         <p className="text-sm text-slate-600 mb-4">{club.description}</p>
       </div>
       <div className="flex justify-end p-4">
-        <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-2xl mr-2">
+        <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-2xl mr-2 transition-colors">
           Join
         </button>
         <button
-          className="bg-blue-100 hover:bg-blue-200 text-slate-800 font-bold py-2 px-4 rounded-2xl"
+          className="bg-blue-100 hover:bg-blue-200 text-slate-800 font-bold py-2 px-4 rounded-2xl transition-colors"
           onClick={() => void onClick()}
         >
           Learn More
