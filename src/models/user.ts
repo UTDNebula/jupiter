@@ -1,17 +1,19 @@
-import type Career from './career';
-import type Club from './club';
-import type Role from './role';
-import type Year from './year';
+import { z } from 'zod';
+import Career from './career';
+import Club from './club';
+import Role from './role';
+import Year from './year';
 
-interface User {
-  first_name: string;
-  last_name: string;
-  major: string;
-  minor?: string;
-  year: Year;
-  role: Role;
-  career: Career;
-  clubs?: Club[];
-}
+const IUser = z.object({
+  first_name: z.string(),
+  last_name: z.string(),
+  major: z.string(),
+  minor: z.string().optional(),
+  year: Year,
+  role: Role,
+  career: Career,
+  clubs: z.array(Club).optional(),
+});
 
-export default User;
+export default IUser;
+export type User = z.infer<typeof IUser>;

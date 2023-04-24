@@ -1,13 +1,15 @@
-interface Contacts {
-    discord?: string,
-    youtube?: string,
-    twitch?: string,
-    facebook?: string,
-    twitter?: string,
-    instagram?: string
-    website?: string,
-    email: string
+import { z } from 'zod';
 
-}
+const IContacts = z.object({
+  discord: z.string(),
+  youtube: z.string(),
+  twitch: z.string(),
+  facebook: z.string(),
+  twitter: z.string(),
+  instagram: z.string(),
+  website: z.string(),
+  email: z.string(),
+});
 
-export default Contacts
+export default IContacts;
+export type Contacts = z.infer<typeof IContacts>;

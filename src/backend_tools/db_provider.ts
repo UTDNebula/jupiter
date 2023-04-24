@@ -13,11 +13,11 @@ import {
   arrayUnion,
   query,
 } from 'firebase/firestore';
-import type Club from '../models/club';
-import type User from '../models/user';
 import FirebaseApp from './firebase';
-import type Event from '../models/event';
 import Fuse from 'fuse.js';
+import { type User } from '@src/models/user';
+import { type Club } from '@src/models/club';
+import { type Event } from '@src/models/event';
 
 class DbProvider {
   db: Firestore = getFirestore(FirebaseApp);
@@ -126,7 +126,7 @@ class DbProvider {
     const eventRef = addDoc(eventsCollection, event);
 
     //update club
-    const club = doc(this.db, this.clubPath, event.hostclub);
+    const club = doc(this.db, this.clubPath, event.hostClub);
     await updateDoc(club, {
       events: arrayUnion(eventRef),
     });

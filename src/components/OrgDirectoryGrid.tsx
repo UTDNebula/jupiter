@@ -1,4 +1,4 @@
-import type Club from '../models/club';
+import { type Club } from '@src/models/club';
 import DirectoryOrgs from './DirectoryOrgs';
 import React, { type FC } from 'react';
 

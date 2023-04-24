@@ -1,9 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import type Club from '../models/club';
-import { getImage } from '../models/club';
 import { HeartIcon } from './Icons';
+import { type Club } from '@src/models/club';
 
 interface Props {
   club: Club;
@@ -20,13 +19,7 @@ const OrgDirectoryCards: React.FC<Props> = ({ club }) => {
   return (
     <div className="bg-white rounded-lg shadow-lg max-w-xs md:w-full h-full flex flex-col">
       <div className="relative h-48 sm:h-56 md:h-64 lg:h-64">
-        <Image
-          src={getImage(club)}
-          layout="fill"
-          objectFit="cover"
-          alt={club.name}
-          className="select-none"
-        />
+        <Image src={club.image} fill alt={club.name} className="select-none" />
         <div className="absolute top-2 left-2 bg-black bg-opacity-50 text-white py-1 px-2 rounded-lg">
           {30} Members
         </div>

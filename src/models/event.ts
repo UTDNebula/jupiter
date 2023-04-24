@@ -1,8 +1,10 @@
-interface Event {
-    name: string,
-    hostclub: string    //club name. THIS NEEDS TO BE THE SAME AS THE CLUB ID IN THE DATABASE. 
-    //this is becuz of db_provider references clubs via their "name"
+import { z } from 'zod';
 
-    when: Date
-}
-export default Event
+const IEvent = z.object({
+  name: z.string(),
+  hostClub: z.string(),
+  when: z.date(),
+});
+
+export default IEvent;
+export type Event = z.infer<typeof IEvent>;

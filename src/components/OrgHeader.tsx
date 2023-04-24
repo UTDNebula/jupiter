@@ -1,12 +1,12 @@
 import React, { type FC } from 'react';
-import type Club from '../models/club';
 import Image from 'next/image';
+import { type Club } from '@src/models/club';
 
 const OrgHeader: FC<{ club: Club }> = ({ club }) => {
   return (
     <div className="relative m-5">
       <Image
-        src="/banner.png"
+        src={club.image}
         alt="Picture of the club"
         width={1920}
         height={490}
@@ -23,7 +23,7 @@ const OrgHeader: FC<{ club: Club }> = ({ club }) => {
           </p>
         ))}
       </div>
-      <div className="absolute bottom-0 left-0 -translate-y-5">
+      <div className="absolute bottom-0 left-0 -translate-y-5 bg-black opacity-30">
         <h1 className="text-4xl text-slate-100 font-bold m-5">{club.name}</h1>
       </div>
       <div className="absolute right-0 bottom-0  -translate-y-5">
