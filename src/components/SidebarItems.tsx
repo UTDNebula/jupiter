@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 import {
   AboutIcon,
   EventsIcon,
   FeedbackIcon,
   HistoryIcon,
   HomeIcon,
-  IconType,
+  type IconType,
   LikedIcon,
   RightChevron,
   SettingsIcon,
@@ -15,7 +15,7 @@ import { useRouter } from 'next/router';
 const mainCats = ['Home', 'History', 'Liked', 'Events'] as const;
 const moreCats = ['Settings', 'About', 'Feedback'] as const;
 
-type union = (typeof mainCats)[number] | (typeof moreCats)[number];
+type union = typeof mainCats[number] | typeof moreCats[number];
 const IconMap: {
   [key in union[number]]: IconType;
 } = {
@@ -40,7 +40,7 @@ const routeMap: {
   Feedback: '/feedback',
 };
 
-const SidebarItems: FC<{ cat: string; active: boolean }> = ({
+const SidebarItems: FC<{ cat: union[number]; active: boolean }> = ({
   cat,
   active,
 }) => {
@@ -51,7 +51,7 @@ const SidebarItems: FC<{ cat: string; active: boolean }> = ({
       className={`${
         active ? 'bg-white shadow-md scale-105' : 'bg-transparent'
       } w-64 h-10 flex items-center justify-between px-3 cursor-pointer rounded-lg transition-transform`}
-      onClick={() => router.push(routeMap[cat])}
+      onClick={() => void router.push(routeMap[cat]!)}
     >
       <div className="flex items-center gap-x-4">
         {Icon && (

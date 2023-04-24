@@ -1,6 +1,5 @@
-import { DocumentReference, DocumentData } from 'firebase/firestore';
-import Contacts from './contacts';
-import Event from './event';
+import type Contacts from './contacts';
+import type Event from './event';
 
 interface Club {
   name: string;

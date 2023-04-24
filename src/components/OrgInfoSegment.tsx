@@ -1,6 +1,7 @@
 import Image from 'next/image';
-import React, { FC } from 'react';
-import Club, { getImageLink } from '../models/club';
+import React, { type FC } from 'react';
+import type Club from '../models/club';
+import { getImage } from '../models/club';
 
 const OrgInfoSegment: FC<{ club: Club }> = ({ club }) => {
   return (
@@ -8,7 +9,7 @@ const OrgInfoSegment: FC<{ club: Club }> = ({ club }) => {
       <div className="flex flex-col md:flex-row justify-between items-start">
         <div className="w-full md:w-1/3">
           <Image
-            src={getImageLink(club)}
+            src={getImage(club)}
             alt="Picture of the author"
             width={100}
             height={100}
@@ -43,7 +44,7 @@ const OrgInfoSegment: FC<{ club: Club }> = ({ club }) => {
           <div className="flex flex-col justify-center items-center">
             <div className="flex flex-row justify-center items-center align-middle mt-5">
               <Image
-                src={getImageLink(club)}
+                src={getImage(club)}
                 alt="Picture of the author"
                 width={60}
                 height={60}
@@ -56,7 +57,7 @@ const OrgInfoSegment: FC<{ club: Club }> = ({ club }) => {
             </div>
             <div className="flex flex-row justify-center items-center align-middle mt-5">
               <Image
-                src={getImageLink(club)}
+                src={getImage(club)}
                 alt="Picture of the author"
                 width={60}
                 height={60}

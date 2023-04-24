@@ -2,7 +2,11 @@
 const config = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      backgroundColor: {
+        events: '#FF6633',
+      },
+    },
   },
   plugins: [],
 };

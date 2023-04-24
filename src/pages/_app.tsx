@@ -4,7 +4,7 @@ import { SessionProvider } from 'next-auth/react';
 
 import { api } from '@src/utils/api';
 import '@src/styles/globals.css';
-import Navbar from '@components/navigation/Navbar';
+import Sidebar from '@src/components/Sidebar';
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -12,8 +12,10 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider {...session}>
-      <Navbar />
-      <Component {...pageProps} />
+      <Sidebar />
+      <div className="overflow-y-scroll max-h-screen">
+        <Component {...pageProps} />
+      </div>
     </SessionProvider>
   );
 };

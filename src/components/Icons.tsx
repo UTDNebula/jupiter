@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { type FC } from 'react';
 
 export type IconType = FC<{ fill?: string }>;
 const defaultFill = 'fill-slate-400';

@@ -35,6 +35,17 @@ class DbProvider {
     }
   }
 
+  async getClub(id: string): Promise<Club | undefined> {
+    const clubReference = doc(this.db, this.clubPath, id);
+
+    const ref = await getDoc<DocumentData>(clubReference);
+
+    return {
+      ...(ref.data() as Club),
+      id: ref.id,
+    };
+  }
+
   async createClub(club: Club): Promise<string | undefined> {
     try {
       const docu = doc(this.db, this.clubPath, club.name);
@@ -85,7 +96,13 @@ class DbProvider {
     const clubs = await this.getAllClubs();
     if (!clubs) return [];
     if (name === '') return clubs;
-    const fuse = new Fuse(clubs, { keys: ['name'] });
+
+    // IDK why typescript is complaining about this but this is the fix :)
+    let fuse: Fuse<Club> | null = null;
+    fuse = new Fuse(clubs, {
+      keys: ['name'],
+    });
+
     const result = fuse.search(name);
     return result.map((club) => club.item);
   }

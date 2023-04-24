@@ -1,8 +1,8 @@
-import OrgInfoSegment from '../../components/OrgInfoSegment';
+import OrgInfoSegment from '@src/components/OrgInfoSegment';
+import OrgHeader from '@src/components/OrgHeader';
 import React from 'react';
-import OrgHeader from '../../components/OrgHeader';
 import Head from 'next/head';
-import ClubDocuments from '../../components/ClubDocuments';
+import ClubDocuments from '@src/components/ClubDocuments';
 
 const OrganizationPage = ({
   club,
@@ -25,9 +25,13 @@ const OrganizationPage = ({
 
 export default OrganizationPage;
 
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
+import {
+  type GetStaticPaths,
+  type GetStaticProps,
+  type InferGetStaticPropsType,
+} from 'next';
 import DbProvider from '../../backend_tools/db_provider';
-import Club, { getImageLink } from '../../models/club';
+import type Club from '../../models/club';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const db = new DbProvider();
@@ -54,6 +58,10 @@ export const getStaticProps: GetStaticProps<{ club: Club }> = async (
   const clubId = context.params?.clubId as string;
   const db = new DbProvider();
   const club = await db.getClub(clubId);
+  if (!club)
+    return {
+      notFound: true,
+    };
 
   return {
     props: {

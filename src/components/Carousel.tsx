@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 const clubs = ['Nebula', 'ACM', 'Other'];
 

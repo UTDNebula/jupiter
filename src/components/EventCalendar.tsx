@@ -11,7 +11,7 @@ const weekDays = [
   'Saturday',
 ] as const;
 // This function will return a week from sunday to saturday
-const thisWeek = (index: number = 0): Date[] => {
+const thisWeek = (index = 0): Date[] => {
   const date = new Date();
   date.setDate(date.getDate() + index * 7);
   const day = date.getDay();
