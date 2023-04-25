@@ -1,27 +1,26 @@
-import { assert, expect } from 'chai';
-import type Club from '@src/models/club';
-import DbProvider from '@src/backend_tools/db_provider';
-import { config } from 'dotenv';
-import Firebase from '@src/backend_tools/firebase';
-import type User from '@src/models/user';
-import Year from '@src/models/year';
-import Role from '@src/models/role';
-import Career from '@src/models/career';
-import DbTestProvider from 'src/backend_tools/test_db_provider';
+import { assert } from 'chai';
+import DbTestProvider from '@src/backend_tools/test_db_provider';
+import IClub from '@src/models/club';
+import { type User } from '@src/models/user';
 
 const provider = new DbTestProvider();
 
 //Test to create an organization
 describe('This is to create a club on Firebase', () => {
   it('should create a new club', (done) => {
-    const club: Club = {
+    // Creating a raw club object
+    const raw = {
       name: 'Nebula Labs',
       description: 'Computer science club at UTD',
       contacts: { email: 'deadmail@deadmail.com' },
       id: 'test',
+      tags: ['Computer Science', 'Coding'],
+      events: [],
     };
+    // This applies any default values to the club object
+    const club = IClub.parse(raw);
 
-    const answer = provider
+    provider
       .createClub(club)
       .then((orgName) => {
         assert.isDefined(orgName);
@@ -47,11 +46,11 @@ describe('This is to create a user on Firebase', () => {
       first_name: 'Michael',
       last_name: 'Bee',
       major: 'Computer science',
-      year: Year.freshman,
-      role: Role.Student,
-      career: Career.Engineering,
+      year: 'Freshman',
+      role: 'Student',
+      career: 'Engineering',
     };
-    const answer = provider
+    provider
       .createUser(user)
       .then((val) => {
         assert.isDefined(val);
@@ -63,13 +62,15 @@ describe('This is to create a user on Firebase', () => {
 
 describe('This is to query for the club `Nebula (Test)`', () => {
   it('Should retrieve the Nebula object in the databaase', (done) => {
-    const club = provider.getClubsByName('Nebula (Test)');
-    club
+    provider
+      .getClubsByName('Nebula (Test)')
       .then((val) => {
-        //need a way to get the club object from the db
-      assert.equal(val[0]!.name, 'Nebula');
-      done();
-    });
+        const nebula = val[0];
+        if (!nebula) assert.fail('Nebula not found');
+        assert.equal(nebula.name, 'Nebula (Test)');
+        done();
+      })
+      .catch(done);
   });
 }).timeout(5000);
 
