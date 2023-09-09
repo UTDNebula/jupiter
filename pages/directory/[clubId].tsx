@@ -11,7 +11,7 @@ const OrganizationPage = ({
     <>
       <Head>
         <title>{club.name} - Jupiter</title>
-        <meta name="description" content="" />
+        <meta name="description" content={`${club.name} - Jupiter`} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="md:pl-72">

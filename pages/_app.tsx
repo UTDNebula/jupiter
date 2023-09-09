@@ -2,7 +2,7 @@ import { AppProps } from 'next/app';
 import '../styles/globals.css';
 import Sidebar from '../components/Sidebar';
 
-function MyApp({ Component, pageProps }: AppProps) {
+function JupiterApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Sidebar />
@@ -13,4 +13,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default MyApp;
+export default JupiterApp;
