@@ -48,7 +48,7 @@ const TagFilter = () => {
           {'<'}
         </button>
         <div
-          className="flex space-x-1 flex-1 overflow-x-auto overflow-y-hidden tag-container"
+          className="flex space-x-1 flex-1 overflow-x-auto overflow-y-hidden tag-container px-6"
           ref={scrollContainerRef}
         >
           {tags.map((tag, key) => (

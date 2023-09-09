@@ -8,8 +8,8 @@ const OrgHeader: FC<{ club: Club }> = ({ club }) => {
       <Image
         src={club.image}
         alt="Picture of the club"
-        width={1920}
-        height={490}
+        width={400}
+        height={150}
         className="rounded-lg object-cover"
         priority
       />
