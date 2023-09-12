@@ -19,7 +19,6 @@
     "dotenv": "^16.0.3",
     "firebase": "^9.14.0",
     "fuse.js": "^6.6.2",
-    "isomorphic-unfetch": "^3.1.0",
     "next": "^13.3.1",
     "next-auth": "^4.20.1",
     "react": "^18.2.0",
