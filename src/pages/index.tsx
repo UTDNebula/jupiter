@@ -1,0 +1,46 @@
+import Head from 'next/head';
+import Header from '../components/Header';
+import Carousel from '../components/Carousel';
+import TagFilter from '../components/TagFilter';
+import OrgDirectoryGrid from '@src/components/OrgDirectoryGrid';
+import { createServerSideHelpers } from '@trpc/react-query/server';
+import { appRouter } from '@src/server/api/root';
+import { createInnerTRPCContext } from '@src/server/api/trpc';
+import { api } from '@src/utils/api';
+
+const Home = () => {
+  const { data } = api.club.all.useQuery();
+  return (
+    <>
+      <Head>
+        <title>Jupiter</title>
+        <meta name="description" content="Jupiter - Nebula Labs" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main className="md:pl-72">
+        <Header />
+        <div className="relative w-full block">
+          <Carousel />
+        </div>
+        <TagFilter />
+        <OrgDirectoryGrid clubs={data || []} />
+      </main>
+    </>
+  );
+};
+
+export const getStaticProps = async () => {
+  const helpers = createServerSideHelpers({
+    router: appRouter,
+    ctx: createInnerTRPCContext({ session: null }),
+  });
+
+  await helpers.club.all.prefetch();
+  return {
+    props: {
+      trpcState: helpers.dehydrate(),
+    },
+  };
+};
+
+export default Home;
