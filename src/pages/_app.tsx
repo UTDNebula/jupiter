@@ -13,7 +13,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider {...session}>
       <Sidebar />
-      <div className="overflow-y-scroll max-h-screen">
+      <div className="max-h-screen overflow-y-scroll">
         <Component {...pageProps} />
       </div>
     </SessionProvider>

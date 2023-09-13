@@ -9,16 +9,16 @@ const About = () => {
         <meta name="description" content="About - Jupiter" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="md:pl-72 pb-10">
+      <main className="pb-10 md:pl-72">
         <Header />
-        <div className="max-w-5xl mx-auto">
-          <h1 className="text-3xl font-bold text-slate-500 my-10">About us</h1>
-          <div className="bg-slate-100 p-8 rounded-lg shadow-md">
-            <h2 className="text-2xl font-semibold text-slate-500 mb-4">
+        <div className="mx-auto max-w-5xl">
+          <h1 className="my-10 text-3xl font-bold text-slate-500">About us</h1>
+          <div className="rounded-lg bg-slate-100 p-8 shadow-md">
+            <h2 className="mb-4 text-2xl font-semibold text-slate-500">
               Project Jupiter
             </h2>
-            <h3 className="text-xl text-slate-500 mb-2">Our Goal</h3>
-            <p className="text-sm font-light text-slate-500 mt-2 space-y-4">
+            <h3 className="mb-2 text-xl text-slate-500">Our Goal</h3>
+            <p className="mt-2 space-y-4 text-sm font-light text-slate-500">
               Jupiter is a user-friendly platform that can be utilized by
               students to seamlessly join school clubs. This tool allows
               students to browse through the list of available clubs, their
@@ -44,16 +44,16 @@ const About = () => {
           </div>
 
           <div className="mt-16">
-            <h1 className="text-3xl font-bold text-slate-500 text-center mb-10">
+            <h1 className="mb-10 text-center text-3xl font-bold text-slate-500">
               Our Team
             </h1>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">
               {Array.from({ length: 8 }).map((_, key) => (
                 <div
                   key={key}
-                  className="h-48 bg-slate-100 rounded-lg p-5 shadow-md hover:shadow-lg transition-shadow duration-300"
+                  className="h-48 rounded-lg bg-slate-100 p-5 shadow-md transition-shadow duration-300 hover:shadow-lg"
                 >
-                  <h2 className="text-xl font-medium text-slate-500 mb-2">
+                  <h2 className="mb-2 text-xl font-medium text-slate-500">
                     Name
                   </h2>
                   <h3 className="text-lg text-slate-500">Position</h3>

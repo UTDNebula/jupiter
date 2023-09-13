@@ -5,7 +5,7 @@ import React from 'react';
 const mainCats = ['Home', 'History', 'Liked', 'Events'] as const;
 const moreCats = ['Settings', 'About', 'Feedback'] as const;
 
-type union = typeof mainCats[number] | typeof moreCats[number];
+type union = (typeof mainCats)[number] | (typeof moreCats)[number];
 const routeMap: {
   [key in union[number]]: string;
 } = {
@@ -23,9 +23,9 @@ const Sidebar = () => {
   const router = useRouter();
 
   return (
-    <div className="h-full w-72 bg-slate-100 absolute z-10 md:block hidden">
+    <div className="absolute z-10 hidden h-full w-72 bg-slate-100 md:block">
       <div className="w-full py-10">
-        <h1 className="text-2xl font-medium text-center">Jupiter</h1>
+        <h1 className="text-center text-2xl font-medium">Jupiter</h1>
       </div>
       <div className="w-full py-5 pl-5">
         <h1 className="text-xs font-light capitalize text-slate-500">

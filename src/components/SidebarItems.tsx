@@ -55,8 +55,8 @@ const SidebarItems: FC<{ cat: union[number]; active: boolean }> = ({
   return (
     <div
       className={`${
-        active ? 'bg-white shadow-md scale-105' : 'bg-transparent'
-      } w-64 h-10 flex items-center justify-between px-3 cursor-pointer rounded-lg transition-transform`}
+        active ? 'scale-105 bg-white shadow-md' : 'bg-transparent'
+      } flex h-10 w-64 cursor-pointer items-center justify-between rounded-lg px-3 transition-transform`}
       onClick={() => void router.push(route)}
     >
       <div className="flex items-center gap-x-4">

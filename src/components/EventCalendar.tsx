@@ -27,22 +27,22 @@ const thisWeek = (index = 0): Date[] => {
 const EventCalendar: React.FC<{ index: number }> = ({ index }) => {
   const today = new Date();
   return (
-    <div className="w-full flex justify-between p-2">
+    <div className="flex w-full justify-between p-2">
       {thisWeek(index).map((day, key) => (
-        <div className="flex flex-col items-center select-none" key={key}>
+        <div className="flex select-none flex-col items-center" key={key}>
           <div
-            className={`w-36 h-16 rounded-md flex flex-col justify-center items-center p-5 m-1 ${
+            className={`m-1 flex h-16 w-36 flex-col items-center justify-center rounded-md p-5 ${
               today.getDay() === day.getDay() && index === 0
                 ? 'bg-blue-500'
                 : 'bg-slate-100'
             }`}
           >
             <p className="text-sm font-semibold">{weekDays[day.getDay()]}</p>
-            <p className="text-sm mt-2">
+            <p className="mt-2 text-sm">
               {day.getMonth() + 1} - {day.getDate()}
             </p>
           </div>
-          <div className="py-2 overflow-y-scroll h-60">
+          <div className="h-60 overflow-y-scroll py-2">
             {Array.from({ length: Math.floor(Math.random() * 5) + 1 }).map(
               (_, key) => (
                 <EventCalendarCard key={key} />

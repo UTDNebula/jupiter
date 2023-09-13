@@ -16,8 +16,8 @@ const Carousel: FC = () => {
   };
 
   return (
-    <div className="w-10/12 mx-auto">
-      <div className="w-full h-auto relative">
+    <div className="mx-auto w-10/12">
+      <div className="relative h-auto w-full">
         {clubs.map((club, key) => (
           <div
             className={`transition-opacity ${
@@ -30,23 +30,23 @@ const Carousel: FC = () => {
               alt="Picture of the club"
               width={1920}
               height={1080}
-              className="rounded-lg w-full h-full object-cover"
+              className="h-full w-full rounded-lg object-cover"
               priority
             />
-            <div className="text-slate-300 text-lg px-2 py-4 absolute bottom-2 w-full text-center">
+            <div className="absolute bottom-2 w-full px-2 py-4 text-center text-lg text-slate-300">
               Caption Text for {club}
             </div>
           </div>
         ))}
 
         <a
-          className="cursor-pointer absolute top-1/2 w-auto -mt-6 p-4 text-white font-bold text-xl transition select-none opacity-80"
+          className="absolute top-1/2 -mt-6 w-auto cursor-pointer select-none p-4 text-xl font-bold text-white opacity-80 transition"
           onClick={() => onClick(-1)}
         >
           &#10094;
         </a>
         <a
-          className="cursor-pointer absolute top-1/2 w-auto -mt-6 p-4 text-white font-bold text-xl transition select-none right-0 hover:opacity-80"
+          className="absolute right-0 top-1/2 -mt-6 w-auto cursor-pointer select-none p-4 text-xl font-bold text-white transition hover:opacity-80"
           onClick={() => onClick(1)}
         >
           &#10095;

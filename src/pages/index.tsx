@@ -19,7 +19,7 @@ const Home = () => {
       </Head>
       <main className="md:pl-72">
         <Header />
-        <div className="relative w-full block">
+        <div className="relative block w-full">
           <Carousel />
         </div>
         <TagFilter />

@@ -2,12 +2,12 @@ import React from 'react';
 
 const EventCalendarCard = () => {
   return (
-    <div className="w-36 text-center rounded-lg items-center p-2 bg-events m-2 select-none">
-      <div className="flex justify-between p-2 -m-2">
+    <div className="m-2 w-36 select-none items-center rounded-lg bg-events p-2 text-center">
+      <div className="-m-2 flex justify-between p-2">
         <p className="text-xs font-semibold">Event Name</p>
         <p className="text-xs">11:00</p>
       </div>
-      <p className="text-xs mt-2 line-clamp-1">
+      <p className="mt-2 line-clamp-1 text-xs">
         Lorem ipsum dolor sit amet consectetur
       </p>
     </div>
