@@ -1,7 +1,7 @@
-import type { SVGProps } from 'react';
+import type { ReactElement, SVGProps } from 'react';
 
-const AuthIcons: { [provider: string]: [icon: SVGProps<SVGSVGElement>] } = {
-  discord: [
+const AuthIcons: { [provider: string]: ReactElement } = {
+  discord: 
     <>
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -17,8 +17,7 @@ const AuthIcons: { [provider: string]: [icon: SVGProps<SVGSVGElement>] } = {
         />
       </svg>
     </>,
-  ],
-  google: [
+  google: (
     <>
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -45,9 +44,9 @@ const AuthIcons: { [provider: string]: [icon: SVGProps<SVGSVGElement>] } = {
           fill="#1976D2"
         />
       </svg>
-    </>,
-  ],
-  facebook: [
+    </>
+  ),
+  facebook:
     <>
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -75,7 +74,6 @@ const AuthIcons: { [provider: string]: [icon: SVGProps<SVGSVGElement>] } = {
         </defs>
       </svg>
     </>,
-  ],
 };
 
 export default AuthIcons;
