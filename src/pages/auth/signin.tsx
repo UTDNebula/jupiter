@@ -14,6 +14,8 @@ import Link from 'next/link';
 export default function SignIn({
   providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  console.log(providers)
+  
   return (
     <main className="relative flex h-screen flex-col items-center justify-center space-y-10 bg-[#ffffff] md:pl-72">
       <h1 className='text-2xl text-slate-800'>Sign in</h1>
