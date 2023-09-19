@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { HeartIcon } from './Icons';
 import { type Club } from '@src/models/club';
 

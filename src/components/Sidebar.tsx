@@ -1,5 +1,5 @@
 import SidebarItems from './SidebarItems';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import React from 'react';
 
 const mainCats = ['Home', 'History', 'Liked', 'Events'] as const;
@@ -20,7 +20,7 @@ const routeMap: {
 
 // Keep in mind that in all routes we need pl-72 for the sidebar
 const Sidebar = () => {
-  const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <div className="absolute z-10 hidden h-full w-72 bg-slate-100 md:block">
@@ -35,7 +35,7 @@ const Sidebar = () => {
           {mainCats.map((cat) => (
             <SidebarItems
               key={cat}
-              active={router.pathname === routeMap[cat]}
+              active={pathname === routeMap[cat]}
               cat={cat}
             />
           ))}
@@ -47,7 +47,7 @@ const Sidebar = () => {
           {moreCats.map((cat) => (
             <SidebarItems
               key={cat}
-              active={router.pathname === routeMap[cat]}
+              active={pathname === routeMap[cat]}
               cat={cat}
             />
           ))}

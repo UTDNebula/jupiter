@@ -10,7 +10,7 @@ import {
   RightChevron,
   SettingsIcon,
 } from './Icons';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const mainCats = ['Home', 'History', 'Liked', 'Events'] as const;
 const moreCats = ['Settings', 'About', 'Feedback'] as const;
