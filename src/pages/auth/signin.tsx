@@ -1,4 +1,6 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable @typescript-eslint/no-misused-promises */
+
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
