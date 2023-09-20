@@ -8,11 +8,9 @@ import GoogleProvider from 'next-auth/providers/google';
 import { certFile, env } from '@src/env.mjs';
 import { FirestoreAdapter } from '@auth/firebase-adapter';
 import DbProvider from '@src/backend_tools/db_provider';
-import { Adapter } from 'next-auth/adapters';
-import { User } from '@src/models/user';
-import { type Firestore } from 'firebase/firestore';
+import { type Adapter } from 'next-auth/adapters';
+import { type User } from '@src/models/user';
 import { cert } from 'firebase-admin/app';
-import { z } from 'zod';
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -42,27 +40,19 @@ declare module 'next-auth' {
  */
 
 const dbProvider = new DbProvider();
+const certObject = certFile.parse(JSON.parse(env.JUPITER_CERT_FILE));
 
-type CertFileType = z.infer<typeof certFile>;
-
-console.log('in auth.ts');
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+const credential = cert({
+  clientEmail: certObject.client_email,
+  privateKey: certObject.private_key.split(String.raw`\n`).join('\n'),
+  projectId: certObject.project_id,
+});
 
 export const authOptions: NextAuthOptions = {
-  adapter: FirestoreAdapter({
-    credential: cert({
-      projectId: env.FIREBASE_PROJECT_ID,
-      clientEmail: (JSON.parse(env.JUPITER_CERT_FILE) as CertFileType)
-        .client_email,
-      privateKey: (JSON.parse(env.JUPITER_CERT_FILE) as CertFileType)
-        .private_key,
-    }),
-  }) as Adapter,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
+  adapter: FirestoreAdapter({ credential }) as Adapter,
   callbacks: {
-    signIn(params) {
-      console.log(params);
-
-      return true;
-    },
     async session({ session, user }) {
       // Try to get the user from the database
 
