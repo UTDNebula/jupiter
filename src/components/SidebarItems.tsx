@@ -53,25 +53,28 @@ const SidebarItems: FC<{ cat: union[number]; active: boolean }> = ({
   if (!route) return null;
 
   return (
-    <div
-      className={`${
-        active ? 'scale-105 bg-white shadow-md' : 'bg-transparent'
-      } flex h-10 w-64 cursor-pointer items-center justify-between rounded-lg px-3 transition-transform`}
-      onClick={() => void router.push(route)}
-    >
-      <div className="flex items-center gap-x-4">
-        {Icon && (
-          <Icon fill={`${active ? 'fill-blue-400' : 'fill-slate-500'}`} />
-        )}
-        <h1
-          className={`text-sm font-medium capitalize ${
-            active ? 'text-blue-400' : 'text-slate-500'
-          }`}
-        >
-          {cat}
-        </h1>
+    <div className={`${active ? 'rounded-3xl bg-white py-2.5 shadow-md' : ''}`}>
+      <div
+        className=" 
+        flex h-full w-64 cursor-pointer items-start  rounded-lg bg-transparent px-5 text-sm transition-transform"
+        onClick={() => void router.push(route)}
+      >
+        <div className="flex items-center gap-x-4">
+          {Icon && (
+            <Icon fill={`${active ? 'fill-blue-400' : 'fill-slate-500'}`} />
+          )}
+          <h1
+            className={`text-sm font-medium capitalize ${
+              active ? 'text-blue-400' : 'text-slate-500'
+            }`}
+          >
+            {cat}
+          </h1>
+        </div>
+        <div className="ml-auto">
+          <RightChevron />
+        </div>
       </div>
-      <RightChevron />
     </div>
   );
 };

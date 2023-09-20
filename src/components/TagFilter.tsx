@@ -39,7 +39,7 @@ const TagFilter = () => {
     container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
   };
   return (
-    <div className="flex w-full justify-center">
+    <div className="flex w-full justify-center py-9">
       <div className="relative flex w-full items-center space-x-1">
         <button
           className="absolute left-0 cursor-pointer rounded-full bg-white px-3 py-2 opacity-80 shadow-md hover:bg-gray-100 focus:outline-none"
@@ -56,9 +56,9 @@ const TagFilter = () => {
               key={key}
               className={`${
                 selected === tag
-                  ? 'bg-blue-300 hover:bg-blue-400'
-                  : 'bg-gray-100 hover:bg-gray-200'
-              } whitespace-nowrap rounded-full px-4 py-2 font-bold transition-colors duration-200 focus:outline-none`}
+                  ? 'bg-blue-500 text-white hover:bg-blue-600'
+                  : 'bg-gray-100 text-black hover:bg-gray-200'
+              } whitespace-nowrap rounded-3xl px-8 py-4 text-xs font-extrabold transition-colors duration-200 focus:outline-none`}
               onClick={() => onClick(tag)}
             >
               {tag}

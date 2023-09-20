@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import React, { type FC } from 'react';
+import { LeftArrowIcon, RightArrowIcon } from './Icons';
 
 const clubs = ['Nebula', 'ACM', 'Other'];
 
@@ -17,7 +18,7 @@ const Carousel: FC = () => {
 
   return (
     <div className="mx-auto w-10/12">
-      <div className="relative h-auto w-full">
+      <div className="relative h-[110] w-full overflow-hidden rounded-lg">
         {clubs.map((club, key) => (
           <div
             className={`transition-opacity ${
@@ -25,32 +26,51 @@ const Carousel: FC = () => {
             }`}
             key={key}
           >
-            <Image
-              src="/banner.png"
-              alt="Picture of the club"
-              width={1920}
-              height={1080}
-              className="h-full w-full rounded-lg object-cover"
-              priority
-            />
-            <div className="absolute bottom-2 w-full px-2 py-4 text-center text-lg text-slate-300">
-              Caption Text for {club}
+            <div className="h-full w-full">
+              <Image
+                src="/banner.png"
+                alt="Picture of the club"
+                width={1920}
+                height={1080}
+                className="h-full w-full rounded-lg object-cover"
+                priority
+              />
+              <div className="absolute left-0 top-0 z-40 h-full w-full">
+                <div className="absolute left-0 top-0 z-20 h-full w-full">
+                  <div className="relative flex h-full w-full flex-col justify-between p-[3.75rem]">
+                    <button
+                      type="button"
+                      className="text-md w-fit rounded-[1.25rem] bg-black bg-opacity-50 px-5 py-2.5 text-center font-extrabold text-white"
+                    >
+                      Featured Clubs
+                    </button>
+                    <div className="flex flex-row">
+                      <button
+                        className="flex items-center justify-center rounded-full bg-black bg-opacity-50 p-4 hover:bg-opacity-70"
+                        onClick={() => onClick(-1)}
+                      >
+                        <LeftArrowIcon />
+                      </button>
+                      <button
+                        className="ml-auto flex items-center justify-center rounded-full bg-black bg-opacity-50 p-4 hover:bg-opacity-70"
+                        onClick={() => onClick(1)}
+                      >
+                        <RightArrowIcon />
+                      </button>
+                    </div>
+                    <div className="flex flex-row justify-center">
+                      <h1 className="text-2xl font-bold text-white">{club}</h1>
+                      <div className="ml-auto pr-8 text-lg text-white">
+                        Short desc
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute bottom-0 left-0 z-10 h-2/5 w-full bg-gradient-to-t from-gray-500 to-transparent"></div>
+              </div>
             </div>
           </div>
         ))}
-
-        <a
-          className="absolute top-1/2 -mt-6 w-auto cursor-pointer select-none p-4 text-xl font-bold text-white opacity-80 transition"
-          onClick={() => onClick(-1)}
-        >
-          &#10094;
-        </a>
-        <a
-          className="absolute right-0 top-1/2 -mt-6 w-auto cursor-pointer select-none p-4 text-xl font-bold text-white transition hover:opacity-80"
-          onClick={() => onClick(1)}
-        >
-          &#10095;
-        </a>
       </div>
     </div>
   );
