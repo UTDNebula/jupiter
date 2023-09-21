@@ -7,9 +7,7 @@ import {
 import GoogleProvider from 'next-auth/providers/google';
 import { certFile, env } from '@src/env.mjs';
 import { FirestoreAdapter } from '@auth/firebase-adapter';
-import DbProvider from '@src/backend_tools/db_provider';
 import { type Adapter } from 'next-auth/adapters';
-import { type UserMetadata } from '@src/models/userMetadata';
 import { cert } from 'firebase-admin/app';
 
 /**
