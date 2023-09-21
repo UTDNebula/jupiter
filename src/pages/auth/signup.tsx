@@ -3,7 +3,7 @@ import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
 } from 'next';
-import { getProviders, signIn } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@src/server/auth';
 import AuthIcons from '@src/icons/AuthIcons';
@@ -12,8 +12,6 @@ import Link from 'next/link';
 export default function SignIn({
   providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-    console.log(providers)
-    
   return (
     <main className="relative flex h-screen flex-col items-center justify-center space-y-10 bg-[#ffffff] md:pl-72">
       <h1 className="text-2xl text-slate-800">Sign up</h1>
@@ -44,9 +42,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return { redirect: { destination: '/' } };
   }
 
-  const providers = await getProviders();
+  const providers = await fetch('/api/auth/providers');
 
   return {
-    props: { providers: providers ?? [] },
+    props: { providers: providers.json() ?? [] },
   };
 }
