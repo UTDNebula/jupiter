@@ -11,10 +11,10 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@src/server/auth';
 import AuthIcons from '@src/icons/AuthIcons';
 import Link from 'next/link';
+import { env } from '@src/env.mjs';
 
-export default function SignIn({
-  providers,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function SignIn({ providers }: { providers: Providers }) {
+  console.log(providers);
   return (
     <main className="relative flex h-screen flex-col items-center justify-center space-y-10 bg-[#ffffff] md:pl-72">
       <h1 className="text-2xl text-slate-800">Sign up</h1>
@@ -45,9 +45,22 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return { redirect: { destination: '/' } };
   }
 
-  const providers = await fetch('/api/auth/providers');
+  const res = await fetch(`${env.NEXTAUTH_URL}/api/auth/providers`);
+  const providers = await res.json();
 
   return {
-    props: { providers: providers.json() ?? [] },
+    props: { providers: providers ?? [] },
   };
 }
+
+type Provider = {
+  id: string;
+  name: string;
+  type: string;
+  signinUrl: string;
+  callbackUrl: string;
+};
+
+type Providers = {
+  [key: string]: Provider;
+};
