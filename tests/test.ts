@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import DbTestProvider from '@src/backend_tools/test_db_provider';
 import IClub from '@src/models/club';
-import { type User } from '@src/models/user';
+import { type UserMetadata } from '@src/models/userMetadata';
 
 const provider = new DbTestProvider();
 
@@ -40,9 +40,9 @@ describe('This is to create a club on Firebase', () => {
   }).timeout(3000);
 });
 
-describe('This is to create a user on Firebase', () => {
-  it('should create a new user', (done) => {
-    const user: User = {
+describe('This is to create metadata for a user on Firebase', () => {
+  it('should create metadata for a new user', (done) => {
+    const user: UserMetadata = {
       first_name: 'Michael',
       last_name: 'Bee',
       major: 'Computer science',
@@ -51,7 +51,7 @@ describe('This is to create a user on Firebase', () => {
       career: 'Engineering',
     };
     provider
-      .createUser(user)
+      .createUserMetadata(user)
       .then((val) => {
         assert.isDefined(val);
         done();

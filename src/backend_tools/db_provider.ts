@@ -15,18 +15,18 @@ import {
 } from 'firebase/firestore';
 import FirebaseApp from './firebase';
 import Fuse from 'fuse.js';
-import IUser, { type User } from '@src/models/user';
+import IUser, { type UserMetadata } from '@src/models/userMetadata';
 import IClub, { type Club } from '@src/models/club';
 import { type Event } from '@src/models/event';
 
 class DbProvider {
   db: Firestore = getFirestore(FirebaseApp);
-  userPath = 'Users';
+  userMetadataPath = 'UserMetadata';
   clubPath = 'Clubs';
   eventPath = 'Events';
-  async createUser(user: User): Promise<string | undefined> {
+  async createUserMetadata(user: UserMetadata): Promise<string | undefined> {
     try {
-      const userCollection = collection(this.db, this.userPath);
+      const userCollection = collection(this.db, this.userMetadataPath);
       const ref = await addDoc(userCollection, user);
       return ref.id;
     } catch (error) {
@@ -47,8 +47,8 @@ class DbProvider {
     }
   }
 
-  async getUser(userid: string): Promise<User | undefined> {
-    const userReference = doc(this.db, this.userPath, userid);
+  async getUserMetadata(userId: string): Promise<UserMetadata | undefined> {
+    const userReference = doc(this.db, this.userMetadataPath, userId);
     const ref = await getDoc<DocumentData>(userReference);
     const user = IUser.parse({ id: ref.id, ...ref.data() });
     return user;
