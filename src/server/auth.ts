@@ -9,7 +9,7 @@ import { certFile, env } from '@src/env.mjs';
 import { FirestoreAdapter } from '@auth/firebase-adapter';
 import DbProvider from '@src/backend_tools/db_provider';
 import { type Adapter } from 'next-auth/adapters';
-import { type User } from '@src/models/user';
+import { type UserMetadata } from '@src/models/userMetadata';
 import { cert } from 'firebase-admin/app';
 
 /**
@@ -39,7 +39,6 @@ declare module 'next-auth' {
  * @see https://next-auth.js.org/configuration/options
  */
 
-const dbProvider = new DbProvider();
 const certObject = certFile.parse(JSON.parse(env.JUPITER_CERT_FILE));
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
@@ -51,41 +50,14 @@ const credential = cert({
 
 export const authOptions: NextAuthOptions = {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
-  adapter: FirestoreAdapter({ credential }) as Adapter,
+  adapter: FirestoreAdapter({ credential }) as Adapter, // adds the user and puts into session automatically
   callbacks: {
-    async session({ session, user }) {
-      // Try to get the user from the database
-
-      console.log('in callback');
-      try {
-        const dbUser = await dbProvider.getUser(user.id);
-        return { ...session, user: { ...dbUser, ...user } };
-      } catch (err) {
-        console.log('Unable to find user');
-      }
-      // If the user exists, return the user object
-
-      // If the user doesn't exist, create a new user in the database
-      const jupiterUser: Partial<User> = {
-        role: 'Student',
-        first_name: user.name?.split(' ')[0],
-        last_name: user.name?.split(' ')[1] ?? '',
-      };
-
-      console.log('Unknown user: ', jupiterUser);
-
-      console.log('User:', user);
-      console.log('Session User:', session.user);
-
-      // const newUser = await dbProvider.createUser({ ...jupiterUser, career: "Engineering", );
-      // userObj = { ...userObj, id: newUser };
-      // // Return the new user object
-      // return { ...session, user: { ...userObj, ...user } };
-
+    session({ session, user }) {
       if (session.user) {
         session.user.id = user.id;
         // session.user.role = user.role; <-- put other properties on the session here
       }
+
       return session;
     },
   },
