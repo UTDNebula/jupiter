@@ -1,20 +1,26 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */
 
 import type { GetServerSidePropsContext } from 'next';
 import { signIn } from 'next-auth/react';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@src/server/auth';
 import AuthIcons from '@src/icons/AuthIcons';
-import Link from 'next/link';
-import { env } from '@src/env.mjs';
+import { getProviders } from 'next-auth/react';
+import { useState } from 'react';
 
-export default function SignIn({ providers }: { providers: Providers }) {
-  console.log(providers);
+export default function Auth({ providers }: { providers: Providers }) {
+  const [signin, setSignin] = useState(true);
+
+  const toggleAuthType = () => {
+    setSignin(signIn => !signIn)
+  }
 
   return (
     <main className="relative flex h-screen flex-col items-center justify-center space-y-10 bg-[#ffffff] md:pl-72">
-      <h1 className="text-2xl text-slate-800">Sign in</h1>
+      <h1 className="text-2xl text-slate-800">{signin ? "Sign in" : "Sign up"}</h1>
       {Object.values(providers).map((provider) => (
         <div key={provider.name}>
           <button onClick={() => signIn(provider.id)}>
@@ -23,13 +29,13 @@ export default function SignIn({ providers }: { providers: Providers }) {
         </div>
       ))}
       <h4>
-        Don't have an account?{' '}
-        <Link
+        {signin ? "Don't have an account? " : "Already have an account? "}
+        <button
           className="font-semibold text-slate-500 hover:underline"
-          href={'/auth/signup'}
+          onClick={toggleAuthType}
         >
-          {'Sign up'}
-        </Link>
+          {signin ? 'Signup' : 'Signin'}
+        </button>
       </h4>
     </main>
   );
@@ -42,9 +48,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return { redirect: { destination: '/' } };
   }
 
-  const res = await fetch(`${env.NEXTAUTH_URL}/api/auth/providers`);
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const providers: Providers = await res.json();
+  const providers = await getProviders();
 
   return {
     props: { providers: providers ?? [] },
