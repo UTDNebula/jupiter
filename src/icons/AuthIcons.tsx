@@ -1,4 +1,4 @@
-import type { ReactElement, SVGProps } from 'react';
+import type { ReactElement } from 'react';
 
 const AuthIcons: { [provider: string]: ReactElement } = {
   google: (
