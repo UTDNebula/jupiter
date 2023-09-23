@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable react/no-unescaped-entities */
-/* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */
 
 import type { GetServerSidePropsContext } from 'next';
@@ -20,21 +19,23 @@ export default function Auth({ providers }: { providers: Providers }) {
 
   return (
     <main className="relative flex h-screen flex-col items-center justify-center space-y-10 bg-[#ffffff] md:pl-72">
-      <h1 className="text-2xl text-slate-800">{signin ? "Sign in" : "Sign up"}</h1>
+      <h1 className="text-2xl text-slate-800">
+        {signin ? 'Sign in' : 'Sign up'}
+      </h1>
       {Object.values(providers).map((provider) => (
         <div key={provider.name}>
-          <button onClick={() => signIn(provider.id)}>
+          <button onClick={() => void signIn(provider.id)}>
             {AuthIcons[provider.id]}
           </button>
         </div>
       ))}
       <h4>
-        {signin ? "Don't have an account? " : "Already have an account? "}
+        {signin ? "Don't have an account? " : 'Already have an account? '}
         <button
           className="font-semibold text-slate-500 hover:underline"
           onClick={toggleAuthType}
         >
-          {signin ? 'Signup' : 'Signin'}
+          {signin ? 'Sign up' : 'Sign in'}
         </button>
       </h4>
     </main>
