@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */
-
 import type { GetServerSidePropsContext } from 'next';
 import { signIn } from 'next-auth/react';
 import { getServerSession } from 'next-auth/next';
@@ -14,8 +10,8 @@ export default function Auth({ providers }: { providers: Providers }) {
   const [signin, setSignin] = useState(true);
 
   const toggleAuthType = () => {
-    setSignin(signIn => !signIn)
-  }
+    setSignin((signIn) => !signIn);
+  };
 
   return (
     <main className="relative flex h-screen flex-col items-center justify-center space-y-10 bg-[#ffffff] md:pl-72">
