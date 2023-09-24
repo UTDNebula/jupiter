@@ -29,9 +29,9 @@ const logo: logoProps = {
 const ContactButtons: FC<{ contact: Contacts[] }> = ({ contact }) => {
   return (
     <>
-      {contact.map((item, key) => (
+      {contact.map((item) => (
         <button
-          key={key}
+          key={item.url}
           className="relative mx-2 my-5 rounded-full bg-slate-100 px-4 py-1 transition-colors hover:bg-slate-300"
         >
           <a target="__blank__" href={item.url}>
