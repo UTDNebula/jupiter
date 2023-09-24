@@ -1,6 +1,29 @@
 import React, { type FC } from 'react';
 import Image from 'next/image';
 import { type Club } from '@src/models/club';
+import ContactButtons from './ContactButtons';
+import { type Contacts } from '@src/models/contacts';
+
+const dummyData : Contacts[] = [
+  { 
+    platform: 'discord',
+    url: 'https://dummyDiscordLink.com',
+  }, 
+  {
+    platform: 'instagram',
+    url: 'https://dummyInstagramLink.com',
+  },
+  {
+    platform: 'website',
+    url: 'https://dummyWebsiteLink.com',
+  }, 
+  {
+    platform: 'other',
+    url: 'https://dummyOtherWebsiteUrl.com',
+  }
+];
+
+
 
 const OrgHeader: FC<{ club: Club }> = ({ club }) => {
   return (
@@ -30,6 +53,7 @@ const OrgHeader: FC<{ club: Club }> = ({ club }) => {
         <button className="m-5 rounded-full bg-slate-100 px-4 py-2 font-semibold text-slate-900 transition-colors hover:bg-slate-300">
           Join
         </button>
+        <ContactButtons contact={ dummyData || []}/>
       </div>
     </div>
   );
