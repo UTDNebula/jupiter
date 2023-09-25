@@ -1,14 +1,20 @@
 import { z } from 'zod';
 
+const ContactType = z.enum([
+  'discord',
+  'youtube',
+  'twitch',
+  'facebook',
+  'twitter',
+  'instagram',
+  'website',
+  'email',
+  'other',
+]);
+
 const IContacts = z.object({
-  discord: z.string(),
-  youtube: z.string(),
-  twitch: z.string(),
-  facebook: z.string(),
-  twitter: z.string(),
-  instagram: z.string(),
-  website: z.string(),
-  email: z.string(),
+  platform: ContactType,
+  url: z.string(),
 });
 
 export default IContacts;

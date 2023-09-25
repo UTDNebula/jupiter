@@ -16,6 +16,7 @@
  */
 import { type CreateNextContextOptions } from '@trpc/server/adapters/next';
 import { type Session } from 'next-auth';
+import { db } from '../db';
 
 import { getServerAuthSession } from '@src/server/auth';
 
@@ -36,7 +37,7 @@ type CreateContextOptions = {
 export const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     session: opts.session,
-    dbProvider: new DbProvider(),
+    db,
   };
 };
 
@@ -67,7 +68,6 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
 import { initTRPC, TRPCError } from '@trpc/server';
 import superjson from 'superjson';
 import { ZodError } from 'zod';
-import DbProvider from '@src/backend_tools/db_provider';
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,

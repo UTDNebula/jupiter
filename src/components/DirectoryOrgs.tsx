@@ -19,7 +19,13 @@ const OrgDirectoryCards: React.FC<Props> = ({ club }) => {
   return (
     <div className="flex h-full max-w-xs flex-col rounded-lg bg-white shadow-lg md:w-full">
       <div className="relative h-48 sm:h-56 md:h-64 lg:h-64">
-        <Image src={club.image} fill alt={club.name} className="select-none" />
+        <Image
+          src={club.image}
+          fill
+          alt={club.name}
+          className="select-none"
+          sizes="(max-width: 640px) 100vw, 640px"
+        />
         <div className="absolute left-2 top-2 rounded-lg bg-black bg-opacity-50 px-2 py-1 text-white">
           {30} Members
         </div>
