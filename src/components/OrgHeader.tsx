@@ -31,7 +31,7 @@ const OrgHeader: FC<{ club: Club }> = ({ club }) => {
         <button className="m-5 rounded-full bg-slate-100 px-4 py-2 font-semibold text-slate-900 transition-colors hover:bg-slate-300">
           Join
         </button>
-        <ContactButtons contact={  club.contacts || []}/>
+        <ContactButtons contact={  club.contacts }/>
       </div>
     </div>
   );
