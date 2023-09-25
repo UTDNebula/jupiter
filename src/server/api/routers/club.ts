@@ -41,7 +41,7 @@ export const clubRouter = createTRPCRouter({
       const first = IClub.parse(byId);
       return first;
     } catch (e) {
-      console.log(e);
+      console.error(e);
       throw e;
     }
   }),

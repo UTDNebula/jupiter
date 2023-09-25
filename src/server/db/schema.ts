@@ -84,7 +84,7 @@ export const contacts = pgTable(
   'contacts',
   {
     platform: platformEnum('platform').notNull(),
-    url: text('url'),
+    url: text('url').notNull(),
     clubId: text('clubId')
       .notNull()
       .references(() => club.id, { onDelete: 'cascade' }),

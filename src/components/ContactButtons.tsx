@@ -1,5 +1,5 @@
-import { type Contacts } from '@src/models/contacts';
-import { type FC } from 'react';
+import type { Contacts } from '@src/models/contacts';
+import type { FC } from 'react';
 import Image from 'next/image';
 
 type logoProps = {
