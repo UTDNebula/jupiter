@@ -2,7 +2,7 @@ import { type ChangeEvent, useState } from 'react';
 import { SearchIcon } from './Icons';
 import { api } from '@src/utils/api';
 import { useRouter } from 'next/router';
-import { type Club } from '@src/models/club';
+import type { SelectClub as Club } from '@src/server/db/models';
 const Header = () => {
   const [focused, setFocused] = useState(false);
   const [search, setSearch] = useState('');

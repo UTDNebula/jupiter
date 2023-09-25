@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { HeartIcon } from './Icons';
-import { type Club } from '@src/models/club';
+import type { SelectClub as Club } from '@src/server/db/models';
 
 interface Props {
   club: Club;
@@ -21,6 +21,7 @@ const OrgDirectoryCards: React.FC<Props> = ({ club }) => {
       <div className="relative h-48 sm:h-56 md:h-64 lg:h-64">
         <Image src={club.image} fill alt={club.name} className="select-none" />
         <div className="absolute left-2 top-2 h-7 justify-center rounded-2xl bg-black bg-opacity-50 py-1.5 pl-4 pr-5 align-middle text-xs text-white">
+
           {30} Members
         </div>
         <button

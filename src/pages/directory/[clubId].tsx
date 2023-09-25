@@ -38,16 +38,14 @@ import {
   type InferGetStaticPropsType,
   type GetServerSidePropsContext,
 } from 'next';
-import DbProvider from '../../backend_tools/db_provider';
 import { createServerSideHelpers } from '@trpc/react-query/server';
 import { appRouter } from '@src/server/api/root';
 import { createInnerTRPCContext } from '@src/server/api/trpc';
 import { api } from '@src/utils/api';
+import { db } from '@src/server/db';
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const db = new DbProvider();
-  const clubs = await db.getAllClubs();
-
+  const clubs = await db.query.club.findMany();
   if (!clubs)
     return {
       paths: [],
