@@ -26,34 +26,37 @@ const Header = () => {
     void router.push(`/directory/${id}`);
   };
   return (
-    <div className="flex h-16 w-full content-between items-center justify-between px-5 py-3">
-      <div className="relative w-full max-w-xs md:max-w-sm lg:max-w-md">
-        <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-          <SearchIcon />
-        </span>
-        <input
-          type="text"
-          placeholder="Search for clubs"
-          className="h-10 w-full rounded-full border pl-10 pr-3 focus:outline-none"
-          tabIndex={0}
-          onChange={handleSearch}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setTimeout(() => setFocused(false), 300)}
-        />
-        {focused && res.length > 0 && (
-          <div className="absolute left-0 right-0 top-full z-10 mt-1 overflow-hidden rounded-sm shadow-lg">
-            {res.map((club) => (
-              <button
-                key={club.name}
-                className="block w-full bg-gray-50 px-4 pb-2 text-left text-lg hover:bg-gray-200"
-                onClick={() => onClick(club.id)}
-              >
-                <p className="text-sm font-semibold">{club.name}</p>
-              </button>
-            ))}
-          </div>
-        )}
+    <div className="flex h-20 w-full flex-row content-between items-center justify-between px-5 py-2.5">
+      <div className="w-full max-w-xs px-5 py-4 md:max-w-sm lg:max-w-md">
+        <div className="relative ">
+          <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+            <SearchIcon />
+          </span>
+          <input
+            type="text"
+            placeholder="Search for clubs"
+            className="h-10 w-full rounded-full border pl-10 pr-3 focus:outline-none"
+            tabIndex={0}
+            onChange={handleSearch}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setTimeout(() => setFocused(false), 300)}
+          />
+          {focused && res.length > 0 && (
+            <div className="absolute left-0 right-0 top-full z-10 mt-1 overflow-hidden rounded-sm shadow-lg">
+              {res.map((club) => (
+                <button
+                  key={club.name}
+                  className="block w-full bg-gray-50 px-4 pb-2 text-left text-lg hover:bg-gray-200"
+                  onClick={() => onClick(club.id)}
+                >
+                  <p className="text-sm font-semibold">{club.name}</p>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
+
       <div className="flex items-center justify-center">
         <div className="h-10 w-10 rounded-full bg-gray-300"></div>
       </div>

@@ -17,7 +17,7 @@ const Carousel: FC = () => {
   };
 
   return (
-    <div className="mx-auto w-10/12">
+    <div className="mx-auto w-full">
       <div className="relative h-[110] w-full overflow-hidden rounded-lg">
         {clubs.map((club, key) => (
           <div
@@ -38,12 +38,9 @@ const Carousel: FC = () => {
               <div className="absolute left-0 top-0 z-40 h-full w-full">
                 <div className="absolute left-0 top-0 z-20 h-full w-full">
                   <div className="relative flex h-full w-full flex-col justify-between p-[3.75rem]">
-                    <button
-                      type="button"
-                      className="text-md w-fit rounded-[1.25rem] bg-black bg-opacity-50 px-5 py-2.5 text-center font-extrabold text-white"
-                    >
+                    <div className="text-md w-fit rounded-[1.25rem] bg-black bg-opacity-50 px-5 py-2.5 text-center font-extrabold text-white">
                       Featured Clubs
-                    </button>
+                    </div>
                     <div className="flex flex-row">
                       <button
                         className="flex items-center justify-center rounded-full bg-black bg-opacity-50 p-4 hover:bg-opacity-70"
