@@ -31,7 +31,7 @@ const Sidebar = () => {
         <h1 className="px-4 text-xs font-light capitalize text-slate-500">
           Main Categories
         </h1>
-        <div className="mt-6 space-y-5">
+        <div className="mb-5 mt-6">
           {mainCats.map((cat) => (
             <SidebarItems
               key={cat}
@@ -45,7 +45,7 @@ const Sidebar = () => {
         <h1 className="px-4 text-xs font-light capitalize text-slate-500">
           More
         </h1>
-        <div className="mt-6 space-y-5">
+        <div className="mb-5 mt-6">
           {moreCats.map((cat) => (
             <SidebarItems
               key={cat}

@@ -53,7 +53,11 @@ const SidebarItems: FC<{ cat: union[number]; active: boolean }> = ({
   if (!route) return null;
 
   return (
-    <div className={`${active ? 'rounded-3xl bg-white py-2.5 shadow-md' : ''}`}>
+    <div
+      className={`${
+        active ? ' -my-2.5 rounded-3xl bg-white py-2.5 shadow-md' : 'my-5'
+      }`}
+    >
       <div
         className=" 
         flex h-full w-64 cursor-pointer items-start  rounded-lg bg-transparent px-5 text-sm transition-transform"
