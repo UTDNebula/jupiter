@@ -1,6 +1,6 @@
-import { type Club } from '@src/models/club';
 import Image from 'next/image';
 import React, { type FC } from 'react';
+import type { SelectClub as Club } from '@src/server/db/models';
 
 const OrgInfoSegment: FC<{ club: Club }> = ({ club }) => {
   return (

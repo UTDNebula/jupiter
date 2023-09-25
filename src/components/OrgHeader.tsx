@@ -1,7 +1,14 @@
 import React, { type FC } from 'react';
 import Image from 'next/image';
-import { type Club } from '@src/models/club';
 import ContactButtons from './ContactButtons';
+import type {
+  SelectClub,
+  SelectContact as Contacts,
+} from '@src/server/db/models';
+
+type Club = SelectClub & {
+  contacts?: Contacts[];
+};
 
 const OrgHeader: FC<{ club: Club }> = ({ club }) => {
   return (

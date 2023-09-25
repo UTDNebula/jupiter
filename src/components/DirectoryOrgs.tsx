@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { HeartIcon } from './Icons';
-import { type Club } from '@src/models/club';
+import type { SelectClub as Club } from '@src/server/db/models';
 
 interface Props {
   club: Club;

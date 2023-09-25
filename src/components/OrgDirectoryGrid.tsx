@@ -1,6 +1,6 @@
-import { type Club } from '@src/models/club';
 import DirectoryOrgs from './DirectoryOrgs';
 import React, { type FC } from 'react';
+import type { SelectClub as Club } from '@src/server/db/models';
 
 const OrgDirectoryGrid: FC<{ clubs: Club[] }> = ({ clubs }) => {
   return (
