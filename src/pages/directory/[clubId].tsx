@@ -3,6 +3,7 @@ import OrgHeader from '@src/components/OrgHeader';
 import React from 'react';
 import Head from 'next/head';
 import ClubDocuments from '@src/components/ClubDocuments';
+import Header from '@src/components/Header';
 
 const OrganizationPage = ({
   clubId,
@@ -42,7 +43,6 @@ import { createServerSideHelpers } from '@trpc/react-query/server';
 import { appRouter } from '@src/server/api/root';
 import { createInnerTRPCContext } from '@src/server/api/trpc';
 import { api } from '@src/utils/api';
-import Header from '@src/components/Header';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const db = new DbProvider();
