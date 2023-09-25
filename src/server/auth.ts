@@ -5,7 +5,10 @@ import {
   type DefaultSession,
 } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import { env } from '@src/env.mjs';
+import { certFile, env } from '@src/env.mjs';
+import { FirestoreAdapter } from '@auth/firebase-adapter';
+import { type Adapter } from 'next-auth/adapters';
+import { cert } from 'firebase-admin/app';
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -33,13 +36,26 @@ declare module 'next-auth' {
  *
  * @see https://next-auth.js.org/configuration/options
  */
+
+const certObject = certFile.parse(JSON.parse(env.JUPITER_CERT_FILE));
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+const credential = cert({
+  clientEmail: certObject.client_email,
+  privateKey: certObject.private_key.split(String.raw`\n`).join('\n'),
+  projectId: certObject.project_id,
+});
+
 export const authOptions: NextAuthOptions = {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
+  adapter: FirestoreAdapter({ credential }) as Adapter, // adds the user and puts into session automatically
   callbacks: {
     session({ session, user }) {
       if (session.user) {
         session.user.id = user.id;
         // session.user.role = user.role; <-- put other properties on the session here
       }
+
       return session;
     },
   },
@@ -48,6 +64,7 @@ export const authOptions: NextAuthOptions = {
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
     }),
+
     /**
      * ...add more providers here.
      *

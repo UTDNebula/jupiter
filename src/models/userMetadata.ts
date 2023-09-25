@@ -16,4 +16,4 @@ const IUser = z.object({
 });
 
 export default IUser;
-export type User = z.infer<typeof IUser>;
+export type UserMetadata = z.infer<typeof IUser>;

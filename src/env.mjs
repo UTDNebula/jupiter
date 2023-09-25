@@ -40,7 +40,6 @@ const server = z.object({
   measurementId: z.string().min(1),
   GOOGLE_CLIENT_ID: z.string().min(1),
   GOOGLE_CLIENT_SECRET: z.string().min(1),
-  GOOGLE_APPLICATION_CREDENTIALS: z.string().min(1),
   // This is going to be a bit jank but it's the only way to validate the cert file
   // without having to manually parse it.
   JUPITER_CERT_FILE: z.string().min(1),
@@ -73,7 +72,6 @@ const processEnv = {
   measurementId: process.env.measurementId,
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
-  GOOGLE_APPLICATION_CREDENTIALS: process.env.GOOGLE_APPLICATION_CREDENTIALS,
   // This will be a stringified JSON object
   JUPITER_CERT_FILE: JSON.stringify({
     type: process.env.JUPITER_CERT_FILE_TYPE,

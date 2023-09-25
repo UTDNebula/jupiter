@@ -6,7 +6,7 @@ const IClub = z.object({
   name: z.string(),
   events: z.array(Event).default([]),
   description: z.string().default('Cool club at UTD!'),
-  contacts: Contacts.partial().default({}),
+  contacts: Contacts.array().default([]),
   tags: z.array(z.string()).default([]),
   image: z.string().default('/nebula-logo.png'),
   id: z.string(),

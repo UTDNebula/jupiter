@@ -2,7 +2,7 @@ import { type Career } from '@src/models/career';
 import IClub, { type Club } from '@src/models/club';
 import { type Contacts } from '@src/models/contacts';
 import { type Role } from '@src/models/role';
-import { type User } from '@src/models/user';
+import { type UserMetadata } from '@src/models/userMetadata';
 import { type Year } from '@src/models/year';
 
 class Factory {
@@ -22,15 +22,15 @@ class Factory {
     return club;
   }
 
-  static buildUser(
+  static buildUserMetadata(
     first_name: string,
     last_name: string,
     major: string,
     year: Year = 'Freshman',
     role: Role = 'Student',
     career: Career = 'Engineering',
-  ): User {
-    const user: User = {
+  ): UserMetadata {
+    const userMetadata: UserMetadata = {
       first_name: first_name,
       last_name: last_name,
       major: major,
@@ -38,7 +38,7 @@ class Factory {
       role: role,
       career: career,
     };
-    return user;
+    return userMetadata;
   }
 
   static buildEvent() {
