@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const ContactType = z.enum([
+const ContactEnum = z.enum([
   'discord',
   'youtube',
   'twitch',
@@ -13,8 +13,8 @@ const ContactType = z.enum([
 ]);
 
 const IContacts = z.object({
-  platform: ContactType,
-  url: z.string(),
+  platform: ContactEnum,
+  url: z.string().min(1),
 });
 
 export default IContacts;
