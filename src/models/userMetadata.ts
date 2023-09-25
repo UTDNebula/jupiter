@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import Career from './career';
-import Club from './club';
+import { selectClub as Club } from '../server/db/models';
 import Role from './role';
 import Year from './year';
 
