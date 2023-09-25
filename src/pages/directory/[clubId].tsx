@@ -18,10 +18,13 @@ const OrganizationPage = ({
         <meta name="description" content={`${club.name} - Jupiter`} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="md:pl-72">
-        <OrgHeader club={club} />
-        <OrgInfoSegment club={club} />
-        <ClubDocuments />
+      <main className="w-full md:pl-72">
+        <Header />
+        <div className="flex flex-col space-y-8 px-5">
+          <OrgHeader club={club} />
+          <OrgInfoSegment club={club} />
+          <ClubDocuments />
+        </div>
       </main>
     </>
   );
@@ -39,6 +42,7 @@ import { createServerSideHelpers } from '@trpc/react-query/server';
 import { appRouter } from '@src/server/api/root';
 import { createInnerTRPCContext } from '@src/server/api/trpc';
 import { api } from '@src/utils/api';
+import Header from '@src/components/Header';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const db = new DbProvider();
