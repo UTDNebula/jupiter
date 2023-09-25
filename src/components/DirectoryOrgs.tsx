@@ -20,14 +20,14 @@ const OrgDirectoryCards: React.FC<Props> = ({ club }) => {
     <div className="flex h-full max-w-xs flex-col rounded-lg bg-white shadow-lg md:w-full">
       <div className="relative h-48 sm:h-56 md:h-64 lg:h-64">
         <Image src={club.image} fill alt={club.name} className="select-none" />
-        <div className="absolute left-2 top-2  h-7 rounded-2xl bg-black bg-opacity-50 py-1.5 pl-4 pr-5 text-white">
+        <div className="absolute left-2 top-2 h-7 justify-center rounded-2xl bg-black bg-opacity-50 py-1.5 pl-4 pr-5 align-middle text-xs text-white">
           {30} Members
         </div>
         <button
-          className="absolute right-2 top-2 rounded-lg px-2 py-1 font-bold text-slate-800  transition-colors"
+          className="absolute right-2 top-2 rounded-lg      font-bold text-slate-800 transition-colors"
           onClick={() => like()}
         >
-          <HeartIcon fill={liked ? 'fill-red-500' : undefined} />
+          <HeartIcon fill={liked ? 'fill-red-500' : 'fill-white'} />
         </button>
       </div>
       <div className="flex flex-col p-6">
