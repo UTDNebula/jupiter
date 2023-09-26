@@ -37,8 +37,8 @@ const Carousel: FC = () => {
               />
               <div className="absolute left-0 top-0 z-40 h-full w-full">
                 <div className="absolute left-0 top-0 z-20 h-full w-full">
-                  <div className="relative flex h-full w-full flex-col justify-between p-[3.75rem]">
-                    <div className="text-md w-fit rounded-[1.25rem] bg-black bg-opacity-50 px-5 py-2.5 text-center font-extrabold text-white">
+                  <div className="relative flex h-full w-full flex-col justify-between p-2 md:p-[3.75rem]">
+                    <div className="w-fit rounded-[1.25rem] bg-black bg-opacity-50 px-5 py-2.5 text-center text-xs font-extrabold text-white md:text-base">
                       Featured Clubs
                     </div>
                     <div className="flex flex-row">
