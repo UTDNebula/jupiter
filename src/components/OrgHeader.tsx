@@ -35,7 +35,7 @@ const OrgHeader = ({ club }: { club: Club }) => {
                 </p>
               ))}
             </div>
-            <h1 className="mt-auto rounded-full bg-black bg-opacity-50 text-center text-4xl font-bold text-slate-100">
+            <h1 className="mt-auto w-fit rounded-full bg-black bg-opacity-50 p-2 text-center text-4xl font-bold text-slate-100">
               {club.name}
             </h1>
           </div>
