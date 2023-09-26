@@ -21,7 +21,6 @@ const OrgDirectoryCards: React.FC<Props> = ({ club }) => {
       <div className="relative h-48 sm:h-56 md:h-64 lg:h-64">
         <Image src={club.image} fill alt={club.name} className="select-none" />
         <div className="absolute left-2 top-2 h-7 justify-center rounded-2xl bg-black bg-opacity-50 py-1.5 pl-4 pr-5 align-middle text-xs text-white">
-
           {30} Members
         </div>
         <button
@@ -39,11 +38,11 @@ const OrgDirectoryCards: React.FC<Props> = ({ club }) => {
         <p className="mt-3 line-clamp-3 text-xs text-slate-500">Description</p>
         <p className="mb-4 text-sm text-slate-600">{club.description}</p>
         <div className="flex flex-row">
-          <button className="mr-2 rounded-2xl bg-blue-600 px-4 py-2 text-xs font-extrabold text-white transition-colors hover:bg-blue-700">
+          <button className="bg-blue-primary mr-2 rounded-2xl px-4 py-2 text-xs font-extrabold text-white transition-colors hover:bg-blue-700">
             Join
           </button>
           <button
-            className="rounded-2xl bg-blue-600 bg-opacity-10 px-4 py-2 text-xs font-extrabold text-slate-800 transition-colors hover:bg-blue-200"
+            className="text-blue-primary rounded-2xl bg-blue-600 bg-opacity-10 px-4 py-2 text-xs font-extrabold  transition-colors hover:bg-blue-200"
             onClick={() => void onClick()}
           >
             Learn More

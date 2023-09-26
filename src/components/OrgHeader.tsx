@@ -40,7 +40,7 @@ const OrgHeader = ({ club }: { club: Club }) => {
             </h1>
           </div>
           <div className="ml-auto flex h-min flex-row content-center gap-x-12 self-center">
-            <button className="rounded-3xl bg-blue-500 px-8 py-4 hover:bg-blue-600">
+            <button className="bg-blue-primary rounded-full px-8 py-4 text-xs font-extrabold text-white hover:bg-blue-700">
               Join
             </button>
             <ContactButtons contacts={club.contacts || []} />

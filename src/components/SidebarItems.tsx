@@ -65,11 +65,11 @@ const SidebarItems: FC<{ cat: union[number]; active: boolean }> = ({
       >
         <div className="flex items-center gap-x-4">
           {Icon && (
-            <Icon fill={`${active ? 'fill-blue-400' : 'fill-slate-500'}`} />
+            <Icon fill={`${active ? 'fill-blue-primary' : 'fill-slate-500'}`} />
           )}
           <h1
             className={`text-sm font-medium capitalize ${
-              active ? 'text-blue-400' : 'text-slate-500'
+              active ? 'text-blue-primary' : 'text-slate-500'
             }`}
           >
             {cat}

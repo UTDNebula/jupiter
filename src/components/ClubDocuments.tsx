@@ -32,7 +32,7 @@ const Document: FC<{ name: string }> = ({ name }) => {
         <h1 className="text-xs font-medium">{name}</h1>
       </div>
       <div className="ml-auto flex flex-col items-start justify-center">
-        <button className="rounded-full bg-blue-200 px-3 py-1 text-xs font-semibold text-blue-500 transition-colors hover:bg-blue-300 hover:text-blue-900">
+        <button className="text-blue-primary bg-blue-primary rounded-full bg-opacity-10 px-3 py-1 text-xs font-semibold transition-colors hover:bg-blue-300 hover:bg-opacity-40 hover:text-blue-700">
           View
         </button>
       </div>

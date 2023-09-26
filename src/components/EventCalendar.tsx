@@ -33,7 +33,7 @@ const EventCalendar: React.FC<{ index: number }> = ({ index }) => {
           <div
             className={`m-1 flex h-16 w-36 flex-col items-center justify-center rounded-md p-5 ${
               today.getDay() === day.getDay() && index === 0
-                ? 'bg-blue-500'
+                ? 'bg-blue-primary text-white'
                 : 'bg-slate-100'
             }`}
           >
