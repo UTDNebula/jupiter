@@ -8,7 +8,7 @@ We are always open to contributions to the project. If you would like to contrib
 please join our [Discord](http://discord.utdnebula.com/) and ask for drop a message in the `#jupiter-chat` channel for more details or
 DM Ruben for more details.
 
-Please make sure you have at least NodeJS v18.0.0 or greater installed before continuing.
+Please make sure you have at least [NodeJS v18.0.0](https://nodejs.org/en) or greater installed before continuing.
 
 Currently, we're tracking all issues via GitHub Issues. If you would like to work on an issue, please comment on the issue and we will assign it to you.
 If you see anything that you think could be improved, please create an issue and we will look into it.
