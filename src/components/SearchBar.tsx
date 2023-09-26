@@ -31,7 +31,7 @@ const SearchBar = <T extends SearchElement>({
   return (
     <div className="w-full max-w-xs px-5 py-4 md:max-w-sm lg:max-w-md">
       <div className="relative ">
-        <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+        <span className="absolute inset-y-0 flex items-center pl-3">
           <SearchIcon />
         </span>
         <input
@@ -44,14 +44,15 @@ const SearchBar = <T extends SearchElement>({
           onBlur={() => setTimeout(() => setFocused(false), 300)}
         />
         {focused && searchResults && searchResults.length > 0 && (
-          <div className="absolute left-0 right-0 top-full z-10 mt-1 overflow-hidden rounded-sm shadow-lg">
+          <div className="absolute left-0 right-0 top-full z-50 mt-1 rounded-sm shadow-lg">
             {searchResults.map((item) => (
               <button
+                type="button"
                 key={item.name}
-                className="block w-full bg-gray-50 px-4 pb-2 text-left text-lg hover:bg-gray-200"
+                className="w-full bg-gray-50 px-4 py-2 text-left font-semibold hover:bg-gray-200"
                 onClick={() => (onClick ? onClick(item) : null)}
               >
-                <p className="text-sm font-semibold">{item.name}</p>
+                {item.name}
               </button>
             ))}
           </div>
