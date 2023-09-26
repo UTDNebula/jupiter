@@ -5,9 +5,13 @@ _A tool to find ways to get involved on campus._
 ## Contributing
 
 We are always open to contributions to the project. If you would like to contribute,
-please join our [Discord](http://discord.utdnebula.com/) and ask for how to access the Jupiter Dev Team
+please join our [Discord](http://discord.utdnebula.com/) and ask for drop a message in the `#jupiter-chat` channel for more details or
+DM Ruben for more details.
 
 Please make sure you have at least NodeJS v18.0.0 or greater installed before continuing.
+
+Currently, we're tracking all issues via GitHub Issues. If you would like to work on an issue, please comment on the issue and we will assign it to you.
+If you see anything that you think could be improved, please create an issue and we will look into it.
 
 ### Getting Started
 
@@ -40,4 +44,5 @@ When working on a new feature, please create a new branch with the following nam
 git checkout -b feature/<feature-name>
 ```
 
-When you are ready to merge your branch into the `develop` branch, please create a pull request and request a review from the Jupiter Dev Team
+When you are ready to merge your branch into the `develop` branch, please create a pull request and request a review from the Jupiter Dev Team.
+Please include details about what issue you are addressing with the pull request, what changes you made, and any other relevant information.
