@@ -10,25 +10,20 @@ type SearchElement = {
   id: string;
   name: string;
 };
-type SearchProvider<T extends SearchElement> = (
-  search: string,
-  setRes: Dispatch<SetStateAction<Array<T>>>,
-) => void;
 type SearchBarProps<T extends SearchElement> = {
   placeholder: string;
-  searchProvider?: SearchProvider<T>;
+  setSearch: Dispatch<SetStateAction<string>>;
+  searchResults?: Array<T>;
   onClick?: (input: T) => void;
 };
 
 const SearchBar = <T extends SearchElement>({
   placeholder,
-  searchProvider,
+  setSearch,
+  searchResults,
   onClick,
 }: SearchBarProps<T>) => {
   const [focused, setFocused] = useState(false);
-  const [search, setSearch] = useState('');
-  const [res, setRes] = useState<T[]>([]);
-  searchProvider ? searchProvider(search, setRes) : null;
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
@@ -48,9 +43,9 @@ const SearchBar = <T extends SearchElement>({
           onFocus={() => setFocused(true)}
           onBlur={() => setTimeout(() => setFocused(false), 300)}
         />
-        {focused && res.length > 0 && (
+        {focused && searchResults && searchResults.length > 0 && (
           <div className="absolute left-0 right-0 top-full z-10 mt-1 overflow-hidden rounded-sm shadow-lg">
-            {res.map((item) => (
+            {searchResults.map((item) => (
               <button
                 key={item.name}
                 className="block w-full bg-gray-50 px-4 pb-2 text-left text-lg hover:bg-gray-200"

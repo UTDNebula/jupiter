@@ -1,4 +1,4 @@
-import { type SetStateAction, type Dispatch, type ReactNode } from 'react';
+import { type ReactNode, useState } from 'react';
 import { api } from '@src/utils/api';
 import { useRouter } from 'next/router';
 import type { SelectClub as Club } from '@src/server/db/models';
@@ -17,20 +17,17 @@ const BaseHeader = ({ children }: { children: ReactNode }) => {
 
 const Header = () => {
   const router = useRouter();
-  const ClubSearchProvider = (
-    search: string,
-    setRes: Dispatch<SetStateAction<Array<Club>>>,
-  ) => {
-    api.club.byName.useQuery(
-      { name: search },
-      {
-        onSuccess: (data) => {
-          setTimeout(() => setRes(data), 300);
-          return data;
-        },
+  const [search, setSearch] = useState<string>('');
+  const [res, setRes] = useState<Club[]>([]);
+  api.club.byName.useQuery(
+    { name: search },
+    {
+      onSuccess: (data) => {
+        setTimeout(() => setRes(data), 300);
+        return data;
       },
-    );
-  };
+    },
+  );
   const onClickSearchResult = (club: Club) => {
     void router.push(`/directory/${club.id}`);
   };
@@ -38,7 +35,8 @@ const Header = () => {
     <BaseHeader>
       <SearchBar
         placeholder="Search for Clubs"
-        searchProvider={ClubSearchProvider}
+        setSearch={setSearch}
+        searchResults={res}
         onClick={onClickSearchResult}
       />
     </BaseHeader>
@@ -46,10 +44,11 @@ const Header = () => {
 };
 
 export const EventHeader = () => {
+  const [search, setSearch] = useState('');
   return (
     <>
       <BaseHeader>
-        <SearchBar placeholder="Search for Events" />
+        <SearchBar placeholder="Search for Events" setSearch={setSearch} />
       </BaseHeader>
     </>
   );
