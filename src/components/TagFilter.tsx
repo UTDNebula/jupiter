@@ -57,7 +57,7 @@ const TagFilter = () => {
               className={`${
                 selected === tag
                   ? 'bg-blue-primary text-white hover:bg-blue-700'
-                  : 'bg-gray-100 text-black hover:bg-gray-200'
+                  : 'bg-gray-100 text-slate-600 hover:bg-gray-200'
               } whitespace-nowrap rounded-3xl px-8 py-4 text-xs font-extrabold transition-colors duration-200 focus:outline-none`}
               onClick={() => onClick(tag)}
             >
