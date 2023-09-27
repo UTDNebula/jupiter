@@ -1,37 +1,31 @@
-import { assert } from 'chai';
-import { db } from '../src/server/db';
-import { club } from '../src/server/db/schema';
+import { describe, expect, test } from '@jest/globals';
+import { db } from '@src/server/db';
+import { type InsertClub } from '@src/server/db/models';
+import { club } from '@src/server/db/schema';
 import { eq } from 'drizzle-orm';
 
-//Test to create an organization
-describe('This is to create a club on supabase', () => {
-  it('should create a new club', (done) => {
-    // Creating a raw club object
-    const newClub: typeof club.$inferInsert = {
-      name: 'TEST ORG',
+describe('This should create a club on supabase', () => {
+  test('Should create a new club', async () => {
+    const newCLub: InsertClub = {
       description: 'Computer science club at UTD',
+      name: 'TEST ORG',
     };
 
-    db.insert(club)
-      .values(newClub)
-      .returning()
-      .then((res) => {
-        assert(res.length > 0);
-        assert.equal(res[0]?.name, 'TEST ORG');
-        done();
-      })
-      .catch(done);
-  }).timeout(5000);
+    const returned = await db.insert(club).values(newCLub).returning();
+    expect(returned.length > 0).toBeTruthy();
+    const first = returned[0];
+    expect(first?.name).toEqual('TEST ORG');
+  });
+});
 
-  it('Should delete the created club', (done) => {
-    db.delete(club)
+describe('This should delete the created club', () => {
+  test('Should delete the created club', async () => {
+    const returned = await db
+      .delete(club)
       .where(eq(club.name, 'TEST ORG'))
-      .returning()
-      .then((res) => {
-        assert(res.length > 0);
-        assert.equal(res[0]?.name, 'TEST ORG');
-        done();
-      })
-      .catch(done);
-  }).timeout(3000);
+      .returning();
+    expect(returned.length > 0).toBeTruthy();
+    const first = returned[0];
+    expect(first?.name).toEqual('TEST ORG');
+  });
 });
