@@ -11,7 +11,7 @@ const About = () => {
       </Head>
       <main className="h-full md:pl-72">
         <Header />
-        <div className="mx-6 max-w-5xl">
+        <div className="mx-6 h-full max-w-5xl">
           <h1 className="p-2 py-12 text-2xl font-bold text-slate-500">
             About us
           </h1>
@@ -44,7 +44,7 @@ const About = () => {
               club experiences for everyone involved.
             </p>
           </div>
-          <div className="mt-16">
+          <div className="mt-16 py-3">
             <h1 className="mb-10 text-center text-3xl font-bold text-slate-500">
               Our Team
             </h1>
