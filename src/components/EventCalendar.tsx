@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import EventCalendarCard from './EventCalendarCard';
 import { api } from '@src/utils/api';
+import type { Event } from '@src/types/event';
 
 const EventCalendar: React.FC<{ index: number }> = ({ index }) => {
+  const [events, setEvents] = useState<Event[] | undefined>();
+
   const dates = React.useMemo(() => {
     const today = new Date();
-    const daysUntilSunday = 7 - today.getDay();
+    const daysSinceLastSunday = today.getDay();
     const startDate = new Date(today);
 
-    startDate.setDate(today.getDate() + daysUntilSunday + (index - 1) * 7);
+    startDate.setDate(today.getDate() - daysSinceLastSunday + (index - 1) * 7);
 
     const dates = [];
 
@@ -23,6 +26,8 @@ const EventCalendar: React.FC<{ index: number }> = ({ index }) => {
 
   const today = new Date();
 
+  console.log(dates[0]);
+
   api.event.byDateRange.useQuery(
     {
       startTime: dates[0] || today,
@@ -31,6 +36,7 @@ const EventCalendar: React.FC<{ index: number }> = ({ index }) => {
     {
       onSuccess: (data) => {
         console.log(data);
+        setEvents(data);
       },
     },
   );
@@ -52,9 +58,9 @@ const EventCalendar: React.FC<{ index: number }> = ({ index }) => {
             </p>
           </div>
           <div className="h-60 overflow-y-scroll py-2">
-            {Array.from({ length: Math.floor(Math.random() * 5) + 1 }).map(
-              (_, key) => (
-                <EventCalendarCard key={key} />
+            {(events || []).map(
+              (event, key) => (
+                <EventCalendarCard event={event} key={key} />
               ),
             )}
           </div>
