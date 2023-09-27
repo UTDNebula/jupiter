@@ -12,7 +12,7 @@ describe('This should create a club on supabase', () => {
     };
 
     const returned = await db.insert(club).values(newCLub).returning();
-    expect(returned.length > 0).toBeTruthy();
+    expect(returned.length === 1);
     const first = returned[0];
     expect(first?.name).toEqual('TEST ORG');
   });
@@ -24,7 +24,7 @@ describe('This should delete the created club', () => {
       .delete(club)
       .where(eq(club.name, 'TEST ORG'))
       .returning();
-    expect(returned.length > 0).toBeTruthy();
+    expect(returned.length === 1);
     const first = returned[0];
     expect(first?.name).toEqual('TEST ORG');
   });
