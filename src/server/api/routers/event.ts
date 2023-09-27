@@ -36,8 +36,11 @@ export const eventRouter = createTRPCRouter({
       try {
         const events = await ctx.db.query.events.findMany({
           where: (event) => {
-            return and(gte(event.startTime, startTime), lte(event.endTime, endTime));
-          }
+            return and(
+              gte(event.startTime, startTime),
+              lte(event.endTime, endTime),
+            );
+          },
         });
 
         const parsed = events.map((e) => selectEvent.parse(e));

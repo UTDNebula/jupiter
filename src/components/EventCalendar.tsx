@@ -1,34 +1,43 @@
 import React from 'react';
 import EventCalendarCard from './EventCalendarCard';
-
-const weekDays = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-] as const;
-// This function will return a week from sunday to saturday
-const thisWeek = (index = 0): Date[] => {
-  const date = new Date();
-  date.setDate(date.getDate() + index * 7);
-  const day = date.getDay();
-  const week = [];
-  for (let i = 0; i < 7; i++) {
-    const newDate = new Date(date);
-    newDate.setDate(date.getDate() + (i - day));
-    week.push(newDate);
-  }
-  return week;
-};
+import { api } from '@src/utils/api';
 
 const EventCalendar: React.FC<{ index: number }> = ({ index }) => {
+  const dates = React.useMemo(() => {
+    const today = new Date();
+    const daysUntilSunday = 7 - today.getDay();
+    const startDate = new Date(today);
+
+    startDate.setDate(today.getDate() + daysUntilSunday + (index - 1) * 7);
+
+    const dates = [];
+
+    for (let i = 0; i < 7; i++) {
+      const currentDate = new Date(startDate);
+      currentDate.setDate(startDate.getDate() + i);
+      dates.push(currentDate);
+    }
+
+    return dates;
+  }, [index]);
+
   const today = new Date();
+
+  api.event.byDateRange.useQuery(
+    {
+      startTime: dates[0] || today,
+      endTime: dates[6] || today,
+    },
+    {
+      onSuccess: (data) => {
+        console.log(data);
+      },
+    },
+  );
+
   return (
     <div className="flex w-full justify-between p-2">
-      {thisWeek(index).map((day, key) => (
+      {dates.map((day, key) => (
         <div className="flex select-none flex-col items-center" key={key}>
           <div
             className={`m-1 flex h-16 w-36 flex-col items-center justify-center rounded-md p-5 ${
@@ -54,5 +63,15 @@ const EventCalendar: React.FC<{ index: number }> = ({ index }) => {
     </div>
   );
 };
+
+const weekDays = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+] as const;
 
 export default EventCalendar;
