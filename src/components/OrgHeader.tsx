@@ -4,12 +4,15 @@ import type {
   SelectClub,
   SelectContact as Contacts,
 } from '@src/server/db/models';
+import { HeartIcon } from './Icons';
+import { useState } from 'react';
+import { setLogger } from 'next-auth/utils/logger';
 
 type Club = SelectClub & {
   contacts?: Contacts[];
 };
-
 const OrgHeader = ({ club }: { club: Club }) => {
+  const [liked, setLiked] = useState(false);
   return (
     <div className="relative">
       <div className="h-full w-full">
@@ -39,9 +42,20 @@ const OrgHeader = ({ club }: { club: Club }) => {
               {club.name}
             </h1>
           </div>
-          <div className="ml-auto flex h-min flex-row content-center gap-x-12 self-center">
-            <button className="bg-blue-primary rounded-full px-8 py-4 text-xs font-extrabold text-white hover:bg-blue-700">
+          <div className="ml-auto flex h-min flex-row items-center gap-x-12 self-center">
+            <button className="bg-blue-primary rounded-full px-8 py-4 text-xs font-extrabold text-white transition-colors hover:bg-blue-700">
               Join
+            </button>
+            <button
+              className="bg-blue-primary rounded-full p-2.5 transition-colors hover:bg-blue-700"
+              type="button"
+              onClick={() => {
+                setLiked(!liked);
+              }}
+            >
+              <div className={'h-8 w-8'}>
+                <HeartIcon fill={`${liked ? 'fill-red-500' : 'fill-white'} `} />
+              </div>
             </button>
             <ContactButtons contacts={club.contacts || []} />
           </div>

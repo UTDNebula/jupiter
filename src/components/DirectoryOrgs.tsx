@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { HeartIcon } from './Icons';
+import { GroupIcon, HeartIcon } from './Icons';
 import type { SelectClub as Club } from '@src/server/db/models';
 
 interface Props {
@@ -20,15 +20,24 @@ const OrgDirectoryCards: React.FC<Props> = ({ club }) => {
     <div className="flex h-full max-w-xs flex-col rounded-lg bg-white shadow-lg md:w-full">
       <div className="relative h-48 sm:h-56 md:h-64 lg:h-64">
         <Image src={club.image} fill alt={club.name} className="select-none" />
-        <div className="absolute left-2 top-2 h-7 justify-center rounded-2xl bg-black bg-opacity-50 py-1.5 pl-4 pr-5 align-middle text-xs text-white">
-          {30} Members
+        <div className="absolute left-2 right-2 top-2 flex h-fit flex-row items-center">
+          <div className="flex flex-row items-center rounded-full bg-black bg-opacity-50 py-1.5 pl-4 pr-5">
+            <div className="h-7 w-7 text-white">
+              <GroupIcon />
+            </div>
+            <div className="ml-1 h-fit w-fit text-xs font-bold text-white">
+              {30} Members
+            </div>
+          </div>
+          <button
+            className="ml-auto rounded-full bg-black bg-opacity-50 p-1.5 font-bold text-slate-800 transition-colors"
+            onClick={() => like()}
+          >
+            <div className="h-7 w-7">
+              <HeartIcon fill={liked ? 'fill-red-500' : 'fill-white'} />
+            </div>
+          </button>
         </div>
-        <button
-          className="absolute right-2 top-2 rounded-lg      font-bold text-slate-800 transition-colors"
-          onClick={() => like()}
-        >
-          <HeartIcon fill={liked ? 'fill-red-500' : 'fill-white'} />
-        </button>
       </div>
       <div className="flex flex-col p-6">
         <h1 className="text-xl font-medium text-slate-800">{club.name}</h1>
