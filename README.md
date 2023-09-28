@@ -104,15 +104,17 @@ $$;
 <summary>Enums</summary><br />
 
 Currently, drizzle does not automatically create enums for you. You will have to create them manually. This [link](https://orm.drizzle.team/docs/column-types/pg#enum) should give you a good idea of how to create enums in postgres.
+
 </details> </br>
 
-Once you have added the `DATABASE_URL` to your `.env` file, and have all the necessary extensions as well as enums, you will need to run the following command to create the tables in your database.
+Once you have added the `DATABASE_URL` to your `.env` file, and have all the necessary extensions as well as enums, you will need to run the following commands to create the tables in your database.
 
 ```bash
-npm run push
+npm run drizzle:generate
+npm run drizzle:push
 ```
 
-This command will create the tables in your database based on the models defined in the `src/server/db/schema.ts` directory.
+These commands will create the tables in your database based on the models defined in the `src/server/db/schema.ts` directory. You would also run these commands anytime there are changes to `schema.ts` in order to update the database.
 
 Finally, start the development server.
 
