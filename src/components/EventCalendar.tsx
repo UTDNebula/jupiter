@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import EventCalendarCard from './EventCalendarCard';
 import { api } from '@src/utils/api';
 import type { Event } from '@src/types/event';
+import * as Dialog from '@radix-ui/react-dialog';
 
 const EventCalendar: React.FC<{ index: number }> = ({ index }) => {
   const [events, setEvents] = useState<Event[] | undefined>();
@@ -64,7 +65,52 @@ const EventCalendar: React.FC<{ index: number }> = ({ index }) => {
                 eventDate.getMonth() === givenDate.getMonth() &&
                 eventDate.getFullYear() === givenDate.getFullYear()
               ) {
-                return <EventCalendarCard event={event} key={key} />;
+                const formattedStartTime = `${(event.startTime.getMonth() + 1)
+                  .toString()
+                  .padStart(2, '0')}/${event.startTime
+                  .getDate()
+                  .toString()
+                  .padStart(
+                    2,
+                    '0',
+                  )}, ${event.startTime.getHours()}:${event.startTime.getMinutes()}`;
+
+                const formattedEndTime = `${(event.startTime.getMonth() + 1)
+                  .toString()
+                  .padStart(2, '0')}/${event.startTime
+                  .getDate()
+                  .toString()
+                  .padStart(
+                    2,
+                    '0',
+                  )}, ${event.startTime.getHours()}:${event.startTime.getMinutes()}`;
+
+                return (
+                  <Dialog.Root key={key}>
+                    <Dialog.Trigger asChild>
+                      <button>
+                        <EventCalendarCard event={event} />
+                      </button>
+                    </Dialog.Trigger>
+                    <Dialog.Portal>
+                      <Dialog.Content className="fixed left-1/2 top-1/2 -translate-x-30 -translate-y-1/2 bg-slate-200 p-8 rounded-md border-2 border-black">
+                        <Dialog.Title className="rounded-md text-xl text-black">
+                          {event.name}
+                        </Dialog.Title>
+                        <Dialog.Description>
+                          <div>
+                            <div>
+                              <div>
+                                {formattedStartTime} to {formattedEndTime}
+                              </div>
+                            </div>
+                            <div>{event.description}</div>
+                          </div>
+                        </Dialog.Description>
+                      </Dialog.Content>
+                    </Dialog.Portal>
+                  </Dialog.Root>
+                );
               } else {
                 return <div key={key}></div>;
               }
