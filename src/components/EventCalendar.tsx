@@ -94,11 +94,11 @@ const EventCalendar: React.FC<{ index: number }> = ({ index }) => {
                     </Dialog.Trigger>
                     <Dialog.Portal>
                       <Dialog.Content className="fixed left-1/2 top-1/2 -translate-x-30 -translate-y-1/2 bg-slate-200 p-8 rounded-md border-2 border-black">
-                        <Dialog.Title className="rounded-md text-xl text-black">
+                        <Dialog.Title className="rounded-md text-xl text-black py-2">
                           {event.name}
                         </Dialog.Title>
                         <Dialog.Description>
-                          <div>
+                          <div className='py-2'>
                             <div>
                               <div>
                                 {formattedStartTime} to {formattedEndTime}
