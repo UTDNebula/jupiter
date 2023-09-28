@@ -12,8 +12,8 @@ const Events = () => {
       </Head>
       <main className="md:pl-72">
         <EventHeader />
-        <EventCalendar index={0} />
         <EventCalendar index={1} />
+        <EventCalendar index={2} />
       </main>
     </>
   );

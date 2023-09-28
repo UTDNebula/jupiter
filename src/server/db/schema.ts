@@ -68,6 +68,19 @@ export const club = pgTable('club', {
   image: text('image').default('/nebula-logo.png').notNull(),
 });
 
+export const events = pgTable('events', {
+  id: integer('id')
+    .default(sql`nanoid(20)`)
+    .primaryKey(),
+  clubId: text('club_id')
+    .notNull()
+    .references(() => club.id, { onDelete: 'cascade' }),
+  name: text('name').notNull(),
+  description: text('description').notNull(),
+  startTime: timestamp('start_time', { withTimezone: true }).notNull(),
+  endTime: timestamp('end_time', { withTimezone: true }).notNull(),
+});
+
 const platformEnum = pgEnum('platform', [
   'discord',
   'youtube',
