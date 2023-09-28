@@ -8,6 +8,13 @@
       "when": 1695921075450,
       "tag": "0000_giant_thor",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1695921837187,
+      "tag": "0001_rare_leper_queen",
+      "breakpoints": true
     }
   ]
 }
