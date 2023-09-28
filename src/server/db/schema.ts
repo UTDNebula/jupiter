@@ -111,6 +111,11 @@ export const contactsRelation = relations(contacts, ({ one }) => ({
   club: one(club, { fields: [contacts.clubId], references: [club.id] }),
 }));
 
+export const eventsRelation = relations(events, ({ one }) => ({
+  club: one(club, { fields: [events.clubId], references: [club.id] }),
+}));
+
 export const clubRelation = relations(club, ({ many }) => ({
   contacts: many(contacts),
+  events: many(events),
 }));
