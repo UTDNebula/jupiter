@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import EventCalendarCard from './EventCalendarCard';
 import { api } from '@src/utils/api';
-import type { Event } from '@src/types/event';
+import type { Event } from '@src/models/event';
 import * as Dialog from '@radix-ui/react-dialog';
 
 const EventCalendar: React.FC<{ index: number }> = ({ index }) => {

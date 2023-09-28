@@ -1,9 +1,12 @@
 import { z } from 'zod';
 
 const IEvent = z.object({
+  id: z.number(),
   name: z.string(),
-  hostClub: z.string(),
-  when: z.date(),
+  description: z.string(),
+  clubId: z.string(),
+  startTime: z.date(),
+  endTime: z.date(),
 });
 
 export default IEvent;

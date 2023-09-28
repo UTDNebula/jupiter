@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Event } from '@src/types/event';
+import type { Event } from '@src/models/event';
 
 const EventCalendarCard = ({ event }: { event: Event }) => {
   const time = `${event.startTime.getHours()}:${event.startTime.getMinutes()}`;
