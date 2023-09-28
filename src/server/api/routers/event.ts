@@ -5,6 +5,9 @@ import { selectEvent } from '@src/server/db/models';
 
 const byClubIdSchema = z.object({
   clubId: z.string().default(''),
+});
+
+const byDateRangeSchema = z.object({
   startTime: z.date(),
   endTime: z.date(),
 });
@@ -29,7 +32,7 @@ export const eventRouter = createTRPCRouter({
       }
     }),
   byDateRange: publicProcedure
-    .input(byClubIdSchema)
+    .input(byDateRangeSchema)
     .query(async ({ input, ctx }) => {
       const { startTime, endTime } = input;
 
