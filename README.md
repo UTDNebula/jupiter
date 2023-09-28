@@ -49,7 +49,64 @@ Jupiter uses an ORM called [Drizzle](https://orm.drizzle.team/) to interact with
 
 We're using Supabase as our database provider. You can create a supabase account [here](https://supabase.io/). Once you have created an account, you can create a new project and add the `DATABASE_URL` to your `.env` file. From a Supabase project, you can find the `DATABASE_URL` by navigating to the `Settings` tab and clicking on the `Database` tab.
 
-Once you have added the `DATABASE_URL` to your `.env` file, you will need to run the following command to create the tables in your database.
+#### Database Migrations
+
+In your SQL editor, you will have to run a couple commands in order to properly set up the database
+
+<details>
+<summary>Nanoid</summary><br />
+
+Run the following command to install the nanoid extension.
+
+```sql
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+CREATE OR REPLACE FUNCTION nanoid(size int DEFAULT 21, alphabet text DEFAULT '_-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    RETURNS text
+    LANGUAGE plpgsql
+    volatile
+AS
+$$
+DECLARE
+    idBuilder text := '';
+    i int := 0;
+    bytes bytea;
+    alphabetIndex int;
+    mask int;
+    step int;
+BEGIN
+    mask := (2 << cast(floor(log(length(alphabet) - 1) / log(2)) as int)) - 1;
+    step := cast(ceil(1.6 * mask * size / length(alphabet)) AS int);
+
+    while true
+        loop
+            bytes := gen_random_bytes(size);
+            while i < size
+                loop
+                    alphabetIndex := (get_byte(bytes, i) & mask) + 1;
+                    if alphabetIndex <= length(alphabet) then
+                        idBuilder := idBuilder || substr(alphabet, alphabetIndex, 1);
+                        if length(idBuilder) = size then
+                            return idBuilder;
+                        end if;
+                    end if;
+                    i = i + 1;
+                end loop;
+
+            i := 0;
+        end loop;
+END
+$$;
+```
+
+</details>
+<details>
+<summary>Enums</summary><br />
+
+Currently, drizzle does not automatically create enums for you. You will have to create them manually. This [link](https://orm.drizzle.team/docs/column-types/pg#enum) should give you a good idea of how to create enums in postgres.
+</details> </br>
+
+Once you have added the `DATABASE_URL` to your `.env` file, and have all the necessary extensions as well as enums, you will need to run the following command to create the tables in your database.
 
 ```bash
 npm run push
