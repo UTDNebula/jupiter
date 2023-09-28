@@ -77,8 +77,8 @@ export const events = pgTable('events', {
     .references(() => club.id, { onDelete: 'cascade' }),
   name: text('name').notNull(),
   description: text('description').notNull(),
-  startTime: timestamp('start_time').notNull(),
-  endTime: timestamp('end_time').notNull(),
+  startTime: timestamp('start_time', { withTimezone: true }).notNull(),
+  endTime: timestamp('end_time', { withTimezone: true }).notNull(),
 });
 
 const platformEnum = pgEnum('platform', [
