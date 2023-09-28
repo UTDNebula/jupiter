@@ -26,8 +26,6 @@ const EventCalendar: React.FC<{ index: number }> = ({ index }) => {
 
   const today = new Date();
 
-  console.log(dates[0]);
-
   api.event.byDateRange.useQuery(
     {
       startTime: dates[0] || today,
@@ -35,7 +33,6 @@ const EventCalendar: React.FC<{ index: number }> = ({ index }) => {
     },
     {
       onSuccess: (data) => {
-        console.log(data);
         setEvents(data);
       },
     },
@@ -47,7 +44,7 @@ const EventCalendar: React.FC<{ index: number }> = ({ index }) => {
         <div className="flex select-none flex-col items-center" key={key}>
           <div
             className={`m-1 flex h-16 w-36 flex-col items-center justify-center rounded-md p-5 ${
-              today.getDay() === day.getDay() && index === 0
+              today.getDay() === day.getDay() && index === 1
                 ? 'bg-blue-500'
                 : 'bg-slate-100'
             }`}
@@ -58,11 +55,20 @@ const EventCalendar: React.FC<{ index: number }> = ({ index }) => {
             </p>
           </div>
           <div className="h-60 overflow-y-scroll py-2">
-            {(events || []).map(
-              (event, key) => (
-                <EventCalendarCard event={event} key={key} />
-              ),
-            )}
+            {(events || []).map((event, key) => {
+              const eventDate = new Date(event.startTime);
+              const givenDate = new Date(day);
+
+              if (
+                eventDate.getDate() === givenDate.getDate() &&
+                eventDate.getMonth() === givenDate.getMonth() &&
+                eventDate.getFullYear() === givenDate.getFullYear()
+              ) {
+                return <EventCalendarCard event={event} key={key} />;
+              } else {
+                return <div key={key}></div>;
+              }
+            })}
           </div>
         </div>
       ))}
