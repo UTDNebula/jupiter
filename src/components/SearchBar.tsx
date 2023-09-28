@@ -5,6 +5,9 @@ import React, {
   type ChangeEvent,
 } from 'react';
 import { SearchIcon } from './Icons';
+import { useRouter } from 'next/router';
+import type { SelectClub as Club } from '@src/server/db/models';
+import { api } from '@src/utils/api';
 
 type SearchElement = {
   id: string;
@@ -61,4 +64,32 @@ const SearchBar = <T extends SearchElement>({
     </div>
   );
 };
-export default SearchBar;
+export const ClubSearchBar = () => {
+  const router = useRouter();
+  const [search, setSearch] = useState<string>('');
+  const [res, setRes] = useState<Club[]>([]);
+  api.club.byName.useQuery(
+    { name: search },
+    {
+      onSuccess: (data) => {
+        setTimeout(() => setRes(data), 300);
+        return data;
+      },
+    },
+  );
+  const onClickSearchResult = (club: Club) => {
+    void router.push(`/directory/${club.id}`);
+  };
+  return (
+    <SearchBar
+      placeholder="Search for Clubs"
+      setSearch={setSearch}
+      searchResults={res}
+      onClick={onClickSearchResult}
+    />
+  );
+};
+export const EventSearchBar = () => {
+  const [search, setSearch] = useState('');
+  return <SearchBar placeholder="Search for Events" setSearch={setSearch} />;
+};
