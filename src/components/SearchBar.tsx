@@ -3,6 +3,7 @@ import React, {
   type SetStateAction,
   useState,
   type ChangeEvent,
+  useEffect,
 } from 'react';
 import { SearchIcon } from './Icons';
 import { useRouter } from 'next/router';
@@ -26,10 +27,19 @@ const SearchBar = <T extends SearchElement>({
   searchResults,
   onClick,
 }: SearchBarProps<T>) => {
+  const [input, setInput] = useState<string>('');
   const [focused, setFocused] = useState(false);
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
+    setInput(e.target.value);
   };
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearch(input);
+    }, 300);
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [input, setSearch]);
 
   return (
     <div className="w-full max-w-xs px-5 py-4 md:max-w-sm lg:max-w-md">
@@ -46,7 +56,7 @@ const SearchBar = <T extends SearchElement>({
           onFocus={() => setFocused(true)}
           onBlur={() => setTimeout(() => setFocused(false), 300)}
         />
-        {focused && searchResults && searchResults.length > 0 && (
+        {input && focused && searchResults && searchResults.length > 0 && (
           <div className="absolute left-0 right-0 top-full z-50 mt-1 rounded-sm shadow-lg">
             {searchResults.map((item) => (
               <button
@@ -64,6 +74,7 @@ const SearchBar = <T extends SearchElement>({
     </div>
   );
 };
+
 export const ClubSearchBar = () => {
   const router = useRouter();
   const [search, setSearch] = useState<string>('');
@@ -72,9 +83,10 @@ export const ClubSearchBar = () => {
     { name: search },
     {
       onSuccess: (data) => {
-        setTimeout(() => setRes(data), 300);
+        setRes(data);
         return data;
       },
+      enabled: !!search,
     },
   );
   const onClickSearchResult = (club: Club) => {
