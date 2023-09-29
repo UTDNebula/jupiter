@@ -3,6 +3,7 @@ import OrgHeader from '@src/components/OrgHeader';
 import React from 'react';
 import Head from 'next/head';
 import ClubDocuments from '@src/components/ClubDocuments';
+import Header from '@src/components/Header';
 
 const OrganizationPage = ({
   clubId,
@@ -18,10 +19,13 @@ const OrganizationPage = ({
         <meta name="description" content={`${club.name} - Jupiter`} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="md:pl-72">
-        <OrgHeader club={club} />
-        <OrgInfoSegment club={club} />
-        <ClubDocuments />
+      <main className="w-full md:pl-72">
+        <Header />
+        <div className="flex flex-col space-y-8 px-5">
+          <OrgHeader club={club} />
+          <OrgInfoSegment club={club} />
+          <ClubDocuments />
+        </div>
       </main>
     </>
   );
