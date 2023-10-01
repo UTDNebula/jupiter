@@ -9,6 +9,10 @@ import { env } from '@src/env.mjs';
 import { type Adapter } from 'next-auth/adapters';
 import { DrizzleAdapter } from '@auth/drizzle-adapter';
 import { db } from './db';
+import { eq } from 'drizzle-orm';
+import { userMetadata } from './db/schema';
+import { type InsertUserMetadata } from './db/models';
+import { type UserMetadata } from '@src/models/userMetadata';
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -22,7 +26,8 @@ declare module 'next-auth' {
       id: string;
       // ...other properties
       // role: UserRole;
-    } & DefaultSession['user'];
+    } & DefaultSession['user'] &
+      UserMetadata;
   }
 
   // interface User {
@@ -40,9 +45,38 @@ declare module 'next-auth' {
 export const authOptions: NextAuthOptions = {
   adapter: DrizzleAdapter(db) as Adapter,
   callbacks: {
-    session({ session, user }) {
+    async session({ session, user }) {
+      console.log(user);
+      console.log(session);
+
+      let metadata = await db.query.userMetadata.findFirst({
+        where: (metadata) => eq(metadata.id, user.id),
+      });
+
+      console.log('Metadata:', metadata);
+
+      if (!metadata) {
+        console.log('entering if');
+        const firstName = user.name?.split(' ')[0] ?? '';
+        const lastName = user.name?.split(' ')[1] ?? '';
+
+        const insert: InsertUserMetadata = {
+          firstName,
+          lastName,
+          id: user.id,
+          major: 'Computer Science',
+          minor: '',
+        };
+
+        await db.insert(userMetadata).values(insert);
+
+        metadata = await db.query.userMetadata.findFirst({
+          where: (metadata) => eq(metadata.id, user.id),
+        });
+      }
+
       if (session.user) {
-        session.user.id = user.id;
+        session.user = { ...session.user, ...metadata };
         // session.user.role = user.role; <-- put other properties on the session here
       }
 

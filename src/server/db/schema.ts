@@ -17,6 +17,60 @@ export const users = pgTable('user', {
   image: text('image'),
 });
 
+export const yearEnum = pgEnum('year', [
+  'Freshman',
+  'Sophomore',
+  'Junior',
+  'Senior',
+]);
+
+export const roleEnum = pgEnum('role', [
+  'Student',
+  'Student Organizer',
+  'Administrator',
+]);
+
+export const careerEnum = pgEnum('career', [
+  'Healthcare',
+  'Art and Music',
+  'Engineering',
+  'Business',
+  'Sciences',
+  'Public Service',
+]);
+
+export const userMetadata = pgTable('user_metadata', {
+  id: text('id').notNull().primaryKey(),
+  firstName: text('first_name').notNull(),
+  lastName: text('last_name').notNull(),
+  major: text('major').notNull(),
+  minor: text('minor').notNull(),
+  year: yearEnum('year')
+    .notNull()
+    .$default(() => 'Freshman'),
+  role: roleEnum('role')
+    .notNull()
+    .$default(() => 'Student'),
+  career: careerEnum('career')
+    .notNull()
+    .$default(() => 'Engineering'),
+});
+
+export const userMetadataToClubs = pgTable(
+  'user_metadata_to_clubs',
+  {
+    userId: text('user_id')
+      .notNull()
+      .references(() => userMetadata.id),
+    clubId: text('club_id')
+      .notNull()
+      .references(() => club.id),
+  },
+  (t) => ({
+    pk: primaryKey(t.userId, t.clubId),
+  }),
+);
+
 export const accounts = pgTable(
   'account',
   {
@@ -115,7 +169,28 @@ export const eventsRelation = relations(events, ({ one }) => ({
   club: one(club, { fields: [events.clubId], references: [club.id] }),
 }));
 
-export const clubRelation = relations(club, ({ many }) => ({
+export const clubRelations = relations(club, ({ many }) => ({
   contacts: many(contacts),
   events: many(events),
+  userMetadataToClubs: many(userMetadataToClubs), // for many-many relation
 }));
+
+// connects userMetadata table to junction table
+export const userMetadataRelation = relations(userMetadata, ({ many }) => ({
+  clubs: many(userMetadataToClubs),
+}));
+
+// connects junction table to userMetadata and club table
+export const userMetadataToClubsRelations = relations(
+  userMetadataToClubs,
+  ({ one }) => ({
+    club: one(club, {
+      fields: [userMetadataToClubs.clubId],
+      references: [club.id],
+    }),
+    userMetadata: one(userMetadata, {
+      fields: [userMetadataToClubs.userId],
+      references: [userMetadata.id],
+    }),
+  }),
+);

@@ -5,8 +5,8 @@ import Role from './role';
 import Year from './year';
 
 const IUser = z.object({
-  first_name: z.string(),
-  last_name: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
   major: z.string(),
   minor: z.string().optional(),
   year: Year.default('Freshman'),
