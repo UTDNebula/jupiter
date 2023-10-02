@@ -3,8 +3,12 @@ import React, {
   type SetStateAction,
   useState,
   type ChangeEvent,
+  useEffect,
 } from 'react';
 import { SearchIcon } from './Icons';
+import { useRouter } from 'next/router';
+import type { SelectClub as Club } from '@src/server/db/models';
+import { api } from '@src/utils/api';
 
 type SearchElement = {
   id: string;
@@ -23,10 +27,19 @@ const SearchBar = <T extends SearchElement>({
   searchResults,
   onClick,
 }: SearchBarProps<T>) => {
+  const [input, setInput] = useState<string>('');
   const [focused, setFocused] = useState(false);
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
+    setInput(e.target.value);
   };
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearch(input);
+    }, 300);
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [input, setSearch]);
 
   return (
     <div className="w-full max-w-xs px-5 py-4 md:max-w-sm lg:max-w-md">
@@ -43,7 +56,7 @@ const SearchBar = <T extends SearchElement>({
           onFocus={() => setFocused(true)}
           onBlur={() => setTimeout(() => setFocused(false), 300)}
         />
-        {focused && searchResults && searchResults.length > 0 && (
+        {input && focused && searchResults && searchResults.length > 0 && (
           <div className="absolute left-0 right-0 top-full z-50 mt-1 rounded-sm shadow-lg">
             {searchResults.map((item) => (
               <button
@@ -61,4 +74,34 @@ const SearchBar = <T extends SearchElement>({
     </div>
   );
 };
-export default SearchBar;
+
+export const ClubSearchBar = () => {
+  const router = useRouter();
+  const [search, setSearch] = useState<string>('');
+  const [res, setRes] = useState<Club[]>([]);
+  api.club.byName.useQuery(
+    { name: search },
+    {
+      onSuccess: (data) => {
+        setRes(data);
+        return data;
+      },
+      enabled: !!search,
+    },
+  );
+  const onClickSearchResult = (club: Club) => {
+    void router.push(`/directory/${club.id}`);
+  };
+  return (
+    <SearchBar
+      placeholder="Search for Clubs"
+      setSearch={setSearch}
+      searchResults={res}
+      onClick={onClickSearchResult}
+    />
+  );
+};
+export const EventSearchBar = () => {
+  const [search, setSearch] = useState('');
+  return <SearchBar placeholder="Search for Events" setSearch={setSearch} />;
+};

@@ -42,8 +42,8 @@ const Events = () => {
             </h1>
           </div>
         </div>
-        <EventCalendar index={0} />
         <EventCalendar index={1} />
+        <EventCalendar index={2} />
       </main>
     </>
   );

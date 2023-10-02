@@ -9,11 +9,13 @@
     "lint": "next lint",
     "prepare": "husky install",
     "test": "NODE_OPTIONS=--experimental-vm-modules dotenv jest --detectOpenHandles --forceExit",
-    "push": "dotenv drizzle-kit push:pg"
+    "drizzle:generate": "dotenv drizzle-kit generate:pg",
+    "drizzle:push": "dotenv drizzle-kit push:pg"
   },
   "dependencies": {
     "@auth/core": "^0.15.2",
     "@auth/drizzle-adapter": "^0.3.2",
+    "@radix-ui/react-dialog": "^1.0.5",
     "@tanstack/react-query": "^4.29.3",
     "@trpc/client": "^10.21.1",
     "@trpc/next": "^10.21.1",
