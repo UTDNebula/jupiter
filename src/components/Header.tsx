@@ -21,7 +21,6 @@ const Header = () => {
 };
 
 export const EventHeader = () => {
-  const [search, setSearch] = useState('');
   return (
     <>
       <BaseHeader>
