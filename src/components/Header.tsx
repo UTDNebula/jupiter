@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-no-undef */
-import { type ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import { useState } from 'react';
 import { ClubSearchBar, EventSearchBar } from './SearchBar';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
@@ -15,14 +16,10 @@ const BaseHeader = ({ children }: { children: ReactNode }) => {
       <div className="ml-auto flex items-center justify-center pr-[8%]">
         {status === 'authenticated' ? (
           <div className="h-10 w-10 rounded-full">
-            {session.user.image !== '' && session.user.image ? (
-              <ProfileDropDown image={session.user.image} />
-            ) : (
-              <div className="h-10 w-10 rounded-full bg-gray-300" />
-            )}
+            <ProfileDropDown image={session.user.image || ''} />
           </div>
         ) : (
-          <div className='flex justify-between w-32'>
+          <div className="flex w-32 justify-between">
             <Link href="/auth?signin">Sign in</Link>
             <Link href="/auth?signup">Sign up</Link>
           </div>
@@ -33,19 +30,23 @@ const BaseHeader = ({ children }: { children: ReactNode }) => {
 };
 
 const ProfileDropDown = ({ image }: { image: string }) => {
-  return image !== '' ? (
+  return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger
         onClick={() => console.log('dropdown clicked')}
         asChild
       >
-        <Image
-          src={image}
-          className="h-10 w-10 rounded-full bg-gray-300"
-          alt=""
-          height={100}
-          width={100}
-        />
+        {image !== '' ? (
+          <Image
+            src={image}
+            className="h-10 w-10 rounded-full bg-gray-300"
+            alt=""
+            height={100}
+            width={100}
+          />
+        ) : (
+          <div className="h-10 w-10 rounded-full bg-gray-300" />
+        )}
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content className="mt-2 w-44 rounded-md border-2 border-black bg-slate-200 text-center">
@@ -58,8 +59,6 @@ const ProfileDropDown = ({ image }: { image: string }) => {
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
     </DropdownMenu.Root>
-  ) : (
-    <div></div>
   );
 };
 
