@@ -11,8 +11,6 @@ export default function Auth({ providers }: { providers: Providers }) {
   const router = useRouter();
   const [signin, setSignin] = useState(true);
 
-  console.log(router.pathname)
-
   const toggleAuthType = () => {
     setSignin((signIn) => !signIn);
   };

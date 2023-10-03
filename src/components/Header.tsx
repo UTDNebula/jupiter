@@ -54,7 +54,7 @@ const ProfileDropDown = ({ image }: { image: string }) => {
             className="p-2 hover:cursor-pointer"
             onClick={() => void signOut()}
           >
-            <button>Signout</button>
+            <button>Sign out</button>
           </DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
