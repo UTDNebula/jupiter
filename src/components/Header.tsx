@@ -4,6 +4,7 @@ import { ClubSearchBar, EventSearchBar } from './SearchBar';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import Image from 'next/image';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
 const BaseHeader = ({ children }: { children: ReactNode }) => {
   const { data: session, status } = useSession();
@@ -11,29 +12,54 @@ const BaseHeader = ({ children }: { children: ReactNode }) => {
   return (
     <div className="flex h-20 w-full flex-row content-between items-center justify-start px-5 py-2.5">
       {children}
-      <div className="ml-auto flex items-center justify-center">
+      <div className="ml-auto flex items-center justify-center pr-[8%]">
         {status === 'authenticated' ? (
           <div className="h-10 w-10 rounded-full">
             {session.user.image !== '' && session.user.image ? (
-              <Image
-                src={session.user.image || ''}
-                className="h-10 w-10 rounded-full bg-gray-300"
-                alt=""
-                height={100}
-                width={100}
-              />
+              <ProfileDropDown image={session.user.image} />
             ) : (
               <div className="h-10 w-10 rounded-full bg-gray-300" />
             )}
           </div>
         ) : (
-          <>
-            <Link href="/auth">Sign in</Link>
-            <Link href="/auth">Sign up</Link>
-          </>
+          <div className='flex justify-between w-32'>
+            <Link href="/auth?signin">Sign in</Link>
+            <Link href="/auth?signup">Sign up</Link>
+          </div>
         )}
       </div>
     </div>
+  );
+};
+
+const ProfileDropDown = ({ image }: { image: string }) => {
+  return image !== '' ? (
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger
+        onClick={() => console.log('dropdown clicked')}
+        asChild
+      >
+        <Image
+          src={image}
+          className="h-10 w-10 rounded-full bg-gray-300"
+          alt=""
+          height={100}
+          width={100}
+        />
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Portal>
+        <DropdownMenu.Content className="mt-2 w-44 rounded-md border-2 border-black bg-slate-200 text-center">
+          <DropdownMenu.Item
+            className="p-2 hover:cursor-pointer"
+            onClick={() => void signOut()}
+          >
+            <button>Signout</button>
+          </DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Portal>
+    </DropdownMenu.Root>
+  ) : (
+    <div></div>
   );
 };
 
