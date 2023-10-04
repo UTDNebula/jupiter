@@ -69,7 +69,7 @@ export const club = pgTable('club', {
 });
 
 export const events = pgTable('events', {
-  id: integer('id')
+  id: text('id')
     .default(sql`nanoid(20)`)
     .primaryKey(),
   clubId: text('club_id')
