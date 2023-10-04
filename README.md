@@ -1,4 +1,4 @@
-# Jupiter
+# Jupiter (DON'T MERGE)
 
 _A tool to find ways to get involved on campus._
 
