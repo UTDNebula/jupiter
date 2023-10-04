@@ -17,13 +17,15 @@ const Home = () => {
         <meta name="description" content="Jupiter - Nebula Labs" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="md:pl-72">
+      <main className="md:pl-72 ">
         <Header />
-        <div className="relative block w-full">
-          <Carousel />
+        <div className="px-5">
+          <div className="relative block w-full">
+            <Carousel />
+          </div>
+          <TagFilter />
+          <OrgDirectoryGrid clubs={data || []} />
         </div>
-        <TagFilter />
-        <OrgDirectoryGrid clubs={data || []} />
       </main>
     </>
   );

@@ -26,16 +26,19 @@ const logo: logoProps = {
   other: '/Jupiter.png',
 };
 
-const ContactButtons: FC<{ contact: Contacts[] }> = ({ contact }) => {
+type contentButtonProps = {
+  contacts: Array<Contacts>;
+};
+const ContactButtons = ({ contacts }: contentButtonProps) => {
   return (
-    <>
-      {contact.map((item) => (
+    <div className="flex flex-row content-center gap-x-4">
+      {contacts.map((item) => (
         <button
           key={item.url}
-          className="relative mx-2 my-5 rounded-full bg-slate-100 px-4 py-1 transition-colors hover:bg-slate-300"
+          className="relative h-min self-center rounded-full bg-slate-100 p-2.5 transition-colors hover:bg-slate-300"
         >
           <a target="__blank__" href={item.url}>
-            <div className="relative h-6 w-6 ">
+            <div className="relative h-8 w-8 ">
               <Image
                 src={logo[item.platform]}
                 alt={item.platform}
@@ -46,7 +49,7 @@ const ContactButtons: FC<{ contact: Contacts[] }> = ({ contact }) => {
           </a>
         </button>
       ))}
-    </>
+    </div>
   );
 };
 

@@ -4,14 +4,22 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@src/server/auth';
 import AuthIcons from '@src/icons/AuthIcons';
 import { getProviders } from 'next-auth/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 export default function Auth({ providers }: { providers: Providers }) {
+  const router = useRouter();
   const [signin, setSignin] = useState(true);
 
   const toggleAuthType = () => {
     setSignin((signIn) => !signIn);
   };
+
+  useEffect(() => {
+    if (router.query.signup === '') {
+      setSignin(false)
+    }
+  }, [router.query.signup]); 
 
   return (
     <main className="relative flex h-screen flex-col items-center justify-center space-y-10 bg-[#ffffff] md:pl-72">
