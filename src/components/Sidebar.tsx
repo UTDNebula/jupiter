@@ -25,9 +25,9 @@ const Sidebar = () => {
 
   return (
     <div className="absolute z-10 hidden h-full w-72 bg-slate-100 md:block">
-      <div className="w-full pt-10 pb-3 flex items-center place-content-center">
+      <div className="w-full pt-10 pb-7 flex items-center place-content-center">
             <Image
-              src="/android-chrome-192x192.png"
+              src="/nebula-logo.png"
               alt = ""
               width={60}
               height={60}
