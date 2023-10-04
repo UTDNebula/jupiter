@@ -4,9 +4,9 @@ import type { SelectClub as Club } from '@src/server/db/models';
 
 const OrgInfoSegment: FC<{ club: Club }> = ({ club }) => {
   return (
-    <div className="mx-auto w-11/12 rounded-lg bg-slate-100 p-10">
+    <div className="w-full rounded-lg bg-slate-100 p-10">
       <div className="flex flex-col items-start justify-between md:flex-row">
-        <div className="w-full md:w-1/3">
+        <div className="w-full">
           <Image
             src={club.image}
             alt="Picture of the club"
@@ -32,13 +32,13 @@ const OrgInfoSegment: FC<{ club: Club }> = ({ club }) => {
             <p className="text-right text-sm text-slate-600">Present</p>
           </div>
         </div>
-        <div className="w-full md:w-1/3">
+        <div className="w-full">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero et
           odit, est numquam praesentium omnis recusandae soluta? Suscipit alias
           modi ratione eligendi fugit voluptatum quidem nulla quaerat! Eos,
           officia distinctio?
         </div>
-        <div className="w-full text-center md:w-1/3">
+        <div className="w-full text-center">
           <h1 className="mt-5 text-2xl font-medium">Leadership</h1>
           <div className="flex flex-col items-center justify-center">
             <div className="mt-5 flex flex-row items-center justify-center align-middle">
