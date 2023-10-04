@@ -1,9 +1,9 @@
-import OrgInfoSegment from '@src/components/OrgInfoSegment';
-import OrgHeader from '@src/components/OrgHeader';
-import React from 'react';
-import Head from 'next/head';
 import ClubDocuments from '@src/components/ClubDocuments';
 import Header from '@src/components/Header';
+import OrgHeader from '@src/components/OrgHeader';
+import OrgInfoSegment from '@src/components/OrgInfoSegment';
+import Head from 'next/head';
+import React from 'react';
 
 const OrganizationPage = ({
   clubId,
@@ -21,10 +21,19 @@ const OrganizationPage = ({
       </Head>
       <main className="w-full md:pl-72">
         <Header />
-        <div className="flex flex-col space-y-8 px-5">
+        <div className="mb-5 flex flex-col space-y-8 px-7">
           <OrgHeader club={club} />
           <OrgInfoSegment club={club} />
           <ClubDocuments />
+          <div className="flex h-full w-full flex-row items-center justify-between rounded-lg bg-blue-100 px-14 py-7">
+            <div className="text-blue-primary text-lg font-bold">
+              Promo text
+            </div>
+            <button className="bg-blue-primary flex w-fit flex-row items-center justify-center rounded-3xl py-2.5 pl-5 pr-6 text-center text-xs font-extrabold text-white transition-colors hover:bg-blue-700">
+              <PlusIcon />
+              <div>Apply</div>
+            </button>
+          </div>
         </div>
       </main>
     </>
@@ -33,16 +42,17 @@ const OrganizationPage = ({
 
 export default OrganizationPage;
 
-import {
-  type GetStaticPaths,
-  type InferGetStaticPropsType,
-  type GetServerSidePropsContext,
-} from 'next';
-import { createServerSideHelpers } from '@trpc/react-query/server';
+import { PlusIcon } from '@src/components/Icons';
 import { appRouter } from '@src/server/api/root';
 import { createInnerTRPCContext } from '@src/server/api/trpc';
-import { api } from '@src/utils/api';
 import { db } from '@src/server/db';
+import { api } from '@src/utils/api';
+import { createServerSideHelpers } from '@trpc/react-query/server';
+import {
+  type GetServerSidePropsContext,
+  type GetStaticPaths,
+  type InferGetStaticPropsType,
+} from 'next';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const clubs = await db.query.club.findMany();

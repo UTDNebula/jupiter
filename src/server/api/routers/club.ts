@@ -35,8 +35,7 @@ export const clubRouter = createTRPCRouter({
         with: { contacts: true },
       });
 
-      const first = selectClub.parse(byId);
-      return first;
+      return byId;
     } catch (e) {
       console.error(e);
       throw e;

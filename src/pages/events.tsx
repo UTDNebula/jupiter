@@ -29,7 +29,7 @@ const Events = () => {
               <p
                 key={month}
                 className={`${
-                  key === 0 ? ' text-blue-400' : ' text-slate-500'
+                  key === 0 ? ' text-blue-primary' : ' text-slate-500'
                 } cursor-pointer rounded-lg px-3 py-1`}
               >
                 {month}
