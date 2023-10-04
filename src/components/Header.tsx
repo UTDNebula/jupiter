@@ -1,6 +1,4 @@
-/* eslint-disable react/jsx-no-undef */
 import type { ReactNode } from 'react';
-import { useState } from 'react';
 import { ClubSearchBar, EventSearchBar } from './SearchBar';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
