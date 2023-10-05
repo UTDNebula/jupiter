@@ -11,7 +11,7 @@ const BaseHeader = ({ children }: { children: ReactNode }) => {
   return (
     <div className="flex h-20 w-full flex-row content-between items-center justify-start px-5 py-2.5">
       {children}
-      <div className="ml-auto flex items-center justify-center pr-[8%]">
+      <div className="ml-auto flex items-center justify-center">
         {status === 'authenticated' ? (
           <div className="h-10 w-10 rounded-full">
             <ProfileDropDown image={session.user.image || ''} />
