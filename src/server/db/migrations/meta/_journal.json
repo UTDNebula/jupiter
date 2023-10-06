@@ -19,22 +19,8 @@
     {
       "idx": 2,
       "version": "5",
-      "when": 1696131695375,
-      "tag": "0002_lyrical_wind_dancer",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1696193636048,
-      "tag": "0003_great_morph",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1696557726066,
-      "tag": "0004_long_morgan_stark",
+      "when": 1696454687064,
+      "tag": "0002_fuzzy_shen",
       "breakpoints": true
     }
   ]

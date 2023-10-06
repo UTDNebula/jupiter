@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const IEvent = z.object({
-  id: z.number(),
+  id: z.string(),
   name: z.string(),
   description: z.string(),
   clubId: z.string(),
