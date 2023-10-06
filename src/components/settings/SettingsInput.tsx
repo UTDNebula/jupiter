@@ -1,22 +1,17 @@
 type SettingsInputProps = {
   label: string;
   defaultValue: string;
-  isEditing: boolean;
 };
 
-const SettingsInput = ({
-  label,
-  defaultValue,
-  isEditing,
-}: SettingsInputProps) => {
+const SettingsInput = ({ label, defaultValue }: SettingsInputProps) => {
   return (
     <label className="text-lg">
       {label}:{' '}
       <input
         className="w-full rounded-sm bg-slate-200 p-1"
         defaultValue={defaultValue}
-        disabled={!isEditing}
-        aria-label="First name"
+        aria-label={label}
+        name={label.charAt(0).toLowerCase() + label.replace(' ', '').slice(1)}
       />
     </label>
   );

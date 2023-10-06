@@ -22,6 +22,7 @@ export const yearEnum = pgEnum('year', [
   'Sophomore',
   'Junior',
   'Senior',
+  'Grad Student',
 ]);
 
 export const roleEnum = pgEnum('role', [
@@ -44,16 +45,10 @@ export const userMetadata = pgTable('user_metadata', {
   firstName: text('first_name').notNull(),
   lastName: text('last_name').notNull(),
   major: text('major').notNull(),
-  minor: text('minor').notNull(),
-  year: yearEnum('year')
-    .notNull()
-    .$default(() => 'Freshman'),
-  role: roleEnum('role')
-    .notNull()
-    .$default(() => 'Student'),
-  career: careerEnum('career')
-    .notNull()
-    .$default(() => 'Engineering'),
+  minor: text('minor'),
+  year: yearEnum('year').$default(() => 'Freshman'),
+  role: roleEnum('role').$default(() => 'Student'),
+  career: careerEnum('career').$default(() => 'Engineering'),
 });
 
 export const userMetadataToClubs = pgTable(

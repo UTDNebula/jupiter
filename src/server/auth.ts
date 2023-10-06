@@ -12,7 +12,7 @@ import { db } from './db';
 import { eq } from 'drizzle-orm';
 import { userMetadata } from './db/schema';
 import { type InsertUserMetadata } from './db/models';
-import { type UserMetadata } from '@src/models/userMetadata';
+import IUser, { type UserMetadata } from '@src/models/userMetadata';
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -65,14 +65,11 @@ export const authOptions: NextAuthOptions = {
           lastName,
           id: user.id,
           major: 'Computer Science',
-          minor: '',
         };
 
-        await db.insert(userMetadata).values(insert);
-
-        metadata = await db.query.userMetadata.findFirst({
-          where: (metadata) => eq(metadata.id, user.id),
-        });
+        metadata = (
+          await db.insert(userMetadata).values(insert).returning()
+        ).at(0);
       }
 
       if (session.user) {

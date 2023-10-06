@@ -1,10 +1,13 @@
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import SettingsInput from '@src/components/settings/SettingsInput';
+import { api } from '@src/utils/api';
+import IUserMetadata, { UserMetadata } from '@src/models/userMetadata';
 
 const Settings = () => {
   const [isEditing, setIsEditing] = useState(false);
   const { data: session } = useSession();
+  const mutation = api.userMetadata.updateById.useMutation();
 
   if (!session) {
     return (
@@ -22,50 +25,57 @@ const Settings = () => {
         <div className="flex justify-between py-2">
           <h1 className="text-2xl">Settings</h1>
           <button
-            type="button"
-            onClick={() => {
-              setIsEditing(!isEditing);
+            type="submit"
+            form="settings-form"
+            onClick={(e) => {
+              setIsEditing((editing) => !editing);
             }}
             className="mr-2 rounded-2xl bg-blue-500 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-600"
           >
             {isEditing ? 'Save Changes' : 'Edit'}
           </button>
         </div>
-        <form className="flex flex-col gap-4">
+        <form
+          id="settings-form"
+          className="flex flex-col gap-4"
+          onSubmit={(e) => {
+            e.preventDefault();
+            console.log('Editing?', isEditing);
+            // if (!isEditing) return;
+            const form = e.currentTarget;
+
+            const formData = new FormData(form);
+
+            const userMetadata = IUserMetadata.parse(
+              Object.fromEntries(formData.entries()),
+            );
+
+            console.log('new:', userMetadata);
+
+            mutation.mutate({
+              id: session.user.id,
+              updatedMetadata: userMetadata,
+            });
+          }}
+        >
           <SettingsInput
             label="First Name"
             defaultValue={session.user.firstName}
-            isEditing={isEditing}
           />
           <SettingsInput
             label="Last Name"
             defaultValue={session.user.lastName}
-            isEditing={isEditing}
           />
-          <SettingsInput
-            label="Major"
-            defaultValue={session.user.major}
-            isEditing={isEditing}
-          />
+          <SettingsInput label="Major" defaultValue={session.user.major} />
           <SettingsInput
             label="Minor"
             defaultValue={session.user.minor ?? ''}
-            isEditing={isEditing}
           />
-          <SettingsInput
-            label="Year"
-            defaultValue={session.user.year}
-            isEditing={isEditing}
-          />
-          <SettingsInput
-            label="Role"
-            defaultValue={session.user.role}
-            isEditing={isEditing}
-          />
+          <SettingsInput label="Year" defaultValue={session.user.year ?? ''} />
+          <SettingsInput label="Role" defaultValue={session.user.role ?? ''} />
           <SettingsInput
             label="Career"
-            defaultValue={session.user.career}
-            isEditing={isEditing}
+            defaultValue={session.user.career ?? ''}
           />
           <p className="text-lg">Clubs:</p>
           <div>
@@ -73,7 +83,7 @@ const Settings = () => {
               session.user.clubs.map((club) => {
                 return (
                   <div key={club.id}>
-                    {club.name} <p className="">{club.description}</p>
+                    <h1>{club.name}</h1> <p className="">{club.description}</p>
                   </div>
                 );
               })}
