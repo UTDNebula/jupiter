@@ -2,6 +2,7 @@ import { useSession } from 'next-auth/react';
 import SettingsInput from '@src/components/settings/SettingsInput';
 import { api } from '@src/utils/api';
 import IUserMetadata from '@src/models/userMetadata';
+import { insertUserMetadata } from '@src/server/db/models';
 import { useEffect } from 'react';
 
 const Settings = () => {
@@ -14,7 +15,7 @@ const Settings = () => {
     if (isSuccess || isError)
       setTimeout(() => {
         reset();
-      }, 1000);
+      }, 2000);
 
     // return () => {
     //   console.log('clearing');
@@ -54,15 +55,13 @@ const Settings = () => {
 
             const formData = new FormData(form);
 
-            const userMetadata = IUserMetadata.parse(
-              Object.fromEntries(formData.entries()),
-            );
-
-            console.log('new:', userMetadata);
+            const updatedMetadata = insertUserMetadata
+              .omit({ id: true })
+              .parse(Object.fromEntries(formData.entries()));
 
             mutate({
               id: session.user.id,
-              updatedMetadata: userMetadata,
+              updatedMetadata,
             });
           }}
         >

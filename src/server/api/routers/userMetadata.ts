@@ -1,14 +1,14 @@
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '../trpc';
 import { eq } from 'drizzle-orm';
-import IUser from '@src/models/userMetadata';
 import { userMetadata } from '@src/server/db/schema';
+import { insertUserMetadata } from '@src/server/db/models';
 
 const byIdSchema = z.object({ id: z.string().length(36, 'id must be a UUID') });
 
 const updateByIdSchema = z.object({
   id: z.string().length(36, 'id must be a UUID'),
-  updatedMetadata: IUser,
+  updatedMetadata: insertUserMetadata.omit({ id: true }),
 });
 
 export const userMetadataRouter = createTRPCRouter({
@@ -24,7 +24,6 @@ export const userMetadataRouter = createTRPCRouter({
   updateById: protectedProcedure
     .input(updateByIdSchema)
     .mutation(async ({ input, ctx }) => {
-      console.log('User Meta to update:', input.updatedMetadata);
       await ctx.db
         .update(userMetadata)
         .set(input.updatedMetadata)
