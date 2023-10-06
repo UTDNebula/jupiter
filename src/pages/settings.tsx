@@ -1,13 +1,26 @@
 import { useSession } from 'next-auth/react';
-import { useState } from 'react';
 import SettingsInput from '@src/components/settings/SettingsInput';
 import { api } from '@src/utils/api';
-import IUserMetadata, { UserMetadata } from '@src/models/userMetadata';
+import IUserMetadata from '@src/models/userMetadata';
+import { useEffect } from 'react';
 
 const Settings = () => {
-  const [isEditing, setIsEditing] = useState(false);
   const { data: session } = useSession();
-  const mutation = api.userMetadata.updateById.useMutation();
+  const { isLoading, isError, isSuccess, mutate, reset } =
+    api.userMetadata.updateById.useMutation();
+
+  useEffect(() => {
+    // let timeout: NodeJS.Timeout;
+    if (isSuccess || isError)
+      setTimeout(() => {
+        reset();
+      }, 1000);
+
+    // return () => {
+    //   console.log('clearing');
+    //   clearTimeout(timeout);
+    // };
+  });
 
   if (!session) {
     return (
@@ -27,12 +40,9 @@ const Settings = () => {
           <button
             type="submit"
             form="settings-form"
-            onClick={(e) => {
-              setIsEditing((editing) => !editing);
-            }}
             className="mr-2 rounded-2xl bg-blue-500 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-600"
           >
-            {isEditing ? 'Save Changes' : 'Edit'}
+            Save Changes
           </button>
         </div>
         <form
@@ -40,8 +50,6 @@ const Settings = () => {
           className="flex flex-col gap-4"
           onSubmit={(e) => {
             e.preventDefault();
-            console.log('Editing?', isEditing);
-            // if (!isEditing) return;
             const form = e.currentTarget;
 
             const formData = new FormData(form);
@@ -52,7 +60,7 @@ const Settings = () => {
 
             console.log('new:', userMetadata);
 
-            mutation.mutate({
+            mutate({
               id: session.user.id,
               updatedMetadata: userMetadata,
             });
@@ -89,6 +97,23 @@ const Settings = () => {
               })}
           </div>
         </form>
+
+        {isLoading && (
+          <div className="fixed bottom-20 right-32 h-auto animate-pulse rounded-md border border-slate-200 bg-slate-50 p-2">
+            Loading...
+          </div>
+        )}
+
+        {isSuccess && (
+          <div className="fixed bottom-20 right-32 h-auto rounded-md border border-green-200 bg-green-50 p-2">
+            Success!
+          </div>
+        )}
+        {isError && (
+          <div className="fixed bottom-20 right-32 h-auto rounded-md border border-red-200 bg-red-50 p-2">
+            Error
+          </div>
+        )}
       </div>
     </div>
   );

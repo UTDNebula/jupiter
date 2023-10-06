@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
+import { createTRPCRouter, protectedProcedure } from '../trpc';
 import { eq } from 'drizzle-orm';
 import IUser from '@src/models/userMetadata';
 import { userMetadata } from '@src/server/db/schema';
