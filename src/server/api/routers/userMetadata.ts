@@ -4,10 +4,10 @@ import { eq } from 'drizzle-orm';
 import { userMetadata } from '@src/server/db/schema';
 import { insertUserMetadata } from '@src/server/db/models';
 
-const byIdSchema = z.object({ id: z.string().length(36, 'id must be a UUID') });
+const byIdSchema = z.object({ id: z.string().uuid() });
 
 const updateByIdSchema = z.object({
-  id: z.string().length(36, 'id must be a UUID'),
+  id: z.string().uuid(),
   updatedMetadata: insertUserMetadata.omit({ id: true }),
 });
 
@@ -19,7 +19,7 @@ export const userMetadataRouter = createTRPCRouter({
       with: { clubs: true },
     });
 
-    console.log(userMetadata);
+    return userMetadata;
   }),
   updateById: protectedProcedure
     .input(updateByIdSchema)

@@ -46,17 +46,11 @@ export const authOptions: NextAuthOptions = {
   adapter: DrizzleAdapter(db) as Adapter,
   callbacks: {
     async session({ session, user }) {
-      console.log(user);
-      console.log(session);
-
       let metadata = await db.query.userMetadata.findFirst({
         where: (metadata) => eq(metadata.id, user.id),
       });
 
-      console.log('Metadata:', metadata);
-
       if (!metadata) {
-        console.log('entering if');
         const firstName = user.name?.split(' ')[0] ?? '';
         const lastName = user.name?.split(' ')[1] ?? '';
 
