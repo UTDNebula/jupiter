@@ -2,11 +2,11 @@ import { z } from 'zod';
 
 const ICareer = z.enum([
   'Healthcare',
-  'Art And Music',
+  'Art and Music',
   'Engineering',
   'Business',
   'Sciences',
-  'PublicService',
+  'Public Service',
 ]);
 export default ICareer;
 
