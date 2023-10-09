@@ -6,7 +6,6 @@ import type {
 } from '@src/server/db/models';
 import { HeartIcon } from './Icons';
 import { useState } from 'react';
-import { setLogger } from 'next-auth/utils/logger';
 
 type Club = SelectClub & {
   contacts?: Contacts[];
@@ -43,11 +42,11 @@ const OrgHeader = ({ club }: { club: Club }) => {
             </h1>
           </div>
           <div className="ml-auto flex h-min flex-row items-center gap-x-12 self-center">
-            <button className="bg-blue-primary rounded-full px-8 py-4 text-xs font-extrabold text-white transition-colors hover:bg-blue-700">
+            <button className="rounded-full bg-blue-primary px-8 py-4 text-xs font-extrabold text-white transition-colors hover:bg-blue-700">
               Join
             </button>
             <button
-              className="bg-blue-primary rounded-full p-2.5 transition-colors hover:bg-blue-700"
+              className="rounded-full bg-blue-primary p-2.5 transition-colors hover:bg-blue-700"
               type="button"
               onClick={() => {
                 setLiked(!liked);
