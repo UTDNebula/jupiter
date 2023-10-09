@@ -15,6 +15,13 @@
       "when": 1695921837187,
       "tag": "0001_rare_leper_queen",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1696454687064,
+      "tag": "0002_fuzzy_shen",
+      "breakpoints": true
     }
   ]
 }
