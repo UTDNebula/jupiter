@@ -28,27 +28,29 @@ const Settings = () => {
 
   if (!session) {
     return (
-      <Head>
-        <title>Jupiter</title>
-        <meta name="description" content="Settings - Jupiter" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-			<main className="h-full md:pl-72">
-				<Header />
-				<div className="w-full pt-20 flex items-center place-content-center">
+      <>
+        <Head>
+          <title>Jupiter</title>
+          <meta name="description" content="Settings - Jupiter" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <main className="h-full md:pl-72">
+          <Header />
+          <div className="w-full pt-20 flex items-center place-content-center">
             <Image
               src="/nebula-logo.png"
-              alt = ""
+              alt=""
               width={300}
               height={300}
             />
-				</div>
-				<div className="h-full">
-          <h1 className=" pt-5 text-3xl font-bold text-black-500 text-center">
-            Please signin to use the settings page.
-					</h1>
-				</div>
-			</main>
+          </div>
+          <div className="h-full">
+            <h1 className=" pt-5 text-3xl font-bold text-black-500 text-center">
+              Please signin to use the settings page.
+            </h1>
+          </div>
+        </main>
+      </>
     );
   }
 
