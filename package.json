@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
-    "build": "next build",
+    "build": "next build --h",
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
