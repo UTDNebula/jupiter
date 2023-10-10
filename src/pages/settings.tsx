@@ -4,6 +4,9 @@ import { api } from '@src/utils/api';
 import IUserMetadata from '@src/models/userMetadata';
 import { insertUserMetadata } from '@src/server/db/models';
 import { useEffect } from 'react';
+import Head from 'next/head';
+import Header from '../components/Header';
+import Image from 'next/image';
 
 const Settings = () => {
   const { data: session } = useSession();
@@ -25,11 +28,29 @@ const Settings = () => {
 
   if (!session) {
     return (
-      <div className="flex h-screen w-full items-center justify-center md:pl-72">
-        <div className="absolute  rounded-lg bg-red-300 p-4 text-lg text-white">
-          Make sure you are logged in!
-        </div>
-      </div>
+      <>
+        <Head>
+          <title>Jupiter</title>
+          <meta name="description" content="Settings - Jupiter" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <main className="h-full md:pl-72">
+          <Header />
+          <div className="w-full pt-20 flex items-center place-content-center">
+            <Image
+              src="/nebula-logo.png"
+              alt=""
+              width={300}
+              height={300}
+            />
+          </div>
+          <div className="h-full">
+            <h1 className=" pt-5 text-3xl font-bold text-black-500 text-center">
+              Please signin to use the settings page.
+            </h1>
+          </div>
+        </main>
+      </>
     );
   }
 
