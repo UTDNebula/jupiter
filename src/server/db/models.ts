@@ -1,5 +1,5 @@
 import { type z } from 'zod';
-import { contacts, club, events } from './schema';
+import { contacts, club, events, userMetadata } from './schema';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 
 // Schema definition for club table
@@ -22,3 +22,7 @@ export const selectEvent = createSelectSchema(events);
 
 export type InsertEvent = z.infer<typeof insertEvent>;
 export type SelectEvent = z.infer<typeof selectEvent>;
+
+export const insertUserMetadata = createInsertSchema(userMetadata);
+
+export type InsertUserMetadata = z.infer<typeof insertUserMetadata>;
