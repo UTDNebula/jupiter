@@ -15,7 +15,7 @@ const OrgUpcomingEvents:FC<{club : Club}> = ({club}) => {
         </h1>
         <div className="flex flex-col items-start justify-evenly  md:flex-row mt-5">
             {query_events?.map( (event) => (
-                <div className=" bg-blue-500 p-4 rounded-lg cursor-pointer" >
+                <div key={event.id} className=" bg-blue-500 p-4 rounded-lg cursor-pointer" >
                   <div className="font-medium">{event.name}</div>
                   <div>- {event.description}</div>
                   <div>- {`${event.startTime.getMonth() + 1}/${event.startTime.getDay()}`}</div>
