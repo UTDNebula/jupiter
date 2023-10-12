@@ -33,8 +33,6 @@ export const eventRouter = createTRPCRouter({
           ),
           orderBy: (sortByDate) ? (event) => ([event.startTime]) : undefined
         });
-
-
         
         const parsed = events.map((e) => selectEvent.parse(e));
         return parsed;

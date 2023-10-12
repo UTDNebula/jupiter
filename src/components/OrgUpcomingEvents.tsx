@@ -5,10 +5,9 @@ import { SelectClub as Club } from "@src/server/db/models";
 let cur_time = new Date();
 
 const OrgUpcomingEvents:FC<{club : Club}> = ({club}) => {
-    
+  
     const query_events = (api.event.byClubId.useQuery({ clubId: club.id, currentTime: cur_time, sortByDate: true  })).data
     
-
     return (
       <div className="w-full rounded-lg bg-slate-100 p-10">
         <h1 className="font-medium text-2xl mt-5">
