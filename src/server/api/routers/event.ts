@@ -2,7 +2,6 @@ import { eq, gte, lte, and } from 'drizzle-orm';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { selectEvent } from '@src/server/db/models';
-import { Query } from '@tanstack/react-query';
 
 const byClubIdSchema = z.object({
   clubId: z.string().default(''),
@@ -20,7 +19,7 @@ export const eventRouter = createTRPCRouter({
     .input(byClubIdSchema)
     .query(async ({ input, ctx }) => {
       const { clubId, currentTime, sortByDate } = input;
-      console.log(input)
+      
       try {
 
         const events = await ctx.db.query.events.findMany({
