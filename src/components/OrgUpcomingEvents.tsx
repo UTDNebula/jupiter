@@ -9,7 +9,7 @@ const OrgUpcomingEvents:FC<{club : Club}> = ({club}) => {
   const datt = new Date("2025, 5, 4")
   
     const query_events = (api.event.byClubId.useQuery({ clubId: club.id, currentTime: cur_time, sortByDate: true  })).data
-    console.log(query_events)
+
     return (
       <div className="w-full rounded-lg bg-slate-100 p-10">
         <h1 className="font-medium text-2xl mt-5">
