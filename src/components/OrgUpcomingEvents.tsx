@@ -4,11 +4,11 @@ import { SelectClub as Club } from "@src/server/db/models";
 
 const cur_time = new Date();
 
-const OrgUpcomingEvents:FC<{club : Club}> = ({club}) => {
+const OrgUpcomingEvents:FC<{club_id : string}> = ({club_id}) => {
 
   const datt = new Date("2025, 5, 4")
   
-    const query_events = (api.event.byClubId.useQuery({ clubId: club.id, currentTime: cur_time, sortByDate: true  })).data
+    const query_events = (api.event.byClubId.useQuery({ clubId: club_id, currentTime: cur_time, sortByDate: true  })).data
 
     return (
       <div className="w-full rounded-lg bg-slate-100 p-10">
