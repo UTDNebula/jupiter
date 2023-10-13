@@ -27,7 +27,7 @@ const OrgUpcomingEvents:FC<{club : Club}> = ({club}) => {
                 </div>
             ))
             :
-             <div className="font-medium">There is no upcoming events</div>
+             <div className="font-medium">There are no upcoming events</div>
           }
             
         </div>
