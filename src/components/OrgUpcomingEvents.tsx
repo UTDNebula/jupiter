@@ -2,7 +2,7 @@ import { api } from "@src/utils/api";
 import { type FC } from "react";
 import { SelectClub as Club } from "@src/server/db/models";
 
-let cur_time = new Date();
+const cur_time = new Date();
 
 const OrgUpcomingEvents:FC<{club : Club}> = ({club}) => {
   
