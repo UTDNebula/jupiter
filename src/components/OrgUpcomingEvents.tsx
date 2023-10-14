@@ -6,7 +6,6 @@ const cur_time = new Date();
 
 const OrgUpcomingEvents:FC<{club_id : string}> = ({club_id}) => {
 
-  const datt = new Date("2025, 5, 4")
   
     const query_events = (api.event.byClubId.useQuery({ clubId: club_id, currentTime: cur_time, sortByDate: true  })).data
 
