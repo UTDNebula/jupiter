@@ -1,12 +1,11 @@
 import { api } from "@src/utils/api";
 import { type FC } from "react";
-import { SelectClub as Club } from "@src/server/db/models";
-
-const cur_time = new Date();
+import { useState, useEffect } from "react";
 
 const OrgUpcomingEvents:FC<{club_id : string}> = ({club_id}) => {
 
-  
+    const [cur_time] = useState( new Date() );
+
     const query_events = (api.event.byClubId.useQuery({ clubId: club_id, currentTime: cur_time, sortByDate: true  })).data
 
     return (
