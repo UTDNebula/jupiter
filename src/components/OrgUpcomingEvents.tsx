@@ -1,6 +1,6 @@
 import { api } from "@src/utils/api";
 import { type FC } from "react";
-import { useState, useEffect } from "react";
+import { useState} from "react";
 
 const OrgUpcomingEvents:FC<{club_id : string}> = ({club_id}) => {
 
