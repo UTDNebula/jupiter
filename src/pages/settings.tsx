@@ -45,8 +45,8 @@ const Settings = () => {
             />
           </div>
           <div className="h-full">
-            <h1 className=" pt-5 text-3xl font-bold text-black-500 text-center">
-              Please signin to use the settings page.
+            <h1 className=" pt-5 pb-1 text-3xl font-bold text-black-500 text-center">
+            Please Sign in to Use the Settings Page.
             </h1>
           </div>
         </main>
