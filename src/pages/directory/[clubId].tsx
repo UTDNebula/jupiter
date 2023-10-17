@@ -2,6 +2,7 @@ import ClubDocuments from '@src/components/ClubDocuments';
 import Header from '@src/components/Header';
 import OrgHeader from '@src/components/OrgHeader';
 import OrgInfoSegment from '@src/components/OrgInfoSegment';
+import OrgUpcomingEvents from '@src/components/OrgUpcomingEvents';
 import Head from 'next/head';
 import React from 'react';
 
@@ -24,6 +25,7 @@ const OrganizationPage = ({
         <div className="mb-5 flex flex-col space-y-8 px-7">
           <OrgHeader club={club} />
           <OrgInfoSegment club={club} />
+          <OrgUpcomingEvents club_id={club.id}/>
           <ClubDocuments />
           <div className="flex h-full w-full flex-row items-center justify-between rounded-lg bg-blue-100 px-14 py-7">
             <div className="text-blue-primary text-lg font-bold">
