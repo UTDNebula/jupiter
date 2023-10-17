@@ -17,9 +17,9 @@ export default function Auth({ providers }: { providers: Providers }) {
 
   useEffect(() => {
     if (router.query.signup === '') {
-      setSignin(false)
+      setSignin(false);
     }
-  }, [router.query.signup]); 
+  }, [router.query.signup]);
 
   return (
     <main className="relative flex h-screen flex-col items-center justify-center space-y-10 bg-[#ffffff] md:pl-72">
@@ -28,7 +28,11 @@ export default function Auth({ providers }: { providers: Providers }) {
       </h1>
       {Object.values(providers).map((provider) => (
         <div key={provider.name}>
-          <button onClick={() => void signIn(provider.id)}>
+          <button
+            onClick={() => {
+              void signIn(provider.id).then()
+            }}
+          >
             {AuthIcons[provider.id]}
           </button>
         </div>
