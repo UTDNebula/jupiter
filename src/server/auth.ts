@@ -46,17 +46,11 @@ export const authOptions: NextAuthOptions = {
   adapter: DrizzleAdapter(db, pgTable),
   callbacks: {
     async session({ session, user }) {
-      console.log('session start');
       let metadata = await db.query.userMetadata.findFirst({
         where: (metadata) => eq(metadata.id, user.id),
       });
 
-      console.log(metadata);
-
       if (!metadata) {
-        console.log('no metadata');
-        console.log(user);
-
         const firstName = user.name?.split(' ')[0] ?? '';
         const lastName = user.name?.split(' ')[1] ?? '';
 
@@ -67,13 +61,9 @@ export const authOptions: NextAuthOptions = {
           major: 'Computer Science',
         };
 
-        console.log('inserting metadata');
-
         metadata = (
           await db.insert(userMetadata).values(insert).returning()
         ).at(0);
-
-        console.log(metadata);
       }
 
       if (session.user) {
@@ -82,11 +72,6 @@ export const authOptions: NextAuthOptions = {
       }
 
       return session;
-    },
-    async signIn(stuff) {
-      console.log(stuff);
-      await Promise.resolve();
-      return true;
     },
   },
   providers: [
