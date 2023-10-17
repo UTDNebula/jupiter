@@ -5,6 +5,8 @@ import { selectEvent } from '@src/server/db/models';
 
 const byClubIdSchema = z.object({
   clubId: z.string().default(''),
+  currentTime: z.optional(z.date()),
+  sortByDate: z.boolean().default(false),
 });
 
 const byDateRangeSchema = z.object({
@@ -16,18 +18,26 @@ export const eventRouter = createTRPCRouter({
   byClubId: publicProcedure
     .input(byClubIdSchema)
     .query(async ({ input, ctx }) => {
-      const { clubId } = input;
-
+      const { clubId, currentTime, sortByDate } = input;
+      
       try {
-        const events = await ctx.db.query.events.findMany({
-          where: (event) => eq(event.clubId, clubId),
-        });
 
+        const events = await ctx.db.query.events.findMany({
+          where: (event) => (
+            (currentTime) 
+            ? 
+            and ( eq(event.clubId, clubId) , gte(event.startTime, currentTime) )
+            :
+            eq(event.clubId, clubId)
+          ),
+          orderBy: (sortByDate) ? (event) => ([event.startTime]) : undefined
+        });
+        
         const parsed = events.map((e) => selectEvent.parse(e));
         return parsed;
       } catch (e) {
         console.error(e);
-
+        
         throw e;
       }
     }),

@@ -11,7 +11,7 @@ const About = () => {
       </Head>
       <main className="h-full md:pl-72">
         <Header />
-        <div className="mx-6 h-full max-w-5xl">
+        <div className="mx-6 h-full">
           <h1 className="p-2 py-12 text-2xl font-bold text-slate-500">
             About us
           </h1>
