@@ -5,8 +5,13 @@ import { useState} from "react";
 const OrgUpcomingEvents:FC<{club_id : string}> = ({club_id}) => {
 
     const [cur_time] = useState( new Date() );
+    const clubDetails = {
+      clubId: club_id,
+      currentTime: cur_time,
+      sortByDate: true
+    } 
 
-    const query_events = (api.event.byClubId.useQuery({ clubId: club_id, currentTime: cur_time, sortByDate: true  })).data
+    const query_events = (api.event.byClubId.useQuery( clubDetails )).data
 
     return (
       <div className="w-full rounded-lg bg-slate-100 p-10">
