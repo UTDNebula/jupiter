@@ -12,7 +12,7 @@ import { db } from './db';
 import { eq } from 'drizzle-orm';
 import { userMetadata } from './db/schema';
 import { type InsertUserMetadata } from './db/models';
-import IUser, { type UserMetadata } from '@src/models/userMetadata';
+import { type UserMetadata } from '@src/models/userMetadata';
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
