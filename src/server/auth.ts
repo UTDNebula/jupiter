@@ -6,13 +6,13 @@ import {
 } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { env } from '@src/env.mjs';
-import { type Adapter } from 'next-auth/adapters';
 import { DrizzleAdapter } from '@auth/drizzle-adapter';
 import { db } from './db';
 import { eq } from 'drizzle-orm';
 import { userMetadata } from './db/schema';
 import { type InsertUserMetadata } from './db/models';
-import IUser, { type UserMetadata } from '@src/models/userMetadata';
+import { type UserMetadata } from '@src/models/userMetadata';
+import { pgTable } from 'drizzle-orm/pg-core';
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -43,19 +43,19 @@ declare module 'next-auth' {
  */
 
 export const authOptions: NextAuthOptions = {
-  adapter: DrizzleAdapter(db) as Adapter,
+  adapter: DrizzleAdapter(db, pgTable),
   callbacks: {
     async session({ session, user }) {
-      console.log("session start")
+      console.log('session start');
       let metadata = await db.query.userMetadata.findFirst({
         where: (metadata) => eq(metadata.id, user.id),
       });
 
-      console.log(metadata)
+      console.log(metadata);
 
       if (!metadata) {
-        console.log("no metadata")
-        console.log(user)
+        console.log('no metadata');
+        console.log(user);
 
         const firstName = user.name?.split(' ')[0] ?? '';
         const lastName = user.name?.split(' ')[1] ?? '';
@@ -67,13 +67,13 @@ export const authOptions: NextAuthOptions = {
           major: 'Computer Science',
         };
 
-        console.log("inserting metadata")
+        console.log('inserting metadata');
 
         metadata = (
           await db.insert(userMetadata).values(insert).returning()
         ).at(0);
 
-        console.log(metadata)
+        console.log(metadata);
       }
 
       if (session.user) {
