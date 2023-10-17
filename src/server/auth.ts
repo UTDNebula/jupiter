@@ -83,6 +83,11 @@ export const authOptions: NextAuthOptions = {
 
       return session;
     },
+    async signIn(stuff) {
+      console.log(stuff);
+      await Promise.resolve();
+      return true;
+    },
   },
   providers: [
     GoogleProvider({
