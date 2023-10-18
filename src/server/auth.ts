@@ -1,4 +1,3 @@
-import { type GetServerSidePropsContext } from 'next';
 import {
   getServerSession,
   type NextAuthOptions,
@@ -6,13 +5,13 @@ import {
 } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { env } from '@src/env.mjs';
-import { type Adapter } from 'next-auth/adapters';
 import { DrizzleAdapter } from '@auth/drizzle-adapter';
 import { db } from './db';
 import { eq } from 'drizzle-orm';
 import { userMetadata } from './db/schema';
 import { type InsertUserMetadata } from './db/models';
 import { type UserMetadata } from '@src/models/userMetadata';
+import { pgTable } from 'drizzle-orm/pg-core';
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -43,7 +42,7 @@ declare module 'next-auth' {
  */
 
 export const authOptions: NextAuthOptions = {
-  adapter: DrizzleAdapter(db) as Adapter,
+  adapter: DrizzleAdapter(db, pgTable),
   callbacks: {
     async session({ session, user }) {
       let metadata = await db.query.userMetadata.findFirst({
@@ -97,9 +96,4 @@ export const authOptions: NextAuthOptions = {
  *
  * @see https://next-auth.js.org/configuration/nextjs
  */
-export const getServerAuthSession = (ctx: {
-  req: GetServerSidePropsContext['req'];
-  res: GetServerSidePropsContext['res'];
-}) => {
-  return getServerSession(ctx.req, ctx.res, authOptions);
-};
+export const getServerAuthSession = () => getServerSession(authOptions);

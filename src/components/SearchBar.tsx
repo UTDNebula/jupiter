@@ -1,4 +1,5 @@
-import React, {
+'use client';
+import {
   type Dispatch,
   type SetStateAction,
   useState,
@@ -6,9 +7,9 @@ import React, {
   useEffect,
 } from 'react';
 import { SearchIcon } from './Icons';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import type { SelectClub as Club } from '@src/server/db/models';
-import { api } from '@src/utils/api';
+import { api } from '@src/trpc/react';
 
 type SearchElement = {
   id: string;

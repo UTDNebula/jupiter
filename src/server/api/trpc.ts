@@ -7,6 +7,15 @@
  * need to use are documented accordingly near the end.
  */
 
+import { initTRPC, TRPCError } from '@trpc/server';
+// eslint-disable-next-line @next/next/no-server-import-in-page
+import { type NextRequest } from 'next/server';
+import superjson from 'superjson';
+import { ZodError } from 'zod';
+
+import { getServerAuthSession } from '@src/server/auth';
+import { db } from '@src/server/db';
+
 /**
  * 1. CONTEXT
  *
@@ -14,15 +23,10 @@
  *
  * These allow you to access things when processing a request, like the database, the session, etc.
  */
-import { type CreateNextContextOptions } from '@trpc/server/adapters/next';
-import { type Session } from 'next-auth';
-import { db } from '../db';
 
-import { getServerAuthSession } from '@src/server/auth';
-
-type CreateContextOptions = {
-  session: Session | null;
-};
+interface CreateContextOptions {
+  headers: Headers;
+}
 
 /**
  * This helper generates the "internals" for a tRPC context. If you need to use it, you can export
@@ -32,11 +36,14 @@ type CreateContextOptions = {
  * - testing, so we don't have to mock Next.js' req/res
  * - tRPC's `createSSGHelpers`, where we don't have req/res
  *
- * @see https://create.t3.gg/en/usage/trpc#-servertrpccontextts
+ * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
-export const createInnerTRPCContext = (opts: CreateContextOptions) => {
+export const createInnerTRPCContext = async (opts: CreateContextOptions) => {
+  const session = await getServerAuthSession();
+
   return {
-    session: opts.session,
+    session,
+    headers: opts.headers,
     db,
   };
 };
@@ -47,14 +54,11 @@ export const createInnerTRPCContext = (opts: CreateContextOptions) => {
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = async (opts: CreateNextContextOptions) => {
-  const { req, res } = opts;
+export const createTRPCContext = async (opts: { req: NextRequest }) => {
+  // Fetch stuff that depends on the request
 
-  // Get the session from the server using the getServerSession wrapper function
-  const session = await getServerAuthSession({ req, res });
-
-  return createInnerTRPCContext({
-    session,
+  return await createInnerTRPCContext({
+    headers: opts.req.headers,
   });
 };
 
@@ -65,9 +69,6 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
  * ZodErrors so that you get typesafety on the frontend if your procedure fails due to validation
  * errors on the backend.
  */
-import { initTRPC, TRPCError } from '@trpc/server';
-import superjson from 'superjson';
-import { ZodError } from 'zod';
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,

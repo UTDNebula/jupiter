@@ -1,37 +1,15 @@
-import type { ReactNode } from 'react';
+'use client';
 import { ClubSearchBar, EventSearchBar } from './SearchBar';
-import Link from 'next/link';
-import { useSession, signOut } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import BaseHeader from './BaseHeader';
 
-const BaseHeader = ({ children }: { children: ReactNode }) => {
-  const { data: session, status } = useSession();
-
-  return (
-    <div className="flex h-20 w-full flex-row content-between items-center justify-start px-5 py-2.5">
-      {children}
-      <div className="ml-auto flex items-center justify-center">
-        {status === 'authenticated' ? (
-          <div className="h-10 w-10 rounded-full">
-            <ProfileDropDown image={session.user.image || ''} />
-          </div>
-        ) : (
-          <div className="flex w-32 justify-between">
-            <Link href="/auth?signin">Sign in</Link>
-            <Link href="/auth?signup">Sign up</Link>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-const ProfileDropDown = ({ image }: { image: string }) => {
+export const ProfileDropDown = ({ image }: { image: string }) => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger
-        onClick={() => console.log('dropdown clicked')}
+        // onClick={() => console.log('dropdown clicked')}
         asChild
       >
         {image !== '' ? (
