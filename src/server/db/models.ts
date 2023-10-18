@@ -23,6 +23,7 @@ export const selectEvent = createSelectSchema(events);
 export type InsertEvent = z.infer<typeof insertEvent>;
 export type SelectEvent = z.infer<typeof selectEvent>;
 
+// Schema types for userMetadata
 export const insertUserMetadata = createInsertSchema(userMetadata);
 
 export type InsertUserMetadata = z.infer<typeof insertUserMetadata>;
