@@ -105,3 +105,7 @@ export const EventSearchBar = () => {
   const [search, setSearch] = useState('');
   return <SearchBar placeholder="Search for Events" setSearch={setSearch} />;
 };
+export const TagSearchBar = () => {
+  const [search, setSearch] = useState('');
+  return <SearchBar placeholder="Search for Tags" setSearch={setSearch} />;
+};
