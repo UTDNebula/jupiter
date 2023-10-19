@@ -103,6 +103,7 @@ export const ClubSearchBar = () => {
   );
 };
 export const EventSearchBar = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [search, setSearch] = useState('');
   return <SearchBar placeholder="Search for Events" setSearch={setSearch} />;
 };

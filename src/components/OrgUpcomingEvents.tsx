@@ -1,11 +1,10 @@
-import { api } from '@src/utils/api';
+import { api } from '@src/trpc/server';
 import { type FC } from 'react';
-import { useState } from 'react';
 
-const OrgUpcomingEvents: FC<{ club_id: string }> = ({ club_id }) => {
-  const [cur_time] = useState(new Date());
+const OrgUpcomingEvents: FC<{ club_id: string }> = async ({ club_id }) => {
+  const cur_time = new Date();
 
-  const { data } = api.event.byClubId.useQuery({
+  const data = await api.event.byClubId.query({
     clubId: club_id,
     currentTime: cur_time,
     sortByDate: true,

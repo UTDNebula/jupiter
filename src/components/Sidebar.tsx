@@ -7,7 +7,7 @@ const moreCats = ['Settings', 'About', 'Feedback'] as const;
 // Keep in mind that in all routes we need pl-72 for the sidebar
 const Sidebar = () => {
   return (
-    <div className="absolute z-10 hidden h-full w-72 bg-slate-100 md:block">
+    <div className="absolute z-10 hidden h-screen w-72 bg-slate-100 md:block">
       <div className="flex w-full place-content-center items-center pb-7 pt-10">
         <Image
           src="/nebula-logo.png"
