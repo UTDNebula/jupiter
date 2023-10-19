@@ -4,6 +4,8 @@ import { api } from '@src/trpc/react';
 import { type Session } from 'next-auth';
 import { type FC, useEffect } from 'react';
 import SettingsInput from './SettingsInput';
+import SettingsDropdown from './SettingsDropdown';
+import { careerEnum, roleEnum, yearEnum } from '@src/server/db/schema';
 
 const SettingsForm: FC<{ session: Session }> = ({ session }) => {
   const { mutate, isLoading, isSuccess, isError, reset } =
@@ -43,10 +45,20 @@ const SettingsForm: FC<{ session: Session }> = ({ session }) => {
         <SettingsInput label="Last Name" defaultValue={session.user.lastName} />
         <SettingsInput label="Major" defaultValue={session.user.major} />
         <SettingsInput label="Minor" defaultValue={session.user.minor ?? ''} />
-        <SettingsInput label="Year" defaultValue={session.user.year ?? ''} />
-        <SettingsInput label="Role" defaultValue={session.user.role ?? ''} />
-        <SettingsInput
+        <SettingsDropdown
+          label="Year"
+          options={yearEnum.enumValues}
+          defaultValue={session.user.year ?? ''}
+        />
+        <SettingsDropdown
+          label="Role"
+          options={roleEnum.enumValues}
+          defaultValue={session.user.role ?? ''}
+          disabled
+        />
+        <SettingsDropdown
           label="Career"
+          options={careerEnum.enumValues}
           defaultValue={session.user.career ?? ''}
         />
         <p className="text-lg">Clubs:</p>
