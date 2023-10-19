@@ -8,7 +8,6 @@
  */
 
 import { initTRPC, TRPCError } from '@trpc/server';
-// eslint-disable-next-line @next/next/no-server-import-in-page
 import { type NextRequest } from 'next/server';
 import superjson from 'superjson';
 import { ZodError } from 'zod';

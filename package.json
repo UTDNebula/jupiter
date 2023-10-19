@@ -18,7 +18,7 @@
     "dotenv": "^16.0.3",
     "drizzle-zod": "^0.5.1",
     "fuse.js": "^6.6.2",
-    "postgres": "^3.4.0",
+    "postgres": "^3.3.5",
     "@auth/drizzle-adapter": "^0.3.2",
     "@tanstack/react-query": "^4.32.6",
     "@trpc/client": "^10.37.1",

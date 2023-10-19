@@ -1,3 +1,4 @@
+'use client';
 import React, { type FC } from 'react';
 import {
   AboutIcon,
@@ -10,7 +11,7 @@ import {
   RightChevron,
   SettingsIcon,
 } from './Icons';
-import { useRouter } from 'next/router';
+import { useRouter, usePathname } from 'next/navigation';
 
 const mainCats = ['Home', 'History', 'Liked', 'Events'] as const;
 const moreCats = ['Settings', 'About', 'Feedback'] as const;
@@ -40,13 +41,12 @@ const routeMap: {
   Feedback: '/feedback',
 };
 
-const SidebarItems: FC<{ cat: union[number]; active: boolean }> = ({
-  cat,
-  active,
-}) => {
+const SidebarItems: FC<{ cat: union[number] }> = ({ cat }) => {
   const Icon = IconMap[cat];
   const router = useRouter();
   const route = routeMap[cat];
+  const pathName = usePathname();
+  const active = pathName === route;
 
   // This should never happen
   // Just so  TS doesn't complain
@@ -59,7 +59,7 @@ const SidebarItems: FC<{ cat: union[number]; active: boolean }> = ({
       }`}
     >
       <div
-        className=" 
+        className="
         flex h-full w-64 cursor-pointer items-start  rounded-lg bg-transparent px-5 text-sm transition-transform"
         onClick={() => void router.push(route)}
       >

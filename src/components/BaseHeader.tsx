@@ -2,8 +2,9 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { ProfileDropDown } from './Header';
 import { getServerAuthSession } from '@src/server/auth';
+import { ClubSearchBar, EventSearchBar } from './SearchBar';
 
-const BaseHeader = async ({ children }: { children: ReactNode }) => {
+export const BaseHeader = async ({ children }: { children: ReactNode }) => {
   const session = await getServerAuthSession();
 
   return (
@@ -25,4 +26,22 @@ const BaseHeader = async ({ children }: { children: ReactNode }) => {
   );
 };
 
-export default BaseHeader;
+const Header = () => {
+  return (
+    <BaseHeader>
+      <ClubSearchBar />
+    </BaseHeader>
+  );
+};
+
+export const EventHeader = () => {
+  return (
+    <>
+      <BaseHeader>
+        <EventSearchBar />
+      </BaseHeader>
+    </>
+  );
+};
+
+export default Header;

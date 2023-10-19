@@ -1,9 +1,7 @@
 'use client';
-import { ClubSearchBar, EventSearchBar } from './SearchBar';
 import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import BaseHeader from './BaseHeader';
 
 export const ProfileDropDown = ({ image }: { image: string }) => {
   return (
@@ -37,23 +35,3 @@ export const ProfileDropDown = ({ image }: { image: string }) => {
     </DropdownMenu.Root>
   );
 };
-
-const Header = () => {
-  return (
-    <BaseHeader>
-      <ClubSearchBar />
-    </BaseHeader>
-  );
-};
-
-export const EventHeader = () => {
-  return (
-    <>
-      <BaseHeader>
-        <EventSearchBar />
-      </BaseHeader>
-    </>
-  );
-};
-
-export default Header;

@@ -1,5 +1,4 @@
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
-// eslint-disable-next-line @next/next/no-server-import-in-page
 import { type NextRequest } from 'next/server';
 
 import { env } from '@src/env.mjs';
