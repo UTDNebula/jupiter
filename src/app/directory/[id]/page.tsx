@@ -5,7 +5,6 @@ import OrgInfoSegment from '@src/components/OrgInfoSegment';
 import OrgUpcomingEvents from '@src/components/OrgUpcomingEvents';
 import { api } from '@src/trpc/server';
 import { PlusIcon } from '@src/components/Icons';
-import { db } from '@src/server/db';
 
 const OrganizationPage = async ({ params }: { params: { id: string } }) => {
   const club = await api.club.byId.query({ id: params.id });
@@ -33,12 +32,3 @@ const OrganizationPage = async ({ params }: { params: { id: string } }) => {
 };
 
 export default OrganizationPage;
-
-export async function generateStaticParams() {
-  const clubs = await db.query.club.findMany();
-  return clubs.map((club) => ({
-    params: {
-      id: club.id,
-    },
-  }));
-}
