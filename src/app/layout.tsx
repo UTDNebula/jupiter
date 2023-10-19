@@ -26,7 +26,7 @@ export default function RootLayout({
       <body className={`font-sans ${inter.variable}`}>
         <TRPCReactProvider headers={headers()}>
           <Sidebar />
-          {children}
+          <div className="max-h-screen overflow-y-scroll">{children}</div>
         </TRPCReactProvider>
       </body>
     </html>
