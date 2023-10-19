@@ -1,43 +1,33 @@
-import React, { useState } from 'react';
-import EventCalendarCard from './EventCalendarCard';
-import { api } from '@src/utils/api';
-import type { Event } from '@src/models/event';
-import * as Dialog from '@radix-ui/react-dialog';
+import { type FC } from 'react';
+import { api } from '@src/trpc/server';
+import EventCardWithPopUp from './EventCardWithPopUp';
 
-const EventCalendar: React.FC<{ index: number }> = ({ index }) => {
-  const [events, setEvents] = useState<Event[] | undefined>();
+function getDateRange(today: Date, index: number): Date[] {
+  const daysSinceLastSunday = today.getDay();
+  const startDate = new Date(today);
+  startDate.setDate(today.getDate() - daysSinceLastSunday);
 
-  const dates = React.useMemo(() => {
-    const today = new Date();
-    const daysSinceLastSunday = today.getDay();
-    const startDate = new Date(today);
+  const firstDate = new Date(startDate);
+  firstDate.setDate(startDate.getDate() + (index - 1) * 7);
+  firstDate.setHours(0, 0, 0, 0);
 
-    startDate.setDate(today.getDate() - daysSinceLastSunday + (index - 1) * 7);
+  const dates = Array.from({ length: 7 }, (_, i) => {
+    const currentDate = new Date(firstDate);
+    currentDate.setDate(firstDate.getDate() + i);
+    return currentDate;
+  });
+  dates.at(-1)?.setHours(23, 59, 59, 999);
+  return dates;
+}
 
-    const dates = [];
-
-    for (let i = 0; i < 7; i++) {
-      const currentDate = new Date(startDate);
-      currentDate.setDate(startDate.getDate() + i);
-      dates.push(currentDate);
-    }
-
-    return dates;
-  }, [index]);
-
+const EventCalendar: FC<{ index: number }> = async ({ index }) => {
   const today = new Date();
+  const dates = getDateRange(today, index);
 
-  api.event.byDateRange.useQuery(
-    {
-      startTime: dates[0] || today,
-      endTime: dates[6] || today,
-    },
-    {
-      onSuccess: (data) => {
-        setEvents(data);
-      },
-    },
-  );
+  const events = await api.event.byDateRange.query({
+    startTime: dates[0]!,
+    endTime: dates[6]!,
+  });
 
   return (
     <div className="flex w-full justify-between p-2">
@@ -56,7 +46,7 @@ const EventCalendar: React.FC<{ index: number }> = ({ index }) => {
             </p>
           </div>
           <div className="h-60 overflow-y-scroll py-2">
-            {(events || []).map((event, key) => {
+            {events.map((event, key) => {
               const eventDate = new Date(event.startTime);
               const givenDate = new Date(day);
 
@@ -65,52 +55,7 @@ const EventCalendar: React.FC<{ index: number }> = ({ index }) => {
                 eventDate.getMonth() === givenDate.getMonth() &&
                 eventDate.getFullYear() === givenDate.getFullYear()
               ) {
-                const formattedStartTime = `${(event.startTime.getMonth() + 1)
-                  .toString()
-                  .padStart(2, '0')}/${event.startTime
-                  .getDate()
-                  .toString()
-                  .padStart(
-                    2,
-                    '0',
-                  )}, ${event.startTime.getHours()}:${event.startTime.getMinutes()}`;
-
-                const formattedEndTime = `${(event.startTime.getMonth() + 1)
-                  .toString()
-                  .padStart(2, '0')}/${event.startTime
-                  .getDate()
-                  .toString()
-                  .padStart(
-                    2,
-                    '0',
-                  )}, ${event.startTime.getHours()}:${event.startTime.getMinutes()}`;
-
-                return (
-                  <Dialog.Root key={key}>
-                    <Dialog.Trigger asChild>
-                      <button>
-                        <EventCalendarCard event={event} />
-                      </button>
-                    </Dialog.Trigger>
-                    <Dialog.Portal>
-                      <Dialog.Content className="-translate-x-30 fixed left-1/2 top-1/2 -translate-y-1/2 rounded-md border-2 border-black bg-slate-200 p-8">
-                        <Dialog.Title className="rounded-md py-2 text-xl text-black">
-                          {event.name}
-                        </Dialog.Title>
-                        <Dialog.Description>
-                          <div className="py-2">
-                            <div>
-                              <div>
-                                {formattedStartTime} to {formattedEndTime}
-                              </div>
-                            </div>
-                            <div>{event.description}</div>
-                          </div>
-                        </Dialog.Description>
-                      </Dialog.Content>
-                    </Dialog.Portal>
-                  </Dialog.Root>
-                );
+                return <EventCardWithPopUp event={event} key={event.id} />;
               } else {
                 return <div key={key}></div>;
               }
