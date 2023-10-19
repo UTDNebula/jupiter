@@ -30,7 +30,7 @@ export default function Auth({ providers }: { providers: Providers }) {
         <div key={provider.name}>
           <button
             onClick={() => {
-              void signIn(provider.id).then()
+              void signIn(provider.id).then();
             }}
           >
             {AuthIcons[provider.id]}

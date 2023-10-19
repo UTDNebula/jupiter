@@ -11,26 +11,21 @@ const History = () => {
         <meta name="description" content="History - Jupiter" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-			<main className="h-full md:pl-72">
-				<Header />
-				<div className="w-full pt-20 flex items-center place-content-center">
-            <Image
-              src="/nebula-logo.png"
-              alt = ""
-              width={300}
-              height={300}
-            />
-				</div>
-				<div className="h-full">
-          <h1 className=" pt-5 text-3xl font-bold text-black-500 text-center">
+      <main className="h-full md:pl-72">
+        <Header />
+        <div className="flex w-full place-content-center items-center pt-20">
+          <Image src="/nebula-logo.png" alt="" width={300} height={300} />
+        </div>
+        <div className="h-full">
+          <h1 className=" text-black-500 pt-5 text-center text-3xl font-bold">
             The History Page is Under Construction!
-					</h1>
-					<h1 className=" pt-2 text-2xl font-bold text-black-500 text-center">
+          </h1>
+          <h1 className=" text-black-500 pt-2 text-center text-2xl font-bold">
             Please Come Back Later!
-					</h1>
-				</div>
-			</main>
-		</>
+          </h1>
+        </div>
+      </main>
+    </>
   );
 };
 

@@ -25,13 +25,13 @@ const OrganizationPage = ({
         <div className="mb-5 flex flex-col space-y-8 px-7">
           <OrgHeader club={club} />
           <OrgInfoSegment club={club} />
-          <OrgUpcomingEvents club_id={club.id}/>
+          <OrgUpcomingEvents club_id={club.id} />
           <ClubDocuments />
           <div className="flex h-full w-full flex-row items-center justify-between rounded-lg bg-blue-100 px-14 py-7">
-            <div className="text-blue-primary text-lg font-bold">
+            <div className="text-lg font-bold text-blue-primary">
               Promo text
             </div>
-            <button className="bg-blue-primary flex w-fit flex-row items-center justify-center rounded-3xl py-2.5 pl-5 pr-6 text-center text-xs font-extrabold text-white transition-colors hover:bg-blue-700">
+            <button className="flex w-fit flex-row items-center justify-center rounded-3xl bg-blue-primary py-2.5 pl-5 pr-6 text-center text-xs font-extrabold text-white transition-colors hover:bg-blue-700">
               <PlusIcon />
               <div>Apply</div>
             </button>

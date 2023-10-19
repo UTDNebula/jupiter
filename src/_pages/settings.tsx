@@ -36,17 +36,12 @@ const Settings = () => {
         </Head>
         <main className="h-full md:pl-72">
           <Header />
-          <div className="w-full pt-20 flex items-center place-content-center">
-            <Image
-              src="/nebula-logo.png"
-              alt=""
-              width={300}
-              height={300}
-            />
+          <div className="flex w-full place-content-center items-center pt-20">
+            <Image src="/nebula-logo.png" alt="" width={300} height={300} />
           </div>
           <div className="h-full">
-            <h1 className=" pt-5 pb-1 text-3xl font-bold text-black-500 text-center">
-            Please Sign in to Use the Settings Page.
+            <h1 className=" text-black-500 pb-1 pt-5 text-center text-3xl font-bold">
+              Please Sign in to Use the Settings Page.
             </h1>
           </div>
         </main>

@@ -10,12 +10,10 @@ const ContactButtons = ({ contacts }: contentButtonProps) => {
       {contacts.map((item) => (
         <button
           key={item.url}
-          className="relative h-min self-center rounded-full bg-slate-100 p-2.5 transition-colors hover:bg-blue-700 group"
+          className="group relative h-min self-center rounded-full bg-slate-100 p-2.5 transition-colors hover:bg-blue-700"
         >
           <a target="__blank__" href={item.url}>
-            <div className="relative h-8 w-8">
-              {logo[item.platform]}
-            </div>
+            <div className="relative h-8 w-8">{logo[item.platform]}</div>
           </a>
         </button>
       ))}
