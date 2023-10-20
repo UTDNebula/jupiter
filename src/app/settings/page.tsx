@@ -27,13 +27,6 @@ const Settings = async () => {
       <div className="min-h-3/4 w-3/4 rounded-xl bg-slate-50 p-20 shadow-lg">
         <div className="flex justify-between py-2">
           <h1 className="text-2xl">Settings</h1>
-          <button
-            type="submit"
-            form="settings-form"
-            className="mr-2 rounded-2xl bg-blue-500 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-600"
-          >
-            Save Changes
-          </button>
         </div>
         <SettingsForm session={session} />
       </div>

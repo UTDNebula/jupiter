@@ -9,6 +9,9 @@ const config = {
   images: {
     domains: ['lh3.googleusercontent.com'],
   },
+  experimental: {
+    serverActions: true,
+  },
 };
 
 export default config;

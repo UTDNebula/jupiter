@@ -1,11 +1,11 @@
 'use client';
 import Image from 'next/image';
-import { type FC, useState } from 'react';
+import { useState } from 'react';
 import { LeftArrowIcon, RightArrowIcon } from './Icons';
 
 const clubs = ['Nebula', 'ACM', 'Other'];
 
-const Carousel: FC = () => {
+const Carousel = () => {
   const [slide, setSlide] = useState(0);
 
   const onClick = (acc: number) => {
