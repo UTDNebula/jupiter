@@ -4,25 +4,22 @@ import EventCardWithPopUp from './EventCardWithPopUp';
 
 function getDateRange(today: Date, index: number): Date[] {
   const daysSinceLastSunday = today.getDay();
-  const startDate = new Date(today);
-  startDate.setDate(today.getDate() - daysSinceLastSunday);
+  const startDate = new Date(
+    today.setDate(today.getDate() - daysSinceLastSunday),
+  );
+  startDate.setHours(0, 0, 0, 0);
 
-  const firstDate = new Date(startDate);
-  firstDate.setDate(startDate.getDate() + (index - 1) * 7);
-  firstDate.setHours(0, 0, 0, 0);
-
-  const dates = Array.from({ length: 7 }, (_, i) => {
-    const currentDate = new Date(firstDate);
-    currentDate.setDate(firstDate.getDate() + i);
+  return Array.from({ length: 7 }, (_, i) => {
+    const currentDate = new Date(startDate);
+    currentDate.setDate(startDate.getDate() + (index - 1) * 7 + i);
     return currentDate;
   });
-  dates.at(-1)?.setHours(23, 59, 59, 999);
-  return dates;
 }
 
 const EventCalendar: FC<{ index: number }> = async ({ index }) => {
   const today = new Date();
   const dates = getDateRange(today, index);
+  console.log(today);
 
   const events = await api.event.byDateRange.query({
     startTime: dates[0]!,
@@ -46,7 +43,7 @@ const EventCalendar: FC<{ index: number }> = async ({ index }) => {
             </p>
           </div>
           <div className="h-60 overflow-y-scroll py-2">
-            {events.map((event, key) => {
+            {events.map((event) => {
               const eventDate = new Date(event.startTime);
               const givenDate = new Date(day);
 
@@ -54,11 +51,8 @@ const EventCalendar: FC<{ index: number }> = async ({ index }) => {
                 eventDate.getDate() === givenDate.getDate() &&
                 eventDate.getMonth() === givenDate.getMonth() &&
                 eventDate.getFullYear() === givenDate.getFullYear()
-              ) {
+              )
                 return <EventCardWithPopUp event={event} key={event.id} />;
-              } else {
-                return <div key={key}></div>;
-              }
             })}
           </div>
         </div>

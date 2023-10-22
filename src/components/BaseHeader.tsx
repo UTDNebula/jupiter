@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
-import { ProfileDropDown } from './Header';
+import { ProfileDropDown } from './ProfileDropDown';
 import { getServerAuthSession } from '@src/server/auth';
 import { ClubSearchBar, EventSearchBar } from './SearchBar';
 

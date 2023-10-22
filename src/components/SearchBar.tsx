@@ -79,25 +79,18 @@ const SearchBar = <T extends SearchElement>({
 export const ClubSearchBar = () => {
   const router = useRouter();
   const [search, setSearch] = useState<string>('');
-  const [res, setRes] = useState<Club[]>([]);
-  api.club.byName.useQuery(
+  const { data } = api.club.byName.useQuery(
     { name: search },
-    {
-      onSuccess: (data) => {
-        setRes(data);
-        return data;
-      },
-      enabled: !!search,
-    },
+    { enabled: !!search },
   );
   const onClickSearchResult = (club: Club) => {
-    void router.push(`/directory/${club.id}`);
+    router.push(`/directory/${club.id}`);
   };
   return (
     <SearchBar
       placeholder="Search for Clubs"
       setSearch={setSearch}
-      searchResults={res}
+      searchResults={data || []}
       onClick={onClickSearchResult}
     />
   );
