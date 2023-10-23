@@ -69,7 +69,7 @@ const ContactSelector = () => {
   const contacts = used;
   return (
     <div>
-      <div className="flex flex-row">
+      <div className="flex flex-row py-1">
         <h2>Contacts</h2>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -87,7 +87,7 @@ const ContactSelector = () => {
           </DropdownMenuPortal>
         </DropdownMenu>
       </div>
-      <div className="space-y-5">
+      <div className="space-y-2">
         {contacts &&
           contacts.map((contact) => (
             <ContactInput
