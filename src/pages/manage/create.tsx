@@ -2,6 +2,7 @@ import Header from '@src/components/Header';
 import Sidebar from '@src/components/Sidebar';
 import { TagSearchBar } from '@src/components/SearchBar';
 import ContactSelector from '@src/components/ContactSelector';
+import OfficerSelector from '@src/components/OfficerSelector';
 
 const Page = () => {
   return (
@@ -31,10 +32,7 @@ const Page = () => {
             <input type="file" />
           </div>
           <div className="w-full rounded-md bg-slate-100 p-5 shadow-sm">
-            <div className="flex flex-row">
-              <h2>Officers</h2>
-              <button className="ml-auto">Add Officer</button>
-            </div>
+            <OfficerSelector />
           </div>
           <div className="w-full rounded-md bg-slate-100 p-5 shadow-sm">
             <div className="flex flex-row">
