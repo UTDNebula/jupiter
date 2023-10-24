@@ -1,5 +1,6 @@
 import { EventHeader } from '@src/components/BaseHeader';
 import EventCalendar from '@src/components/EventCalendar';
+import { type Metadata } from 'next';
 
 const nextMonths = (num: number) => {
   const months = [];
@@ -9,6 +10,11 @@ const nextMonths = (num: number) => {
     date.setMonth(date.getMonth() + 1);
   }
   return months;
+};
+
+export const metadata: Metadata = {
+  title: 'Events - Jupiter',
+  description: 'Get connected on campus.',
 };
 
 const Events = () => {

@@ -1,4 +1,10 @@
 import Header from '@src/components/BaseHeader';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'About - Jupiter',
+  description: 'About Jupiter',
+};
 
 const About = () => {
   return (

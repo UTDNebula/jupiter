@@ -2,6 +2,12 @@ import Header from '../components/BaseHeader';
 import Carousel from '../components/Carousel';
 import TagFilter from '../components/TagFilter';
 import OrgDirectoryGrid from '../components/OrgDirectoryGrid';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Jupiter - Nebula',
+  description: 'Get connected on campus.',
+};
 
 const Home = () => {
   return (

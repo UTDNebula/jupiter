@@ -5,6 +5,10 @@ import OrgInfoSegment from '@src/components/OrgInfoSegment';
 import OrgUpcomingEvents from '@src/components/OrgUpcomingEvents';
 import { api } from '@src/trpc/server';
 import { PlusIcon } from '@src/components/Icons';
+import { db } from '@src/server/db';
+import { eq } from 'drizzle-orm';
+import { club } from '@src/server/db/schema';
+import { type Metadata } from 'next';
 
 const OrganizationPage = async ({ params }: { params: { id: string } }) => {
   const club = await api.club.byId.query({ id: params.id });
@@ -32,3 +36,24 @@ const OrganizationPage = async ({ params }: { params: { id: string } }) => {
 };
 
 export default OrganizationPage;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const id = params.id;
+
+  const found = await db.query.club.findFirst({ where: eq(club.id, id) });
+
+  if (!found)
+    return {
+      title: 'Organization not found',
+      description: 'Organization not found',
+    };
+
+  return {
+    title: `${found.name} - Jupiter`,
+    description: found.description.slice(0, 30) + '...',
+  };
+}
