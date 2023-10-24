@@ -51,7 +51,6 @@ const SidebarItems: FC<{ cat: union[number]; active: boolean }> = ({
   const [mouseOver, setMouseOver] = useState(0);
   const handleMouseOver = () => {
     setMouseOver(1);
-    console.log(cat);
   };
 
   const handleMouseOut = () => {
@@ -65,13 +64,11 @@ const SidebarItems: FC<{ cat: union[number]; active: boolean }> = ({
   return (
     <div
       className={`${
-        (active || mouseOver) && cat != 'Events'
-          ? '-my-2.5 mb-2.5 rounded-3xl bg-white py-2.5 shadow-md'
-          : (active || mouseOver) && cat == 'Events'
-          ? '-my-2.5 rounded-3xl bg-white py-2.5 shadow-md'
-          : cat != 'Events'
-          ? 'mb-5'
-          : ''
+        active || mouseOver
+          ? `-my-2.5 rounded-3xl bg-white py-2.5 shadow-md ${
+              cat == 'Events' ? '' : 'mb-2.5'
+            }`
+          : 'mb-5'
       }`}
       onMouseOver={handleMouseOver}
       onMouseOut={handleMouseOut}
