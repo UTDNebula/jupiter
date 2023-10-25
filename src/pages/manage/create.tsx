@@ -3,8 +3,28 @@ import Sidebar from '@src/components/Sidebar';
 import { TagSearchBar } from '@src/components/SearchBar';
 import ContactSelector from '@src/components/ContactSelector';
 import OfficerSelector from '@src/components/OfficerSelector';
+import { z } from 'zod';
+import { selectContact } from '@src/server/db/models';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
+export const createClubSchema = z.object({
+  name: z.string().nonempty(),
+  description: z.string().nonempty(),
+  officers: z
+    .object({
+      name: z.string().nonempty(),
+      position: z.string().nonempty(),
+    })
+    .array(),
+  contacts: selectContact.omit({ clubId: true }),
+});
 const Page = () => {
+  const { register, control, handleSubmit, formState } = useForm<
+    z.infer<typeof createClubSchema>
+  >({
+    resolver: zodResolver(createClubSchema),
+  });
   return (
     <main>
       <Sidebar />
@@ -18,11 +38,20 @@ const Page = () => {
           </div>
           <div className="w-full rounded-md bg-slate-100 p-5 shadow-sm">
             <h2>Organization name</h2>
-            <input type="text" id="name" className="w-full bg-transparent" />
+            <input
+              type="text"
+              id="name"
+              className="w-full bg-transparent"
+              {...register('name')}
+            />
           </div>
           <div className="h-44 w-full rounded-md bg-slate-100 p-5 shadow-sm">
             <h2>Description</h2>
-            <textarea id="desc" className="h-24 w-full" />
+            <textarea
+              id="desc"
+              className="h-24 w-full"
+              {...register('description')}
+            />
           </div>
           {false && (
             <div className="w-full rounded-md bg-slate-100 p-5 shadow-sm">
