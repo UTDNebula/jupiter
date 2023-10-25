@@ -4,8 +4,8 @@ import type {
   SelectClub,
   SelectContact as Contacts,
 } from '@src/server/db/models';
-import { HeartIcon } from './Icons';
 import { useState } from 'react';
+import LikeButton from './LikeButton';
 
 type Club = SelectClub & {
   contacts?: Contacts[];
@@ -52,9 +52,7 @@ const OrgHeader = ({ club }: { club: Club }) => {
                 setLiked(!liked);
               }}
             >
-              <div className={'h-8 w-8'}>
-                <HeartIcon fill={`${liked ? 'fill-red-500' : 'fill-white'} `} />
-              </div>
+              <LikeButton liked={liked} />
             </button>
             <ContactButtons contacts={club.contacts || []} />
           </div>
