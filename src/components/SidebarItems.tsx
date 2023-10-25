@@ -48,13 +48,13 @@ const SidebarItems: FC<{ cat: union[number]; active: boolean }> = ({
   const router = useRouter();
   const route = routeMap[cat];
 
-  const [mouseOver, setMouseOver] = useState(0);
+  const [mouseOver, setMouseOver] = useState(false);
   const handleMouseOver = () => {
-    setMouseOver(1);
+    setMouseOver(true);
   };
 
   const handleMouseOut = () => {
-    setMouseOver(0);
+    setMouseOver(false);
   };
 
   // This should never happen
