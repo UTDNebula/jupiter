@@ -73,7 +73,7 @@ const SidebarItems: FC<{ cat: union[number]; active: boolean }> = ({
     >
       <div
         className=" 
-        roundnpm ed-lg flex h-full w-64  cursor-pointer items-start bg-transparent px-5 text-sm transition-transform"
+        rounded-lg flex h-full w-64  cursor-pointer items-start bg-transparent px-5 text-sm transition-transform"
         onClick={() => void router.push(route)}
       >
         <div className="flex items-center gap-x-4">
