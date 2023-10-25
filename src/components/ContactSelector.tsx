@@ -31,11 +31,11 @@ type contactState = {
   used: Array<Contact>;
   available: Array<Contact['platform']>;
 };
-type dispatch = {
+type action = {
   type: 'add' | 'remove';
   target: Contact['platform'];
 };
-function Reducer({ used, available }: contactState, action: dispatch) {
+function Reducer({ used, available }: contactState, action: action) {
   const target = action.target;
   switch (action.type) {
     case 'add':
@@ -103,7 +103,7 @@ const ContactSelector = () => {
 export default ContactSelector;
 type contactPopupProps = {
   available: Contact['platform'][];
-  dispatch: Dispatch<dispatch>;
+  dispatch: Dispatch<action>;
 };
 const ContactPopup = ({ available, dispatch }: contactPopupProps) => {
   return (
@@ -138,7 +138,7 @@ const logo: logoProps = {
 
 type ContactInputProps = {
   contact: Contact;
-  dispatch: Dispatch<dispatch>;
+  dispatch: Dispatch<action>;
 };
 const ContactInput = ({ contact, dispatch }: ContactInputProps) => {
   return (

@@ -1,4 +1,4 @@
-import { type Dispatch, useReducer, useState } from 'react';
+import { type Dispatch, useReducer } from 'react';
 
 type Officer = {
   name: string;
@@ -30,8 +30,9 @@ const reducer = (state: Array<Column>, action: action) => {
       return state;
   }
 };
+
 const OfficerSelector = () => {
-  const [columns, dispatch] = useReducer(reducer, []);
+  const [columns, action] = useReducer(reducer, []);
   return (
     <div>
       <div className="flex flex-row py-1">
@@ -40,7 +41,7 @@ const OfficerSelector = () => {
           className="ml-auto rounded-lg bg-slate-200 p-2"
           type="button"
           onClick={(e) => {
-            dispatch({ type: 'add' });
+            action({ type: 'add' });
           }}
         >
           add new officer
@@ -48,7 +49,7 @@ const OfficerSelector = () => {
       </div>
       <div className="space-y-2">
         {columns.map((col) => (
-          <OfficerItem key={col.id} column={col} dispatch={dispatch} />
+          <OfficerItem key={col.id} column={col} dispatch={action} />
         ))}
       </div>
     </div>
