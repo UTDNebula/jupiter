@@ -65,9 +65,7 @@ const SidebarItems: FC<{ cat: union[number]; active: boolean }> = ({
     <div
       className={`${
         active || mouseOver
-          ? `-my-2.5 rounded-3xl bg-white py-2.5 shadow-md ${
-              cat == 'Events' ? '' : 'mb-2.5'
-            }`
+          ? `-my-2.5 mb-2.5 rounded-3xl bg-white py-2.5 shadow-md last:-mb-2.5`
           : 'mb-5'
       }`}
       onMouseOver={handleMouseOver}
@@ -75,7 +73,7 @@ const SidebarItems: FC<{ cat: union[number]; active: boolean }> = ({
     >
       <div
         className=" 
-        flex h-full w-64 cursor-pointer items-start  rounded-lg bg-transparent px-5 text-sm transition-transform"
+        roundnpm ed-lg flex h-full w-64  cursor-pointer items-start bg-transparent px-5 text-sm transition-transform"
         onClick={() => void router.push(route)}
       >
         <div className="flex items-center gap-x-4">
