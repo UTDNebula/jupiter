@@ -1,5 +1,5 @@
 'use client';
-import React, { type FC } from 'react';
+import { type FC, useState } from 'react';
 import {
   AboutIcon,
   EventsIcon,
@@ -48,6 +48,15 @@ const SidebarItems: FC<{ cat: union[number] }> = ({ cat }) => {
   const pathName = usePathname();
   const active = pathName === route;
 
+  const [mouseOver, setMouseOver] = useState(false);
+  const handleMouseOver = () => {
+    setMouseOver(true);
+  };
+
+  const handleMouseOut = () => {
+    setMouseOver(false);
+  };
+
   // This should never happen
   // Just so  TS doesn't complain
   if (!route) return null;
@@ -55,8 +64,12 @@ const SidebarItems: FC<{ cat: union[number] }> = ({ cat }) => {
   return (
     <div
       className={`${
-        active ? ' -my-2.5 rounded-3xl bg-white py-2.5 shadow-md' : 'my-5'
+        active || mouseOver
+          ? `-my-2.5 mb-2.5 rounded-3xl bg-white py-2.5 shadow-md last:-mb-2.5`
+          : 'mb-5'
       }`}
+      onMouseOver={handleMouseOver}
+      onMouseOut={handleMouseOut}
     >
       <div
         className="
@@ -65,11 +78,15 @@ const SidebarItems: FC<{ cat: union[number] }> = ({ cat }) => {
       >
         <div className="flex items-center gap-x-4">
           {Icon && (
-            <Icon fill={`${active ? 'fill-blue-primary' : 'fill-slate-500'}`} />
+            <Icon
+              fill={`${
+                active || mouseOver ? 'fill-blue-primary' : 'fill-slate-500'
+              }`}
+            />
           )}
           <h1
             className={`text-sm font-medium capitalize ${
-              active ? 'text-blue-primary' : 'text-slate-500'
+              active || mouseOver ? 'text-blue-primary' : 'text-slate-500'
             }`}
           >
             {cat}
