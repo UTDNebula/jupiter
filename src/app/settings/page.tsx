@@ -2,7 +2,11 @@ import Header from '@src/components/BaseHeader';
 import Image from 'next/image';
 import { getServerAuthSession } from '@src/server/auth';
 import SettingsForm from '@src/components/settings/SettingsForm';
-
+import { type Metadata } from 'next';
+export const metadata: Metadata = {
+  title: 'Settings - Jupiter',
+  description: 'Settings for your Jupiter account',
+};
 const Settings = async () => {
   const session = await getServerAuthSession();
 

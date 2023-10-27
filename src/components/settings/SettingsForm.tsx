@@ -1,39 +1,49 @@
+'use client';
 import { type Session } from 'next-auth';
-import { type FC } from 'react';
+import { useEffect, type FC } from 'react';
 import SettingsInput from './SettingsInput';
 import SettingsDropdown from './SettingsDropdown';
-import {
-  careerEnum,
-  roleEnum,
-  userMetadata,
-  yearEnum,
-} from '@src/server/db/schema';
-import { db } from '@src/server/db';
-import { eq } from 'drizzle-orm';
+import { careerEnum, roleEnum, yearEnum } from '@src/server/db/schema';
+import { api } from '@src/trpc/react';
 import { insertUserMetadata } from '@src/server/db/models';
-import { revalidatePath } from 'next/cache';
 
 const SettingsForm: FC<{ session: Session }> = ({ session }) => {
-  async function updateUser(formData: FormData) {
-    'use server';
-    const updated = insertUserMetadata
-      .omit({ id: true })
-      .parse(Object.fromEntries(formData.entries()));
-    await db
-      .update(userMetadata)
-      .set(updated)
-      .where(eq(userMetadata.id, session.user.id));
+  const { isLoading, isError, isSuccess, mutate, reset } =
+    api.userMetadata.updateById.useMutation();
 
-    revalidatePath('/settings');
-  }
+  useEffect(() => {
+    // let timeout: NodeJS.Timeout;
+    if (isSuccess || isError)
+      setTimeout(() => {
+        reset();
+      }, 2000);
 
+    // return () => {
+    //   console.log('clearing');
+    //   clearTimeout(timeout);
+    // };
+  });
   return (
     <>
       <form
         id="settings-form"
         className="flex flex-col gap-4"
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        action={updateUser}
+        onSubmit={(e) => {
+          e.preventDefault();
+          const form = e.currentTarget;
+
+          const formData = new FormData(form);
+
+          const updatedMetadata = insertUserMetadata
+            .omit({ id: true })
+            .parse(Object.fromEntries(formData.entries()));
+
+          mutate({
+            id: session.user.id,
+            updatedMetadata,
+          });
+        }}
       >
         <SettingsInput
           label="First Name"
@@ -77,6 +87,23 @@ const SettingsForm: FC<{ session: Session }> = ({ session }) => {
       >
         Save Changes
       </button>
+
+      {isLoading && (
+        <div className="fixed bottom-20 right-32 h-auto animate-pulse rounded-md border border-slate-200 bg-slate-50 p-2">
+          Loading...
+        </div>
+      )}
+
+      {isSuccess && (
+        <div className="fixed bottom-20 right-32 h-auto rounded-md border border-green-200 bg-green-50 p-2">
+          Success!
+        </div>
+      )}
+      {isError && (
+        <div className="fixed bottom-20 right-32 h-auto rounded-md border border-red-200 bg-red-50 p-2">
+          Error
+        </div>
+      )}
     </>
   );
 };
