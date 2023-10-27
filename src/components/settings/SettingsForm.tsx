@@ -12,23 +12,16 @@ const SettingsForm: FC<{ session: Session }> = ({ session }) => {
     api.userMetadata.updateById.useMutation();
 
   useEffect(() => {
-    // let timeout: NodeJS.Timeout;
     if (isSuccess || isError)
       setTimeout(() => {
         reset();
       }, 2000);
-
-    // return () => {
-    //   console.log('clearing');
-    //   clearTimeout(timeout);
-    // };
   });
   return (
     <>
       <form
         id="settings-form"
         className="flex flex-col gap-4"
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         onSubmit={(e) => {
           e.preventDefault();
           const form = e.currentTarget;
