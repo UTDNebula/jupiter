@@ -78,7 +78,8 @@ export const eventRouter = createTRPCRouter({
           where: (event) => eq(event.id, id),
         });
 
-        return byId;
+        const parsed = selectEvent.parse(byId);
+        return JSON.parse(JSON.stringify(parsed));
       } catch (e) {
         console.error(e);
 
