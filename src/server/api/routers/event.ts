@@ -14,6 +14,10 @@ const byDateRangeSchema = z.object({
   endTime: z.date(),
 });
 
+const byIdSchema = z.object({
+  id: z.string().default(''),
+})
+
 export const eventRouter = createTRPCRouter({
   byClubId: publicProcedure
     .input(byClubIdSchema)
@@ -60,6 +64,23 @@ export const eventRouter = createTRPCRouter({
         return parsed;
       } catch (e) {
         console.error(e)
+
+        throw e;
+      }
+    }),
+  byId: publicProcedure
+    .input(byIdSchema)
+    .query(async ({ input, ctx }) => {
+      const { id } = input;
+
+      try {
+        const byId = await ctx.db.query.events.findFirst({
+          where: (event) => eq(event.id, id),
+        });
+
+        return byId;
+      } catch (e) {
+        console.error(e);
 
         throw e;
       }
