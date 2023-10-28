@@ -1,38 +1,21 @@
-import { type Dispatch, useReducer } from 'react';
+import { type createClubSchema } from '@src/pages/directory/create';
+import {
+  type Control,
+  type UseFieldArrayRemove,
+  type UseFormRegister,
+  useFieldArray,
+} from 'react-hook-form';
+import { type z } from 'zod';
 
-type Officer = {
-  name: string;
-  position: string;
+type OfficerSelectorProps = {
+  control: Control<z.infer<typeof createClubSchema>>;
+  register: UseFormRegister<z.infer<typeof createClubSchema>>;
 };
-type Column = {
-  value: Officer;
-  id: number;
-};
-type action =
-  | {
-      type: 'remove';
-      target: Column['id'];
-    }
-  | { type: 'update'; target: Column }
-  | { type: 'add' };
-const reducer = (state: Array<Column>, action: action) => {
-  switch (action.type) {
-    case 'add':
-      return [
-        ...state,
-        { value: { name: '', position: '' }, id: state.length },
-      ];
-    case 'remove':
-      return state.filter((item) => item.id != action.target);
-    case 'update':
-      state[state.findIndex((x) => x.id === action.target.id)]!.value =
-        action.target.value;
-      return state;
-  }
-};
-
-const OfficerSelector = () => {
-  const [columns, action] = useReducer(reducer, []);
+const OfficerSelector = ({ control, register }: OfficerSelectorProps) => {
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'officers',
+  });
   return (
     <div>
       <div className="flex flex-row py-1">
@@ -40,16 +23,21 @@ const OfficerSelector = () => {
         <button
           className="ml-auto rounded-lg bg-slate-200 p-2"
           type="button"
-          onClick={(e) => {
-            action({ type: 'add' });
+          onClick={() => {
+            append({ name: '', position: '' });
           }}
         >
           add new officer
         </button>
       </div>
       <div className="space-y-2">
-        {columns.map((col) => (
-          <OfficerItem key={col.id} column={col} dispatch={action} />
+        {fields.map((field, index) => (
+          <OfficerItem
+            key={field.id}
+            register={register}
+            index={index}
+            remove={remove}
+          />
         ))}
       </div>
     </div>
@@ -58,10 +46,11 @@ const OfficerSelector = () => {
 export default OfficerSelector;
 
 type OfficerItemProps = {
-  column: Column;
-  dispatch: Dispatch<action>;
+  register: UseFormRegister<z.infer<typeof createClubSchema>>;
+  remove: UseFieldArrayRemove;
+  index: number;
 };
-const OfficerItem = ({ column, dispatch }: OfficerItemProps) => {
+const OfficerItem = ({ register, index, remove }: OfficerItemProps) => {
   return (
     <div className="flex flex-row items-center rounded-md bg-slate-300 p-2">
       <div className="flex flex-col">
@@ -70,10 +59,7 @@ const OfficerItem = ({ column, dispatch }: OfficerItemProps) => {
             type="text"
             placeholder="Name"
             className="mb-1 bg-slate-300 text-xl font-bold text-black"
-            onChange={(e) => {
-              column.value.name = e.target.value;
-              dispatch({ type: 'update', target: column });
-            }}
+            {...register(`officers.${index}.name` as const)}
           />
         </div>
         <div>
@@ -81,18 +67,12 @@ const OfficerItem = ({ column, dispatch }: OfficerItemProps) => {
             type="text"
             placeholder="Position"
             className="bg-slate-300 font-semibold text-black"
-            onChange={(e) => {
-              column.value.position = e.target.value;
-              dispatch({ type: 'update', target: column });
-            }}
+            {...register(`officers.${index}.position` as const)}
           />
         </div>
       </div>
       <div className="ml-auto">
-        <button
-          type="button"
-          onClick={() => dispatch({ type: 'remove', target: column.id })}
-        >
+        <button type="button" onClick={() => remove(index)}>
           remove
         </button>
       </div>

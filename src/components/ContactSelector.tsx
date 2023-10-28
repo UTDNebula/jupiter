@@ -17,37 +17,28 @@ import {
   Youtube,
   type logoProps,
 } from './ContactIcons';
+import {
+  type Control,
+  type UseFormRegister,
+  useFieldArray,
+} from 'react-hook-form';
+import { type z } from 'zod';
+import { type createClubSchema } from '@src/pages/directory/create';
 
 type Contact = Omit<SelectContact, 'clubId'>;
 
-const newContact = (platform: Contact['platform']): Contact => {
-  return {
-    platform: platform,
-    url: '',
-  };
-};
-
-type contactState = {
-  used: Array<Contact>;
-  available: Array<Contact['platform']>;
-};
-type action = {
-  type: 'add' | 'remove';
-  target: Contact['platform'];
-};
-function Reducer({ used, available }: contactState, action: action) {
-  const target = action.target;
+function Reducer(
+  state: Array<Contact['platform']>,
+  action: {
+    type: 'add' | 'remove';
+    target: Contact['platform'];
+  },
+) {
   switch (action.type) {
-    case 'add':
-      return {
-        used: [...used, newContact(action.target)],
-        available: available.filter((x) => x != target),
-      };
     case 'remove':
-      return {
-        used: used.filter((x) => x.platform != target),
-        available: [...available, target],
-      };
+      return state.filter((x) => x != action.target);
+    case 'add':
+      return [...state, action.target];
   }
 }
 const startContacts: Array<Contact['platform']> = [
@@ -59,14 +50,24 @@ const startContacts: Array<Contact['platform']> = [
   'facebook',
 ];
 
-const ContactSelector = () => {
-  const [{ used, available }, dispatch] = useReducer<
-    typeof Reducer,
-    contactState
-  >(Reducer, { used: [], available: startContacts }, (x) => {
-    return x;
+type ContactSelectorProps = {
+  control: Control<z.infer<typeof createClubSchema>>;
+  register: UseFormRegister<z.infer<typeof createClubSchema>>;
+};
+const ContactSelector = ({ control, register }: ContactSelectorProps) => {
+  const { fields, append, remove } = useFieldArray({
+    control: control,
+    name: 'contacts',
   });
-  const contacts = used;
+  const [available, dispatch] = useReducer(Reducer, startContacts);
+  const addNew = (platform: Contact['platform']) => {
+    dispatch({ type: 'remove', target: platform });
+    append({ platform: platform, url: '' });
+  };
+  const removeItem = (index: number, platform: Contact['platform']) => {
+    remove(index);
+    dispatch({ type: 'add', target: platform });
+  };
   return (
     <div>
       <div className="flex flex-row py-1">
@@ -82,47 +83,39 @@ const ContactSelector = () => {
           </DropdownMenuTrigger>
           <DropdownMenuPortal>
             <DropdownMenuContent>
-              <ContactPopup available={available} dispatch={dispatch} />
+              <div className="mb-2 flex h-fit w-40 flex-wrap rounded-lg bg-slate-200 p-2 drop-shadow-md">
+                {available.map((plat) => (
+                  <DropdownMenuItem
+                    key={plat}
+                    onSelect={(e) => {
+                      addNew(plat);
+                    }}
+                  >
+                    <div className="group h-8 w-8" title={plat}>
+                      {logo[plat]}
+                    </div>
+                  </DropdownMenuItem>
+                ))}
+              </div>
             </DropdownMenuContent>
           </DropdownMenuPortal>
         </DropdownMenu>
       </div>
       <div className="space-y-2">
-        {contacts &&
-          contacts.map((contact) => (
-            <ContactInput
-              key={contact.platform}
-              contact={contact}
-              dispatch={dispatch}
-            />
-          ))}
+        {fields.map((field, index) => (
+          <ContactInput
+            key={field.id}
+            index={index}
+            register={register}
+            platform={field.platform}
+            remove={removeItem}
+          />
+        ))}
       </div>
     </div>
   );
 };
 export default ContactSelector;
-type contactPopupProps = {
-  available: Contact['platform'][];
-  dispatch: Dispatch<action>;
-};
-const ContactPopup = ({ available, dispatch }: contactPopupProps) => {
-  return (
-    <DropdownMenuItem className="mb-2 flex h-fit w-40 flex-wrap rounded-lg bg-slate-200 p-2 drop-shadow-md">
-      {available.map((plat) => (
-        <div
-          key={plat}
-          className="group h-8 w-8"
-          title={plat}
-          onClick={() => {
-            dispatch({ type: 'add', target: plat });
-          }}
-        >
-          {logo[plat]}
-        </div>
-      ))}
-    </DropdownMenuItem>
-  );
-};
 const styling = 'fill-black transition-colors group-hover:fill-blue-primary';
 const logo: logoProps = {
   discord: <Discord className={styling} />,
@@ -137,26 +130,33 @@ const logo: logoProps = {
 };
 
 type ContactInputProps = {
-  contact: Contact;
-  dispatch: Dispatch<action>;
+  register: UseFormRegister<z.infer<typeof createClubSchema>>;
+  remove: (index: number, platform: Contact['platform']) => void;
+  platform: Contact['platform'];
+  index: number;
 };
-const ContactInput = ({ contact, dispatch }: ContactInputProps) => {
+const ContactInput = ({
+  register,
+  remove,
+  platform,
+  index,
+}: ContactInputProps) => {
   return (
     <div className="flex flex-row items-center bg-slate-200 p-2">
       <div className="flex w-fit flex-row items-center rounded-md bg-slate-300 p-2">
         <div className="box-content h-8 w-8">
-          <div className="h-8 w-8">{logo[contact.platform]}</div>
+          <div className="h-8 w-8">{logo[platform]}</div>
         </div>
-        <div className="text-xl">{contact.platform}</div>
+        <div className="text-xl">{platform}</div>
       </div>
       <div>
         <div>Link here</div>
-        <input type="text" />
+        <input type="text" {...register(`contacts.${index}.url` as const)} />
       </div>
       <button
         className="ml-auto"
         onClick={() => {
-          dispatch({ type: 'remove', target: contact.platform });
+          remove(index, platform);
         }}
       >
         Remove
