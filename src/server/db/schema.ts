@@ -40,6 +40,16 @@ export const careerEnum = pgEnum('career', [
   'Public Service',
 ]);
 
+export const officerEnum = pgEnum('officer_type', ['President', 'Officer']);
+
+export const officerData = pgTable('officer_data', {
+  officerId: text('officer_id')
+    .default(sql`nanoid(20)`)
+    .primaryKey(),
+  officerType: officerEnum('officer_type').$default(() => 'Officer'),
+  userId: text('user_id').references(() => users.id),
+});
+
 export const userMetadata = pgTable('user_metadata', {
   id: text('id').notNull().primaryKey(),
   firstName: text('first_name').notNull(),
@@ -171,9 +181,12 @@ export const clubRelations = relations(club, ({ many }) => ({
 }));
 
 // connects userMetadata table to junction table
-export const userMetadataRelation = relations(userMetadata, ({ many }) => ({
-  clubs: many(userMetadataToClubs),
-}));
+export const userMetadataRelation = relations(
+  userMetadata,
+  ({ many }) => ({
+    clubs: many(userMetadataToClubs),
+  }),
+);
 
 // connects junction table to userMetadata and club table
 export const userMetadataToClubsRelations = relations(
@@ -189,3 +202,20 @@ export const userMetadataToClubsRelations = relations(
     }),
   }),
 );
+
+export const usersRelation = relations(
+  users,
+  ({many}) => ({
+    officer: many(officerData),
+  })
+)
+
+export const officerDataToUsersRelations = relations(
+  officerData,
+  ({one}) => ({
+    users: one(users, {
+      fields: [officerData.userId],
+      references: [users.id]
+    })
+  })
+)
