@@ -21,6 +21,7 @@ import {
   type Control,
   type UseFormRegister,
   useFieldArray,
+  type FieldErrors,
 } from 'react-hook-form';
 import { type z } from 'zod';
 import { type createClubSchema } from '@src/pages/directory/create';
@@ -53,8 +54,13 @@ const startContacts: Array<Contact['platform']> = [
 type ContactSelectorProps = {
   control: Control<z.infer<typeof createClubSchema>>;
   register: UseFormRegister<z.infer<typeof createClubSchema>>;
+  errors: FieldErrors<z.infer<typeof createClubSchema>>;
 };
-const ContactSelector = ({ control, register }: ContactSelectorProps) => {
+const ContactSelector = ({
+  control,
+  register,
+  errors,
+}: ContactSelectorProps) => {
   const { fields, append, remove } = useFieldArray({
     control: control,
     name: 'contacts',
@@ -109,6 +115,7 @@ const ContactSelector = ({ control, register }: ContactSelectorProps) => {
             register={register}
             platform={field.platform}
             remove={removeItem}
+            errors={errors}
           />
         ))}
       </div>
@@ -134,12 +141,14 @@ type ContactInputProps = {
   remove: (index: number, platform: Contact['platform']) => void;
   platform: Contact['platform'];
   index: number;
+  errors: FieldErrors<z.infer<typeof createClubSchema>>;
 };
 const ContactInput = ({
   register,
   remove,
   platform,
   index,
+  errors,
 }: ContactInputProps) => {
   return (
     <div className="flex flex-row items-center bg-slate-200 p-2">
@@ -151,7 +160,16 @@ const ContactInput = ({
       </div>
       <div>
         <div>Link here</div>
-        <input type="text" {...register(`contacts.${index}.url` as const)} />
+        <input
+          type="text"
+          {...register(`contacts.${index}.url` as const)}
+          aria-invalid={
+            errors.contacts && errors.contacts[index]?.url ? 'true' : 'false'
+          }
+        />
+        {errors.contacts && errors.contacts[index]?.url && (
+          <p className="text-red-500">{errors.contacts[index]?.url?.message}</p>
+        )}
       </div>
       <button
         className="ml-auto"

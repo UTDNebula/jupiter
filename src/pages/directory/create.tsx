@@ -19,7 +19,10 @@ export const createClubSchema = z.object({
     })
     .array()
     .min(1),
-  contacts: selectContact.omit({ clubId: true }).array(),
+  contacts: selectContact
+    .omit({ clubId: true, url: true })
+    .extend({ url: z.string().min(1) })
+    .array(),
 });
 const Page = () => {
   const {
@@ -72,10 +75,18 @@ const Page = () => {
               )}
             </div>
             <div className="w-full rounded-md bg-slate-100 p-5 shadow-sm">
-              <OfficerSelector control={control} register={register} />
+              <OfficerSelector
+                control={control}
+                register={register}
+                errors={errors}
+              />
             </div>
             <div className="w-full rounded-md bg-slate-100 p-5 shadow-sm">
-              <ContactSelector control={control} register={register} />
+              <ContactSelector
+                control={control}
+                register={register}
+                errors={errors}
+              />
             </div>
             <button>submit</button>
           </div>
