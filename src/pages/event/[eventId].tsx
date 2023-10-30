@@ -34,14 +34,14 @@ const EventPage = ({
                         alt="club image"
                     />
                     <hr className="border-0 bg-black h-[1px] my-3 mt-5" />
-                    <div className="w-full flex justify-between mb-3 text-2xl">
+                    <div className="w-full flex justify-between mb-3">
                         <div>
-                            <a className="font-bold" href={`/directory/${club.id}`}>{club.name}</a>
-                            <p className="font-bold">{event.name}</p>
+                            <a className="font-semibold text-4xl" href={`/directory/${club.id}`}>{club.name}</a>
+                            <p className="font-semibold text-2xl">{event.name}</p>
                         </div>
-                        <p className="font-bold text-2xl">{new Date(event.startTime).toString().substring(0, 24)}</p>
+                        <p className="font-semibold text-2xl">{new Date(event.startTime).toString().substring(0, 24)}</p>
                     </div>
-                    <p className="text-2xl">
+                    <p>
                         {event.description}
                     </p>
                     <div className="float-right mt-24">
