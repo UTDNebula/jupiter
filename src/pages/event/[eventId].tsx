@@ -6,7 +6,7 @@ const EventPage = ({
     eventId
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
     const { data: event } = api.event.byId.useQuery({ id: eventId });
-    const { data: club } = api.club.byId.useQuery({ id: event?.clubId });
+    const { data: club } = api.club.byId.useQuery({ id: event ? event.clubId : "" });
 
     if (!event) {
         return <div>
@@ -14,7 +14,7 @@ const EventPage = ({
         </div>
     } else if (!club) {
         return <div>
-            Club Doesn't Exist.
+            Club Does Not Exist.
         </div>
     }
 
@@ -64,7 +64,7 @@ import { db } from "@src/server/db";
 import { appRouter } from "@src/server/api/root";
 import { createInnerTRPCContext } from "@src/server/api/trpc";
 import { createServerSideHelpers } from "@trpc/react-query/server";
-import { GetServerSidePropsContext, GetStaticPaths, InferGetStaticPropsType } from "next";
+import { type GetServerSidePropsContext, type GetStaticPaths, type InferGetStaticPropsType } from "next";
 
 export const getStaticPaths: GetStaticPaths = async () => {
     const events = await db.query.events.findMany();
@@ -88,7 +88,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     };
 }
 
-export const getStaticProps = async (
+export const getStaticProps = (
     ctx: GetServerSidePropsContext<{eventId: string}>
 ) => {
     const helper = createServerSideHelpers({
@@ -103,7 +103,8 @@ export const getStaticProps = async (
         }
     }
 
-    await helper.event.byId.prefetch({ id: eventId });
+    // Date object provided, causes error
+    // await helper.event.byId.prefetch({ id: eventId });
     return {
         props: {
             trpcState: helper.dehydrate(),

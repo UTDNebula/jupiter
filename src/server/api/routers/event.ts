@@ -25,7 +25,6 @@ export const eventRouter = createTRPCRouter({
       const { clubId, currentTime, sortByDate } = input;
       
       try {
-
         const events = await ctx.db.query.events.findMany({
           where: (event) => (
             (currentTime) 
@@ -79,7 +78,7 @@ export const eventRouter = createTRPCRouter({
         });
 
         const parsed = selectEvent.parse(byId);
-        return JSON.parse(JSON.stringify(parsed));
+        return parsed;
       } catch (e) {
         console.error(e);
 
