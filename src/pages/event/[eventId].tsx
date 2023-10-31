@@ -26,7 +26,7 @@ const EventPage = ({
         <main className="w-full md:pl-72">
             <EventHeader />
             <div className="mb-5 flex flex-col space-y-6 px-7">
-                <div className="w-full h-full rounded-xl bg-slate-100 p-10 relative">
+                <div className="w-full h-full rounded-xl bg-slate-50 shadow-lg p-10 relative">
                     <Image
                         src={club.image}
                         width={100}
