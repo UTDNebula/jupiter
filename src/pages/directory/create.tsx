@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import Header from '@src/components/Header';
 import Sidebar from '@src/components/Sidebar';
-import { TagSearchBar } from '@src/components/SearchBar';
-import ContactSelector from '@src/components/ContactSelector';
+import ContactSelector from '@src/components/CreateContactSelector';
 import OfficerSelector from '@src/components/OfficerSelector';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
