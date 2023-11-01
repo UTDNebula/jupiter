@@ -1,4 +1,4 @@
-import { type createClubSchema } from '@src/pages/directory/create';
+import { type createClubSchema } from '@src/utils/formSchemas';
 import {
   type Control,
   type UseFieldArrayRemove,
