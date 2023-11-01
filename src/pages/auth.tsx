@@ -1,5 +1,5 @@
 import type { GetServerSidePropsContext } from 'next';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@src/server/auth';
 import AuthIcons from '@src/icons/AuthIcons';
@@ -15,22 +15,44 @@ export default function Auth({ providers }: { providers: Providers }) {
     setSignin((signIn) => !signIn);
   };
 
+  // const [isPreview, setIsPreview] = useState(false);/
+  // const [seePreviewPage, setSeePreviewPage] = useState(true);
+
   useEffect(() => {
     if (router.query.signup === '') {
       setSignin(false);
     }
-  }, [router.query.signup]);
+  }, [router.query.signup, providers]);
+
+  if (
+    Object.keys(providers).filter((key) => key === 'credentials').length > 0
+  ) {
+    return (
+      <main className="relative flex h-screen flex-col items-center justify-center space-y-10 bg-[#ffffff] md:pl-72">
+        <button
+          onClick={() => {
+            signIn().catch((err) => {
+              console.log(err);
+            });
+          }}
+        >
+          Sign in (Preview)
+        </button>
+      </main>
+    );
+  }
 
   return (
     <main className="relative flex h-screen flex-col items-center justify-center space-y-10 bg-[#ffffff] md:pl-72">
       <h1 className="text-2xl text-slate-800">
         {signin ? 'Sign in' : 'Sign up'}
       </h1>
+
       {Object.values(providers).map((provider) => (
         <div key={provider.name}>
           <button
             onClick={() => {
-              void signIn(provider.id).then()
+              void signIn(provider.id).then();
             }}
           >
             {AuthIcons[provider.id]}

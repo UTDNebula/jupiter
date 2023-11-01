@@ -21,6 +21,8 @@ const Settings = () => {
         reset();
       }, 2000);
 
+    console.log(session);
+
     // return () => {
     //   console.log('clearing');
     //   clearTimeout(timeout);

@@ -54,10 +54,26 @@ export interface PreviewUser {
 export const authOptions: NextAuthOptions = {
   adapter: DrizzleAdapter(db, pgTable),
   callbacks: {
-    async session({ session, user }) {
+    signIn({ user }) {
+      console.log('In sign in callback', user);
+
+      return true;
+    },
+    jwt({ user, session, token }) {
+      console.log('JWT Callback:', user);
+      console.log(session);
+      return token;
+    },
+    async session({ session, user, token }) {
+      console.log(token);
+      console.log('In session callback');
+
       let metadata = await db.query.userMetadata.findFirst({
         where: (metadata) => eq(metadata.id, user.id),
       });
+
+      console.log(user);
+      console.log(session);
 
       if (!metadata) {
         const firstName = user.name?.split(' ')[0] ?? '';
@@ -83,46 +99,49 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-  providers: [
-    process.env.VERCEL_ENV === 'preview'
-      ? CredentialsProvider({
-          name: 'Credentials',
-          credentials: {
-            username: {
-              label: 'Username',
-              type: 'text',
-              placeholder: 'jsmith',
+  providers:
+    process.env.VERCEL_ENV !== 'preview'
+      ? [
+          CredentialsProvider({
+            name: 'Credentials',
+            credentials: {
+              username: {
+                label: 'Username',
+                type: 'text',
+                placeholder: 'jsmith',
+              },
+              password: { label: 'Password', type: 'password' },
             },
-            password: { label: 'Password', type: 'password' },
-          },
-          authorize: () => {
-            return {
-              id: '1',
-              name: 'J Smith',
-              email: 'jsmith@example.com',
-              image: 'https://picsum.photos/id/237/200/300',
-            } as PreviewUser;
-          },
-        })
-      : (GoogleProvider({
-          clientId: env.GOOGLE_CLIENT_ID,
-          clientSecret: env.GOOGLE_CLIENT_SECRET,
-        }),
-        DiscordProvider({
-          clientId: process.env.DISCORD_CLIENT_ID ?? '',
-          clientSecret: process.env.DISCORD_CLIENT_SECRET ?? '',
-        })),
+            authorize: () => {
+              return {
+                id: 'e5f55898-e3ee-416a-91b6-cf3982599e6b',
+                name: 'J Smith',
+                email: 'jsmith@example.com',
+                image: 'https://picsum.photos/id/237/200/300',
+              } as PreviewUser;
+            },
+          }),
+        ]
+      : [
+          GoogleProvider({
+            clientId: env.GOOGLE_CLIENT_ID,
+            clientSecret: env.GOOGLE_CLIENT_SECRET,
+          }),
+          DiscordProvider({
+            clientId: process.env.DISCORD_CLIENT_ID ?? '',
+            clientSecret: process.env.DISCORD_CLIENT_SECRET ?? '',
+          }),
+        ],
 
-    /**
-     * ...add more providers here.
-     *
-     * Most other providers require a bit more work than the Discord provider. For example, the
-     * GitHub provider requires you to add the `refresh_token_expires_in` field to the Account
-     * model. Refer to the NextAuth.js docs for the provider you want to use. Example:
-     *
-     * @see https://next-auth.js.org/providers/github
-     */
-  ],
+  /**
+   * ...add more providers here.
+   *
+   * Most other providers require a bit more work than the Discord provider. For example, the
+   * GitHub provider requires you to add the `refresh_token_expires_in` field to the Account
+   * model. Refer to the NextAuth.js docs for the provider you want to use. Example:
+   *
+   * @see https://next-auth.js.org/providers/github
+   */
 };
 
 /**
