@@ -5,6 +5,8 @@ import {
   type DefaultSession,
 } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import DiscordProvider from 'next-auth/providers/discord';
+import CredentialsProvider from 'next-auth/providers/credentials';
 import { env } from '@src/env.mjs';
 import { DrizzleAdapter } from '@auth/drizzle-adapter';
 import { db } from './db';
@@ -34,6 +36,13 @@ declare module 'next-auth' {
   //   // ...other properties
   //   // role: UserRole;
   // }
+}
+
+export interface PreviewUser {
+  id: string;
+  name: string;
+  email: string;
+  image: string;
 }
 
 /**
@@ -75,10 +84,34 @@ export const authOptions: NextAuthOptions = {
     },
   },
   providers: [
-    GoogleProvider({
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
-    }),
+    process.env.VERCEL_ENV === 'preview'
+      ? CredentialsProvider({
+          name: 'Credentials',
+          credentials: {
+            username: {
+              label: 'Username',
+              type: 'text',
+              placeholder: 'jsmith',
+            },
+            password: { label: 'Password', type: 'password' },
+          },
+          authorize: () => {
+            return {
+              id: '1',
+              name: 'J Smith',
+              email: 'jsmith@example.com',
+              image: 'https://picsum.photos/id/237/200/300',
+            } as PreviewUser;
+          },
+        })
+      : (GoogleProvider({
+          clientId: env.GOOGLE_CLIENT_ID,
+          clientSecret: env.GOOGLE_CLIENT_SECRET,
+        }),
+        DiscordProvider({
+          clientId: process.env.DISCORD_CLIENT_ID ?? '',
+          clientSecret: process.env.DISCORD_CLIENT_SECRET ?? '',
+        })),
 
     /**
      * ...add more providers here.
