@@ -17,7 +17,7 @@ const Page = () => {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<z.infer<typeof editClubSchema>>({
     resolver: zodResolver(editClubSchema),
   });
@@ -44,12 +44,12 @@ const Page = () => {
         <form onSubmit={submitForm}>
           <div className="flex h-full w-full flex-col gap-y-5 p-5">
             <div className="w-full rounded-md bg-slate-100 p-5 shadow-sm">
-              <h1 className="text-lg font-extrabold text-black">
+              <h1 className="text-xl font-extrabold text-black">
                 Edit Organization
               </h1>
             </div>
             <div className="w-full rounded-md bg-slate-100 p-5 shadow-sm">
-              <h2>Organization name</h2>
+              <h2 className="text-lg font-extrabold">Organization name</h2>
               <input
                 type="text"
                 id="name"
@@ -63,10 +63,10 @@ const Page = () => {
               )}
             </div>
             <div className="h-44 w-full rounded-md bg-slate-100 p-5 shadow-sm">
-              <h2>Description</h2>
+              <h2 className="text-lg font-extrabold">Description</h2>
               <textarea
                 id="desc"
-                className="h-24 w-full"
+                className="h-24 w-full bg-transparent"
                 {...register('description')}
                 aria-invalid={errors.description ? 'true' : 'false'}
                 disabled={clubQuery.isFetching}
@@ -77,7 +77,7 @@ const Page = () => {
             </div>
             <div className="w-full rounded-md bg-slate-100 p-5 shadow-sm">
               <div className="flex flex-row">
-                <h2>Officers</h2>
+                <h2 className="text-lg">Officers</h2>
                 <button className="ml-auto" type="button">
                   <Link
                     href={{
@@ -105,7 +105,25 @@ const Page = () => {
                 </button>
               </div>
             </div>
-            <button>Save Changes</button>
+            <div className="flex flex-row justify-end gap-x-4 py-2">
+              <button className="rounded-lg bg-slate-200 p-1 font-bold">
+                Save Changes
+              </button>
+              <button
+                type="button"
+                onClickCapture={() => {
+                  reset({
+                    name: clubQuery.data?.name,
+                    description: clubQuery.data?.description,
+                  });
+                }}
+                disabled={!isDirty}
+                className="group relative rounded-lg bg-slate-200 p-1 font-bold"
+              >
+                <div className="invisible absolute inset-0 h-full w-full rounded-lg bg-black opacity-80 group-disabled:visible"></div>
+                <div>Discard Changes</div>
+              </button>
+            </div>
           </div>
         </form>
       </div>
