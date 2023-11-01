@@ -24,7 +24,7 @@ import {
   type FieldErrors,
 } from 'react-hook-form';
 import { type z } from 'zod';
-import { type createClubSchema } from '@src/pages/directory/create';
+import { type createClubSchema } from '@src/utils/formSchemas';
 
 type Contact = Omit<SelectContact, 'clubId'>;
 
