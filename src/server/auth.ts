@@ -53,20 +53,26 @@ export interface PreviewUser {
 
 export const authOptions: NextAuthOptions = {
   adapter: DrizzleAdapter(db, pgTable),
+  session: {
+    strategy: 'jwt',
+  },
   callbacks: {
-    signIn({ user }) {
-      console.log('In sign in callback', user);
-
-      return true;
-    },
-    jwt({ user, session, token }) {
-      console.log('JWT Callback:', user);
-      console.log(session);
-      return token;
-    },
     async session({ session, user, token }) {
-      console.log(token);
-      console.log('In session callback');
+      if (token) {
+        const testUserMetadata: UserMetadata = {
+          firstName: 'John',
+          lastName: 'Smith',
+          career: 'Business',
+          major: 'Business',
+          minor: 'Business',
+          role: 'Student',
+          year: 'Grad Student',
+        };
+
+        session.user = { ...session.user, ...testUserMetadata };
+
+        return session;
+      }
 
       let metadata = await db.query.userMetadata.findFirst({
         where: (metadata) => eq(metadata.id, user.id),
@@ -100,7 +106,7 @@ export const authOptions: NextAuthOptions = {
     },
   },
   providers:
-    process.env.VERCEL_ENV !== 'preview'
+    process.env.VERCEL_ENV === 'preview'
       ? [
           CredentialsProvider({
             name: 'Credentials',
@@ -128,8 +134,8 @@ export const authOptions: NextAuthOptions = {
             clientSecret: env.GOOGLE_CLIENT_SECRET,
           }),
           DiscordProvider({
-            clientId: process.env.DISCORD_CLIENT_ID ?? '',
-            clientSecret: process.env.DISCORD_CLIENT_SECRET ?? '',
+            clientId: env.DISCORD_CLIENT_ID,
+            clientSecret: env.DISCORD_CLIENT_SECRET,
           }),
         ],
 

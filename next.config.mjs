@@ -8,7 +8,14 @@
 const config = {
   reactStrictMode: true,
   images: {
-    domains: ['about.utdnebula.com', `github.com`, 'via.placeholder.com', 'lh3.googleusercontent.com'],
+    domains: [
+      'about.utdnebula.com',
+      `github.com`,
+      'via.placeholder.com',
+      'lh3.googleusercontent.com',
+      'cdn.discord.com',
+      'picsum.photos',
+    ],
   },
   /**
    * If you have the "experimental: { appDir: true }" setting enabled, then you
