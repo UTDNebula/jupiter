@@ -150,4 +150,4 @@ export const logo: logoProps = {
   ),
 
   other: '/Jupiter.png',
-};
+} as const;
