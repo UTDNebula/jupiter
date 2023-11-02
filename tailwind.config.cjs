@@ -12,6 +12,7 @@ const config = {
         events: '#FF6633',
       },
       spacing: {
+        1.25: '.3125rem',
         7.5: '1.875rem',
       },
     },
