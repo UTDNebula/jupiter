@@ -71,7 +71,7 @@ const EventSidebar = () => {
             >
               <label>
                 <div className="ml-4 mr-10 flex flex-row items-center space-x-2.5 text-center">
-                  <input type="radio" id={`filter-${value}`} name="filter" />
+                  <input type="checkbox" id={`filter-${value}`} name="filter" />
                   <p className="w-full text-xs font-extrabold text-slate-500">
                     {value}
                   </p>
