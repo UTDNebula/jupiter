@@ -13,31 +13,31 @@ const byDateRangeSchema = z.object({
   startTime: z.date(),
   endTime: z.date(),
 });
+const fromDateRangeSchema = z.object({
+  limit: z.number().min(1).max(20),
+  cursor: z.number().nullish(),
+});
 
 export const eventRouter = createTRPCRouter({
   byClubId: publicProcedure
     .input(byClubIdSchema)
     .query(async ({ input, ctx }) => {
       const { clubId, currentTime, sortByDate } = input;
-      
-      try {
 
+      try {
         const events = await ctx.db.query.events.findMany({
-          where: (event) => (
-            (currentTime) 
-            ? 
-            and ( eq(event.clubId, clubId) , gte(event.startTime, currentTime) )
-            :
-            eq(event.clubId, clubId)
-          ),
-          orderBy: (sortByDate) ? (event) => ([event.startTime]) : undefined
+          where: (event) =>
+            currentTime
+              ? and(eq(event.clubId, clubId), gte(event.startTime, currentTime))
+              : eq(event.clubId, clubId),
+          orderBy: sortByDate ? (event) => [event.startTime] : undefined,
         });
-        
+
         const parsed = events.map((e) => selectEvent.parse(e));
         return parsed;
       } catch (e) {
         console.error(e);
-        
+
         throw e;
       }
     }),
@@ -59,9 +59,21 @@ export const eventRouter = createTRPCRouter({
         const parsed = events.map((e) => selectEvent.parse(e));
         return parsed;
       } catch (e) {
-        console.error(e)
+        console.error(e);
 
         throw e;
       }
+    }),
+  fromDateRange: publicProcedure
+    .input(fromDateRangeSchema)
+    .query(async ({ input, ctx }) => {
+      const { startTime, limit } = input;
+      const offset = input.cursor ? input.cursor : 0;
+      const events = await ctx.db.query.events.findMany({
+        orderBy: (events, { asc }) => [asc(events.startTime)],
+        limit: limit,
+        offset: offset,
+      });
+      return { events: events, nextCursor: offset + limit };
     }),
 });

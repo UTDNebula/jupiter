@@ -42,7 +42,7 @@ const SearchBar = <T extends SearchElement>({
   }, [input, setSearch]);
 
   return (
-    <div className="w-full max-w-xs px-5 py-4 md:max-w-sm lg:max-w-md">
+    <div className="w-full max-w-xs  md:max-w-sm lg:max-w-md">
       <div className="relative ">
         <span className="absolute inset-y-0 flex items-center pl-3">
           <SearchIcon />

@@ -11,6 +11,9 @@ const config = {
       backgroundColor: {
         events: '#FF6633',
       },
+      spacing: {
+        7.5: '1.875rem',
+      },
     },
   },
   plugins: [],

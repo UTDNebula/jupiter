@@ -1,18 +1,19 @@
 import Head from 'next/head';
 import { EventHeader } from '../components/Header';
-import EventCalendar from '../components/EventCalendar';
-
-const nextMonths = (num: number) => {
-  const months = [];
-  const date = new Date();
-  for (let i = 0; i < num; i++) {
-    months.push(date.toLocaleString('default', { month: 'long' }));
-    date.setMonth(date.getMonth() + 1);
-  }
-  return months;
-};
+import { GridIcon, ListIcon } from '@src/components/Icons';
+import { Fragment, useState } from 'react';
+import EventSidebar from '@src/components/events/EventSidebar';
+import { api } from '@src/utils/api';
+import EventCard from '@src/components/events/EventCard';
 
 const Events = () => {
+  const [view, setView] = useState(0);
+  const eventQuery = api.event.fromDateRange.useInfiniteQuery(
+    {
+      limit: 20,
+    },
+    { getNextPageParam: (lastPage) => lastPage.nextCursor },
+  );
   return (
     <>
       <Head>
@@ -22,28 +23,64 @@ const Events = () => {
       </Head>
       <main className="md:pl-72">
         <EventHeader />
-        <div className="m-auto flex w-full justify-between p-5">
-          <h1 className="text-2xl font-medium text-slate-500">Events</h1>
-          <div className="flex items-center justify-center space-x-2">
-            {nextMonths(5).map((month, key) => (
-              <p
-                key={month}
-                className={`${
-                  key === 0 ? ' text-blue-primary' : ' text-slate-500'
-                } cursor-pointer rounded-lg px-3 py-1`}
+        <div className="w-full px-4">
+          <div className="flex flex-row pb-12 pt-4">
+            <h1 className="text-2xl font-bold text-[#4D5E80]">Events</h1>
+            <div className="ml-auto flex flex-row gap-x-16">
+              <button
+                type="button"
+                className={`flex flex-row items-center gap-x-4 ${
+                  view == 0
+                    ? ' -mr-7.5 rounded-full bg-white px-7.5 py-2.5'
+                    : ''
+                }`}
+                onClick={() => {
+                  setView(0);
+                }}
               >
-                {month}
-              </p>
-            ))}
+                <div className="h-7.5 w-7.5">
+                  <ListIcon />
+                </div>
+                <p className="text-sm font-bold text-blue-primary">List view</p>
+              </button>
+              <button
+                type="button"
+                className={`flex flex-row items-center  ${
+                  view == 1
+                    ? '-ml-7.5 rounded-full bg-white px-7.5 py-2.5'
+                    : 'mr-7.5'
+                }`}
+                onClick={() => {
+                  setView(1);
+                }}
+              >
+                <div className="h-7.5 w-7.5">
+                  <GridIcon />
+                </div>
+                <p className="text-sm font-bold text-blue-primary">Grid view</p>
+              </button>
+            </div>
           </div>
-          <div className="flex justify-center">
-            <h1 className="cursor-pointer text-sm font-medium text-slate-400">
-              Subscribe to events
-            </h1>
+          <div className="flex w-full flex-row space-x-7.5">
+            <EventSidebar />
+            <div className="flex w-full flex-col space-y-7.5 pt-10">
+              {eventQuery.status === 'success' &&
+                eventQuery.data.pages.map((page) => {
+                  return (
+                    <Fragment key={page.nextCursor}>
+                      {page.events.map((event) => (
+                        <EventCard
+                          key={event.id}
+                          view="horizontal"
+                          event={event}
+                        />
+                      ))}
+                    </Fragment>
+                  );
+                })}
+            </div>
           </div>
         </div>
-        <EventCalendar index={1} />
-        <EventCalendar index={2} />
       </main>
     </>
   );
