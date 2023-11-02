@@ -7,7 +7,7 @@ import { api } from '@src/utils/api';
 import EventCard from '@src/components/events/EventCard';
 
 const Events = () => {
-  const [view, setView] = useState(0);
+  const [view, setView] = useState<'horizontal' | 'vertical'>('horizontal');
   const eventQuery = api.event.fromDateRange.useInfiniteQuery(
     {
       limit: 20,
@@ -23,19 +23,19 @@ const Events = () => {
       </Head>
       <main className="md:pl-72">
         <EventHeader />
-        <div className="w-full px-4">
+        <div className="w-full px-6">
           <div className="flex flex-row pb-12 pt-4">
             <h1 className="text-2xl font-bold text-[#4D5E80]">Events</h1>
             <div className="ml-auto flex flex-row gap-x-16">
               <button
                 type="button"
                 className={`flex flex-row items-center gap-x-4 ${
-                  view == 0
+                  view === 'horizontal'
                     ? ' -mr-7.5 rounded-full bg-white px-7.5 py-2.5'
                     : ''
                 }`}
                 onClick={() => {
-                  setView(0);
+                  setView('horizontal');
                 }}
               >
                 <div className="h-7.5 w-7.5">
@@ -46,12 +46,12 @@ const Events = () => {
               <button
                 type="button"
                 className={`flex flex-row items-center  ${
-                  view == 1
+                  view == 'vertical'
                     ? '-ml-7.5 rounded-full bg-white px-7.5 py-2.5'
                     : 'mr-7.5'
                 }`}
                 onClick={() => {
-                  setView(1);
+                  setView('vertical');
                 }}
               >
                 <div className="h-7.5 w-7.5">
@@ -63,17 +63,19 @@ const Events = () => {
           </div>
           <div className="flex w-full flex-row space-x-7.5">
             <EventSidebar />
-            <div className="flex w-full flex-col space-y-7.5 pt-10">
+            <div
+              className={
+                view === 'horizontal'
+                  ? 'flex w-full flex-col space-y-7.5 pt-10'
+                  : 'grid gap-x-10 gap-y-7.5 lg:grid-cols-2'
+              }
+            >
               {eventQuery.status === 'success' &&
                 eventQuery.data.pages.map((page) => {
                   return (
                     <Fragment key={page.nextCursor}>
                       {page.events.map((event) => (
-                        <EventCard
-                          key={event.id}
-                          view="horizontal"
-                          event={event}
-                        />
+                        <EventCard key={event.id} view={view} event={event} />
                       ))}
                     </Fragment>
                   );
