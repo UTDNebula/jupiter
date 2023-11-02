@@ -9,7 +9,7 @@ type BaseProps = { children: ReactNode; className?: string };
 const Base = ({ children, className }: BaseProps) => {
   return (
     <div
-      className={`h-min w-fit rounded-sm bg-opacity-70 px-2.5 py-1.25 text-center text-xs font-extrabold text-white ${
+      className={` w-fit rounded-[.3125rem] bg-opacity-70 px-2.5 py-1.25 text-center text-xs font-extrabold text-white ${
         className ?? ''
       }`}
     >

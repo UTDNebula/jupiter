@@ -21,7 +21,7 @@ const Events = () => {
         <meta name="description" content="Events - Jupiter" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="md:pl-72">
+      <main className="pb-10 md:pl-72">
         <EventHeader />
         <div className="w-full px-6">
           <div className="flex flex-row pb-12 pt-4">

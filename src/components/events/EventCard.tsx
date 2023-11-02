@@ -4,7 +4,6 @@ import { DateTime } from 'luxon';
 import Image from 'next/image';
 import EventTimeAlert from './EventTimeAlert';
 import Link from 'next/link';
-import LikeButton from '../LikeButton';
 import { HeartIcon, MoreIcon } from '../Icons';
 
 type EventCardProps = {
@@ -61,10 +60,10 @@ const HorizontalCard = ({ event }: { event: SelectEvent }) => {
           <p className="text-xs font-bold">{event.description}</p>
         </div>
         <div className="ml-auto flex flex-row space-x-4">
-          <div className="h-7.5 w-7.5 rounded-full bg-white p-1.5 shadow-lg">
+          <div className="h-10 w-10 rounded-full bg-white p-1.5 shadow-lg">
             <HeartIcon />
           </div>
-          <div className=" h-7.5 w-7.5 rounded-full bg-blue-primary p-1.5 shadow-lg transition-colors hover:bg-blue-700 active:bg-blue-800">
+          <div className=" h-10 w-10 rounded-full bg-blue-primary p-1.5 shadow-lg transition-colors hover:bg-blue-700 active:bg-blue-800">
             <MoreIcon fill="fill-white" />
           </div>
         </div>
@@ -89,7 +88,7 @@ const VerticalCard = ({ event }: { event: SelectEvent }) => {
           </div>
         </div>
       </div>
-      <div className="space-y-6 p-5">
+      <div className="flex h-full flex-col p-5">
         <div className="space-y-2.5">
           <h3 className="font-bold">{event.name}</h3>
           <h4 className="text-xs font-bold">
@@ -125,11 +124,11 @@ const VerticalCard = ({ event }: { event: SelectEvent }) => {
           </h4>
           <p className="text-xs font-bold">{event.description}</p>
         </div>
-        <div className="flex flex-row space-x-4">
-          <div className="h-7.5 w-7.5 rounded-full bg-white p-1.5 shadow-lg">
+        <div className="mt-auto flex flex-row space-x-4">
+          <div className="h-10 w-10 rounded-full bg-white p-1.5 shadow-lg">
             <HeartIcon />
           </div>
-          <div className=" h-7.5 w-7.5 rounded-full bg-blue-primary p-1.5 shadow-lg transition-colors hover:bg-blue-700 active:bg-blue-800">
+          <div className=" h-10 w-10 rounded-full bg-blue-primary p-1.5 shadow-lg transition-colors hover:bg-blue-700 active:bg-blue-800">
             <MoreIcon fill="fill-white" />
           </div>
         </div>
