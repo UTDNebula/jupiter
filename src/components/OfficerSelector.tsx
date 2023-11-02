@@ -73,9 +73,7 @@ const OfficerItem = ({ register, index, remove, errors }: OfficerItemProps) => {
             placeholder="Name"
             className="mb-1 bg-slate-300 text-xl font-bold text-black"
             {...register(`officers.${index}.name` as const)}
-            aria-invalid={
-              errors.officers && errors.officers[index] ? 'true' : 'false'
-            }
+            aria-invalid={errors.officers && !!errors.officers[index]?.name}
           />
           {errors.officers && errors.officers[index]?.name && (
             <p className="text-red-500">
@@ -89,11 +87,7 @@ const OfficerItem = ({ register, index, remove, errors }: OfficerItemProps) => {
             placeholder="Position"
             className="bg-slate-300 font-semibold text-black"
             {...register(`officers.${index}.position` as const)}
-            aria-invalid={
-              errors.officers && errors.officers[index]?.position
-                ? 'true'
-                : 'false'
-            }
+            aria-invalid={errors.officers && !!errors.officers[index]?.position}
           />
           {errors.officers && errors.officers[index]?.position && (
             <p className="text-red-500">

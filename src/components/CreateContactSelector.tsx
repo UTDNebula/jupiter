@@ -163,9 +163,7 @@ const ContactInput = ({
         <input
           type="text"
           {...register(`contacts.${index}.url` as const)}
-          aria-invalid={
-            errors.contacts && errors.contacts[index]?.url ? 'true' : 'false'
-          }
+          aria-invalid={errors.contacts && !!errors.contacts[index]?.url}
         />
         {errors.contacts && errors.contacts[index]?.url && (
           <p className="text-red-500">{errors.contacts[index]?.url?.message}</p>

@@ -82,8 +82,9 @@ const ContactSelector = ({
     append({ platform: platform, url: '' });
   };
   const removeItem = (index: number, platform: Contact['platform']) => {
-    if (fields[index]?.clubId) {
-      modifyDeleted({ type: 'add', target: fields[index]?.clubId as string });
+    const field = fields[index];
+    if (field?.clubId) {
+      modifyDeleted({ type: 'add', target: field.clubId });
     }
     remove(index);
     dispatch({ type: 'add', target: platform });
@@ -183,9 +184,7 @@ const ContactInput = ({
         <input
           type="text"
           {...register(`contacts.${index}.url` as const)}
-          aria-invalid={
-            errors.contacts && errors.contacts[index]?.url ? 'true' : 'false'
-          }
+          aria-invalid={errors.contacts && !!errors.contacts[index]?.url}
           className="w-full bg-transparent"
         />
         {errors.contacts && errors.contacts[index]?.url && (
