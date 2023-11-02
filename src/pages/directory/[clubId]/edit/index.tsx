@@ -55,7 +55,7 @@ const Page = () => {
                 id="name"
                 className=" w-full bg-transparent"
                 {...register('name')}
-                aria-invalid={errors.name ? 'true' : 'false'}
+                aria-invalid={!!errors.name}
                 disabled={clubQuery.isFetching}
               />
               {errors.name && (
@@ -68,7 +68,7 @@ const Page = () => {
                 id="desc"
                 className="h-24 w-full bg-transparent"
                 {...register('description')}
-                aria-invalid={errors.description ? 'true' : 'false'}
+                aria-invalid={!!errors.description}
                 disabled={clubQuery.isFetching}
               />
               {errors.description && (
