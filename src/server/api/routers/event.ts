@@ -16,31 +16,28 @@ const byDateRangeSchema = z.object({
 
 const byIdSchema = z.object({
   id: z.string().default(''),
-})
+});
 
 export const eventRouter = createTRPCRouter({
   byClubId: publicProcedure
     .input(byClubIdSchema)
     .query(async ({ input, ctx }) => {
       const { clubId, currentTime, sortByDate } = input;
-      
+
       try {
         const events = await ctx.db.query.events.findMany({
-          where: (event) => (
-            (currentTime) 
-            ? 
-            and ( eq(event.clubId, clubId) , gte(event.startTime, currentTime) )
-            :
-            eq(event.clubId, clubId)
-          ),
-          orderBy: (sortByDate) ? (event) => ([event.startTime]) : undefined
+          where: (event) =>
+            currentTime
+              ? and(eq(event.clubId, clubId), gte(event.startTime, currentTime))
+              : eq(event.clubId, clubId),
+          orderBy: sortByDate ? (event) => [event.startTime] : undefined,
         });
-        
+
         const parsed = events.map((e) => selectEvent.parse(e));
         return parsed;
       } catch (e) {
         console.error(e);
-        
+
         throw e;
       }
     }),
@@ -62,27 +59,25 @@ export const eventRouter = createTRPCRouter({
         const parsed = events.map((e) => selectEvent.parse(e));
         return parsed;
       } catch (e) {
-        console.error(e)
-
-        throw e;
-      }
-    }),
-  byId: publicProcedure
-    .input(byIdSchema)
-    .query(async ({ input, ctx }) => {
-      const { id } = input;
-
-      try {
-        const byId = await ctx.db.query.events.findFirst({
-          where: (event) => eq(event.id, id),
-        });
-
-        const parsed = selectEvent.parse(byId);
-        return parsed;
-      } catch (e) {
         console.error(e);
 
         throw e;
       }
     }),
+  byId: publicProcedure.input(byIdSchema).query(async ({ input, ctx }) => {
+    const { id } = input;
+
+    try {
+      const byId = await ctx.db.query.events.findFirst({
+        where: (event) => eq(event.id, id),
+        with: { club: true },
+      });
+
+      return byId;
+    } catch (e) {
+      console.error(e);
+
+      throw e;
+    }
+  }),
 });
