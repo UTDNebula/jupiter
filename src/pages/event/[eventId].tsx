@@ -18,7 +18,7 @@ const EventPage = ({
         </div>
     }
 
-    return <>
+    return (<>
         <Head>
             <title>{event.name} - Jupiter</title>
             <meta name="description">{event.name} - Jupiter</meta>
@@ -55,7 +55,7 @@ const EventPage = ({
                 </div>
             </div>
         </main>
-    </>;
+    </>);
 };
 export default EventPage;
 
