@@ -1,4 +1,4 @@
-import { eq, gte, lte, and } from 'drizzle-orm';
+import { eq, gte, lte, and, lt, or } from 'drizzle-orm';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { selectEvent } from '@src/server/db/models';
@@ -14,6 +14,7 @@ const byDateRangeSchema = z.object({
   endTime: z.date(),
 });
 const fromDateRangeSchema = z.object({
+  startTime: z.union([z.literal('now'), z.date()]),
   limit: z.number().min(1).max(20),
   cursor: z.number().nullish(),
 });
@@ -67,9 +68,13 @@ export const eventRouter = createTRPCRouter({
   fromDateRange: publicProcedure
     .input(fromDateRangeSchema)
     .query(async ({ input, ctx }) => {
-      const { startTime, limit } = input;
-      const offset = input.cursor ? input.cursor : 0;
+      const { limit } = input;
+      const startTime =
+        input.startTime === 'now' ? new Date() : input.startTime;
+      const offset = input.cursor ?? 0;
       const events = await ctx.db.query.events.findMany({
+        where: (event) =>
+          or(gte(event.startTime, startTime), gte(event.endTime, startTime)),
         orderBy: (events, { asc }) => [asc(events.startTime)],
         limit: limit,
         offset: offset,
