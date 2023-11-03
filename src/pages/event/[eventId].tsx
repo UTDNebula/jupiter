@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import { EventHeader } from '@src/components/Header';
 
 const EventPage = ({
@@ -26,12 +27,12 @@ const EventPage = ({
             <hr className="my-3 mt-5 h-[1px] border-0 bg-black" />
             <div className="mb-3 flex w-full justify-between">
               <div>
-                <a
+                <Link
                   className="text-4xl font-semibold"
                   href={`/directory/${club.id}`}
                 >
                   {club.name}
-                </a>
+                </Link>
                 <p className="text-2xl font-semibold">{event.name}</p>
               </div>
               <p className="text-2xl font-semibold">
