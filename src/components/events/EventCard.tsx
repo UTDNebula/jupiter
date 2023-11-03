@@ -74,7 +74,7 @@ const HorizontalCard = ({ event }: { event: SelectEvent }) => {
 const VerticalCard = ({ event }: { event: SelectEvent }) => {
   const clubQuery = api.club.byId.useQuery({ id: event.clubId });
   return (
-    <div className="container flex h-96 w-96 flex-col overflow-hidden rounded-lg bg-white shadow-sm">
+    <div className="container flex h-96 w-64 flex-col overflow-hidden rounded-lg bg-white shadow-sm">
       <div className="relative">
         <div className="h-40 w-96">
           <Image
@@ -98,38 +98,40 @@ const VerticalCard = ({ event }: { event: SelectEvent }) => {
               scroll
             >
               {clubQuery.data?.name}
-            </Link>{' '}
-            •{' '}
-            <span className="text-blue-primary">
-              {DateTime.fromJSDate(event.startTime).hasSame(
-                DateTime.fromJSDate(event.endTime),
-                'day',
-              ) ? (
-                <>
-                  {DateTime.fromJSDate(event.startTime).toFormat(
-                    'ccc, LLL d, t',
-                  )}
-                  -{DateTime.fromJSDate(event.endTime).toFormat('t')}
-                </>
-              ) : (
-                <>
-                  {DateTime.fromJSDate(event.startTime).toFormat(
-                    'ccc, LLL d, t',
-                  )}{' '}
-                  -{' '}
-                  {DateTime.fromJSDate(event.endTime).toFormat('ccc, LLL d, t')}
-                </>
-              )}
-            </span>
+            </Link>
+            <div>
+              <span className="text-blue-primary">
+                {DateTime.fromJSDate(event.startTime).hasSame(
+                  DateTime.fromJSDate(event.endTime),
+                  'day',
+                ) ? (
+                  <>
+                    {DateTime.fromJSDate(event.startTime).toFormat(
+                      'ccc, LLL d, t',
+                    )}
+                    -{DateTime.fromJSDate(event.endTime).toFormat('t')}
+                  </>
+                ) : (
+                  <>
+                    {DateTime.fromJSDate(event.startTime).toFormat(
+                      'ccc, LLL d, t',
+                    )}{' '}
+                    -<br />
+                    {DateTime.fromJSDate(event.endTime).toFormat(
+                      'ccc, LLL d, t',
+                    )}
+                  </>
+                )}
+              </span>
+            </div>
           </h4>
-          <p className="text-xs font-bold">{event.description}</p>
         </div>
         <div className="mt-auto flex flex-row space-x-4">
-          <div className="h-10 w-10 rounded-full bg-white p-1.5 shadow-lg">
-            <HeartIcon />
-          </div>
           <div className=" h-10 w-10 rounded-full bg-blue-primary p-1.5 shadow-lg transition-colors hover:bg-blue-700 active:bg-blue-800">
             <MoreIcon fill="fill-white" />
+          </div>
+          <div className="h-10 w-10 rounded-full bg-white p-1.5 shadow-lg">
+            <HeartIcon />
           </div>
         </div>
       </div>
