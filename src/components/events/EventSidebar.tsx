@@ -11,12 +11,7 @@ export const filters = [
   'Last weeks events',
   'Last month events',
 ] as const;
-const order = [
-  'newest',
-  'recently updated',
-  'Shortest Duration',
-  'Longest Duration',
-] as const;
+const order = ['newest', 'oldest'] as const;
 const types = ['In-Person', 'Virtual', 'Multi-Day', 'Hybrid'] as const;
 export type filterState = {
   filter: (typeof filters)[number];
@@ -72,23 +67,37 @@ const EventSidebar = ({ filterState, setFilterState }: EventSidebarProps) => {
       </div>
       <div className="flex flex-col space-y-7.5">
         <h2 className="text-sm font-bold text-slate-500">Order</h2>
-        <div className="flex flex-col space-y-2.5">
+        <RadioGroup
+          className="flex flex-col space-y-2.5"
+          value={filterState.order}
+          onValueChange={(value) => {
+            setFilterState((old) => {
+              return {
+                filter: old.filter,
+                club: old.club,
+                order: value as (typeof order)[number],
+                types: old.types,
+              };
+            });
+          }}
+        >
           {order.map((value) => (
-            <div
+            <RadioGroupItem
               key={value}
+              value={value}
               className="h-10 w-64 rounded-lg bg-white py-2.5 drop-shadow-sm"
             >
-              <label>
-                <div className="ml-4 mr-10 flex flex-row items-center space-x-2.5 text-center">
-                  <input type="radio" id={`order-${value}`} name="order" />
-                  <p className="w-full text-xs font-extrabold text-slate-500">
-                    {value}
-                  </p>
+              <div className="ml-4 mr-10 flex h-min flex-row items-center space-x-2.5 text-center">
+                <div className="flex h-5 w-5 items-center justify-center rounded-xl border-2 border-gray-50 p-0.5 shadow-sm ">
+                  <RadioGroupIndicator className="h-2.5 w-2.5 rounded-full bg-blue-primary" />
                 </div>
-              </label>
-            </div>
+                <p className="w-full text-xs font-extrabold text-slate-500">
+                  {value}
+                </p>
+              </div>
+            </RadioGroupItem>
           ))}
-        </div>
+        </RadioGroup>
       </div>
       <div className="flex flex-col space-y-7.5">
         <h2 className="text-sm font-bold text-slate-500">Event Types</h2>

@@ -31,6 +31,7 @@ const Events = () => {
   const eventQuery = api.event.fromDateRange.useInfiniteQuery(
     {
       startTime: getStartTime(filterState.filter),
+      order: filterState.order,
       limit: 20,
     },
     { getNextPageParam: (lastPage) => lastPage.nextCursor },

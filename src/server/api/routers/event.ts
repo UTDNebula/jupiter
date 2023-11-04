@@ -20,6 +20,7 @@ const fromDateRangeSchema = z.object({
     z.object({ days: z.number() }),
     z.date(),
   ]),
+  order: z.union([z.literal('newest'), z.literal('oldest')]),
   limit: z.number().min(1).max(20),
   cursor: z.number().nullish(),
 });
@@ -92,7 +93,14 @@ export const eventRouter = createTRPCRouter({
             or(gte(event.startTime, startTime), gte(event.endTime, startTime)),
             lte(event.endTime, endTime ?? event.endTime),
           ),
-        orderBy: (events, { asc }) => [asc(events.startTime)],
+        orderBy: (events, { asc, desc }) => {
+          switch (input.order) {
+            case 'newest':
+              return [asc(events.startTime)];
+            case 'oldest':
+              return [desc(events.startTime)];
+          }
+        },
         limit: limit,
         offset: offset,
       });
