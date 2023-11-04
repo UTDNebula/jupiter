@@ -1,4 +1,4 @@
-import { eq, gte, lte, and, lt, or } from 'drizzle-orm';
+import { eq, gte, lte, and, lt, or, sql } from 'drizzle-orm';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { selectEvent } from '@src/server/db/models';
@@ -20,7 +20,12 @@ const fromDateRangeSchema = z.object({
     z.object({ days: z.number() }),
     z.date(),
   ]),
-  order: z.union([z.literal('newest'), z.literal('oldest')]),
+  order: z.union([
+    z.literal('newest'),
+    z.literal('oldest'),
+    z.literal('shortest duration'),
+    z.literal('longest duration'),
+  ]),
   limit: z.number().min(1).max(20),
   cursor: z.number().nullish(),
 });
@@ -99,6 +104,10 @@ export const eventRouter = createTRPCRouter({
               return [asc(events.startTime)];
             case 'oldest':
               return [desc(events.startTime)];
+            case 'shortest duration':
+              return [asc(sql`${events.endTime} - ${events.startTime}`)];
+            case 'longest duration':
+              return [desc(sql`${events.endTime} - ${events.startTime}`)];
           }
         },
         limit: limit,

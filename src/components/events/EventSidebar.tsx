@@ -11,7 +11,12 @@ export const filters = [
   'Last weeks events',
   'Last month events',
 ] as const;
-const order = ['newest', 'oldest'] as const;
+const order = [
+  'newest',
+  'oldest',
+  'shortest duration',
+  'longest duration',
+] as const;
 const types = ['In-Person', 'Virtual', 'Multi-Day', 'Hybrid'] as const;
 export type filterState = {
   filter: (typeof filters)[number];
