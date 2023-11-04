@@ -3,25 +3,38 @@ import { EventHeader } from '../components/Header';
 import { GridIcon, ListIcon } from '@src/components/Icons';
 import { Fragment, useState } from 'react';
 import EventSidebar, {
+  type filters,
   type filterState,
 } from '@src/components/events/EventSidebar';
 import { api } from '@src/utils/api';
 import EventCard from '@src/components/events/EventCard';
+import { DateTime } from 'luxon';
+
+function getStartTime(filter: (typeof filters)[number]) {
+  switch (filter) {
+    case 'Upcoming Events':
+      return 'now';
+    case 'Last weeks events':
+      return { days: -7 };
+    case 'Last month events':
+      return { days: -30 };
+  }
+}
 
 const Events = () => {
   const [view, setView] = useState<'horizontal' | 'vertical'>('horizontal');
-  const eventQuery = api.event.fromDateRange.useInfiniteQuery(
-    {
-      startTime: 'now',
-      limit: 20,
-    },
-    { getNextPageParam: (lastPage) => lastPage.nextCursor },
-  );
   const [filterState, setFilterState] = useState<filterState>({
     filter: 'Upcoming Events',
     order: 'newest',
     types: [],
   });
+  const eventQuery = api.event.fromDateRange.useInfiniteQuery(
+    {
+      startTime: getStartTime(filterState.filter),
+      limit: 20,
+    },
+    { getNextPageParam: (lastPage) => lastPage.nextCursor },
+  );
   return (
     <>
       <Head>
@@ -78,7 +91,7 @@ const Events = () => {
               className={
                 view === 'horizontal'
                   ? 'flex w-full flex-col space-y-7.5 pt-10'
-                  : 'grid gap-x-10 gap-y-7.5 lg:grid-cols-3'
+                  : 'grid grid-cols-1 gap-x-10 gap-y-7.5 lg:grid-cols-3'
               }
             >
               {eventQuery.status === 'success' &&

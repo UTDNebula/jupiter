@@ -2,6 +2,7 @@ import { eq, gte, lte, and, lt, or } from 'drizzle-orm';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { selectEvent } from '@src/server/db/models';
+import { DateTime } from 'luxon';
 
 const byClubIdSchema = z.object({
   clubId: z.string().default(''),
@@ -14,7 +15,11 @@ const byDateRangeSchema = z.object({
   endTime: z.date(),
 });
 const fromDateRangeSchema = z.object({
-  startTime: z.union([z.literal('now'), z.date()]),
+  startTime: z.union([
+    z.literal('now'),
+    z.object({ days: z.number() }),
+    z.date(),
+  ]),
   limit: z.number().min(1).max(20),
   cursor: z.number().nullish(),
 });
@@ -74,11 +79,19 @@ export const eventRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       const { limit } = input;
       const startTime =
-        input.startTime === 'now' ? new Date() : input.startTime;
+        input.startTime === 'now'
+          ? new Date()
+          : input.startTime instanceof Date
+          ? input.startTime
+          : DateTime.now().plus(input.startTime).toJSDate();
+      const endTime = input.startTime === 'now' ? undefined : new Date();
       const offset = input.cursor ?? 0;
       const events = await ctx.db.query.events.findMany({
         where: (event) =>
-          or(gte(event.startTime, startTime), gte(event.endTime, startTime)),
+          and(
+            or(gte(event.startTime, startTime), gte(event.endTime, startTime)),
+            lte(event.endTime, endTime ?? event.endTime),
+          ),
         orderBy: (events, { asc }) => [asc(events.startTime)],
         limit: limit,
         offset: offset,

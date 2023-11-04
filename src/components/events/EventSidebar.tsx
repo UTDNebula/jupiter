@@ -6,11 +6,10 @@ import {
 import { ClubSearchBar, EventSearchBar } from '../SearchBar';
 import { type Dispatch, type SetStateAction } from 'react';
 
-const filters = [
+export const filters = [
   'Upcoming Events',
   'Last weeks events',
   'Last month events',
-  'Pick a Date',
 ] as const;
 const order = [
   'newest',
