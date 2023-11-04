@@ -1,6 +1,12 @@
 import Header from '@src/components/BaseHeader';
+import { type Metadata } from 'next';
 import Image from 'next/image';
 import React from 'react';
+
+export const metadata: Metadata = {
+  title: 'History - Jupiter',
+  description: 'History Page',
+};
 
 const History = () => {
   return (

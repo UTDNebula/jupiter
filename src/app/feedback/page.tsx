@@ -3,7 +3,7 @@ import { type Metadata } from 'next';
 import Image from 'next/image';
 
 export const metadata: Metadata = {
-  title: 'Feedback - Nebula',
+  title: 'Feedback - Jupiter',
   description: 'Get connected on campus.',
 };
 
@@ -18,7 +18,7 @@ const Feedback = () => {
         <h1 className=" text-black-500 pt-5 text-center text-3xl font-bold">
           The Feedback Page is Under Construction!
         </h1>
-        <h1 className=" text-black-500 pt-2 text-center text-2xl font-bold">
+        <h1 className="text-black-500 pt-2 text-center text-2xl font-bold">
           Please Come Back Later!
         </h1>
       </div>
