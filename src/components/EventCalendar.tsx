@@ -1,8 +1,10 @@
-import { type FC } from 'react';
-import { api } from '@src/trpc/server';
+'use client';
+import { useState, type FC } from 'react';
+import { api } from '@src/trpc/react';
 import EventCardWithPopUp from './EventCardWithPopUp';
 
-function getDateRange(today: Date, index: number): Date[] {
+function getDateRange(index: number): Date[] {
+  const today = new Date();
   const daysSinceLastSunday = today.getDay();
   const startDate = new Date(
     today.setDate(today.getDate() - daysSinceLastSunday),
@@ -16,13 +18,13 @@ function getDateRange(today: Date, index: number): Date[] {
   });
 }
 
-const EventCalendar: FC<{ index: number }> = async ({ index }) => {
-  const today = new Date();
-  const dates = getDateRange(today, index);
-  console.log(today);
+const EventCalendar: FC<{ index: number }> = ({ index }) => {
+  const [dates] = useState(() => getDateRange(index));
 
-  const events = await api.event.byDateRange.query({
+  const { data: events } = api.event.byDateRange.useQuery({
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     startTime: dates[0]!,
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     endTime: dates[6]!,
   });
 
@@ -32,7 +34,7 @@ const EventCalendar: FC<{ index: number }> = async ({ index }) => {
         <div className="flex select-none flex-col items-center" key={key}>
           <div
             className={`m-1 flex h-16 w-36 flex-col items-center justify-center rounded-md p-5 ${
-              today.getDay() === day.getDay() && index === 1
+              new Date().getDay() === day.getDay() && index === 1
                 ? 'bg-blue-primary text-white'
                 : 'bg-slate-100'
             }`}
@@ -43,7 +45,7 @@ const EventCalendar: FC<{ index: number }> = async ({ index }) => {
             </p>
           </div>
           <div className="h-60 overflow-y-scroll py-2">
-            {events.map((event) => {
+            {events?.map((event) => {
               const eventDate = new Date(event.startTime);
               const givenDate = new Date(day);
 
