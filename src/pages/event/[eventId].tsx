@@ -17,7 +17,7 @@ const EventPage = ({
     <>
       <Head>
         <title>{event.name} - Jupiter</title>
-        <meta name="description">{event.name} - Jupiter</meta>
+        <meta name="description" content={`${event.name} - Jupiter`} />
       </Head>
       <main className="w-full md:pl-72">
         <EventHeader />
@@ -64,6 +64,7 @@ import {
   type InferGetServerSidePropsType,
   type GetServerSideProps,
 } from 'next';
+import SuperJSON from 'superjson';
 
 export const getServerSideProps: GetServerSideProps<{
   eventId: string;
@@ -71,6 +72,7 @@ export const getServerSideProps: GetServerSideProps<{
   const helper = createServerSideHelpers({
     router: appRouter,
     ctx: createInnerTRPCContext({ session: null }),
+    transformer: SuperJSON,
   });
 
   const eventId = context.params?.eventId;

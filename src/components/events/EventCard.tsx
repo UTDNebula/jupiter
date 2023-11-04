@@ -36,21 +36,15 @@ const HorizontalCard = ({ event }: { event: SelectEvent }) => {
             </Link>{' '}
             •{' '}
             <span className="text-blue-primary">
+              {DateTime.fromJSDate(event.startTime).toFormat('ccc, LLL d, t')}
               {DateTime.fromJSDate(event.startTime).hasSame(
                 DateTime.fromJSDate(event.endTime),
                 'day',
               ) ? (
-                <>
-                  {DateTime.fromJSDate(event.startTime).toFormat(
-                    'ccc, LLL d, t',
-                  )}
-                  -{DateTime.fromJSDate(event.endTime).toFormat('t')}
-                </>
+                <> - {DateTime.fromJSDate(event.endTime).toFormat('t')}</>
               ) : (
                 <>
-                  {DateTime.fromJSDate(event.startTime).toFormat(
-                    'ccc, LLL d, t',
-                  )}{' '}
+                  {' '}
                   -{' '}
                   {DateTime.fromJSDate(event.endTime).toFormat('ccc, LLL d, t')}
                 </>
@@ -63,9 +57,13 @@ const HorizontalCard = ({ event }: { event: SelectEvent }) => {
           <div className="h-10 w-10 rounded-full bg-white p-1.5 shadow-lg">
             <HeartIcon />
           </div>
-          <div className=" h-10 w-10 rounded-full bg-blue-primary p-1.5 shadow-lg transition-colors hover:bg-blue-700 active:bg-blue-800">
+          <Link
+            className=" h-10 w-10 rounded-full bg-blue-primary p-1.5 shadow-lg transition-colors hover:bg-blue-700 active:bg-blue-800"
+            href={`/event/${event.id}`}
+            passHref
+          >
             <MoreIcon fill="fill-white" />
-          </div>
+          </Link>
         </div>
       </div>
     </div>
