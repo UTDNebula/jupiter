@@ -13,9 +13,7 @@ const Home = () => {
   return (
     <>
       <Head>
-        <title>Jupiter</title>
         <meta name="description" content="Jupiter - Nebula Labs" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="md:pl-72 ">
         <Header />

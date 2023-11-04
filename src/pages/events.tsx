@@ -16,9 +16,7 @@ const Events = () => {
   return (
     <>
       <Head>
-        <title>Jupiter</title>
         <meta name="description" content="Events - Jupiter" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="md:pl-72">
         <EventHeader />

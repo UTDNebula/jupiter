@@ -7,9 +7,7 @@ const Liked = () => {
   return (
     <>
       <Head>
-        <title>Jupiter</title>
         <meta name="description" content="Liked - Jupiter" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 			<main className="h-full md:pl-72">
 				<Header />
