@@ -38,7 +38,16 @@ const EventSidebar = ({ filterState, setFilterState }: EventSidebarProps) => {
         <RadioGroup
           className="space-y-2.5"
           value={filterState.filter}
-          onValueChange={(value)=>{setFilterState((old)=>{old.filter=value; return old;})}
+          onValueChange={(value) => {
+            setFilterState((old) => {
+              return {
+                filter: value as (typeof filters)[number],
+                club: old.club,
+                order: old.order,
+                types: old.types,
+              };
+            });
+          }}
         >
           {filters.map((value) => (
             <RadioGroupItem
