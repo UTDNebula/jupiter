@@ -9,14 +9,14 @@ import Link from 'next/link';
 type Params = { params: { id: string } };
 
 export default async function EventsPage({ params }: Params) {
-  const event = await db.query.events.findFirst({
+  const res = await db.query.events.findFirst({
     where: eq(events.id, params.id),
     with: { club: true },
   });
 
-  if (!event) return <div>Event Not Found.</div>;
+  if (!res) return <div>Event Not Found.</div>;
 
-  const club = event.club;
+  const { club, ...event } = res;
 
   return (
     <main className="w-full md:pl-72">
