@@ -2,13 +2,11 @@ import React from 'react';
 import type { Event } from '@src/models/event';
 
 const EventCalendarCard = ({ event }: { event: Event }) => {
-  const time = `${event.startTime
-    .getHours()
-    .toString()
-    .padStart(2, '0')}:${event.startTime
-    .getMinutes()
-    .toString()
-    .padStart(2, '0')}`;
+  const time = event.startTime.toLocaleString('en-US', {
+    hour12: true,
+    hour: 'numeric',
+    minute: 'numeric',
+  });
 
   return (
     <div className="m-2 w-36 select-none items-center rounded-lg bg-events p-2 text-center">
