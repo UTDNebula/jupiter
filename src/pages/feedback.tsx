@@ -7,6 +7,12 @@ const Feedback = () => {
   return (
     <>
       <Head>
+        <link
+          rel="canonical"
+          href="https://jupiter.utdnebula.com/feedback"
+          key="canonical"
+        />
+        <meta property="og:url" content="https://jupiter.utdnebula.com/feedback" />
         <meta name="description" content="Feedback - Jupiter" />
       </Head>
 			<main className="h-full md:pl-72">

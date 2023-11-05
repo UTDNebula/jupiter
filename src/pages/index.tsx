@@ -13,6 +13,12 @@ const Home = () => {
   return (
     <>
       <Head>
+        <link
+          rel="canonical"
+          href="https://jupiter.utdnebula.com"
+          key="canonical"
+        />
+        <meta property="og:url" content="https://jupiter.utdnebula.com" />
         <meta name="description" content="Jupiter - Nebula Labs" />
       </Head>
       <main className="md:pl-72 ">

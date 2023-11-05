@@ -5,6 +5,12 @@ const About = () => {
   return (
     <>
       <Head>
+        <link
+          rel="canonical"
+          href="https://jupiter.utdnebula.com/about"
+          key="canonical"
+        />
+        <meta property="og:url" content="https://jupiter.utdnebula.com/about" />
         <meta name="description" content="About - Jupiter" />
       </Head>
       <main className="h-full md:pl-72">
