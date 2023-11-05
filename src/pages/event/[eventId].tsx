@@ -17,6 +17,12 @@ const EventPage = ({
     <>
       <Head>
         <title>{event.name} - Jupiter</title>
+        <link
+          rel="canonical"
+          href={'https://jupiter.utdnebula.com/' + event.name}
+          key="canonical"
+        />
+        <meta property="og:url" content={'https://jupiter.utdnebula.com/' + event.name} />
         <meta name="description">{event.name} - Jupiter</meta>
       </Head>
       <main className="w-full md:pl-72">
