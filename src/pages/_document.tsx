@@ -9,7 +9,7 @@ export default function Document() {
           name="description"
           content="A student organization portal to connect organizations on campus with interested students at UTD."
         />
-        <meta name="theme-color" content="#7486ce" />
+        <meta name="theme-color" content="#573DFF" />
 
         <meta property="og:title" content="Jupiter" />
         <meta
