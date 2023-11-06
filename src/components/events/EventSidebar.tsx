@@ -3,7 +3,11 @@ import {
   RadioGroupIndicator,
   RadioGroupItem,
 } from '@radix-ui/react-radio-group';
-import { ClubSearchBar, EventSearchBar } from '../SearchBar';
+import {
+  ClubSearchBar,
+  EventClubSearchBar,
+  EventSearchBar,
+} from '../SearchBar';
 import { type Dispatch, type SetStateAction } from 'react';
 
 export const filters = [
@@ -12,15 +16,15 @@ export const filters = [
   'Last month events',
 ] as const;
 const order = [
-  'newest',
-  'oldest',
+  'soon',
+  'later',
   'shortest duration',
   'longest duration',
 ] as const;
 const types = ['In-Person', 'Virtual', 'Multi-Day', 'Hybrid'] as const;
 export type filterState = {
   filter: (typeof filters)[number];
-  club?: string;
+  club: string[];
   order: (typeof order)[number];
   types: (typeof types)[number][];
 };
@@ -68,7 +72,23 @@ const EventSidebar = ({ filterState, setFilterState }: EventSidebarProps) => {
       </div>
       <div className="flex flex-col space-y-7.5">
         <h2 className="text-sm font-bold text-slate-500">Search for Club</h2>
-        <ClubSearchBar />
+        <EventClubSearchBar
+          addClub={(val) => {
+            setFilterState((old) => {
+              return {
+                filter: old.filter,
+                club: [...old.club, val],
+                order: old.order,
+                types: old.types,
+              };
+            });
+          }}
+        />
+        <div>
+          {filterState.club.map((value) => (
+            <div key={value}>{value}</div>
+          ))}
+        </div>
       </div>
       <div className="flex flex-col space-y-7.5">
         <h2 className="text-sm font-bold text-slate-500">Order</h2>

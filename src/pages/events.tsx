@@ -25,12 +25,14 @@ const Events = () => {
   const [view, setView] = useState<'horizontal' | 'vertical'>('horizontal');
   const [filterState, setFilterState] = useState<filterState>({
     filter: 'Upcoming Events',
-    order: 'newest',
+    club: [],
+    order: 'soon',
     types: [],
   });
   const eventQuery = api.event.fromDateRange.useInfiniteQuery(
     {
       startTime: getStartTime(filterState.filter),
+      club: filterState.club,
       order: filterState.order,
       limit: 20,
     },
@@ -83,7 +85,7 @@ const Events = () => {
               </button>
             </div>
           </div>
-          <div className="flex w-full flex-row space-x-7.5">
+          <div className="container flex w-full flex-row space-x-7.5">
             <EventSidebar
               filterState={filterState}
               setFilterState={setFilterState}
@@ -92,7 +94,7 @@ const Events = () => {
               className={
                 view === 'horizontal'
                   ? 'flex w-full flex-col space-y-7.5 pt-10'
-                  : 'grid grid-cols-1 gap-x-10 gap-y-7.5 lg:grid-cols-3'
+                  : 'flex flex-wrap gap-x-10 gap-y-7.5'
               }
             >
               {eventQuery.status === 'success' &&

@@ -16,6 +16,7 @@ type SearchElement = {
 };
 type SearchBarProps<T extends SearchElement> = {
   placeholder: string;
+  value?: string;
   setSearch: Dispatch<SetStateAction<string>>;
   searchResults?: Array<T>;
   onClick?: (input: T) => void;
@@ -23,11 +24,12 @@ type SearchBarProps<T extends SearchElement> = {
 
 const SearchBar = <T extends SearchElement>({
   placeholder,
+  value,
   setSearch,
   searchResults,
   onClick,
 }: SearchBarProps<T>) => {
-  const [input, setInput] = useState<string>('');
+  const [input, setInput] = useState<string>(value ?? '');
   const [focused, setFocused] = useState(false);
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
@@ -104,4 +106,32 @@ export const ClubSearchBar = () => {
 export const EventSearchBar = () => {
   const [search, setSearch] = useState('');
   return <SearchBar placeholder="Search for Events" setSearch={setSearch} />;
+};
+type EventClubSearchBarProps = {
+  addClub: (value: string) => void;
+};
+export const EventClubSearchBar = ({ addClub }: EventClubSearchBarProps) => {
+  const [search, setSearch] = useState('');
+  const [res, setRes] = useState<Club[]>([]);
+  api.club.byName.useQuery(
+    { name: search },
+    {
+      onSuccess: (data) => {
+        setRes(data);
+        return data;
+      },
+      enabled: !!search,
+    },
+  );
+  return (
+    <SearchBar
+      placeholder="Select a club"
+      setSearch={setSearch}
+      value={search}
+      searchResults={res}
+      onClick={(club) => {
+        addClub(club.id);
+      }}
+    />
+  );
 };

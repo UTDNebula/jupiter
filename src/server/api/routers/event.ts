@@ -1,4 +1,4 @@
-import { eq, gte, lte, and, lt, or, sql } from 'drizzle-orm';
+import { eq, gte, lte, and, lt, or, sql, inArray } from 'drizzle-orm';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { selectEvent } from '@src/server/db/models';
@@ -21,11 +21,12 @@ const fromDateRangeSchema = z.object({
     z.date(),
   ]),
   order: z.union([
-    z.literal('newest'),
-    z.literal('oldest'),
+    z.literal('soon'),
+    z.literal('later'),
     z.literal('shortest duration'),
     z.literal('longest duration'),
   ]),
+  club: z.string().array(),
   limit: z.number().min(1).max(20),
   cursor: z.number().nullish(),
 });
@@ -93,16 +94,21 @@ export const eventRouter = createTRPCRouter({
       const endTime = input.startTime === 'now' ? undefined : new Date();
       const offset = input.cursor ?? 0;
       const events = await ctx.db.query.events.findMany({
-        where: (event) =>
-          and(
+        where: (event) => {
+          const whereElements = [
             or(gte(event.startTime, startTime), gte(event.endTime, startTime)),
             lte(event.endTime, endTime ?? event.endTime),
-          ),
+          ];
+          if (input.club.length !== 0) {
+            whereElements.push(inArray(event.clubId, input.club));
+          }
+          return and(...whereElements);
+        },
         orderBy: (events, { asc, desc }) => {
           switch (input.order) {
-            case 'newest':
+            case 'soon':
               return [asc(events.startTime)];
-            case 'oldest':
+            case 'later':
               return [desc(events.startTime)];
             case 'shortest duration':
               return [asc(sql`${events.endTime} - ${events.startTime}`)];
