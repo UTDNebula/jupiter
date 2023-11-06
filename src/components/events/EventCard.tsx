@@ -125,9 +125,13 @@ const VerticalCard = ({ event }: { event: SelectEvent }) => {
           </h4>
         </div>
         <div className="mt-auto flex flex-row space-x-4">
-          <div className=" h-10 w-10 rounded-full bg-blue-primary p-1.5 shadow-lg transition-colors hover:bg-blue-700 active:bg-blue-800">
+          <Link
+            className=" h-10 w-10 rounded-full bg-blue-primary p-1.5 shadow-lg transition-colors hover:bg-blue-700 active:bg-blue-800"
+            href={`/event/${event.id}`}
+            passHref
+          >
             <MoreIcon fill="fill-white" />
-          </div>
+          </Link>
           <div className="h-10 w-10 rounded-full bg-white p-1.5 shadow-lg">
             <HeartIcon />
           </div>
