@@ -9,6 +9,7 @@ import {
   EventSearchBar,
 } from '../SearchBar';
 import { type Dispatch, type SetStateAction } from 'react';
+import { type SelectClub } from '@src/server/db/models';
 
 export const filters = [
   'Upcoming Events',
@@ -24,7 +25,7 @@ const order = [
 const types = ['In-Person', 'Virtual', 'Multi-Day', 'Hybrid'] as const;
 export type filterState = {
   filter: (typeof filters)[number];
-  club: string[];
+  club: SelectClub[];
   order: (typeof order)[number];
   types: (typeof types)[number][];
 };
@@ -84,9 +85,33 @@ const EventSidebar = ({ filterState, setFilterState }: EventSidebarProps) => {
             });
           }}
         />
-        <div>
+        <div className="p-1">
           {filterState.club.map((value) => (
-            <div key={value}>{value}</div>
+            <div
+              className="relative flex w-full flex-row items-center justify-center rounded-lg bg-white py-2.5"
+              key={value.id}
+            >
+              <span className="text-center text-xs font-extrabold text-slate-500">
+                {value.name}
+              </span>
+              <button
+                className="absolute right-4"
+                type="button"
+                onClick={() => {
+                  setFilterState((old) => {
+                    const clubs = old.club.filter((val) => val.id != value.id);
+                    return {
+                      filter: old.filter,
+                      club: clubs,
+                      order: old.order,
+                      types: old.types,
+                    };
+                  });
+                }}
+              >
+                X
+              </button>
+            </div>
           ))}
         </div>
       </div>
@@ -95,6 +120,8 @@ const EventSidebar = ({ filterState, setFilterState }: EventSidebarProps) => {
         <RadioGroup
           className="flex flex-col space-y-2.5"
           value={filterState.order}
+          title="remove club"
+          aria-label="remove club"
           onValueChange={(value) => {
             setFilterState((old) => {
               return {
@@ -124,7 +151,7 @@ const EventSidebar = ({ filterState, setFilterState }: EventSidebarProps) => {
           ))}
         </RadioGroup>
       </div>
-      <div className="flex flex-col space-y-7.5">
+      <div className="flex hidden flex-col space-y-7.5">
         <h2 className="text-sm font-bold text-slate-500">Event Types</h2>
         <div className="flex flex-col space-y-2.5">
           {types.map((value) => (

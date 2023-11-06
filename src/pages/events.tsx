@@ -32,7 +32,7 @@ const Events = () => {
   const eventQuery = api.event.fromDateRange.useInfiniteQuery(
     {
       startTime: getStartTime(filterState.filter),
-      club: filterState.club,
+      club: filterState.club.map((val) => val.id),
       order: filterState.order,
       limit: 20,
     },

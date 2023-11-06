@@ -108,7 +108,7 @@ export const EventSearchBar = () => {
   return <SearchBar placeholder="Search for Events" setSearch={setSearch} />;
 };
 type EventClubSearchBarProps = {
-  addClub: (value: string) => void;
+  addClub: (value: Club) => void;
 };
 export const EventClubSearchBar = ({ addClub }: EventClubSearchBarProps) => {
   const [search, setSearch] = useState('');
@@ -130,7 +130,8 @@ export const EventClubSearchBar = ({ addClub }: EventClubSearchBarProps) => {
       value={search}
       searchResults={res}
       onClick={(club) => {
-        addClub(club.id);
+        addClub(club);
+        setSearch('');
       }}
     />
   );
