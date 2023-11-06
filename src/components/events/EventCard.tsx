@@ -4,14 +4,23 @@ import { DateTime } from 'luxon';
 import Image from 'next/image';
 import EventTimeAlert from './EventTimeAlert';
 import Link from 'next/link';
-import { HeartIcon, MoreIcon } from '../Icons';
+import { HeartIcon, HeartOutline, MoreIcon } from '../Icons';
+import { type Dispatch, type SetStateAction, useState } from 'react';
 
 type EventCardProps = {
   view: 'horizontal' | 'vertical';
   event: SelectEvent;
 };
 
-const HorizontalCard = ({ event }: { event: SelectEvent }) => {
+const HorizontalCard = ({
+  event,
+  liked,
+  setLiked,
+}: {
+  event: SelectEvent;
+  liked: boolean;
+  setLiked: Dispatch<SetStateAction<boolean>>;
+}) => {
   const clubQuery = api.club.byId.useQuery({ id: event.clubId });
   return (
     <div className="container flex h-40 flex-row overflow-hidden rounded-lg bg-white shadow-sm">
@@ -54,9 +63,19 @@ const HorizontalCard = ({ event }: { event: SelectEvent }) => {
           <p className="text-xs font-bold">{event.description}</p>
         </div>
         <div className="ml-auto flex flex-row space-x-4">
-          <div className="h-10 w-10 rounded-full bg-white p-1.5 shadow-lg">
-            <HeartIcon />
-          </div>
+          <button
+            type="button"
+            className="h-10 w-10 rounded-full bg-white p-1.5 shadow-lg"
+            onClick={() => {
+              setLiked(!liked);
+            }}
+          >
+            {liked ? (
+              <HeartIcon fill="fill-red-600" />
+            ) : (
+              <HeartOutline fill="fill-slate-500" />
+            )}
+          </button>
           <Link
             className=" h-10 w-10 rounded-full bg-blue-primary p-1.5 shadow-lg transition-colors hover:bg-blue-700 active:bg-blue-800"
             href={`/event/${event.id}`}
@@ -69,7 +88,15 @@ const HorizontalCard = ({ event }: { event: SelectEvent }) => {
     </div>
   );
 };
-const VerticalCard = ({ event }: { event: SelectEvent }) => {
+const VerticalCard = ({
+  event,
+  liked,
+  setLiked,
+}: {
+  event: SelectEvent;
+  liked: boolean;
+  setLiked: Dispatch<SetStateAction<boolean>>;
+}) => {
   const clubQuery = api.club.byId.useQuery({ id: event.clubId });
   return (
     <div className="container flex h-96 w-64 flex-col overflow-hidden rounded-lg bg-white shadow-sm">
@@ -132,20 +159,31 @@ const VerticalCard = ({ event }: { event: SelectEvent }) => {
           >
             <MoreIcon fill="fill-white" />
           </Link>
-          <div className="h-10 w-10 rounded-full bg-white p-1.5 shadow-lg">
-            <HeartIcon />
-          </div>
+          <button
+            type="button"
+            className="h-10 w-10 rounded-full bg-white p-1.5 shadow-lg"
+            onClick={() => {
+              setLiked(!liked);
+            }}
+          >
+            {liked ? (
+              <HeartIcon fill="fill-red-600" />
+            ) : (
+              <HeartOutline fill="fill-slate-500" />
+            )}
+          </button>
         </div>
       </div>
     </div>
   );
 };
 const EventCard = ({ view, event }: EventCardProps) => {
+  const [liked, setLiked] = useState(false);
   switch (view) {
     case 'horizontal':
-      return <HorizontalCard event={event} />;
+      return <HorizontalCard event={event} liked={liked} setLiked={setLiked} />;
     case 'vertical':
-      return <VerticalCard event={event} />;
+      return <VerticalCard event={event} liked={liked} setLiked={setLiked} />;
   }
 };
 export default EventCard;

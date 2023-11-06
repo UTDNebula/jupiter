@@ -1,4 +1,4 @@
-import { HeartIcon } from './Icons';
+import { HeartIcon, HeartOutline } from './Icons';
 
 const LikeButton = ({ liked }: { liked: boolean }) => {
   return (
@@ -6,7 +6,7 @@ const LikeButton = ({ liked }: { liked: boolean }) => {
       {liked ? (
         <HeartIcon fill="fill-red-600" />
       ) : (
-        <HeartIcon fill="fill-white" />
+        <HeartOutline fill="fill-white" />
       )}
     </div>
   );
