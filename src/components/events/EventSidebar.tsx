@@ -25,7 +25,7 @@ const order = [
 const types = ['In-Person', 'Virtual', 'Multi-Day', 'Hybrid'] as const;
 export type filterState = {
   filter: (typeof filters)[number];
-  club: SelectClub[];
+  club: Array<SelectClub>;
   order: (typeof order)[number];
   types: (typeof types)[number][];
 };
@@ -76,16 +76,19 @@ const EventSidebar = ({ filterState, setFilterState }: EventSidebarProps) => {
         <EventClubSearchBar
           addClub={(val) => {
             setFilterState((old) => {
-              return {
-                filter: old.filter,
-                club: [...old.club, val],
-                order: old.order,
-                types: old.types,
-              };
+              if (!old.club.includes(val)) {
+                return {
+                  filter: old.filter,
+                  club: [...old.club, val],
+                  order: old.order,
+                  types: old.types,
+                };
+              }
+              return old;
             });
           }}
         />
-        <div className="p-1">
+        <div className="space-y-2 p-1">
           {filterState.club.map((value) => (
             <div
               className="relative flex w-full flex-row items-center justify-center rounded-lg bg-white py-2.5"
@@ -97,6 +100,7 @@ const EventSidebar = ({ filterState, setFilterState }: EventSidebarProps) => {
               <button
                 className="absolute right-4"
                 type="button"
+                title="remove club"
                 onClick={() => {
                   setFilterState((old) => {
                     const clubs = old.club.filter((val) => val.id != value.id);
@@ -120,8 +124,6 @@ const EventSidebar = ({ filterState, setFilterState }: EventSidebarProps) => {
         <RadioGroup
           className="flex flex-col space-y-2.5"
           value={filterState.order}
-          title="remove club"
-          aria-label="remove club"
           onValueChange={(value) => {
             setFilterState((old) => {
               return {
