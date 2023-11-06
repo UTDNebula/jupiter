@@ -103,5 +103,12 @@ export const ClubSearchBar = () => {
 };
 export const EventSearchBar = () => {
   const [search, setSearch] = useState('');
-  return <SearchBar placeholder="Search for Events" setSearch={setSearch} />;
+  const [res, setRes] = useState<Club[]>([]); 
+  return (
+    <SearchBar 
+      placeholder="Search for Events" 
+      setSearch={setSearch}
+       
+    />
+  );
 };
