@@ -1,14 +1,13 @@
 import Head from 'next/head';
 import { EventHeader } from '../components/Header';
 import { GridIcon, ListIcon } from '@src/components/Icons';
-import { Fragment, useState } from 'react';
+import { Fragment, useRef, useState } from 'react';
 import EventSidebar, {
   type filters,
   type filterState,
 } from '@src/components/events/EventSidebar';
 import { api } from '@src/utils/api';
 import EventCard from '@src/components/events/EventCard';
-import { DateTime } from 'luxon';
 
 function getStartTime(filter: (typeof filters)[number]) {
   switch (filter) {
@@ -38,6 +37,7 @@ const Events = () => {
     },
     { getNextPageParam: (lastPage) => lastPage.nextCursor },
   );
+  const ref = useRef<HTMLButtonElement>(null);
   return (
     <>
       <Head>
@@ -48,19 +48,28 @@ const Events = () => {
       <main className="pb-10 md:pl-72">
         <EventHeader />
         <div className="w-full px-6">
-          <div className="flex flex-row pb-12 pt-4">
+          <div className="flex flex-row pb-12 pr-7.5 pt-4">
             <h1 className="text-2xl font-bold text-[#4D5E80]">Events</h1>
-            <div className="ml-auto flex flex-row gap-x-16">
+            <div className="relative z-0 ml-auto flex flex-row gap-x-16">
+              <div
+                className={`absolute left-0 top-0 z-10 -mx-7.5 -my-2.5  box-border h-fit w-fit rounded-full bg-white px-7.5 py-2.5 motion-safe:transition-transform ${
+                  view === 'horizontal' ? '' : 'translate-x-full'
+                }`}
+              >
+                <div
+                  style={{
+                    height: ref.current?.offsetHeight ?? 32,
+                    width: ref.current?.offsetWidth ?? 107,
+                  }}
+                ></div>
+              </div>
               <button
                 type="button"
-                className={`flex flex-row items-center gap-x-4 ${
-                  view === 'horizontal'
-                    ? ' -mr-7.5 rounded-full bg-white px-7.5 py-2.5'
-                    : ''
-                }`}
+                className={`z-20 flex flex-row items-center gap-x-4 `}
                 onClick={() => {
                   setView('horizontal');
                 }}
+                ref={ref}
               >
                 <div className="h-7.5 w-7.5">
                   <ListIcon />
@@ -69,11 +78,7 @@ const Events = () => {
               </button>
               <button
                 type="button"
-                className={`flex flex-row items-center  ${
-                  view == 'vertical'
-                    ? '-ml-7.5 rounded-full bg-white px-7.5 py-2.5'
-                    : 'mr-7.5'
-                }`}
+                className={`z-20 flex flex-row items-center gap-x-4`}
                 onClick={() => {
                   setView('vertical');
                 }}
