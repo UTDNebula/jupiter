@@ -7,6 +7,13 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Jupiter - Nebula',
   description: 'Get connected on campus.',
+  alternates: {
+    canonical: 'https://jupiter.utdnebula.com',
+  },
+  openGraph: {
+    url: 'https://jupiter.utdnebula.com',
+    description: 'Jupiter - Nebula Labs',
+  },
 };
 
 const Home = () => {

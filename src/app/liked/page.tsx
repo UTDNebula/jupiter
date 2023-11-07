@@ -6,6 +6,13 @@ import React from 'react';
 export const metadata: Metadata = {
   title: 'Liked - Jupiter',
   description: 'Liked Page',
+  alternates: {
+    canonical: 'https://jupiter.utdnebula.com/liked',
+  },
+  openGraph: {
+    url: 'https://jupiter.utdnebula.com/liked',
+    description: 'Liked - Jupiter',
+  },
 };
 
 const Liked = () => {

@@ -15,6 +15,13 @@ const nextMonths = (num: number) => {
 export const metadata: Metadata = {
   title: 'Events - Jupiter',
   description: 'Get connected on campus.',
+  alternates: {
+    canonical: 'https://jupiter.utdnebula.com/events',
+  },
+  openGraph: {
+    url: 'https://jupiter.utdnebula.com/events',
+    description: 'Get connected on campus.',
+  },
 };
 
 const Events = () => {

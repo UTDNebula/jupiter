@@ -4,6 +4,13 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'About - Jupiter',
   description: 'About Jupiter',
+  alternates: {
+    canonical: 'https://jupiter.utdnebula.com/about',
+  },
+  openGraph: {
+    url: 'https://jupiter.utdnebula.com/about',
+    description: 'About Jupiter',
+  },
 };
 
 const About = () => {

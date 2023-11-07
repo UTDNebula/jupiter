@@ -55,5 +55,12 @@ export async function generateMetadata({
   return {
     title: `${found.name} - Jupiter`,
     description: found.description.slice(0, 30) + '...',
+    openGraph: {
+      url: `https://jupiter.utdnebula.com/directory/${found.id}`,
+      description: found.name + ' - Jupiter',
+    },
+    alternates: {
+      canonical: `https://jupiter.utdnebula.com/directory/${found.id}`,
+    },
   };
 }

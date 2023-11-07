@@ -5,6 +5,13 @@ import Image from 'next/image';
 export const metadata: Metadata = {
   title: 'Feedback - Jupiter',
   description: 'Get connected on campus.',
+  alternates: {
+    canonical: 'https://jupiter.utdnebula.com/feedback',
+  },
+  openGraph: {
+    url: 'https://jupiter.utdnebula.com/feedback',
+    description: 'Get connected on campus.',
+  },
 };
 
 const Feedback = () => {

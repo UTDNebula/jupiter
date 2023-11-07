@@ -6,6 +6,13 @@ import { type Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Settings - Jupiter',
   description: 'Settings for your Jupiter account',
+  alternates: {
+    canonical: 'https://jupiter.utdnebula.com/settings',
+  },
+  openGraph: {
+    url: 'https://jupiter.utdnebula.com/settings',
+    description: 'Settings - Jupiter',
+  },
 };
 const Settings = async () => {
   const session = await getServerAuthSession();

@@ -6,6 +6,13 @@ import React from 'react';
 export const metadata: Metadata = {
   title: 'History - Jupiter',
   description: 'History Page',
+  alternates: {
+    canonical: 'https://jupiter.utdnebula.com/history',
+  },
+  openGraph: {
+    url: 'https://jupiter.utdnebula.com/history',
+    description: 'History Page',
+  },
 };
 
 const History = () => {
