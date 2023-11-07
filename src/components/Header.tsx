@@ -4,12 +4,14 @@ import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import Image from 'next/image';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import MobileNav from './MobileNav';
 
 const BaseHeader = ({ children }: { children: ReactNode }) => {
   const { data: session, status } = useSession();
 
   return (
     <div className="flex h-20 w-full flex-row content-between items-center justify-start px-5 py-2.5">
+      <MobileNav />
       {children}
       <div className="ml-auto flex items-center justify-center">
         {status === 'authenticated' ? (
