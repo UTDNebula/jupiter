@@ -17,8 +17,13 @@ const OrganizationPage = ({
     <>
       <Head>
         <title>{club.name} - Jupiter</title>
+        <link
+          rel="canonical"
+          href={'https://jupiter.utdnebula.com/' + club.name}
+          key="canonical"
+        />
+        <meta property="og:url" content={'https://jupiter.utdnebula.com/' + club.name} />
         <meta name="description" content={`${club.name} - Jupiter`} />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="w-full md:pl-72">
         <Header />
