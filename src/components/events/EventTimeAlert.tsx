@@ -1,6 +1,9 @@
 import { type SelectEvent } from '@src/server/db/models';
-import { differenceInHours, differenceInMinutes } from 'date-fns';
-import differenceInDays from 'date-fns/esm/fp/differenceInDays/index.js';
+import {
+  differenceInDays,
+  differenceInHours,
+  differenceInMinutes,
+} from 'date-fns';
 import { type ReactNode } from 'react';
 
 type EventTimeAlertProps = {

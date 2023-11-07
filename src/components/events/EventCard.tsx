@@ -1,12 +1,11 @@
 import { type SelectEvent } from '@src/server/db/models';
 import { api } from '@src/utils/api';
+import { format, isSameDay } from 'date-fns';
 import Image from 'next/image';
-import EventTimeAlert from './EventTimeAlert';
 import Link from 'next/link';
+import { useState, type Dispatch, type SetStateAction } from 'react';
 import { HeartIcon, HeartOutline, MoreIcon } from '../Icons';
-import { type Dispatch, type SetStateAction, useState } from 'react';
-import format from 'date-fns/format';
-import { isSameDay } from 'date-fns';
+import EventTimeAlert from './EventTimeAlert';
 
 type EventCardProps = {
   view: 'horizontal' | 'vertical';

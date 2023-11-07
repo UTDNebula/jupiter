@@ -1,9 +1,9 @@
-import { eq, gte, lte, and, lt, or, sql, inArray, type SQL } from 'drizzle-orm';
+import { eq, gte, lte, and, or, sql, inArray, type SQL } from 'drizzle-orm';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { selectEvent } from '@src/server/db/models';
 import { type DateRange, isDateRange } from 'react-day-picker';
-import add from 'date-fns/add';
+import { add } from 'date-fns';
 
 const byClubIdSchema = z.object({
   clubId: z.string().default(''),
