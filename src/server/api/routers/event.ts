@@ -1,4 +1,4 @@
-import { eq, gte, lte, and } from 'drizzle-orm';
+import { eq, gte, lte, and, ilike } from 'drizzle-orm';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { selectEvent } from '@src/server/db/models';
@@ -17,6 +17,11 @@ const byDateRangeSchema = z.object({
 const byIdSchema = z.object({
   id: z.string().default(''),
 });
+
+const byNameSchema = z.object({ 
+  name: z.string().default(''),
+  sortByDate: z.boolean().default(false),
+})
 
 export const eventRouter = createTRPCRouter({
   byClubId: publicProcedure
@@ -80,4 +85,20 @@ export const eventRouter = createTRPCRouter({
       throw e;
     }
   }),
+  byName: publicProcedure.input(byNameSchema).query( async ({input, ctx}) => {
+    const {name, sortByDate} = input; 
+
+    try { 
+      const events = await ctx.db.query.events.findMany({
+        where: (event) => ilike(event.name, `%${name}%`),
+        orderBy: sortByDate ? (event, {desc} ) => [ desc( event.startTime) ] : undefined,  
+      })
+      
+      return events;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+
+  })
 });

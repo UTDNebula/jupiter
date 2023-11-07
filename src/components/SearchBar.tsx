@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { SearchIcon } from './Icons';
 import { useRouter } from 'next/router';
-import type { SelectClub as Club } from '@src/server/db/models';
+import type { SelectClub as Club, SelectEvent as Event } from '@src/server/db/models';
 import { api } from '@src/utils/api';
 
 type SearchElement = {
@@ -102,13 +102,25 @@ export const ClubSearchBar = () => {
   );
 };
 export const EventSearchBar = () => {
-  const [search, setSearch] = useState('');
-  const [res, setRes] = useState<Club[]>([]); 
+  const [search, setSearch] = useState<string>('');
+  const [res, setRes] = useState<Event[]>([]); 
+
+  api.event.byName.useQuery(
+    { 
+      name: search, 
+      sortByDate: true},
+    {
+      onSuccess: (data) => { setRes(data) },
+      enabled: !!search,
+    },
+  )
+
   return (
     <SearchBar 
       placeholder="Search for Events" 
       setSearch={setSearch}
-       
+      searchResults={res}
+      
     />
   );
 };
