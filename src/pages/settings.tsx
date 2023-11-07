@@ -31,9 +31,13 @@ const Settings = () => {
     return (
       <>
         <Head>
-          <title>Jupiter</title>
+          <link
+            rel="canonical"
+            href="https://jupiter.utdnebula.com/settings"
+            key="canonical"
+          />
+          <meta property="og:url" content="https://jupiter.utdnebula.com/settings" />
           <meta name="description" content="Settings - Jupiter" />
-          <link rel="icon" href="/favicon.ico" />
         </Head>
         <main className="h-full md:pl-72">
           <Header />

@@ -130,5 +130,5 @@ export const logo: logoProps = {
       </svg>
     ),
     
-    other: '/Jupiter.png',
+    other: '/nebula-logo.png',
   };
