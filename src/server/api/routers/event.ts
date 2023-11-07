@@ -2,10 +2,8 @@ import { eq, gte, lte, and, lt, or, sql, inArray, type SQL } from 'drizzle-orm';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { selectEvent } from '@src/server/db/models';
-import { DateTime } from 'luxon';
 import { type DateRange, isDateRange } from 'react-day-picker';
 import add from 'date-fns/add';
-import isEqual from 'date-fns/isEqual';
 
 const byClubIdSchema = z.object({
   clubId: z.string().default(''),
@@ -95,7 +93,7 @@ export const eventRouter = createTRPCRouter({
           ? input.startTime
           : isDateRange(input.startTime)
           ? input.startTime ?? new Date()
-          : DateTime.now().plus(input.startTime).toJSDate();
+          : add(new Date(), input.startTime);
       const endTime =
         input.startTime === 'now' || isDateRange(input.startTime)
           ? undefined

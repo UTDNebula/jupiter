@@ -1,11 +1,12 @@
 import { type SelectEvent } from '@src/server/db/models';
 import { api } from '@src/utils/api';
-import { DateTime } from 'luxon';
 import Image from 'next/image';
 import EventTimeAlert from './EventTimeAlert';
 import Link from 'next/link';
 import { HeartIcon, HeartOutline, MoreIcon } from '../Icons';
 import { type Dispatch, type SetStateAction, useState } from 'react';
+import format from 'date-fns/format';
+import { isSameDay } from 'date-fns';
 
 type EventCardProps = {
   view: 'horizontal' | 'vertical';
@@ -45,18 +46,11 @@ const HorizontalCard = ({
             </Link>{' '}
             •{' '}
             <span className="text-blue-primary">
-              {DateTime.fromJSDate(event.startTime).toFormat('ccc, LLL d, t')}
-              {DateTime.fromJSDate(event.startTime).hasSame(
-                DateTime.fromJSDate(event.endTime),
-                'day',
-              ) ? (
-                <> - {DateTime.fromJSDate(event.endTime).toFormat('t')}</>
+              {format(event.startTime, 'E, MMM d, p')}
+              {isSameDay(event.startTime, event.endTime) ? (
+                <> - {format(event.endTime, 'p')}</>
               ) : (
-                <>
-                  {' '}
-                  -{' '}
-                  {DateTime.fromJSDate(event.endTime).toFormat('ccc, LLL d, t')}
-                </>
+                <> - {format(event.endTime, 'E, MMM d, p')}</>
               )}
             </span>
           </h4>
@@ -126,25 +120,14 @@ const VerticalCard = ({
             </Link>
             <div>
               <span className="text-blue-primary">
-                {DateTime.fromJSDate(event.startTime).hasSame(
-                  DateTime.fromJSDate(event.endTime),
-                  'day',
-                ) ? (
-                  <>
-                    {DateTime.fromJSDate(event.startTime).toFormat(
-                      'ccc, LLL d, t',
-                    )}
-                    -{DateTime.fromJSDate(event.endTime).toFormat('t')}
-                  </>
+                {format(event.startTime, 'E, MMM d, p')}
+                {isSameDay(event.startTime, event.endTime) ? (
+                  <> - {format(event.endTime, 'p')}</>
                 ) : (
                   <>
-                    {DateTime.fromJSDate(event.startTime).toFormat(
-                      'ccc, LLL d, t',
-                    )}{' '}
-                    -<br />
-                    {DateTime.fromJSDate(event.endTime).toFormat(
-                      'ccc, LLL d, t',
-                    )}
+                    {' '}
+                    - <br />
+                    {format(event.endTime, 'E, MMM d, p')}
                   </>
                 )}
               </span>
