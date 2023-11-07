@@ -23,12 +23,12 @@ const HorizontalCard = ({
 }) => {
   const clubQuery = api.club.byId.useQuery({ id: event.clubId });
   return (
-    <div className="container flex h-40 flex-row overflow-hidden rounded-lg bg-white shadow-sm">
+    <div className="container flex h-40 flex-row overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-lg">
       <div className="relative h-[160px] w-[225px]">
         <div className="h-[160px] w-[225px]">
           <Image fill src={'/event_default.jpg'} alt="event image" />
         </div>
-        <div className="absolute inset-0 z-10 p-2 text-white">
+        <div className="absolute inset-0 p-2 text-white">
           <EventTimeAlert event={event} />
         </div>
       </div>
@@ -99,7 +99,7 @@ const VerticalCard = ({
 }) => {
   const clubQuery = api.club.byId.useQuery({ id: event.clubId });
   return (
-    <div className="container flex h-96 w-64 flex-col overflow-hidden rounded-lg bg-white shadow-sm">
+    <div className="container flex h-96 w-64 flex-col overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-lg">
       <div className="relative">
         <div className="h-40 w-96">
           <Image
@@ -108,7 +108,7 @@ const VerticalCard = ({
             fill
             objectFit="cover"
           />
-          <div className="absolute inset-0 z-10 p-2">
+          <div className="absolute inset-0 p-2">
             <EventTimeAlert event={event} />
           </div>
         </div>

@@ -63,7 +63,7 @@ const SidebarItems: FC<{ cat: union[number]; active: boolean }> = ({
 
   return (
     <div
-      className={`${
+      className={` ${
         active || mouseOver
           ? `-my-2.5 mb-2.5 rounded-3xl bg-white py-2.5 shadow-md last:-mb-2.5`
           : 'mb-5'
@@ -73,7 +73,7 @@ const SidebarItems: FC<{ cat: union[number]; active: boolean }> = ({
     >
       <div
         className=" 
-        rounded-lg flex h-full w-64  cursor-pointer items-start bg-transparent px-5 text-sm transition-transform"
+        flex h-full w-64 cursor-pointer  items-start rounded-lg bg-transparent px-5 text-sm transition-transform"
         onClick={() => void router.push(route)}
       >
         <div className="flex items-center gap-x-4">

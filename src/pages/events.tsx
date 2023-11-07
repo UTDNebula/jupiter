@@ -9,14 +9,16 @@ import EventSidebar, {
 import { api } from '@src/utils/api';
 import EventCard from '@src/components/events/EventCard';
 
-function getStartTime(filter: (typeof filters)[number]) {
-  switch (filter) {
+function getStartTime(filterState: filterState) {
+  switch (filterState.filter) {
     case 'Upcoming Events':
       return 'now';
     case 'Last weeks events':
       return { days: -7 };
     case 'Last month events':
       return { days: -30 };
+    case 'pick':
+      return filterState.date ?? 'now';
   }
 }
 
@@ -28,9 +30,9 @@ const Events = () => {
     order: 'soon',
     types: [],
   });
-  const eventQuery = api.event.fromDateRange.useInfiniteQuery(
+  const eventQuery = api.event.findByFilters.useInfiniteQuery(
     {
-      startTime: getStartTime(filterState.filter),
+      startTime: getStartTime(filterState),
       club: filterState.club.map((val) => val.id),
       order: filterState.order,
       limit: 20,

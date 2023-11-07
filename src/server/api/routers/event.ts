@@ -1,8 +1,11 @@
-import { eq, gte, lte, and, lt, or, sql, inArray } from 'drizzle-orm';
+import { eq, gte, lte, and, lt, or, sql, inArray, type SQL } from 'drizzle-orm';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { selectEvent } from '@src/server/db/models';
 import { DateTime } from 'luxon';
+import { type DateRange, isDateRange } from 'react-day-picker';
+import add from 'date-fns/add';
+import isEqual from 'date-fns/isEqual';
 
 const byClubIdSchema = z.object({
   clubId: z.string().default(''),
@@ -14,11 +17,11 @@ const byDateRangeSchema = z.object({
   startTime: z.date(),
   endTime: z.date(),
 });
-const fromDateRangeSchema = z.object({
+const filterableSchema = z.object({
   startTime: z.union([
     z.literal('now'),
     z.object({ days: z.number() }),
-    z.date(),
+    z.custom<DateRange>((val) => isDateRange(val)),
   ]),
   order: z.union([
     z.literal('soon'),
@@ -81,8 +84,8 @@ export const eventRouter = createTRPCRouter({
         throw e;
       }
     }),
-  fromDateRange: publicProcedure
-    .input(fromDateRangeSchema)
+  findByFilters: publicProcedure
+    .input(filterableSchema)
     .query(async ({ input, ctx }) => {
       const { limit } = input;
       const startTime =
@@ -90,15 +93,42 @@ export const eventRouter = createTRPCRouter({
           ? new Date()
           : input.startTime instanceof Date
           ? input.startTime
+          : isDateRange(input.startTime)
+          ? input.startTime ?? new Date()
           : DateTime.now().plus(input.startTime).toJSDate();
-      const endTime = input.startTime === 'now' ? undefined : new Date();
+      const endTime =
+        input.startTime === 'now' || isDateRange(input.startTime)
+          ? undefined
+          : new Date();
       const offset = input.cursor ?? 0;
       const events = await ctx.db.query.events.findMany({
         where: (event) => {
-          const whereElements = [
-            or(gte(event.startTime, startTime), gte(event.endTime, startTime)),
-            lte(event.endTime, endTime ?? event.endTime),
-          ];
+          const whereElements: Array<SQL<unknown> | undefined> = [];
+          if (isDateRange(startTime)) {
+            if (startTime.from) {
+              startTime.to ??= add(startTime.from, { days: 1 });
+              whereElements.push(
+                or(
+                  and(
+                    gte(event.startTime, startTime.from),
+                    lte(event.endTime, startTime.to),
+                  ),
+                  and(
+                    gte(event.endTime, startTime.from),
+                    lte(event.startTime, startTime.to),
+                  ),
+                ),
+              );
+            }
+          } else {
+            whereElements.push(
+              or(
+                gte(event.startTime, startTime),
+                gte(event.endTime, startTime),
+              ),
+            );
+            whereElements.push(lte(event.endTime, endTime ?? event.endTime));
+          }
           if (input.club.length !== 0) {
             whereElements.push(inArray(event.clubId, input.club));
           }
