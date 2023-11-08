@@ -7,9 +7,13 @@ const History = () => {
   return (
     <>
       <Head>
-        <title>Jupiter</title>
+        <link
+          rel="canonical"
+          href="https://jupiter.utdnebula.com/history"
+          key="canonical"
+        />
+        <meta property="og:url" content="https://jupiter.utdnebula.com/history" />
         <meta name="description" content="History - Jupiter" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 			<main className="h-full md:pl-72">
 				<Header />

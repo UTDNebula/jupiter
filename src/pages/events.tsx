@@ -16,9 +16,13 @@ const Events = () => {
   return (
     <>
       <Head>
-        <title>Jupiter</title>
+        <link
+          rel="canonical"
+          href="https://jupiter.utdnebula.com/events"
+          key="canonical"
+        />
+        <meta property="og:url" content="https://jupiter.utdnebula.com/events" />
         <meta name="description" content="Events - Jupiter" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="md:pl-72">
         <EventHeader />
