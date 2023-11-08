@@ -3,21 +3,27 @@ import { EventHeader } from '../components/Header';
 import { GridIcon, ListIcon } from '@src/components/Icons';
 import { Fragment, useRef, useState } from 'react';
 import EventSidebar, {
-  type filterState
+  type filterState,
 } from '@src/components/events/EventSidebar';
 import { api } from '@src/utils/api';
 import EventCard from '@src/components/events/EventCard';
+import { type z } from 'zod';
+import { type findByFilterSchema } from '@src/server/api/routers/event';
 
-function getStartTime(filterState: filterState) {
+function getStartTime(
+  filterState: filterState,
+): z.infer<typeof findByFilterSchema>['startTime'] {
   switch (filterState.filter) {
     case 'Upcoming Events':
-      return 'now';
+      return { type: 'now' };
     case 'Last weeks events':
-      return { days: -7 };
+      return { type: 'distance', options: { days: -7 } };
     case 'Last month events':
-      return { days: -30 };
+      return { type: 'distance', options: { days: -30 } };
     case 'pick':
-      return filterState.date ?? 'now';
+      return filterState.date
+        ? { type: 'range', options: filterState.date }
+        : { type: 'now' };
   }
 }
 
@@ -47,7 +53,10 @@ const Events = () => {
           href="https://jupiter.utdnebula.com/events"
           key="canonical"
         />
-        <meta property="og:url" content="https://jupiter.utdnebula.com/events" />
+        <meta
+          property="og:url"
+          content="https://jupiter.utdnebula.com/events"
+        />
         <meta name="description" content="Events - Jupiter" />
       </Head>
       <main className="pb-10 md:pl-72">

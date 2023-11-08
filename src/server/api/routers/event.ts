@@ -1,9 +1,19 @@
-import { eq, gte, lte, and, or, sql, inArray, type SQL } from 'drizzle-orm';
+import {
+  eq,
+  gte,
+  lte,
+  and,
+  or,
+  sql,
+  inArray,
+  type SQL,
+  between,
+} from 'drizzle-orm';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { selectEvent } from '@src/server/db/models';
 import { type DateRange, isDateRange } from 'react-day-picker';
-import { add } from 'date-fns';
+import { add, isEqual } from 'date-fns';
 
 const byClubIdSchema = z.object({
   clubId: z.string().default(''),
@@ -15,18 +25,21 @@ const byDateRangeSchema = z.object({
   startTime: z.date(),
   endTime: z.date(),
 });
-const filterableSchema = z.object({
+export const findByFilterSchema = z.object({
   startTime: z.union([
-    z.literal('now'),
-    z.object({ days: z.number() }),
-    z.custom<DateRange>((val) => isDateRange(val)),
+    z.object({
+      type: z.literal('now'),
+    }),
+    z.object({
+      type: z.literal('distance'),
+      options: z.object({ days: z.number().int() }),
+    }),
+    z.object({
+      type: z.literal('range'),
+      options: z.custom<DateRange>((val) => isDateRange(val)),
+    }),
   ]),
-  order: z.enum([
-    'soon',
-    'later',
-    'shortest duration',
-    'longest duration',
-  ]),
+  order: z.enum(['soon', 'later', 'shortest duration', 'longest duration']),
   club: z.string().array(),
   limit: z.number().min(1).max(20),
   cursor: z.number().nullish(),
@@ -83,21 +96,16 @@ export const eventRouter = createTRPCRouter({
       }
     }),
   findByFilters: publicProcedure
-    .input(filterableSchema)
+    .input(findByFilterSchema)
     .query(async ({ input, ctx }) => {
       const { limit } = input;
       const startTime =
-        input.startTime === 'now'
+        input.startTime.type === 'now'
           ? new Date()
-          : input.startTime instanceof Date
-          ? input.startTime
-          : isDateRange(input.startTime)
-          ? input.startTime ?? new Date()
-          : add(new Date(), input.startTime);
-      const endTime =
-        input.startTime === 'now' || isDateRange(input.startTime)
-          ? undefined
-          : new Date();
+          : input.startTime.type === 'distance'
+          ? add(new Date(), input.startTime.options)
+          : input.startTime.options ?? new Date();
+      const endTime = input.startTime.type === 'range' ? new Date() : undefined;
       const offset = input.cursor ?? 0;
       const events = await ctx.db.query.events.findMany({
         where: (event) => {
@@ -105,16 +113,13 @@ export const eventRouter = createTRPCRouter({
           if (isDateRange(startTime)) {
             if (startTime.from) {
               startTime.to ??= add(startTime.from, { days: 1 });
+              if (isEqual(startTime.from, startTime.to)) {
+                startTime.to = add(startTime.from, { days: 1 });
+              }
               whereElements.push(
                 or(
-                  and(
-                    gte(event.startTime, startTime.from),
-                    lte(event.endTime, startTime.to),
-                  ),
-                  and(
-                    gte(event.endTime, startTime.from),
-                    lte(event.startTime, startTime.to),
-                  ),
+                  between(event.startTime, startTime.from, startTime.to),
+                  between(event.endTime, startTime.from, startTime.to),
                 ),
               );
             }
