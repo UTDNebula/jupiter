@@ -42,7 +42,7 @@ const EventPage = ({
                 <p className="text-2xl font-semibold">{event.name}</p>
               </div>
               <p className="text-2xl font-semibold">
-                {new Date(event.startTime).toString().substring(0, 24)}
+                {event.startTime.toString().substring(0, 24)}
               </p>
             </div>
             <p>{event.description}</p>

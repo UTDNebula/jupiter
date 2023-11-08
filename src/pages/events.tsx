@@ -3,8 +3,7 @@ import { EventHeader } from '../components/Header';
 import { GridIcon, ListIcon } from '@src/components/Icons';
 import { Fragment, useRef, useState } from 'react';
 import EventSidebar, {
-  type filters,
-  type filterState,
+  type filterState
 } from '@src/components/events/EventSidebar';
 import { api } from '@src/utils/api';
 import EventCard from '@src/components/events/EventCard';

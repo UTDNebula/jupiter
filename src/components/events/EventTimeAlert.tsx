@@ -25,8 +25,8 @@ const EventTimeAlert = ({ event }: EventTimeAlertProps) => {
   const now = new Date();
   const start = event.startTime;
   const hourDiff = differenceInHours(start, now);
-  if (event.startTime < new Date()) {
-    if (event.endTime < new Date()) {
+  if (event.startTime.getTime() < Date.now() ){
+    if (event.endTime.getTime() < Date.now()) {
       return <Base className="bg-red-600">over :(</Base>;
     } else {
       return <Base className="bg-green-600">NOW</Base>;

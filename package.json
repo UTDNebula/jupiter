@@ -43,7 +43,6 @@
     "@tailwindcss/typography": "^0.5.9",
     "@types/eslint": "^8.21.3",
     "@types/jest": "^29.5.5",
-    "@types/luxon": "^3.3.3",
     "@types/node": "18.16.0",
     "@types/react": "^18.0.1",
     "@typescript-eslint/eslint-plugin": "^5.39.0",

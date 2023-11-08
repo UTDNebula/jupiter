@@ -21,11 +21,11 @@ const filterableSchema = z.object({
     z.object({ days: z.number() }),
     z.custom<DateRange>((val) => isDateRange(val)),
   ]),
-  order: z.union([
-    z.literal('soon'),
-    z.literal('later'),
-    z.literal('shortest duration'),
-    z.literal('longest duration'),
+  order: z.enum([
+    'soon',
+    'later',
+    'shortest duration',
+    'longest duration',
   ]),
   club: z.string().array(),
   limit: z.number().min(1).max(20),
