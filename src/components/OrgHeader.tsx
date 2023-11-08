@@ -11,7 +11,6 @@ type Club = SelectClub & {
   contacts?: Contacts[];
 };
 const OrgHeader = ({ club }: { club: Club }) => {
-  const [liked, setLiked] = useState(false);
   return (
     <div className="relative">
       <div className="h-full w-full">
@@ -48,9 +47,6 @@ const OrgHeader = ({ club }: { club: Club }) => {
             <button
               className="rounded-full bg-blue-primary p-2.5 transition-colors hover:bg-blue-700"
               type="button"
-              onClick={() => {
-                setLiked(!liked);
-              }}
             >
               <LikeButton liked={liked} />
             </button>

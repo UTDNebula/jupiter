@@ -1,4 +1,5 @@
-import React, {
+'use client';
+import {
   type Dispatch,
   type SetStateAction,
   useState,
@@ -6,9 +7,9 @@ import React, {
   useEffect,
 } from 'react';
 import { SearchIcon } from './Icons';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import type { SelectClub as Club } from '@src/server/db/models';
-import { api } from '@src/utils/api';
+import { api } from '@src/trpc/react';
 
 type SearchElement = {
   id: string;
@@ -80,30 +81,24 @@ const SearchBar = <T extends SearchElement>({
 export const ClubSearchBar = () => {
   const router = useRouter();
   const [search, setSearch] = useState<string>('');
-  const [res, setRes] = useState<Club[]>([]);
-  api.club.byName.useQuery(
+  const { data } = api.club.byName.useQuery(
     { name: search },
-    {
-      onSuccess: (data) => {
-        setRes(data);
-        return data;
-      },
-      enabled: !!search,
-    },
+    { enabled: !!search },
   );
   const onClickSearchResult = (club: Club) => {
-    void router.push(`/directory/${club.id}`);
+    router.push(`/directory/${club.id}`);
   };
   return (
     <SearchBar
       placeholder="Search for Clubs"
       setSearch={setSearch}
-      searchResults={res}
+      searchResults={data || []}
       onClick={onClickSearchResult}
     />
   );
 };
 export const EventSearchBar = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [search, setSearch] = useState('');
   return <SearchBar placeholder="Search for Events" setSearch={setSearch} />;
 };

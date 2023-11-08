@@ -1,4 +1,5 @@
-import React, { type FC, useState } from 'react';
+'use client';
+import { type FC, useState } from 'react';
 import {
   AboutIcon,
   EventsIcon,
@@ -10,7 +11,7 @@ import {
   RightChevron,
   SettingsIcon,
 } from './Icons';
-import { useRouter } from 'next/router';
+import { useRouter, usePathname } from 'next/navigation';
 
 const mainCats = ['Home', 'History', 'Liked', 'Events'] as const;
 const moreCats = ['Settings', 'About', 'Feedback'] as const;
@@ -40,13 +41,12 @@ const routeMap: {
   Feedback: '/feedback',
 };
 
-const SidebarItems: FC<{ cat: union[number]; active: boolean }> = ({
-  cat,
-  active,
-}) => {
+const SidebarItems: FC<{ cat: union[number] }> = ({ cat }) => {
   const Icon = IconMap[cat];
   const router = useRouter();
   const route = routeMap[cat];
+  const pathName = usePathname();
+  const active = pathName === route;
 
   const [mouseOver, setMouseOver] = useState(false);
   const handleMouseOver = () => {
