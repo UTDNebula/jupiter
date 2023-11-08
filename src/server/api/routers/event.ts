@@ -41,8 +41,6 @@ export const findByFilterSchema = z.object({
   ]),
   order: z.enum(['soon', 'later', 'shortest duration', 'longest duration']),
   club: z.string().array(),
-  limit: z.number().min(1).max(20),
-  cursor: z.number().nullish(),
 });
 
 const byIdSchema = z.object({
@@ -98,7 +96,6 @@ export const eventRouter = createTRPCRouter({
   findByFilters: publicProcedure
     .input(findByFilterSchema)
     .query(async ({ input, ctx }) => {
-      const { limit } = input;
       const startTime =
         input.startTime.type === 'now'
           ? new Date()
@@ -106,7 +103,6 @@ export const eventRouter = createTRPCRouter({
           ? add(new Date(), input.startTime.options)
           : input.startTime.options ?? new Date();
       const endTime = input.startTime.type === 'range' ? new Date() : undefined;
-      const offset = input.cursor ?? 0;
       const events = await ctx.db.query.events.findMany({
         where: (event) => {
           const whereElements: Array<SQL<unknown> | undefined> = [];
@@ -149,10 +145,9 @@ export const eventRouter = createTRPCRouter({
               return [desc(sql`${events.endTime} - ${events.startTime}`)];
           }
         },
-        limit: limit,
-        offset: offset,
+        limit: 20,
       });
-      return { events: events, nextCursor: offset + limit };
+      return { events: events };
     }),
   byId: publicProcedure.input(byIdSchema).query(async ({ input, ctx }) => {
     const { id } = input;
