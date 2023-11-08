@@ -20,7 +20,6 @@ export const clubRouter = createTRPCRouter({
 
     const fuse = new Fuse(clubs, { keys: ['name', 'description'] });
     const results = fuse.search(name);
-    console.log({ results, name, clubs });
     if (results.length === 0) return [];
 
     const parsed = results.map((r) => selectClub.parse(r.item));
