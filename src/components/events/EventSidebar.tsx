@@ -54,6 +54,7 @@ function createSearchParams(
       params.append('date', filters.date.to.getTime().toString());
   }
   params.set('order', filters.order);
+  params.delete('clubs');
   filters.clubs.forEach((val) => params.append('clubs', val));
 
   return params.toString();
