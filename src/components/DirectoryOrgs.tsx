@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 import Image from 'next/image';
-import { GroupIcon, HeartIcon } from './Icons';
+import { GroupIcon } from './Icons';
 import type { SelectClub as Club } from '@src/server/db/models';
 import LikeButton from './LikeButton';
 import Link from 'next/link';
@@ -23,11 +23,8 @@ const OrgDirectoryCards: FC<Props> = ({ club }) => {
               {30} Members
             </div>
           </div>
-          <button
-            className="ml-auto rounded-full bg-black bg-opacity-50 p-1.5 font-bold text-slate-800 transition-colors"
-            onClick={() => like()}
-          >
-            <LikeButton liked={liked} />
+          <button className="ml-auto rounded-full bg-black bg-opacity-50 p-1.5 font-bold text-slate-800 transition-colors">
+            <LikeButton />
           </button>
         </div>
       </div>

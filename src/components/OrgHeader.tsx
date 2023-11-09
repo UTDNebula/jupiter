@@ -4,7 +4,6 @@ import type {
   SelectClub,
   SelectContact as Contacts,
 } from '@src/server/db/models';
-import { useState } from 'react';
 import LikeButton from './LikeButton';
 
 type Club = SelectClub & {
@@ -48,7 +47,7 @@ const OrgHeader = ({ club }: { club: Club }) => {
               className="rounded-full bg-blue-primary p-2.5 transition-colors hover:bg-blue-700"
               type="button"
             >
-              <LikeButton liked={liked} />
+              <LikeButton />
             </button>
             <ContactButtons contacts={club.contacts || []} />
           </div>
