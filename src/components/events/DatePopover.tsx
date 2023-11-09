@@ -1,6 +1,6 @@
 'use client';
 import { PopoverClose, PopoverContent } from '@radix-ui/react-popover';
-import { type Dispatch, type SetStateAction } from 'react';
+import { type Dispatch } from 'react';
 import { DayPicker, type DateRange } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 type DatePickerPopoverProps = {

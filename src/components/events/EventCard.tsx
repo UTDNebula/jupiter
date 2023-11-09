@@ -1,6 +1,5 @@
 'use client';
 import { type SelectClub, type SelectEvent } from '@src/server/db/models';
-import { api } from '@src/trpc/react';
 import { format, isSameDay } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
