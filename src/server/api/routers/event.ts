@@ -13,7 +13,7 @@ import { createTRPCRouter, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { selectEvent } from '@src/server/db/models';
 import { type DateRange } from 'react-day-picker';
-import { add, isEqual } from 'date-fns';
+import { add } from 'date-fns';
 function isDateRange(value: unknown): value is DateRange {
   return Boolean(value && typeof value === 'object' && 'from' in value);
 }
