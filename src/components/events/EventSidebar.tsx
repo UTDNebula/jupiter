@@ -3,12 +3,7 @@ import {
   RadioGroupIndicator,
   RadioGroupItem,
 } from '@radix-ui/react-radio-group';
-import {
-  ClubSearchBar,
-  EventClubSearchBar,
-  EventSearchBar,
-} from '../SearchBar';
-import { type Dispatch, type SetStateAction } from 'react';
+import { EventClubSearchBar } from '../SearchBar';
 import { type SelectClub } from '@src/server/db/models';
 import {
   Popover,
@@ -16,7 +11,14 @@ import {
   PopoverTrigger,
 } from '@radix-ui/react-popover';
 import DatePopover from './DatePopover';
+import {
+  useRouter,
+  useSearchParams,
+  usePathname,
+  type ReadonlyURLSearchParams,
+} from 'next/navigation';
 import { type DateRange } from 'react-day-picker';
+import { useEffect, useState } from 'react';
 
 export const filters = [
   'Upcoming Events',
@@ -30,19 +32,78 @@ const order = [
   'longest duration',
 ] as const;
 const types = ['In-Person', 'Virtual', 'Multi-Day', 'Hybrid'] as const;
-export type filterState = {
-  filter: (typeof filters)[number] | 'pick';
-  date?: DateRange;
-  club: Array<SelectClub>;
+export type filterState = (
+  | {
+      filter: (typeof filters)[number];
+    }
+  | { filter: 'pick'; date?: DateRange }
+) & {
+  clubs: Array<SelectClub>;
   order: (typeof order)[number];
   types: (typeof types)[number][];
 };
-type EventSidebarProps = {
-  filterState: filterState;
-  setFilterState: Dispatch<SetStateAction<filterState>>;
-};
 
-const EventSidebar = ({ filterState, setFilterState }: EventSidebarProps) => {
+function createSearchParams(filters: filterState) {
+  const params = new URLSearchParams();
+  params.set('filter', filters.filter);
+  if (filters.filter == 'pick') {
+    params.set(
+      'date',
+      [filters.date?.from?.getTime(), filters.date?.to?.getMilliseconds()].join(
+        ',',
+      ),
+    );
+  }
+  params.set('order', filters.order);
+  if (filters.clubs.length != 0) {
+    params.set('clubs', filters.clubs.join(','));
+  }
+
+  return params.toString();
+}
+function createFilterState(searchParams: ReadonlyURLSearchParams): filterState {
+  const filter = searchParams.get('filter') as filterState['filter'];
+  const order = searchParams.get('order') as filterState['order'];
+  const clubs = (searchParams.get('clubs') ?? []) as filterState['clubs'];
+  if (filter === 'pick') {
+    const dates = searchParams.get('date')!.split(',');
+    return {
+      filter: filter,
+      date: {
+        from: dates[0] ? new Date(Number.parseInt(dates[0])) : undefined,
+        to: dates[1] ? new Date(Number.parseInt(dates[1])) : undefined,
+      },
+      order: order,
+      clubs: clubs,
+      types: [],
+    };
+  } else {
+    return {
+      filter: filter,
+      order: order,
+      clubs: clubs,
+      types: [],
+    };
+  }
+}
+
+const EventSidebar = () => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const [filterState, setFilterState] = useState<filterState>({
+    filter: 'Upcoming Events',
+    clubs: [],
+    order: 'soon',
+    types: [],
+  });
+  useEffect(() => {
+    if (searchParams) setFilterState(createFilterState(searchParams));
+  }, [searchParams]);
+  useEffect(() => {
+    router.push(pathname + '?' + createSearchParams(filterState));
+    router.refresh();
+  }, [filterState, router, pathname]);
   return (
     <div className="flex w-64 flex-col space-y-10">
       <div className="flex flex-col space-y-7.5">
@@ -54,7 +115,7 @@ const EventSidebar = ({ filterState, setFilterState }: EventSidebarProps) => {
             setFilterState((old) => {
               return {
                 filter: value as (typeof filters)[number],
-                club: old.club,
+                clubs: old.clubs,
                 order: old.order,
                 types: old.types,
               };
@@ -93,20 +154,22 @@ const EventSidebar = ({ filterState, setFilterState }: EventSidebarProps) => {
                 </div>
               </PopoverTrigger>
               <PopoverPortal>
-                <DatePopover
-                  range={filterState.date}
-                  setRange={(val) => {
-                    setFilterState((old) => {
-                      return {
-                        filter: old.filter,
-                        club: old.club,
-                        date: val,
-                        order: old.order,
-                        types: old.types,
-                      };
-                    });
-                  }}
-                />
+                {filterState.filter === 'pick' && (
+                  <DatePopover
+                    range={filterState.date}
+                    setRange={(val) => {
+                      setFilterState((old) => {
+                        return {
+                          filter: 'pick',
+                          clubs: old.clubs,
+                          date: val,
+                          order: old.order,
+                          types: old.types,
+                        };
+                      });
+                    }}
+                  />
+                )}
               </PopoverPortal>
             </Popover>
           </RadioGroupItem>
@@ -117,10 +180,10 @@ const EventSidebar = ({ filterState, setFilterState }: EventSidebarProps) => {
         <EventClubSearchBar
           addClub={(val) => {
             setFilterState((old) => {
-              if (!old.club.includes(val)) {
+              if (!old.clubs.includes(val)) {
                 return {
                   filter: old.filter,
-                  club: [...old.club, val],
+                  clubs: [...old.clubs, val],
                   order: old.order,
                   types: old.types,
                 };
@@ -130,7 +193,7 @@ const EventSidebar = ({ filterState, setFilterState }: EventSidebarProps) => {
           }}
         />
         <div className="space-y-2 p-1">
-          {filterState.club.map((value) => (
+          {filterState.clubs.map((value) => (
             <div
               className="relative flex w-full flex-row items-center justify-center rounded-lg bg-white py-2.5"
               key={value.id}
@@ -144,10 +207,10 @@ const EventSidebar = ({ filterState, setFilterState }: EventSidebarProps) => {
                 title="remove club"
                 onClick={() => {
                   setFilterState((old) => {
-                    const clubs = old.club.filter((val) => val.id != value.id);
+                    const clubs = old.clubs.filter((val) => val.id != value.id);
                     return {
                       filter: old.filter,
-                      club: clubs,
+                      clubs: clubs,
                       order: old.order,
                       types: old.types,
                     };
@@ -169,7 +232,7 @@ const EventSidebar = ({ filterState, setFilterState }: EventSidebarProps) => {
             setFilterState((old) => {
               return {
                 filter: old.filter,
-                club: old.club,
+                clubs: old.clubs,
                 order: value as (typeof order)[number],
                 types: old.types,
               };
