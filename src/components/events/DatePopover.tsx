@@ -1,3 +1,4 @@
+'use client';
 import { PopoverClose, PopoverContent } from '@radix-ui/react-popover';
 import { type Dispatch, type SetStateAction } from 'react';
 import { DayPicker, type DateRange } from 'react-day-picker';

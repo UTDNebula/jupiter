@@ -33,17 +33,41 @@ export const metadata: Metadata = {
     description: 'Get connected on campus.',
   },
 };
-type searchPams = Partial<filterState>;
+type searchPams = Partial<
+  Omit<filterState, 'date' | 'clubs'> & {
+    date: string | string[] | undefined;
+    clubs: string | string[] | undefined;
+  }
+>;
 const Events = async ({ searchParams }: { searchParams: searchPams }) => {
   const filters = {
     filter: searchParams.filter ?? 'Upcoming Events',
-    clubs: searchParams.clubs ?? [],
+    date:
+      searchParams.filter === 'pick'
+        ? searchParams.date
+          ? Array.isArray(searchParams.date)
+            ? {
+                from: searchParams.date[0]
+                  ? new Date(Number.parseInt(searchParams.date[0]))
+                  : undefined,
+                to: searchParams.date[1]
+                  ? new Date(Number.parseInt(searchParams.date[1]))
+                  : undefined,
+              }
+            : { from: new Date(Number.parseInt(searchParams.date)) }
+          : undefined
+        : undefined,
+    clubs: searchParams.clubs
+      ? Array.isArray(searchParams.clubs)
+        ? searchParams.clubs
+        : [searchParams.clubs]
+      : [],
     order: searchParams.order ?? 'soon',
     types: searchParams.types ?? [],
   };
   const { events } = await api.event.findByFilters.query({
     startTime: getStartTime(filters),
-    club: filters.clubs.map((val) => val.id),
+    club: filters.clubs,
     order: filters.order,
   });
   console.log(searchParams);

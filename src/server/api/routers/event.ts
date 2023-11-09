@@ -1,19 +1,12 @@
-import {
-  eq,
-  gte,
-  lte,
-  and,
-  or,
-  sql,
-  inArray,
-  type SQL,
-  between,
-} from 'drizzle-orm';
+import { eq, gte, lte, and, or, sql, inArray, type SQL } from 'drizzle-orm';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { selectEvent } from '@src/server/db/models';
-import { type DateRange, isDateRange } from 'react-day-picker';
+import { type DateRange } from 'react-day-picker';
 import { add, isEqual } from 'date-fns';
+function isDateRange(value: unknown): value is DateRange {
+  return Boolean(value && typeof value === 'object' && 'from' in value);
+}
 
 const byClubIdSchema = z.object({
   clubId: z.string().default(''),
@@ -114,8 +107,10 @@ export const eventRouter = createTRPCRouter({
               }
               whereElements.push(
                 or(
-                  between(event.startTime, startTime.from, startTime.to),
-                  between(event.endTime, startTime.from, startTime.to),
+                  gte(event.startTime, startTime.from),
+                  gte(event.endTime, startTime.from),
+                  gte(event.startTime, startTime.to),
+                  gte(event.endTime, startTime.to),
                 ),
               );
             }

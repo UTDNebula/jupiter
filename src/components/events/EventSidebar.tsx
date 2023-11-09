@@ -4,7 +4,6 @@ import {
   RadioGroupItem,
 } from '@radix-ui/react-radio-group';
 import { EventClubSearchBar } from '../SearchBar';
-import { type SelectClub } from '@src/server/db/models';
 import {
   Popover,
   PopoverPortal,
@@ -18,7 +17,8 @@ import {
   type ReadonlyURLSearchParams,
 } from 'next/navigation';
 import { type DateRange } from 'react-day-picker';
-import { useEffect, useState } from 'react';
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
+import { api } from '@src/trpc/react';
 
 export const filters = [
   'Upcoming Events',
@@ -38,7 +38,7 @@ export type filterState = (
     }
   | { filter: 'pick'; date?: DateRange }
 ) & {
-  clubs: Array<SelectClub>;
+  clubs: Array<string>;
   order: (typeof order)[number];
   types: (typeof types)[number][];
 };
@@ -53,14 +53,16 @@ function createSearchParams(filters: filterState) {
       params.append('date', filters.date.to?.getTime().toString());
   }
   params.set('order', filters.order);
-  filters.clubs.forEach((val) => params.append('clubs', val.id));
+  filters.clubs.forEach((val) => params.append('clubs', val));
 
   return params.toString();
 }
 function createFilterState(searchParams: ReadonlyURLSearchParams): filterState {
-  const filter = searchParams.get('filter') as filterState['filter'];
-  const order = searchParams.get('order') as filterState['order'];
-  const clubs = (searchParams.get('clubs') ?? []) as filterState['clubs'];
+  const filter = searchParams.get('filter') as filterState['filter'] | null;
+  const order = searchParams.get('order') as filterState['order'] | null;
+  const clubs = (searchParams.getAll('clubs') ?? []) as
+    | filterState['clubs']
+    | null;
   if (filter === 'pick') {
     const dates = searchParams.getAll('date');
     return {
@@ -69,15 +71,15 @@ function createFilterState(searchParams: ReadonlyURLSearchParams): filterState {
         from: dates[0] ? new Date(Number.parseInt(dates[0])) : undefined,
         to: dates[1] ? new Date(Number.parseInt(dates[1])) : undefined,
       },
-      order: order,
-      clubs: clubs,
+      order: order ?? 'soon',
+      clubs: clubs ?? [],
       types: [],
     };
   } else {
     return {
-      filter: filter,
-      order: order,
-      clubs: clubs,
+      filter: filter ?? 'Upcoming Events',
+      order: order ?? 'soon',
+      clubs: clubs ?? [],
       types: [],
     };
   }
@@ -189,32 +191,11 @@ const EventSidebar = () => {
         />
         <div className="space-y-2 p-1">
           {filterState.clubs.map((value) => (
-            <div
-              className="relative flex w-full flex-row items-center justify-center rounded-lg bg-white py-2.5"
-              key={value.id}
-            >
-              <span className="text-center text-xs font-extrabold text-slate-500">
-                {value.name}
-              </span>
-              <button
-                className="absolute right-4"
-                type="button"
-                title="remove club"
-                onClick={() => {
-                  setFilterState((old) => {
-                    const clubs = old.clubs.filter((val) => val.id != value.id);
-                    return {
-                      filter: old.filter,
-                      clubs: clubs,
-                      order: old.order,
-                      types: old.types,
-                    };
-                  });
-                }}
-              >
-                X
-              </button>
-            </div>
+            <SelectedClub
+              key={value}
+              clubId={value}
+              setFilterState={setFilterState}
+            />
           ))}
         </div>
       </div>
@@ -276,3 +257,37 @@ const EventSidebar = () => {
   );
 };
 export default EventSidebar;
+const SelectedClub = ({
+  clubId,
+  setFilterState,
+}: {
+  clubId: string;
+  setFilterState: Dispatch<SetStateAction<filterState>>;
+}) => {
+  const query = api.club.byId.useQuery({ id: clubId });
+  return (
+    <div className="relative flex w-full flex-row items-center justify-center rounded-lg bg-white py-2.5">
+      <span className="text-center text-xs font-extrabold text-slate-500">
+        {query.data?.name}
+      </span>
+      <button
+        className="absolute right-4"
+        type="button"
+        title="remove club"
+        onClick={() => {
+          setFilterState((old) => {
+            const clubs = old.clubs.filter((val) => val != clubId);
+            return {
+              filter: old.filter,
+              clubs: clubs,
+              order: old.order,
+              types: old.types,
+            };
+          });
+        }}
+      >
+        X
+      </button>
+    </div>
+  );
+};
