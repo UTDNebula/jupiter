@@ -1,12 +1,18 @@
 import ProviderButton from '@src/components/ProviderButtons';
+import { getServerAuthSession } from '@src/server/auth';
 import { getProviders } from 'next-auth/react';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 export default async function Auth({
   searchParams,
 }: {
   searchParams: { [key: string]: string };
 }) {
+  const session = await getServerAuthSession();
+  if (session) {
+    return redirect(searchParams['callbackUrl'] ?? '/');
+  }
   const signin = searchParams.signup !== '';
   const providers = await getProviders();
 
