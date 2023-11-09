@@ -1,8 +1,8 @@
-import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { ProfileDropDown } from './ProfileDropDown';
 import { getServerAuthSession } from '@src/server/auth';
 import { ClubSearchBar, EventSearchBar } from './SearchBar';
+import SignInButton from './signInButton';
 
 export const BaseHeader = async ({ children }: { children: ReactNode }) => {
   const session = await getServerAuthSession();
@@ -16,9 +16,8 @@ export const BaseHeader = async ({ children }: { children: ReactNode }) => {
             <ProfileDropDown image={session.user.image || ''} />
           </div>
         ) : (
-          <div className="flex w-32 justify-between">
-            <Link href="/auth?signin">Sign in</Link>
-            <Link href="/auth?signup">Sign up</Link>
+          <div className="mr-2">
+            <SignInButton />
           </div>
         )}
       </div>
