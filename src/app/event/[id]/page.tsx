@@ -23,7 +23,7 @@ export default async function EventsPage({ params }: Params) {
       <EventHeader />
       <div className="mb-5 flex flex-col space-y-6 px-7">
         <div className="relative h-full w-full rounded-xl bg-slate-50 p-10 shadow-lg">
-          <Image src={club.image} width={100} height={100} alt="club image" />
+          <Image src={club.image} width={100} height={100} alt={club.name} />
           <hr className="my-3 mt-5 h-[1px] border-0 bg-black" />
           <div className="mb-3 flex w-full justify-between">
             <div>
