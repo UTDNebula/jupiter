@@ -104,40 +104,39 @@ export const eventRouter = createTRPCRouter({
           ? new Date()
           : input.startTime.type === 'distance'
           ? add(new Date(), input.startTime.options)
-          : input.startTime.options ?? new Date();
+          : input.startTime.options.from ?? new Date();
       const endTime =
-        input.startTime.type === 'distance' ? new Date() : undefined;
+        input.startTime.type === 'distance'
+          ? new Date()
+          : input.startTime.type === 'range'
+          ? input.startTime.options.to
+            ? add(input.startTime.options.to, { days: 1 })
+            : add(startTime, { days: 1 })
+          : undefined;
       const events = await ctx.db.query.events.findMany({
         where: (event) => {
           const whereElements: Array<SQL<unknown> | undefined> = [];
-          if (isDateRange(startTime)) {
-            if (startTime.from) {
-              startTime.to ??= startTime.from;
-              startTime.to = add(startTime.to, { days: 1 });
-              whereElements.push(
-                or(
-                  between(event.startTime, startTime.from, startTime.to),
-                  between(event.endTime, startTime.from, startTime.to),
-                  and(
-                    lte(event.startTime, startTime.from),
-                    gte(event.endTime, startTime.from),
-                  ),
-                  and(
-                    lte(event.startTime, startTime.to),
-                    gte(event.endTime, startTime.to),
-                  ),
-                ),
-              );
-            }
-          } else {
+          if (!endTime) {
             whereElements.push(
               or(
                 gte(event.startTime, startTime),
                 gte(event.endTime, startTime),
               ),
             );
-            whereElements.push(lte(event.endTime, endTime ?? event.endTime));
+          } else {
+            whereElements.push(
+              or(
+                between(event.startTime, startTime, endTime),
+                between(event.endTime, startTime, endTime),
+                and(
+                  lte(event.startTime, startTime),
+                  gte(event.endTime, startTime),
+                ),
+                and(lte(event.startTime, endTime), gte(event.endTime, endTime)),
+              ),
+            );
           }
+
           if (input.club.length !== 0) {
             whereElements.push(inArray(event.clubId, input.club));
           }
