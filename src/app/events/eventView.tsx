@@ -2,10 +2,14 @@
 import { GridIcon, ListIcon } from '@src/components/Icons';
 import EventCard from '@src/components/events/EventCard';
 import EventSidebar from '@src/components/events/EventSidebar';
-import { type SelectEvent } from '@src/server/db/models';
+import { type SelectClub, type SelectEvent } from '@src/server/db/models';
 import { useRef, useState } from 'react';
 
-const EventView = ({ events }: { events: Array<SelectEvent> }) => {
+const EventView = ({
+  events,
+}: {
+  events: Array<SelectEvent & { club: SelectClub }>;
+}) => {
   const [view, setView] = useState<'horizontal' | 'vertical'>('horizontal');
   const ref = useRef<HTMLButtonElement>(null);
   return (

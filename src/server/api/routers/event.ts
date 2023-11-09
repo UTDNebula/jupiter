@@ -140,6 +140,9 @@ export const eventRouter = createTRPCRouter({
               return [desc(sql`${events.endTime} - ${events.startTime}`)];
           }
         },
+        with: {
+          club: true,
+        },
         limit: 20,
       });
       return { events: events };

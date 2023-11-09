@@ -1,5 +1,5 @@
 'use client';
-import { type SelectEvent } from '@src/server/db/models';
+import { type SelectClub, type SelectEvent } from '@src/server/db/models';
 import { api } from '@src/trpc/react';
 import { format, isSameDay } from 'date-fns';
 import Image from 'next/image';
@@ -10,7 +10,7 @@ import EventTimeAlert from './EventTimeAlert';
 
 type EventCardProps = {
   view: 'horizontal' | 'vertical';
-  event: SelectEvent;
+  event: SelectEvent & { club: SelectClub };
 };
 
 const HorizontalCard = ({
@@ -18,11 +18,10 @@ const HorizontalCard = ({
   liked,
   setLiked,
 }: {
-  event: SelectEvent;
+  event: SelectEvent & { club: SelectClub };
   liked: boolean;
   setLiked: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const clubQuery = api.club.byId.useQuery({ id: event.clubId });
   return (
     <div className="container flex h-40 flex-row overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-lg">
       <div className="relative h-[160px] w-[225px]">
@@ -38,11 +37,11 @@ const HorizontalCard = ({
           <h3 className="font-bold">{event.name}</h3>
           <h4 className="text-xs font-bold">
             <Link
-              href={`/directory/${clubQuery.data?.id ?? ''}`}
+              href={`/directory/${event.clubId ?? ''}`}
               className="hover:text-blue-primary"
               scroll
             >
-              {clubQuery.data?.name}
+              {event.club.name}
             </Link>{' '}
             •{' '}
             <span className="text-blue-primary">
@@ -87,11 +86,10 @@ const VerticalCard = ({
   liked,
   setLiked,
 }: {
-  event: SelectEvent;
+  event: SelectEvent & { club: SelectClub };
   liked: boolean;
   setLiked: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const clubQuery = api.club.byId.useQuery({ id: event.clubId });
   return (
     <div className="container flex h-96 w-64 flex-col overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-lg">
       <div className="relative">
@@ -112,11 +110,11 @@ const VerticalCard = ({
           <h3 className="font-bold">{event.name}</h3>
           <h4 className="text-xs font-bold">
             <Link
-              href={`/directory/${clubQuery.data?.id ?? ''}`}
+              href={`/directory/${event.clubId ?? ''}`}
               className="hover:text-blue-primary"
               scroll
             >
-              {clubQuery.data?.name}
+              {event.club.name}
             </Link>
             <div>
               <span className="text-blue-primary">
