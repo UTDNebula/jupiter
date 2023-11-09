@@ -32,12 +32,9 @@ const order = [
   'longest duration',
 ] as const;
 const types = ['In-Person', 'Virtual', 'Multi-Day', 'Hybrid'] as const;
-export type filterState = (
-  | {
-      filter: (typeof filters)[number];
-    }
-  | { filter: 'pick'; date?: DateRange }
-) & {
+export type filterState = {
+  filter: (typeof filters)[number] | 'pick';
+  date?: DateRange;
   clubs: Array<string>;
   order: (typeof order)[number];
   types: (typeof types)[number][];
@@ -48,7 +45,7 @@ function createSearchParams(filters: filterState) {
   params.set('filter', filters.filter);
   if (filters.filter == 'pick' && filters.date) {
     if (filters.date.from)
-      params.append('date', filters.date.from.getTime().toString());
+      params.set('date', filters.date.from.getTime().toString());
     if (filters.date.to)
       params.append('date', filters.date.to.getTime().toString());
   }
@@ -100,7 +97,7 @@ const EventSidebar = () => {
   useEffect(() => {
     router.push(pathname + '?' + createSearchParams(filterState));
     router.refresh();
-  }, [filterState, router, pathname]);
+  }, [filterState, router, pathname, searchParams]);
   return (
     <div className="flex w-64 flex-col space-y-10">
       <div className="flex flex-col space-y-7.5">
@@ -112,6 +109,7 @@ const EventSidebar = () => {
             setFilterState((old) => {
               return {
                 filter: value as (typeof filters)[number],
+                date: old.date,
                 clubs: old.clubs,
                 order: old.order,
                 types: old.types,
