@@ -1,4 +1,14 @@
-import { eq, gte, lte, and, or, sql, inArray, type SQL } from 'drizzle-orm';
+import {
+  eq,
+  gte,
+  lte,
+  and,
+  or,
+  sql,
+  inArray,
+  type SQL,
+  between,
+} from 'drizzle-orm';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { selectEvent } from '@src/server/db/models';
@@ -95,22 +105,27 @@ export const eventRouter = createTRPCRouter({
           : input.startTime.type === 'distance'
           ? add(new Date(), input.startTime.options)
           : input.startTime.options ?? new Date();
-      const endTime = input.startTime.type === 'range' ? new Date() : undefined;
+      const endTime =
+        input.startTime.type === 'distance' ? new Date() : undefined;
       const events = await ctx.db.query.events.findMany({
         where: (event) => {
           const whereElements: Array<SQL<unknown> | undefined> = [];
           if (isDateRange(startTime)) {
             if (startTime.from) {
-              startTime.to ??= add(startTime.from, { days: 1 });
-              if (isEqual(startTime.from, startTime.to)) {
-                startTime.to = add(startTime.from, { days: 1 });
-              }
+              startTime.to ??= startTime.from;
+              startTime.to = add(startTime.to, { days: 1 });
               whereElements.push(
                 or(
-                  gte(event.startTime, startTime.from),
-                  gte(event.endTime, startTime.from),
-                  gte(event.startTime, startTime.to),
-                  gte(event.endTime, startTime.to),
+                  between(event.startTime, startTime.from, startTime.to),
+                  between(event.endTime, startTime.from, startTime.to),
+                  and(
+                    lte(event.startTime, startTime.from),
+                    gte(event.endTime, startTime.from),
+                  ),
+                  and(
+                    lte(event.startTime, startTime.to),
+                    gte(event.endTime, startTime.to),
+                  ),
                 ),
               );
             }
