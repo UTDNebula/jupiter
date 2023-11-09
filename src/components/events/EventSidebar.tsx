@@ -19,6 +19,7 @@ import {
 import { type DateRange } from 'react-day-picker';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 import { api } from '@src/trpc/react';
+import { format, isEqual } from 'date-fns';
 
 export const filters = [
   'Upcoming Events',
@@ -40,8 +41,11 @@ export type filterState = {
   types: (typeof types)[number][];
 };
 
-function createSearchParams(filters: filterState) {
-  const params = new URLSearchParams();
+function createSearchParams(
+  oldSearchParams: URLSearchParams,
+  filters: filterState,
+) {
+  const params = new URLSearchParams(oldSearchParams);
   params.set('filter', filters.filter);
   if (filters.filter == 'pick' && filters.date) {
     if (filters.date.from)
@@ -95,7 +99,7 @@ const EventSidebar = () => {
     },
   );
   useEffect(() => {
-    router.push(pathname + '?' + createSearchParams(filterState));
+    router.push(pathname + '?' + createSearchParams(searchParams, filterState));
     router.refresh();
   }, [filterState, router, pathname, searchParams]);
   return (
@@ -144,7 +148,15 @@ const EventSidebar = () => {
                     <RadioGroupIndicator className="h-2.5 w-2.5 rounded-full bg-blue-primary" />
                   </div>
                   <p className="w-full text-xs font-extrabold text-slate-500">
-                    Pick a date range
+                    {filterState.date?.from
+                      ? filterState.date.to
+                        ? isEqual(filterState.date.from, filterState.date.to)
+                          ? format(filterState.date.from, 'PPP')
+                          : format(filterState.date.from, 'MMM do') +
+                            ' - ' +
+                            format(filterState.date.to, 'MMM do')
+                        : format(filterState.date.from, 'PPP')
+                      : 'Pick a date range'}
                   </p>
                 </div>
               </PopoverTrigger>
@@ -231,7 +243,8 @@ const EventSidebar = () => {
           ))}
         </RadioGroup>
       </div>
-      <div className="flex hidden flex-col space-y-7.5">
+      {/* for future when we add event types */}
+      <div className="hidden flex-col space-y-7.5">
         <h2 className="text-sm font-bold text-slate-500">Event Types</h2>
         <div className="flex flex-col space-y-2.5">
           {types.map((value) => (

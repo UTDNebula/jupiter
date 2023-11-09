@@ -3,15 +3,26 @@ import { GridIcon, ListIcon } from '@src/components/Icons';
 import EventCard from '@src/components/events/EventCard';
 import EventSidebar from '@src/components/events/EventSidebar';
 import { type SelectClub, type SelectEvent } from '@src/server/db/models';
-import { useRef, useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 
 const EventView = ({
   events,
 }: {
   events: Array<SelectEvent & { club: SelectClub }>;
 }) => {
-  const [view, setView] = useState<'horizontal' | 'vertical'>('horizontal');
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const [view, setView] = useState<'list' | 'grid'>(
+    (searchParams.get('view') as 'list' | 'grid') ?? 'list',
+  );
   const ref = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    params.set('view', view);
+    router.push(pathname + '?' + params.toString());
+  }, [view, router, pathname]);
   return (
     <div className="w-full px-6">
       <div className="flex flex-row pb-12 pr-7.5 pt-4">
@@ -19,13 +30,16 @@ const EventView = ({
         <div className="relative z-0 ml-auto flex flex-row gap-x-16">
           <div
             className={`absolute left-0 top-0 z-10 -mx-7.5 -my-2.5  box-border h-fit w-fit rounded-full bg-white px-7.5 py-2.5 motion-safe:transition-transform ${
-              view === 'horizontal' ? '' : 'translate-x-full'
+              view === 'list' ? '' : 'translate-x-full'
             }`}
+            style={{
+              visibility: ref.current ? 'visible' : 'hidden',
+            }}
           >
             <div
               style={{
-                height: ref.current?.offsetHeight ?? 32,
-                width: ref.current?.offsetWidth ?? 107,
+                height: ref.current?.offsetHeight,
+                width: ref.current?.offsetWidth,
               }}
             ></div>
           </div>
@@ -33,7 +47,7 @@ const EventView = ({
             type="button"
             className={`z-20 flex flex-row items-center gap-x-4 `}
             onClick={() => {
-              setView('horizontal');
+              setView('list');
             }}
             ref={ref}
           >
@@ -46,7 +60,7 @@ const EventView = ({
             type="button"
             className={`z-20 flex flex-row items-center gap-x-4`}
             onClick={() => {
-              setView('vertical');
+              setView('grid');
             }}
           >
             <div className="h-7.5 w-7.5">
@@ -60,13 +74,19 @@ const EventView = ({
         <EventSidebar />
         <div
           className={
-            view === 'horizontal'
+            view === 'list'
               ? 'flex w-full flex-col space-y-7.5 pt-10'
               : 'flex flex-wrap gap-x-10 gap-y-7.5'
           }
         >
           {events.map((event) => {
-            return <EventCard key={event.id} view={view} event={event} />;
+            return (
+              <EventCard
+                key={event.id}
+                view={view === 'list' ? 'horizontal' : 'vertical'}
+                event={event}
+              />
+            );
           })}
         </div>
       </div>
