@@ -76,7 +76,7 @@ const EventView = ({
           className={
             view === 'list'
               ? 'flex w-full flex-col space-y-7.5 pt-10'
-              : 'flex flex-wrap gap-x-10 gap-y-7.5'
+              : 'flex flex-wrap gap-x-10 gap-y-7.5 pt-10'
           }
         >
           {events.map((event) => {
