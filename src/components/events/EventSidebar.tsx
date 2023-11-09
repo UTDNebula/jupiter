@@ -46,18 +46,14 @@ export type filterState = (
 function createSearchParams(filters: filterState) {
   const params = new URLSearchParams();
   params.set('filter', filters.filter);
-  if (filters.filter == 'pick') {
-    params.set(
-      'date',
-      [filters.date?.from?.getTime(), filters.date?.to?.getMilliseconds()].join(
-        ',',
-      ),
-    );
+  if (filters.filter == 'pick' && filters.date) {
+    if (filters.date.from)
+      params.append('date', filters.date.from.getTime().toString());
+    if (filters.date.to)
+      params.append('date', filters.date.to?.getTime().toString());
   }
   params.set('order', filters.order);
-  if (filters.clubs.length != 0) {
-    params.set('clubs', filters.clubs.join(','));
-  }
+  filters.clubs.forEach((val) => params.append('clubs', val.id));
 
   return params.toString();
 }
@@ -66,7 +62,7 @@ function createFilterState(searchParams: ReadonlyURLSearchParams): filterState {
   const order = searchParams.get('order') as filterState['order'];
   const clubs = (searchParams.get('clubs') ?? []) as filterState['clubs'];
   if (filter === 'pick') {
-    const dates = searchParams.get('date')!.split(',');
+    const dates = searchParams.getAll('date');
     return {
       filter: filter,
       date: {
@@ -91,15 +87,14 @@ const EventSidebar = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const [filterState, setFilterState] = useState<filterState>({
-    filter: 'Upcoming Events',
-    clubs: [],
-    order: 'soon',
-    types: [],
-  });
-  useEffect(() => {
-    if (searchParams) setFilterState(createFilterState(searchParams));
-  }, [searchParams]);
+  const [filterState, setFilterState] = useState<filterState>(
+    createFilterState(searchParams) ?? {
+      filter: 'Upcoming Events',
+      clubs: [],
+      order: 'soon',
+      types: [],
+    },
+  );
   useEffect(() => {
     router.push(pathname + '?' + createSearchParams(filterState));
     router.refresh();

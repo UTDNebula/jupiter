@@ -33,22 +33,24 @@ export const metadata: Metadata = {
     description: 'Get connected on campus.',
   },
 };
-
-const Events = async ({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) => {
-  /*const { events } = await api.event.findByFilters.query({
-    startTime: getStartTime(filterState),
-    club: filterState.club.map((val) => val.id),
-    order: filterState.order,
-  });*/
+type searchPams = Partial<filterState>;
+const Events = async ({ searchParams }: { searchParams: searchPams }) => {
+  const filters = {
+    filter: searchParams.filter ?? 'Upcoming Events',
+    clubs: searchParams.clubs ?? [],
+    order: searchParams.order ?? 'soon',
+    types: searchParams.types ?? [],
+  };
+  const { events } = await api.event.findByFilters.query({
+    startTime: getStartTime(filters),
+    club: filters.clubs.map((val) => val.id),
+    order: filters.order,
+  });
   console.log(searchParams);
   return (
     <main className="pb-10 md:pl-72">
       <EventHeader />
-      <EventView events={[]} />
+      <EventView events={events} />
     </main>
   );
 };
