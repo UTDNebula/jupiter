@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from '@radix-ui/react-dropdown-menu';
 import { type SelectContact } from '@src/server/db/models';
-import { type Dispatch, useReducer } from 'react';
+import { useReducer } from 'react';
 import {
   Discord,
   Email,
@@ -93,7 +93,7 @@ const ContactSelector = ({
                 {available.map((plat) => (
                   <DropdownMenuItem
                     key={plat}
-                    onSelect={(e) => {
+                    onSelect={() => {
                       addNew(plat);
                     }}
                   >
