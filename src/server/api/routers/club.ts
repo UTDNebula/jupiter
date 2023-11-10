@@ -1,7 +1,6 @@
 import { eq, ilike, sql } from 'drizzle-orm';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 import { z } from 'zod';
-import { selectClub } from '@src/server/db/models';
 import { club } from '@src/server/db/schema';
 const byNameSchema = z.object({
   name: z.string().default(''),
@@ -22,7 +21,7 @@ export const clubRouter = createTRPCRouter({
       where: (club) => ilike(club.name, `%${name}%`),
     });
 
-    if (name === '') return clubs.map((c) => selectClub.parse(c));
+    if (name === '') return clubs;
 
     return clubs.slice(0, 5);
   }),
@@ -47,8 +46,7 @@ export const clubRouter = createTRPCRouter({
         query = query.where(sql`${input.tag} = ANY(tags)`);
       query = query.orderBy(sql`RANDOM()`).limit(20);
       const res = await query;
-      const parsed = res.map((q) => selectClub.parse(q));
-      return parsed;
+      return res;
     } catch (e) {
       console.error(e);
       return [];
