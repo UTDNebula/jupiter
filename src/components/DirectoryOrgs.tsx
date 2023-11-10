@@ -1,25 +1,31 @@
-import React from 'react';
+import { type FC } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import { GroupIcon, HeartIcon } from './Icons';
 import type { SelectClub as Club } from '@src/server/db/models';
+import Link from 'next/link';
 
 interface Props {
   club: Club;
 }
 
-const OrgDirectoryCards: React.FC<Props> = ({ club }) => {
-  const [liked, setLiked] = React.useState(false);
-  const router = useRouter();
-
-  const like = () => setLiked((prev) => !prev);
-
+const OrgDirectoryCards: FC<Props> = ({ club }) => {
+  const desc =
+    club.description.length > 50
+      ? club.description.slice(0, 150) + '...'
+      : club.description;
+  const name =
+    club.name.length > 20 ? club.name.slice(0, 30) + '...' : club.name;
   return (
-    <div className="flex h-full max-w-xs flex-col rounded-lg bg-white shadow-lg md:w-full">
-      <div className="relative h-48 sm:h-56 md:h-64 lg:h-64">
-        <Image src={club.image} fill alt={club.name} className="select-none" />
-        <div className="absolute left-2 right-2 top-2 flex h-fit flex-row items-center">
-          <div className="flex flex-row items-center rounded-full bg-black bg-opacity-50 py-1.5 pl-4 pr-5">
+    <div className="flex h-full min-h-[600px] max-w-xs flex-col rounded-lg bg-white shadow-lg ">
+      <div className="relative h-48 overflow-hidden sm:h-56 md:h-64 lg:h-72">
+        <Image
+          src={club.image}
+          layout="fill"
+          alt={club.name}
+          className="select-none object-cover"
+        />
+        <div className="absolute left-2 right-2 top-2 flex h-fit flex-row items-center space-x-2">
+          <div className="flex flex-row items-center rounded-full bg-black bg-opacity-50 px-4 py-1.5">
             <div className="h-7 w-7 text-white">
               <GroupIcon />
             </div>
@@ -27,33 +33,28 @@ const OrgDirectoryCards: React.FC<Props> = ({ club }) => {
               {30} Members
             </div>
           </div>
-          <button
-            className="ml-auto rounded-full bg-black bg-opacity-50 p-1.5 font-bold text-slate-800 transition-colors"
-            onClick={like}
-          >
+          <button className="ml-auto rounded-full bg-black bg-opacity-50 p-1.5 font-bold text-white transition-colors">
             <div className="h-7 w-7">
-              <HeartIcon fill={liked ? 'fill-red-500' : 'fill-white'} />
+              <HeartIcon fill="fill-white" />
             </div>
           </button>
         </div>
       </div>
-      <div className="flex flex-col p-6">
-        <h1 className="text-xl font-medium text-slate-800">{club.name}</h1>
-        <h2 className="mb-1 text-sm font-light text-slate-500">
-          Founded in {2020}
-        </h2>
-        <p className="mt-3 line-clamp-3 text-xs text-slate-500">Description</p>
-        <p className="mb-4 text-sm text-slate-600">{club.description}</p>
-        <div className="flex flex-row">
-          <button className="mr-2 rounded-2xl bg-blue-primary px-4 py-2 text-xs font-extrabold text-white transition-colors hover:bg-blue-700">
+      <div className="flex flex-col space-y-2 p-6">
+        <h1 className="text-xl font-medium text-slate-800">{name}</h1>
+        <h2 className="text-sm font-light text-slate-500">Founded in {2020}</h2>
+        <p className="line-clamp-3 text-xs text-slate-500">Description</p>
+        <p className="text-sm text-slate-600">{desc}</p>
+        <div className="flex flex-row space-x-2">
+          <button className="rounded-2xl bg-blue-primary px-4 py-2 text-xs font-extrabold text-white transition-colors hover:bg-blue-700">
             Join
           </button>
-          <button
+          <Link
+            href={`/directory/${club.id}`}
             className="rounded-2xl bg-blue-600 bg-opacity-10 px-4 py-2 text-xs font-extrabold text-blue-primary  transition-colors hover:bg-blue-200"
-            onClick={() => void router.push(`/directory/${club.id}`)}
           >
             Learn More
-          </button>
+          </Link>
         </div>
       </div>
     </div>
