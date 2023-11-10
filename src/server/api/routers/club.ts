@@ -2,12 +2,17 @@ import { eq, ilike, sql } from 'drizzle-orm';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { selectClub } from '@src/server/db/models';
+import { club } from '@src/server/db/schema';
 const byNameSchema = z.object({
   name: z.string().default(''),
 });
 
 const byIdSchema = z.object({
   id: z.string().default(''),
+});
+
+const allSchema = z.object({
+  tag: z.string().nullish(),
 });
 
 export const clubRouter = createTRPCRouter({
@@ -35,14 +40,14 @@ export const clubRouter = createTRPCRouter({
       throw e;
     }
   }),
-  all: publicProcedure.query(async ({ ctx }) => {
+  all: publicProcedure.input(allSchema).query(async ({ ctx, input }) => {
     try {
-      const query = await ctx.db.query.club.findMany({
-        limit: 20,
-        orderBy: () => sql`RANDOM()`,
-      });
-
-      const parsed = query.map((q) => selectClub.parse(q));
+      let query = ctx.db.select().from(club);
+      if (input.tag && typeof input.tag == 'string' && input.tag !== 'All')
+        query = query.where(sql`${input.tag} = ANY(tags)`);
+      query = query.orderBy(sql`RANDOM()`).limit(20);
+      const res = await query;
+      const parsed = res.map((q) => selectClub.parse(q));
       return parsed;
     } catch (e) {
       console.error(e);

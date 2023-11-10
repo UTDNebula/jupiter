@@ -1,32 +1,42 @@
 'use client';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const tags = [
   'All',
-  'Software',
-  'Real Estate',
-  'Finance',
+  'Academic Interests',
+  'Cultural',
+  'Special Interest',
+  'Art and Music',
+  'Educational/Departmental',
+  'Services',
   'Social',
-  'Fraternity',
-  'Sorority',
-  'Sports',
-  'Music',
-  'Art',
-  'Religious',
-  'Culture',
-  'Language',
-  'Academic',
-  'Education',
   'Political',
-  'University Run',
-] as const;
+  'Recreation',
+  'Religious',
+  'Sports',
+  'Service',
+  'Honor',
+  'University Department',
+  'Greek',
+  'Honor Society',
+  'Student Leadership',
+  'Student Media',
+  'Student Government',
+  'Student Programming Board',
+  'Volunteerism',
+];
 
 const scrollAmount = 300;
 
 const TagFilter = () => {
-  const [selected, setSelected] = useState<(typeof tags)[number]>('All');
+  const router = useRouter();
+  const params = useSearchParams();
+  const selectedTag = params.get('tag') || 'All';
+
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const onClick = (tag: (typeof tags)[number]) => setSelected(tag);
+  const onClick = (tag: string) =>
+    router.replace(`/?tag=${tag}`, { scroll: false });
 
   const handleScrollLeft = () => {
     const container = scrollContainerRef.current;
@@ -56,7 +66,7 @@ const TagFilter = () => {
             <button
               key={key}
               className={`${
-                selected === tag
+                selectedTag === tag
                   ? 'bg-blue-primary text-white hover:bg-blue-700'
                   : 'bg-gray-100 text-slate-600 hover:bg-gray-200'
               } whitespace-nowrap rounded-3xl px-8 py-4 text-xs font-extrabold transition-colors duration-200 focus:outline-none`}

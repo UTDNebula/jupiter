@@ -16,7 +16,11 @@ export const metadata: Metadata = {
   },
 };
 
-const Home = () => {
+type Params = {
+  searchParams: { [key: string]: string | undefined };
+};
+
+const Home = (props: Params) => {
   return (
     <main className="md:pl-72 ">
       <Header />
@@ -25,7 +29,7 @@ const Home = () => {
           <Carousel />
         </div>
         <TagFilter />
-        <OrgDirectoryGrid />
+        <OrgDirectoryGrid tag={props.searchParams.tag} />
       </div>
     </main>
   );
