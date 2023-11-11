@@ -2,34 +2,9 @@
 import { useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-const tags = [
-  'All',
-  'Academic Interests',
-  'Cultural',
-  'Special Interest',
-  'Art and Music',
-  'Educational/Departmental',
-  'Services',
-  'Social',
-  'Political',
-  'Recreation',
-  'Religious',
-  'Sports',
-  'Service',
-  'Honor',
-  'University Department',
-  'Greek',
-  'Honor Society',
-  'Student Leadership',
-  'Student Media',
-  'Student Government',
-  'Student Programming Board',
-  'Volunteerism',
-];
-
 const scrollAmount = 300;
 
-const TagFilter = () => {
+const TagFilter = ({ tags }: { tags: string[] }) => {
   const router = useRouter();
   const params = useSearchParams();
   const selectedTag = params.get('tag') || 'All';

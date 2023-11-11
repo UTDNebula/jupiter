@@ -52,4 +52,19 @@ export const clubRouter = createTRPCRouter({
       return [];
     }
   }),
+  distinctTags: publicProcedure.query(async ({ ctx }) => {
+    try {
+      const tags = await ctx.db.selectDistinct({ tags: club.tags }).from(club);
+      const tagSet = new Set<string>(['All']);
+      tags.forEach((club) => {
+        club.tags.forEach((tag) => {
+          tagSet.add(tag);
+        });
+      });
+      return Array.from(tagSet);
+    } catch (e) {
+      console.error(e);
+      return [];
+    }
+  }),
 });
