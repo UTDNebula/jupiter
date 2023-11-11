@@ -12,6 +12,7 @@ import type { SelectClub as Club } from '@src/server/db/models';
 import { api } from '@src/trpc/react';
 import type { SelectEvent as Event } from '@src/server/db/models';
 
+
 type SearchElement = {
   id: string;
   name: string;
@@ -97,6 +98,7 @@ export const ClubSearchBar = () => {
   );
 };
 export const EventSearchBar = () => {
+  const router = useRouter();
   const [search, setSearch] = useState<string>('');
   const [res, setRes] = useState<Event[]>([]);
 
@@ -118,6 +120,9 @@ export const EventSearchBar = () => {
       placeholder="Search for Events"
       setSearch={setSearch}
       searchResults={res}
+      onClick= { (event) => {
+        router.push(`/event/${event.id}`);
+      }}
     />
   );
 };
