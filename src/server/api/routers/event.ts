@@ -9,11 +9,12 @@ import {
   type SQL,
   between,
 } from 'drizzle-orm';
-import { createTRPCRouter, publicProcedure } from '../trpc';
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { selectEvent } from '@src/server/db/models';
 import { type DateRange } from 'react-day-picker';
 import { add } from 'date-fns';
+import { userMetadataToEvents } from '@src/server/db/schema';
 function isDateRange(value: unknown): value is DateRange {
   return Boolean(value && typeof value === 'object' && 'from' in value);
 }
@@ -177,4 +178,45 @@ export const eventRouter = createTRPCRouter({
       throw e;
     }
   }),
+  joinEvent: protectedProcedure
+    .input(byIdSchema)
+    .mutation(async ({ input, ctx }) => {
+      const eventId = input.id;
+      const userId = ctx.session.user.id;
+      await ctx.db
+        .insert(userMetadataToEvents)
+        .values({ userId: userId, eventId: eventId })
+        .onConflictDoNothing();
+    }),
+  leaveEvent: protectedProcedure
+    .input(byIdSchema)
+    .mutation(async ({ input, ctx }) => {
+      const eventId = input.id;
+      const userId = ctx.session.user.id;
+      await ctx.db
+        .delete(userMetadataToEvents)
+        .where(
+          and(
+            eq(userMetadataToEvents.userId, userId),
+            eq(userMetadataToEvents.eventId, eventId),
+          ),
+        );
+    }),
+  hasUser: protectedProcedure
+    .input(byIdSchema)
+    .query(async ({ input, ctx }) => {
+      const eventId = input.id;
+      const userId = ctx.session.user.id;
+      try {
+        const x = !!(await ctx.db.query.userMetadataToEvents.findFirst({
+          where: and(
+            eq(userMetadataToEvents.userId, userId),
+            eq(userMetadataToEvents.eventId, eventId),
+          ),
+        }));
+        return x;
+      } catch {
+        return false;
+      }
+    }),
 });
