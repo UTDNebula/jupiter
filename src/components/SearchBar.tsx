@@ -10,6 +10,8 @@ import { SearchIcon } from './Icons';
 import { useRouter } from 'next/navigation';
 import type { SelectClub as Club } from '@src/server/db/models';
 import { api } from '@src/trpc/react';
+import type { SelectEvent as Event } from '@src/server/db/models';
+
 
 type SearchElement = {
   id: string;
@@ -98,9 +100,33 @@ export const ClubSearchBar = () => {
   );
 };
 export const EventSearchBar = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [search, setSearch] = useState('');
-  return <SearchBar placeholder="Search for Events" setSearch={setSearch} />;
+  const router = useRouter();
+  const [search, setSearch] = useState<string>('');
+  const [res, setRes] = useState<Event[]>([]);
+
+  api.event.byName.useQuery(
+    {
+      name: search,
+      sortByDate: true,
+    },
+    {
+      onSuccess: (data) => {
+        setRes(data);
+      },
+      enabled: !!search,
+    },
+  );
+
+  return (
+    <SearchBar
+      placeholder="Search for Events"
+      setSearch={setSearch}
+      searchResults={res}
+      onClick= { (event) => {
+        router.push(`/event/${event.id}`);
+      }}
+    />
+  );
 };
 type EventClubSearchBarProps = {
   addClub: (value: string) => void;
