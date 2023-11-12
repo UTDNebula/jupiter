@@ -28,24 +28,13 @@ const EventView = ({
       <div className="flex flex-row pb-12 pr-7.5 pt-4">
         <h1 className="text-2xl font-bold text-[#4D5E80]">Events</h1>
         <div className="relative z-0 ml-auto flex flex-row gap-x-16">
-          <div
-            className={`absolute left-0 top-0 z-10 -mx-7.5 -my-2.5  box-border h-fit w-fit rounded-full bg-white px-7.5 py-2.5 motion-safe:transition-transform ${
-              view === 'list' ? '' : 'translate-x-full'
-            }`}
-            style={{
-              visibility: ref.current ? 'visible' : 'hidden',
-            }}
-          >
-            <div
-              style={{
-                height: ref.current?.offsetHeight,
-                width: ref.current?.offsetWidth,
-              }}
-            ></div>
-          </div>
           <button
             type="button"
-            className={`z-20 flex flex-row items-center gap-x-4 `}
+            className={`z-20 flex flex-row items-center gap-x-4 ${
+              view === 'list'
+                ? ' -mr-7.5 rounded-full bg-white px-7.5 py-2.5'
+                : ''
+            }`}
             onClick={() => {
               setView('list');
             }}
@@ -58,7 +47,11 @@ const EventView = ({
           </button>
           <button
             type="button"
-            className={`z-20 flex flex-row items-center gap-x-4`}
+            className={`z-20 flex flex-row items-center gap-x-4 ${
+              view == 'grid'
+                ? '-ml-7.5 rounded-full bg-white px-7.5 py-2.5'
+                : 'mr-7.5'
+            }`}
             onClick={() => {
               setView('grid');
             }}
