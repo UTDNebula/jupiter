@@ -211,7 +211,7 @@ const EventSidebar = () => {
         </RadioGroup>
       </div>
       <div className="flex flex-col space-y-7.5">
-        <h2 className="text-sm font-bold text-slate-500">Order</h2>
+        <h2 className="text-sm font-bold text-slate-500">Arrange Events</h2>
         <RadioGroup
           className="flex flex-col space-y-2.5"
           value={filterState.order}
