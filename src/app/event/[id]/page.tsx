@@ -20,33 +20,16 @@ export default async function EventsPage({ params }: Params) {
   const { club, ...event } = res;
 
   return (
-    <main className="w-full md:pl-72">
+    
+    <main className="w-full md:pl-72 text-white">
       <EventHeader />
       <div className="mb-5 flex flex-col space-y-6 px-7">
-        <div className="relative h-full w-full rounded-xl bg-slate-50 p-10 shadow-lg">
-          <Image src={club.image} width={100} height={100} alt={club.name} />
-          <hr className="my-3 mt-5 h-[1px] border-0 bg-black" />
-          <div className="mb-3 flex w-full justify-between">
-            <div>
-              <Link
-                className="text-4xl font-semibold"
-                href={`/directory/${club.id}`}
-              >
-                {club.name}
-              </Link>
-              <p className="text-2xl font-semibold">{event.name}</p>
-            </div>
-            <TimeComponent date={event.startTime.toISOString()} />
-          </div>
-          <p>{event.description}</p>
-          <div className="float-right mt-24">
-            <button className="mr-3 rounded-lg border-[1px] border-black bg-white px-3 py-1">
-              Contact Us
-            </button>
-            <button className="rounded-lg border-[1px] border-black bg-white px-3 py-1">
-              Register
-            </button>
-          </div>
+        <div className="relative h-full w-full rounded-xl bg-blue-500 p-10 shadow-lg">
+
+          <h1 className="text-4xl font-semibold">
+            {event.name}
+          </h1>
+          <TimeComponent date={event.startTime.toLocaleString()} />
         </div>
       </div>
     </main>
