@@ -5,6 +5,7 @@ import { eq } from 'drizzle-orm';
 import { type Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import TimeComponent from './TimeComponent';
 
 type Params = { params: { id: string } };
 
@@ -35,9 +36,7 @@ export default async function EventsPage({ params }: Params) {
               </Link>
               <p className="text-2xl font-semibold">{event.name}</p>
             </div>
-            <p className="text-2xl font-semibold">
-              {new Date(event.startTime).toString().substring(0, 24)}
-            </p>
+            <TimeComponent date={event.startTime.toISOString()} />
           </div>
           <p>{event.description}</p>
           <div className="float-right mt-24">

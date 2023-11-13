@@ -1,17 +1,27 @@
 import { EventHeader } from '@src/components/BaseHeader';
-import EventCalendar from '@src/components/EventCalendar';
+import { type filterState } from '@src/components/events/EventSidebar';
+import { api } from '@src/trpc/server';
+import { type z } from 'zod';
+import { type findByFilterSchema } from '@src/server/api/routers/event';
+import EventView from './eventView';
 import { type Metadata } from 'next';
 
-const nextMonths = (num: number) => {
-  const months = [];
-  const date = new Date();
-  for (let i = 0; i < num; i++) {
-    months.push(date.toLocaleString('default', { month: 'long' }));
-    date.setMonth(date.getMonth() + 1);
+function getStartTime(
+  filterState: filterState,
+): z.infer<typeof findByFilterSchema>['startTime'] {
+  switch (filterState.filter) {
+    case 'Upcoming Events':
+      return { type: 'now' };
+    case 'Last weeks events':
+      return { type: 'distance', options: { days: -7 } };
+    case 'Last month events':
+      return { type: 'distance', options: { days: -30 } };
+    case 'pick':
+      return filterState.date
+        ? { type: 'range', options: filterState.date }
+        : { type: 'now' };
   }
-  return months;
-};
-
+}
 export const metadata: Metadata = {
   title: 'Events - Jupiter',
   description: 'Get connected on campus.',
@@ -23,33 +33,48 @@ export const metadata: Metadata = {
     description: 'Get connected on campus.',
   },
 };
-
-const Events = () => {
+type searchPams = Partial<
+  Omit<filterState, 'date' | 'clubs'> & {
+    date: string | string[] | undefined;
+    clubs: string | string[] | undefined;
+  }
+>;
+const Events = async ({ searchParams }: { searchParams: searchPams }) => {
+  const filters = {
+    filter: searchParams.filter ?? 'Upcoming Events',
+    date:
+      searchParams.filter === 'pick'
+        ? searchParams.date
+          ? Array.isArray(searchParams.date)
+            ? {
+                from: searchParams.date[0]
+                  ? new Date(Number.parseInt(searchParams.date[0]))
+                  : undefined,
+                to: searchParams.date[1]
+                  ? new Date(Number.parseInt(searchParams.date[1]))
+                  : undefined,
+              }
+            : { from: new Date(Number.parseInt(searchParams.date)) }
+          : undefined
+        : undefined,
+    clubs: searchParams.clubs
+      ? Array.isArray(searchParams.clubs)
+        ? searchParams.clubs
+        : [searchParams.clubs]
+      : [],
+    order: searchParams.order ?? 'soon',
+    types: searchParams.types ?? [],
+  };
+  const { events } = await api.event.findByFilters.query({
+    startTime: getStartTime(filters),
+    club: filters.clubs,
+    order: filters.order,
+  });
+  console.log(searchParams);
   return (
-    <main className="md:pl-72">
+    <main className="pb-10 md:pl-72">
       <EventHeader />
-      <div className="m-auto flex w-full justify-between p-5">
-        <h1 className="text-2xl font-medium text-slate-500">Events</h1>
-        <div className="flex items-center justify-center space-x-2">
-          {nextMonths(5).map((month, key) => (
-            <p
-              key={month}
-              className={`${
-                key === 0 ? ' text-blue-primary' : ' text-slate-500'
-              } cursor-pointer rounded-lg px-3 py-1`}
-            >
-              {month}
-            </p>
-          ))}
-        </div>
-        <div className="flex justify-center">
-          <h1 className="cursor-pointer text-sm font-medium text-slate-400">
-            Subscribe to events
-          </h1>
-        </div>
-      </div>
-      <EventCalendar index={1} />
-      <EventCalendar index={2} />
+      <EventView events={events} />
     </main>
   );
 };
