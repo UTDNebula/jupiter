@@ -4,7 +4,7 @@ import type {
   SelectClub,
   SelectContact as Contacts,
 } from '@src/server/db/models';
-import { HeartIcon } from './Icons';
+import LikeButton from './LikeButton';
 
 type Club = SelectClub & {
   contacts?: Contacts[];
@@ -47,9 +47,7 @@ const OrgHeader = ({ club }: { club: Club }) => {
               className="rounded-full bg-blue-primary p-2.5 transition-colors hover:bg-blue-700"
               type="button"
             >
-              <div className={'h-8 w-8'}>
-                <HeartIcon fill="fill-white" />
-              </div>
+              <LikeButton />
             </button>
             <ContactButtons contacts={club.contacts || []} />
           </div>
