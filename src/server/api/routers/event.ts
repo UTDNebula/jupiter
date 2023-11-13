@@ -51,10 +51,10 @@ const byIdSchema = z.object({
   id: z.string().default(''),
 });
 
-const byNameSchema = z.object({ 
+const byNameSchema = z.object({
   name: z.string().default(''),
   sortByDate: z.boolean().default(false),
-})
+});
 
 export const eventRouter = createTRPCRouter({
   byClubId: publicProcedure
@@ -183,20 +183,21 @@ export const eventRouter = createTRPCRouter({
       throw e;
     }
   }),
-  byName: publicProcedure.input(byNameSchema).query( async ({input, ctx}) => {
-    const {name, sortByDate} = input; 
+  byName: publicProcedure.input(byNameSchema).query(async ({ input, ctx }) => {
+    const { name, sortByDate } = input;
 
-    try { 
+    try {
       const events = await ctx.db.query.events.findMany({
         where: (event) => ilike(event.name, `%${name}%`),
-        orderBy: sortByDate ? (event, {desc} ) => [ desc( event.startTime) ] : undefined,  
-      })
-      
+        orderBy: sortByDate
+          ? (event, { desc }) => [desc(event.startTime)]
+          : undefined,
+      });
+
       return events;
     } catch (e) {
       console.log(e);
       throw e;
     }
-
-  })
+  }),
 });

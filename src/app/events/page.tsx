@@ -37,6 +37,7 @@ type searchPams = Partial<
   Omit<filterState, 'date' | 'clubs'> & {
     date: string | string[] | undefined;
     clubs: string | string[] | undefined;
+    view: 'list' | 'grid' | undefined;
   }
 >;
 const Events = async ({ searchParams }: { searchParams: searchPams }) => {
@@ -70,11 +71,10 @@ const Events = async ({ searchParams }: { searchParams: searchPams }) => {
     club: filters.clubs,
     order: filters.order,
   });
-  console.log(searchParams);
   return (
     <main className="pb-10 md:pl-72">
       <EventHeader />
-      <EventView events={events} />
+      <EventView events={events} params={searchParams} />
     </main>
   );
 };
