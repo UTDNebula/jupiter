@@ -5,7 +5,7 @@ import { eq } from 'drizzle-orm';
 import { type Metadata } from 'next';
 import { HeartIcon } from '@src/components/Icons';
 import TimeComponent from './TimeComponent';
-import wave from "public/images/Wave.jpg";
+import wave from "public/images/Wave.jpg"
 import Image from 'next/image';
 
 type Params = { params: { id: string } };
@@ -26,15 +26,9 @@ export default async function EventsPage({ params }: Params) {
     
     <main className="w-full md:pl-72 text-white">
       <EventHeader />
-      {/* <Image src={wave} alt="Testing" width={10} height={10} /> */}
 
-      <div className="mb-5 flex flex-col space-y-6 px-7">
-        <div 
-          className="relative h-full w-full rounded-xl p-10 shadow-lg flex justify-between"
-          style={{
-            backgroundImage: `url(public/images/Wave.jpg)`,
-          }}  
-        >
+      <section className="mb-5 flex flex-col space-y-6 px-7">
+        <div className="relative h-full w-full rounded-xl p-10 shadow-lg flex justify-between bg-[url('/images/Wave.jpg')] bg-cover  ">
           <section>
             <div className="flex ">
               {clubTags.map( (tag) => (
@@ -65,14 +59,34 @@ export default async function EventsPage({ params }: Params) {
             </button>
           </section>
         </div>
-      </div>
+      </section>
 
-      <div className="mb-5 flex flex-col space-y-6 px-7">
+      <section className="mb-5 flex flex-col space-y-6 px-7">
         <div className="relative h-full w-full rounded-xl p-10 shadow-lg flex justify-between ">
+          
+          <div className="flex ">
+              <div className="bg-red-600 ">
+                <div className='relative h-32 w-28 rounded-md overflow-hidden'>
+                  <Image src={wave} alt="wave" layout="fill" objectFit='cover' />
+                </div>
 
+                <div>
+                  <h1>Description</h1>
+                  
+                </div>
+              </div>
+
+              <div>
+
+              </div>
+
+              <div>
+
+              </div>
+          </div>
 
         </div>
-      </div>
+      </section>
     </main>
   );
 }
