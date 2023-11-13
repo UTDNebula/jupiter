@@ -13,7 +13,7 @@ const TimeComponent = (props: Props) => {
     hour: '2-digit',
     minute: '2-digit',
   });
-  return <p className=" text-sm mt-2">{dateString}</p>;
+  return <p className=" text-sm">{dateString}</p>;
 };
 
 export default TimeComponent;
