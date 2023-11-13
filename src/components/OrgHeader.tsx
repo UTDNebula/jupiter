@@ -8,6 +8,7 @@ import LikeButton from './LikeButton';
 
 type Club = SelectClub & {
   contacts?: Contacts[];
+  tags: string[];
 };
 const OrgHeader = ({ club }: { club: Club }) => {
   return (
@@ -26,14 +27,14 @@ const OrgHeader = ({ club }: { club: Club }) => {
         <div className="flex h-full w-full flex-row   p-8">
           <div className="flex h-full flex-col">
             <div className="flex flex-row">
-              {/* {['Software', 'Innovation', 'Other'].map((tag) => (
+              {club.tags.map((tag) => (
                 <p
                   key={tag}
                   className="m-2 rounded-full bg-black bg-opacity-50 px-4 py-2 font-semibold text-slate-100"
                 >
                   {tag}
                 </p>
-              ))} */}
+              ))}
             </div>
             <h1 className="mt-auto w-fit rounded-full bg-black bg-opacity-50 p-2 text-center text-4xl font-bold text-slate-100">
               {club.name}
