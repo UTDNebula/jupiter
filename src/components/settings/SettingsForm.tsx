@@ -1,104 +1,105 @@
-'use client';
 import { type Session } from 'next-auth';
-import { useEffect, type FC } from 'react';
-import SettingsInput from './SettingsInput';
-import SettingsDropdown from './SettingsDropdown';
-import { careerEnum, roleEnum, yearEnum } from '@src/server/db/schema';
-import { api } from '@src/trpc/react';
-import { insertUserMetadata } from '@src/server/db/models';
 
-const SettingsForm: FC<{ session: Session }> = ({ session }) => {
-  const { isLoading, isError, isSuccess, mutate, reset } =
-    api.userMetadata.updateById.useMutation();
-
-  useEffect(() => {
-    if (isSuccess || isError)
-      setTimeout(() => {
-        reset();
-      }, 2000);
-  });
+function SettingsForm({ session }: { session: Session }) {
+  const user = session.user;
+  if (!user) throw new Error('User not found');
   return (
-    <>
-      <form
-        id="settings-form"
-        className="flex flex-col gap-4"
-        onSubmit={(e) => {
-          e.preventDefault();
-          const form = e.currentTarget;
+    <div className="m-auto w-full items-center justify-center overflow-hidden rounded-b-lg p-6">
+      <div className="h-40 rounded-t-3xl bg-gradient-to-r from-[#5A49F7] from-[4.36%] via-[#9403D8] via-[49.74%] to-[#FD9365]"></div>
+      <div className="relative -mt-20">
+        <div className="mx-auto rounded-b-lg bg-white p-6 shadow-xl">
+          <div className="mb-8 flex items-center justify-between">
+            <h1 className="text-2xl font-bold">Settings</h1>
+            <div className="h-12 w-12 rounded-full bg-gray-200"></div>
+          </div>
 
-          const formData = new FormData(form);
+          <div className="mb-4 flex">
+            <div className="flex flex-col">
+              <label className="ml-2 mr-2 text-xs text-slate-500">
+                First Name
+              </label>
+              <input
+                type="text"
+                defaultValue={session.user.firstName}
+                className="mr-2 rounded-full border p-2"
+                name="firstName"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="ml-2 mr-2 text-xs text-slate-500">
+                Last Name
+              </label>
+              <input
+                type="text"
+                placeholder="Last Name"
+                defaultValue={session.user.lastName}
+                className="mr-2 rounded-full border p-2"
+                name="lastName"
+              />
+            </div>
+          </div>
 
-          const updatedMetadata = insertUserMetadata
-            .omit({ id: true })
-            .parse(Object.fromEntries(formData.entries()));
+          <div className="mb-4 flex">
+            <div className="flex flex-col">
+              <label className="ml-2 mr-2 text-xs text-slate-500">Major</label>
+              <input
+                type="text"
+                defaultValue={session.user.major}
+                className="mr-2 rounded-full border p-2"
+                name="major"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="ml-2 mr-2 text-xs text-slate-500">Minor</label>
+              <input
+                type="text"
+                defaultValue={session.user.minor || ''}
+                className="mr-2 rounded-full border p-2"
+                name="minor"
+              />
+            </div>
+          </div>
 
-          mutate({
-            id: session.user.id,
-            updatedMetadata,
-          });
-        }}
-      >
-        <SettingsInput
-          label="First Name"
-          defaultValue={session.user.firstName}
-        />
-        <SettingsInput label="Last Name" defaultValue={session.user.lastName} />
-        <SettingsInput label="Major" defaultValue={session.user.major} />
-        <SettingsInput label="Minor" defaultValue={session.user.minor ?? ''} />
-        <SettingsDropdown
-          label="Year"
-          options={yearEnum.enumValues}
-          defaultValue={session.user.year ?? ''}
-        />
-        <SettingsDropdown
-          label="Role"
-          options={roleEnum.enumValues}
-          defaultValue={session.user.role ?? ''}
-          disabled
-        />
-        <SettingsDropdown
-          label="Career"
-          options={careerEnum.enumValues}
-          defaultValue={session.user.career ?? ''}
-        />
-        <p className="text-lg">Clubs:</p>
-        <div>
-          {session.user.clubs &&
-            session.user.clubs.map((club) => {
-              return (
-                <div key={club.id}>
-                  <h1>{club.name}</h1> <p className="">{club.description}</p>
-                </div>
-              );
-            })}
+          <div className="mb-4 grid grid-cols-3 gap-4">
+            <div className="flex flex-col">
+              <label className="ml-2 mr-2 text-xs text-slate-500">Minor</label>
+              <select
+                defaultValue={session.user.year}
+                className="mr-2 rounded-full border p-2"
+                name="minor"
+              >
+                {['Freshman', 'Sophomore', 'Junior', 'Senior'].map((year) => (
+                  <option key={year}>{year}</option>
+                ))}
+              </select>
+            </div>
+            <select className="col-span-1 rounded border p-2">
+              <option>Officer</option>
+            </select>
+            <div></div>
+          </div>
+
+          <div className="mb-8 flex flex-wrap gap-2">
+            {/* Clubs would be repeated based on data, but here it's hardcoded */}
+            <div className="flex items-center rounded border p-2">
+              <span className="mr-2">Nebula Labs</span>
+              <span className="cursor-pointer">✖️</span>
+            </div>
+            {/* Repeat other chips here */}
+          </div>
+
+          <div className="flex justify-between">
+            <button className="rounded bg-red-500 px-4 py-2 text-white transition duration-300 hover:bg-red-700">
+              Delete account
+            </button>
+            <button className="rounded bg-blue-500 px-4 py-2 text-white transition duration-300 hover:bg-blue-700">
+              Apply Changes
+            </button>
+          </div>
         </div>
-      </form>
-      <button
-        type="submit"
-        form="settings-form"
-        className="mr-2 rounded-2xl bg-blue-500 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-600"
-      >
-        Save Changes
-      </button>
-
-      {isLoading && (
-        <div className="fixed bottom-20 right-32 h-auto animate-pulse rounded-md border border-slate-200 bg-slate-50 p-2">
-          Loading...
-        </div>
-      )}
-
-      {isSuccess && (
-        <div className="fixed bottom-20 right-32 h-auto rounded-md border border-green-200 bg-green-50 p-2">
-          Success!
-        </div>
-      )}
-      {isError && (
-        <div className="fixed bottom-20 right-32 h-auto rounded-md border border-red-200 bg-red-50 p-2">
-          Error
-        </div>
-      )}
-    </>
+      </div>
+    </div>
   );
-};
+}
 
 export default SettingsForm;
