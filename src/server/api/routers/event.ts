@@ -56,8 +56,8 @@ const byNameSchema = z.object({
   name: z.string().default(''),
   sortByDate: z.boolean().default(false),
 });
-const joinSchema = z.object({
-  eventId: z.string(),
+const joinLeaveSchema = z.object({
+  id: z.string(),
 });
 
 export const eventRouter = createTRPCRouter({
@@ -227,7 +227,7 @@ export const eventRouter = createTRPCRouter({
     }
   }),
   joinEvent: protectedProcedure
-    .input(byIdSchema)
+    .input(joinLeaveSchema)
     .mutation(async ({ input, ctx }) => {
       const eventId = input.id;
       const userId = ctx.session.user.id;
@@ -237,7 +237,7 @@ export const eventRouter = createTRPCRouter({
         .onConflictDoNothing();
     }),
   leaveEvent: protectedProcedure
-    .input(byIdSchema)
+    .input(joinLeaveSchema)
     .mutation(async ({ input, ctx }) => {
       const eventId = input.id;
       const userId = ctx.session.user.id;
