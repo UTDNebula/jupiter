@@ -1,15 +1,15 @@
-'use client';
+'use server';
 import { GridIcon, ListIcon } from '@src/components/Icons';
+import EventCard from '@src/components/events/EventCard';
 import EventSidebar from '@src/components/events/EventSidebar';
-import { type SelectClub, type SelectEvent } from '@src/server/db/models';
+import { type RouterOutputs } from '@src/trpc/shared';
 import Link from 'next/link';
-import { type ReactNode} from "react";
 type Props = {
-  children:ReactNode;
+  events: RouterOutputs['event']['findByFilters']['events'];
   params: Record<string, string | string[] | undefined>;
 };
 
-const EventView = ({ children, params }: Props) => {
+const EventView = ({ events, params }: Props) => {
   const view = (params?.view ?? 'list') as 'list' | 'grid';
 
   return (
@@ -67,7 +67,9 @@ const EventView = ({ children, params }: Props) => {
               : 'group flex flex-wrap gap-x-10 gap-y-7.5 pt-10'
           }
         >
-          {children}
+          {events.map((event) => {
+            return <EventCard key={event.id} event={event} />;
+          })}
         </div>
       </div>
     </div>
