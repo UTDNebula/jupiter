@@ -107,6 +107,35 @@ const EventSidebar = () => {
   return (
     <div className="flex w-64 flex-col space-y-10">
       <div className="flex flex-col space-y-7.5">
+        <h2 className="text-sm font-bold text-slate-500">Search for Club</h2>
+        <div>
+          <EventClubSearchBar
+            addClub={(val) => {
+              setFilterState((old) => {
+                if (!old.clubs.includes(val)) {
+                  return {
+                    filter: old.filter,
+                    clubs: [...old.clubs, val],
+                    order: old.order,
+                    types: old.types,
+                  };
+                }
+                return old;
+              });
+            }}
+          />
+          <div className="space-y-2 p-1">
+            {filterState.clubs.map((value) => (
+              <SelectedClub
+                key={value}
+                clubId={value}
+                setFilterState={setFilterState}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col space-y-7.5">
         <h2 className="text-sm font-bold text-slate-500">Filters</h2>
         <RadioGroup
           className="space-y-2.5"
@@ -185,34 +214,7 @@ const EventSidebar = () => {
         </RadioGroup>
       </div>
       <div className="flex flex-col space-y-7.5">
-        <h2 className="text-sm font-bold text-slate-500">Search for Club</h2>
-        <EventClubSearchBar
-          addClub={(val) => {
-            setFilterState((old) => {
-              if (!old.clubs.includes(val)) {
-                return {
-                  filter: old.filter,
-                  clubs: [...old.clubs, val],
-                  order: old.order,
-                  types: old.types,
-                };
-              }
-              return old;
-            });
-          }}
-        />
-        <div className="space-y-2 p-1">
-          {filterState.clubs.map((value) => (
-            <SelectedClub
-              key={value}
-              clubId={value}
-              setFilterState={setFilterState}
-            />
-          ))}
-        </div>
-      </div>
-      <div className="flex flex-col space-y-7.5">
-        <h2 className="text-sm font-bold text-slate-500">Order</h2>
+        <h2 className="text-sm font-bold text-slate-500">Arrange Events</h2>
         <RadioGroup
           className="flex flex-col space-y-2.5"
           value={filterState.order}

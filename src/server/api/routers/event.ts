@@ -3,6 +3,7 @@ import {
   gte,
   lte,
   and,
+  ilike,
   or,
   sql,
   inArray,
@@ -49,6 +50,11 @@ export const findByFilterSchema = z.object({
 
 const byIdSchema = z.object({
   id: z.string().default(''),
+});
+
+const byNameSchema = z.object({
+  name: z.string().default(''),
+  sortByDate: z.boolean().default(false),
 });
 
 export const eventRouter = createTRPCRouter({
@@ -257,4 +263,21 @@ export const eventRouter = createTRPCRouter({
         return false;
       }
     }),
+  byName: publicProcedure.input(byNameSchema).query(async ({ input, ctx }) => {
+    const { name, sortByDate } = input;
+
+    try {
+      const events = await ctx.db.query.events.findMany({
+        where: (event) => ilike(event.name, `%${name}%`),
+        orderBy: sortByDate
+          ? (event, { desc }) => [desc(event.startTime)]
+          : undefined,
+      });
+
+      return events;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+  }),
 });

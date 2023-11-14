@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "9a343b4b-e703-4ce9-a09d-cce7710c0025",
+  "id": "5ffb95b2-9470-4635-96e6-7013c743b17a",
   "prevId": "d93edeff-5433-489f-bf95-6a4822dde848",
   "tables": {
     "account": {
@@ -81,12 +81,8 @@
           "name": "account_userId_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -94,10 +90,7 @@
       "compositePrimaryKeys": {
         "account_provider_providerAccountId": {
           "name": "account_provider_providerAccountId",
-          "columns": [
-            "provider",
-            "providerAccountId"
-          ]
+          "columns": ["provider", "providerAccountId"]
         }
       },
       "uniqueConstraints": {}
@@ -131,6 +124,13 @@
           "primaryKey": false,
           "notNull": true,
           "default": "'/nebula-logo.png'"
+        },
+        "tags": {
+          "name": "tags",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::text[]"
         }
       },
       "indexes": {},
@@ -167,12 +167,8 @@
           "name": "contacts_club_id_club_id_fk",
           "tableFrom": "contacts",
           "tableTo": "club",
-          "columnsFrom": [
-            "club_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["club_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -180,10 +176,7 @@
       "compositePrimaryKeys": {
         "contacts_platform_club_id": {
           "name": "contacts_platform_club_id",
-          "columns": [
-            "platform",
-            "club_id"
-          ]
+          "columns": ["platform", "club_id"]
         }
       },
       "uniqueConstraints": {}
@@ -236,12 +229,8 @@
           "name": "events_club_id_club_id_fk",
           "tableFrom": "events",
           "tableTo": "club",
-          "columnsFrom": [
-            "club_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["club_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -278,12 +267,8 @@
           "name": "session_userId_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -372,12 +357,8 @@
           "name": "user_metadata_to_clubs_user_id_user_metadata_id_fk",
           "tableFrom": "user_metadata_to_clubs",
           "tableTo": "user_metadata",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -385,12 +366,8 @@
           "name": "user_metadata_to_clubs_club_id_club_id_fk",
           "tableFrom": "user_metadata_to_clubs",
           "tableTo": "club",
-          "columnsFrom": [
-            "club_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["club_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -398,67 +375,7 @@
       "compositePrimaryKeys": {
         "user_metadata_to_clubs_user_id_club_id": {
           "name": "user_metadata_to_clubs_user_id_club_id",
-          "columns": [
-            "user_id",
-            "club_id"
-          ]
-        }
-      },
-      "uniqueConstraints": {}
-    },
-    "user_metadata_to_events": {
-      "name": "user_metadata_to_events",
-      "schema": "",
-      "columns": {
-        "user_id": {
-          "name": "user_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "event_id": {
-          "name": "event_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "user_metadata_to_events_user_id_user_id_fk": {
-          "name": "user_metadata_to_events_user_id_user_id_fk",
-          "tableFrom": "user_metadata_to_events",
-          "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "user_metadata_to_events_event_id_events_id_fk": {
-          "name": "user_metadata_to_events_event_id_events_id_fk",
-          "tableFrom": "user_metadata_to_events",
-          "tableTo": "events",
-          "columnsFrom": [
-            "event_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "user_metadata_to_events_user_id_event_id": {
-          "name": "user_metadata_to_events_user_id_event_id",
-          "columns": [
-            "user_id",
-            "event_id"
-          ]
+          "columns": ["user_id", "club_id"]
         }
       },
       "uniqueConstraints": {}
@@ -531,10 +448,7 @@
       "compositePrimaryKeys": {
         "verificationToken_identifier_token": {
           "name": "verificationToken_identifier_token",
-          "columns": [
-            "identifier",
-            "token"
-          ]
+          "columns": ["identifier", "token"]
         }
       },
       "uniqueConstraints": {}
