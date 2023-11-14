@@ -132,6 +132,9 @@ export const events = pgTable('events', {
   description: text('description').notNull(),
   startTime: timestamp('start_time', { withTimezone: true }).notNull(),
   endTime: timestamp('end_time', { withTimezone: true }).notNull(),
+  location: text('location')
+    .$default(() => '')
+    .notNull(),
 });
 
 export const userMetadataToEvents = pgTable(

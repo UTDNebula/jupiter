@@ -36,6 +36,13 @@
       "when": 1699653344584,
       "tag": "0004_equal_random",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1699988090910,
+      "tag": "0005_panoramic_shard",
+      "breakpoints": true
     }
   ]
 }
