@@ -15,17 +15,7 @@ export const metadata: Metadata = {
 };
 
 const error = () => {
-  return (
-    <>
-      <Head>
-        <title>Jupiter</title>
-        <meta name="description" content="Not Found - Jupiter" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <NotFound elementType="Page" />
-    </>
-  );
+  return <NotFound elementType="Page" />;
 };
 
 export default error;
