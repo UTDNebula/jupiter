@@ -7,6 +7,7 @@ import { HeartIcon } from '@src/components/Icons';
 import TimeComponent from './TimeComponent';
 import wave from "public/images/Wave.jpg"
 import Image from 'next/image';
+import CountdownTimer from '../CountdownTimer';
 
 type Params = { params: { id: string } };
 
@@ -68,9 +69,9 @@ export default async function EventsPage({ params }: Params) {
       <section className="mb-5 flex flex-col space-y-6 px-7 text-black">
         <div className="relative h-full w-full rounded-xl p-10 shadow-lg flex justify-between ">
           
-          <div className="flex ">
-              <div className="h-full w-3/5">
-                <div className='relative h-32 w-full rounded-b-sm overflow-hidden mx-auto '>
+          <div className="flex  w-max m-4 ">
+              <div className="h-full w-5/12">
+                <div className='relative h-32 w-full rounded-b-md overflow-hidden mx-auto '>
                   <Image src={wave} alt="wave" layout="fill" objectFit='cover' />
                 </div>
 
@@ -83,7 +84,7 @@ export default async function EventsPage({ params }: Params) {
                     {clubDescription.map( (details, index) => (
                       <div 
                        key={details}
-                       className="flex text-sm justify-between my-5 text-slate-700"
+                       className="flex text-xs justify-between my-5 text-slate-700"
                       >
                         <p className="mr-5">
                           {details}
@@ -98,12 +99,35 @@ export default async function EventsPage({ params }: Params) {
                 </div>
               </div>
 
-              <div>
-
+              <div className="mx-12 text-sm ">
+                <p className="text-slate-700">
+                  {club.description}
+                </p>
+                <p className="text-gray-500 mt-4">
+                  {event.description}
+                </p>
               </div>
 
-              <div>
+              <div className="flex w-fit flex-col ">
+                  <h1 className="text-gray-600 font-semibold text-sm">
+                    Starts in
+                  </h1>
+                  <div className="flex justify-start mt-5">
+                    <CountdownTimer eventStartTime= {event.startTime.getTime()} />
+                  </div>
+                  <div className="flex justify-start font-medium text-gray-400 text-sm mt-5">
+                    <p className="mr-7">Days</p>
+                    <p className="mr-6">Hours</p>
+                    <p className="mr-6">Minutes</p>
+                    <p>Seconds</p>
+                  </div>
 
+
+                  <div className=" mt-auto">
+                  <button className="rounded-full border-2 border-blue-primary px-20 py-4 text-xs font-extrabold text-blue-primary transition-colors hover:bg-blue-700 mr-8 break-normal">
+                    View Club
+                  </button>
+                  </div>
               </div>
           </div>
 
