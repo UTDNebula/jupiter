@@ -1,16 +1,10 @@
 'use client';
 import { GridIcon, ListIcon } from '@src/components/Icons';
-import EventCard from '@src/components/events/EventCard';
 import EventSidebar from '@src/components/events/EventSidebar';
-import { type SelectClub, type SelectEvent } from '@src/server/db/models';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { type ReactNode, useEffect, useRef, useState } from 'react';
 
-const EventView = ({
-  events,
-}: {
-  events: Array<SelectEvent & { club: SelectClub }>;
-}) => {
+const EventView = ({ children }: { children: ReactNode }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -73,21 +67,14 @@ const EventView = ({
       <div className="container flex w-full flex-row space-x-7.5">
         <EventSidebar />
         <div
+          data-view={view}
           className={
             view === 'list'
-              ? 'flex w-full flex-col space-y-7.5 pt-10'
-              : 'flex flex-wrap gap-x-10 gap-y-7.5 pt-10'
+              ? 'group flex w-full flex-col space-y-7.5 pt-10'
+              : 'group flex flex-wrap gap-x-10 gap-y-7.5 pt-10'
           }
         >
-          {events.map((event) => {
-            return (
-              <EventCard
-                key={event.id}
-                view={view === 'list' ? 'horizontal' : 'vertical'}
-                event={event}
-              />
-            );
-          })}
+          {children}
         </div>
       </div>
     </div>

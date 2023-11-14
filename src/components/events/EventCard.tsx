@@ -1,25 +1,20 @@
-'use client';
-import { type SelectClub, type SelectEvent } from '@src/server/db/models';
+'use server';
 import { format, isSameDay } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState, type Dispatch, type SetStateAction } from 'react';
-import { HeartIcon, HeartOutline, MoreIcon } from '../Icons';
+import { MoreIcon } from '../Icons';
 import EventTimeAlert from './EventTimeAlert';
+import { type RouterOutputs } from '@src/trpc/shared';
+import EventLikeButton from '../EventLikeButton';
 
 type EventCardProps = {
-  view: 'horizontal' | 'vertical';
-  event: SelectEvent & { club: SelectClub };
+  event: RouterOutputs['event']['findByFilters']['events'][number];
 };
 
 const HorizontalCard = ({
   event,
-  liked,
-  setLiked,
 }: {
-  event: SelectEvent & { club: SelectClub };
-  liked: boolean;
-  setLiked: Dispatch<SetStateAction<boolean>>;
+  event: RouterOutputs['event']['findByFilters']['events'][number];
 }) => {
   return (
     <div className="container flex h-40 flex-row overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-lg">
@@ -55,19 +50,7 @@ const HorizontalCard = ({
           <p className="text-xs font-bold">{event.description}</p>
         </div>
         <div className="ml-auto flex flex-row space-x-4">
-          <button
-            type="button"
-            className="h-10 w-10 rounded-full bg-white p-1.5 shadow-lg"
-            onClick={() => {
-              setLiked(!liked);
-            }}
-          >
-            {liked ? (
-              <HeartIcon fill="fill-red-600" />
-            ) : (
-              <HeartOutline fill="fill-slate-500" />
-            )}
-          </button>
+          <EventLikeButton eventId={event.id} liked={event.liked} />
           <Link
             className=" h-10 w-10 rounded-full bg-blue-primary p-1.5 shadow-lg transition-colors hover:bg-blue-700 active:bg-blue-800"
             href={`/event/${event.id}`}
@@ -82,12 +65,8 @@ const HorizontalCard = ({
 };
 const VerticalCard = ({
   event,
-  liked,
-  setLiked,
 }: {
-  event: SelectEvent & { club: SelectClub };
-  liked: boolean;
-  setLiked: Dispatch<SetStateAction<boolean>>;
+  event: RouterOutputs['event']['findByFilters']['events'][number];
 }) => {
   return (
     <div className="container flex h-96 w-64 flex-col overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-lg">
@@ -139,31 +118,22 @@ const VerticalCard = ({
           >
             <MoreIcon fill="fill-white" />
           </Link>
-          <button
-            type="button"
-            className="h-10 w-10 rounded-full bg-white p-1.5 shadow-lg"
-            onClick={() => {
-              setLiked(!liked);
-            }}
-          >
-            {liked ? (
-              <HeartIcon fill="fill-red-600" />
-            ) : (
-              <HeartOutline fill="fill-slate-500" />
-            )}
-          </button>
+          <EventLikeButton eventId={event.id} liked={event.liked} />
         </div>
       </div>
     </div>
   );
 };
-const EventCard = ({ view, event }: EventCardProps) => {
-  const [liked, setLiked] = useState(false);
-  switch (view) {
-    case 'horizontal':
-      return <HorizontalCard event={event} liked={liked} setLiked={setLiked} />;
-    case 'vertical':
-      return <VerticalCard event={event} liked={liked} setLiked={setLiked} />;
-  }
+const EventCard = ({ event }: EventCardProps) => {
+  return (
+    <div>
+      <div className="hidden group-data-[view=list]:contents">
+        <HorizontalCard event={event} />
+      </div>
+      <div className="hidden group-data-[view=grid]:contents">
+        <VerticalCard event={event} />
+      </div>
+    </div>
+  );
 };
 export default EventCard;

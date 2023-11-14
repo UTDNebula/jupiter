@@ -5,6 +5,7 @@ import { type z } from 'zod';
 import { type findByFilterSchema } from '@src/server/api/routers/event';
 import EventView from './eventView';
 import { type Metadata } from 'next';
+import EventCard from '@src/components/events/EventCard';
 
 function getStartTime(
   filterState: filterState,
@@ -37,7 +38,7 @@ type searchPams = Partial<
   Omit<filterState, 'date' | 'clubs'> & {
     date: string | string[] | undefined;
     clubs: string | string[] | undefined;
-  }
+  } & { view: 'list' | 'grid' | undefined }
 >;
 const Events = async ({ searchParams }: { searchParams: searchPams }) => {
   const filters = {
@@ -74,7 +75,13 @@ const Events = async ({ searchParams }: { searchParams: searchPams }) => {
   return (
     <main className="pb-10 md:pl-72">
       <EventHeader />
-      <EventView events={events} />
+      <EventView>
+        <>
+          {events.map((event) => {
+            return <EventCard key={event.id} event={event} />;
+          })}
+        </>
+      </EventView>
     </main>
   );
 };

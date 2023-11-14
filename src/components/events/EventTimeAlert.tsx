@@ -1,3 +1,4 @@
+'use server';
 import { type SelectEvent } from '@src/server/db/models';
 import {
   differenceInDays,
@@ -25,7 +26,7 @@ const EventTimeAlert = ({ event }: EventTimeAlertProps) => {
   const now = new Date();
   const start = event.startTime;
   const hourDiff = differenceInHours(start, now);
-  if (event.startTime.getTime() < Date.now() ){
+  if (event.startTime.getTime() < Date.now()) {
     if (event.endTime.getTime() < Date.now()) {
       return <Base className="bg-red-600">over :(</Base>;
     } else {
