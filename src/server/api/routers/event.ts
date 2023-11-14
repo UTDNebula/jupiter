@@ -56,6 +56,9 @@ const byNameSchema = z.object({
   name: z.string().default(''),
   sortByDate: z.boolean().default(false),
 });
+const joinSchema = z.object({
+  eventId: z.string(),
+});
 
 export const eventRouter = createTRPCRouter({
   byClubId: publicProcedure
@@ -122,6 +125,7 @@ export const eventRouter = createTRPCRouter({
               description: z.string(),
             }),
             liked: z.boolean().optional(),
+            location: z.string(),
           })
           .array(),
       }),

@@ -1,15 +1,15 @@
 'use server';
+import { getServerAuthSession } from '@src/server/auth';
 import { api } from '@src/trpc/server';
-import { getSession } from 'next-auth/react';
 import { revalidatePath } from 'next/cache';
 
 export async function joinEventAction(
   eventId: string,
   liked: boolean,
-  userId: string,
+  userId?: string,
 ) {
   'use server';
-  const session = await getSession();
+  const session = await getServerAuthSession();
   console.log(session);
   if (session) {
     if (liked) {
