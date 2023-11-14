@@ -1,4 +1,4 @@
-'use client';
+'use server';
 import { joinEventAction } from '@src/utils/actions';
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { HeartIcon, HeartOutline } from './Icons';
