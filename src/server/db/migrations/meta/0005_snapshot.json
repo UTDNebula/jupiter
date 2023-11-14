@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "09f62a4e-2c7b-4d1f-8786-5786a5f68e63",
+  "id": "c8b77efa-473e-4758-b251-d366195825f7",
   "prevId": "5ffb95b2-9470-4635-96e6-7013c743b17a",
   "tables": {
     "account": {
@@ -240,7 +240,8 @@
           "name": "location",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "''"
         }
       },
       "indexes": {},

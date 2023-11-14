@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS "user_metadata_to_events" (
 	CONSTRAINT user_metadata_to_events_user_id_event_id PRIMARY KEY("user_id","event_id")
 );
 --> statement-breakpoint
-ALTER TABLE "events" ADD COLUMN "location" text NOT NULL;--> statement-breakpoint
+ALTER TABLE "events" ADD COLUMN "location" text DEFAULT '' NOT NULL;--> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "user_metadata_to_events" ADD CONSTRAINT "user_metadata_to_events_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
