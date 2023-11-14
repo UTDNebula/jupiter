@@ -99,6 +99,27 @@ export const eventRouter = createTRPCRouter({
     }),
   findByFilters: publicProcedure
     .input(findByFilterSchema)
+    .output(
+      z.object({
+        events: z
+          .object({
+            id: z.string(),
+            description: z.string(),
+            clubId: z.string(),
+            name: z.string(),
+            startTime: z.date(),
+            endTime: z.date(),
+            club: z.object({
+              id: z.string(),
+              name: z.string(),
+              image: z.string(),
+              description: z.string(),
+            }),
+            liked: z.boolean().optional(),
+          })
+          .array(),
+      }),
+    )
     .query(async ({ input, ctx }) => {
       const startTime =
         input.startTime.type === 'now'
@@ -160,7 +181,24 @@ export const eventRouter = createTRPCRouter({
         },
         limit: 20,
       });
-      return { events: events };
+      if (ctx.session) {
+        const user = ctx.session.user;
+        const eventsWithLike = await Promise.all(
+          events.map(async (ev) => {
+            const liked = !!(await ctx.db.query.userMetadataToEvents.findFirst({
+              where: and(
+                eq(userMetadataToEvents.userId, user.id),
+                eq(userMetadataToEvents.eventId, ev.id),
+              ),
+            }));
+            return { ...ev, liked: liked };
+          }),
+        );
+        return { events: eventsWithLike };
+      }
+      return {
+        events: events,
+      };
     }),
   byId: publicProcedure.input(byIdSchema).query(async ({ input, ctx }) => {
     const { id } = input;
