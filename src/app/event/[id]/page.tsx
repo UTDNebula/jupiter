@@ -22,6 +22,10 @@ export default async function EventsPage({ params }: Params) {
 
   const clubTags = ['Software', 'Innovation', 'Other']
 
+  const clubDescription = ['Club', 'President', 'Location', 'Multi-Day']
+  const clubDetails = [club.name, 'John Doe', 'ESCW 1.232', 'No']
+
+
   return (
     
     <main className="w-full md:pl-72 text-white">
@@ -61,18 +65,36 @@ export default async function EventsPage({ params }: Params) {
         </div>
       </section>
 
-      <section className="mb-5 flex flex-col space-y-6 px-7">
+      <section className="mb-5 flex flex-col space-y-6 px-7 text-black">
         <div className="relative h-full w-full rounded-xl p-10 shadow-lg flex justify-between ">
           
           <div className="flex ">
-              <div className="bg-red-600 ">
-                <div className='relative h-32 w-28 rounded-md overflow-hidden'>
+              <div className="h-full w-3/5">
+                <div className='relative h-32 w-full rounded-b-sm overflow-hidden mx-auto '>
                   <Image src={wave} alt="wave" layout="fill" objectFit='cover' />
                 </div>
 
                 <div>
-                  <h1>Description</h1>
+                  <h1 className=" mt-10 text-sm text-gray-700 font-semibold">
+                    Description
+                  </h1>
                   
+                  <div >
+                    {clubDescription.map( (details, index) => (
+                      <div 
+                       key={details}
+                       className="flex text-sm justify-between my-5 text-slate-700"
+                      >
+                        <p className="mr-5">
+                          {details}
+                        </p>
+                        <p className="font-semibold text-right">
+                          {clubDetails[index]}
+                        </p>
+                      </div>
+                    ))
+                    }
+                  </div>
                 </div>
               </div>
 
