@@ -29,6 +29,7 @@ export async function joinEventAction(eventId: string, liked: boolean) {
         .onConflictDoNothing();
     }
     revalidatePath('/events');
+    revalidatePath('/liked');
   }
 }
 //this doesn't work
