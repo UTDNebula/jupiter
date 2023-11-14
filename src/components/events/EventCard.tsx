@@ -6,18 +6,16 @@ import { MoreIcon } from '../Icons';
 import EventTimeAlert from './EventTimeAlert';
 import { type RouterOutputs } from '@src/trpc/shared';
 import EventLikeButton from '../EventLikeButton';
-import { getSession } from 'next-auth/react';
 
 type EventCardProps = {
   event: RouterOutputs['event']['findByFilters']['events'][number];
 };
 
-const HorizontalCard = async ({
+const HorizontalCard = ({
   event,
 }: {
   event: RouterOutputs['event']['findByFilters']['events'][number];
 }) => {
-  const user = await getSession();
   return (
     <div className="container flex h-40 flex-row overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-lg">
       <div className="relative h-[160px] w-[225px]">
@@ -52,7 +50,7 @@ const HorizontalCard = async ({
           <p className="text-xs font-bold">{event.description}</p>
         </div>
         <div className="ml-auto flex flex-row space-x-4">
-          <EventLikeButton eventId={event.id} liked={event.liked ?? false} />
+          <EventLikeButton liked={event.liked ?? false} eventId={event.id} />
           <Link
             className=" h-10 w-10 rounded-full bg-blue-primary p-1.5 shadow-lg transition-colors hover:bg-blue-700 active:bg-blue-800"
             href={`/event/${event.id}`}
@@ -120,7 +118,7 @@ const VerticalCard = ({
           >
             <MoreIcon fill="fill-white" />
           </Link>
-          <EventLikeButton eventId={event.id} liked={event.liked} />
+          <EventLikeButton liked={event.liked ?? false} eventId={event.id} />
         </div>
       </div>
     </div>
