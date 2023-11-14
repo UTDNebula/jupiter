@@ -12,8 +12,11 @@ const LikedEvents = async () => {
         <div>you haven&apos;t liked any events yet 😢</div>
         <div>
           you can check out new events{' '}
-          <Link href={'/events'} className="scale-105 text-blue-primary">
-            Here
+          <Link
+            href={'/events'}
+            className="text-lg text-blue-primary transition-colors hover:text-blue-700"
+          >
+            here
           </Link>
         </div>
       </div>
