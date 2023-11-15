@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import Header from '@src/components/BaseHeader';
 import React from 'react';
 import { type FC } from 'react';
