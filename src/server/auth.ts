@@ -77,9 +77,6 @@ export const authOptions: NextAuthOptions = {
         where: (metadata) => eq(metadata.id, user.id),
       });
 
-      console.log(user);
-      console.log(session);
-
       if (!metadata) {
         const firstName = user.name?.split(' ')[0] ?? '';
         const lastName = user.name?.split(' ')[1] ?? '';
