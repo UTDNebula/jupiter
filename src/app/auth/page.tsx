@@ -3,7 +3,6 @@ import { getServerAuthSession } from '@src/server/auth';
 import { getProviders } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 import Image from 'next/image';
-import Link from 'next/link';
 import BackButton from '@src/components/backButton';
 
 export default async function Auth({
