@@ -1,4 +1,5 @@
-import React, { type FC, useState } from 'react';
+'use client';
+import { type FC, useState } from 'react';
 import {
   AboutIcon,
   EventsIcon,
@@ -10,7 +11,7 @@ import {
   RightChevron,
   SettingsIcon,
 } from './Icons';
-import { useRouter } from 'next/router';
+import { useRouter, usePathname } from 'next/navigation';
 
 const mainCats = ['Home', 'History', 'Liked', 'Events'] as const;
 const moreCats = ['Settings', 'About', 'Feedback'] as const;
@@ -40,13 +41,12 @@ const routeMap: {
   Feedback: '/feedback',
 };
 
-const SidebarItems: FC<{ cat: union[number]; active: boolean }> = ({
-  cat,
-  active,
-}) => {
+const SidebarItems: FC<{ cat: union[number] }> = ({ cat }) => {
   const Icon = IconMap[cat];
   const router = useRouter();
   const route = routeMap[cat];
+  const pathName = usePathname();
+  const active = pathName === route;
 
   const [mouseOver, setMouseOver] = useState(false);
   const handleMouseOver = () => {
@@ -63,7 +63,7 @@ const SidebarItems: FC<{ cat: union[number]; active: boolean }> = ({
 
   return (
     <div
-      className={`${
+      className={` ${
         active || mouseOver
           ? `-my-2.5 mb-2.5 rounded-3xl bg-white py-2.5 shadow-md last:-mb-2.5`
           : 'mb-5'
@@ -73,7 +73,7 @@ const SidebarItems: FC<{ cat: union[number]; active: boolean }> = ({
     >
       <div
         className=" 
-        rounded-lg flex h-full w-64  cursor-pointer items-start bg-transparent px-5 text-sm transition-transform"
+        flex h-full w-64 cursor-pointer  items-start rounded-lg bg-transparent px-5 text-sm transition-transform"
         onClick={() => void router.push(route)}
       >
         <div className="flex items-center gap-x-4">

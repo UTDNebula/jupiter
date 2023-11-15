@@ -4,14 +4,13 @@ import type {
   SelectClub,
   SelectContact as Contacts,
 } from '@src/server/db/models';
-import { HeartIcon } from './Icons';
-import { useState } from 'react';
+import LikeButton from './LikeButton';
 
 type Club = SelectClub & {
   contacts?: Contacts[];
+  tags: string[];
 };
 const OrgHeader = ({ club }: { club: Club }) => {
-  const [liked, setLiked] = useState(false);
   return (
     <div className="relative">
       <div className="h-full w-full">
@@ -28,7 +27,7 @@ const OrgHeader = ({ club }: { club: Club }) => {
         <div className="flex h-full w-full flex-row   p-8">
           <div className="flex h-full flex-col">
             <div className="flex flex-row">
-              {['Software', 'Innovation', 'Other'].map((tag) => (
+              {club.tags.map((tag) => (
                 <p
                   key={tag}
                   className="m-2 rounded-full bg-black bg-opacity-50 px-4 py-2 font-semibold text-slate-100"
@@ -48,13 +47,8 @@ const OrgHeader = ({ club }: { club: Club }) => {
             <button
               className="rounded-full bg-blue-primary p-2.5 transition-colors hover:bg-blue-700"
               type="button"
-              onClick={() => {
-                setLiked(!liked);
-              }}
             >
-              <div className={'h-8 w-8'}>
-                <HeartIcon fill={`${liked ? 'fill-red-500' : 'fill-white'} `} />
-              </div>
+              <LikeButton />
             </button>
             <ContactButtons contacts={club.contacts || []} />
           </div>

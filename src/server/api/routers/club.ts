@@ -1,8 +1,7 @@
-import { eq } from 'drizzle-orm';
+import { eq, ilike, sql } from 'drizzle-orm';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 import { z } from 'zod';
-import Fuse from 'fuse.js';
-import { selectClub } from '@src/server/db/models';
+import { club } from '@src/server/db/schema';
 const byNameSchema = z.object({
   name: z.string().default(''),
 });
@@ -11,21 +10,20 @@ const byIdSchema = z.object({
   id: z.string().default(''),
 });
 
+const allSchema = z.object({
+  tag: z.string().nullish(),
+});
+
 export const clubRouter = createTRPCRouter({
   byName: publicProcedure.input(byNameSchema).query(async ({ input, ctx }) => {
     const { name } = input;
-    const clubs = await ctx.db.query.club.findMany();
+    const clubs = await ctx.db.query.club.findMany({
+      where: (club) => ilike(club.name, `%${name}%`),
+    });
 
-    if (name === '') return clubs.map((c) => selectClub.parse(c));
+    if (name === '') return clubs;
 
-    const fuse = new Fuse(clubs, { keys: ['name', 'description'] });
-    const results = fuse.search(name);
-    console.log({ results, name, clubs });
-    if (results.length === 0) return [];
-
-    const parsed = results.map((r) => selectClub.parse(r.item));
-    if (parsed.length < 5) return parsed;
-    return parsed.slice(0, 5);
+    return clubs.slice(0, 5);
   }),
   byId: publicProcedure.input(byIdSchema).query(async ({ input, ctx }) => {
     const { id } = input;
@@ -41,12 +39,29 @@ export const clubRouter = createTRPCRouter({
       throw e;
     }
   }),
-  all: publicProcedure.query(async ({ ctx }) => {
+  all: publicProcedure.input(allSchema).query(async ({ ctx, input }) => {
     try {
-      const query = await ctx.db.query.club.findMany();
-
-      const parsed = query.map((q) => selectClub.parse(q));
-      return parsed;
+      let query = ctx.db.select().from(club);
+      if (input.tag && typeof input.tag == 'string' && input.tag !== 'All')
+        query = query.where(sql`${input.tag} = ANY(tags)`);
+      query = query.orderBy(sql`RANDOM()`).limit(20);
+      const res = await query;
+      return res;
+    } catch (e) {
+      console.error(e);
+      return [];
+    }
+  }),
+  distinctTags: publicProcedure.query(async ({ ctx }) => {
+    try {
+      const tags = await ctx.db.selectDistinct({ tags: club.tags }).from(club);
+      const tagSet = new Set<string>(['All']);
+      tags.forEach((club) => {
+        club.tags.forEach((tag) => {
+          tagSet.add(tag);
+        });
+      });
+      return Array.from(tagSet);
     } catch (e) {
       console.error(e);
       return [];

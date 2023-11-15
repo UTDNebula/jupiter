@@ -32,12 +32,7 @@ const OrgInfoSegment: FC<{ club: Club }> = ({ club }) => {
             <p className="text-right text-sm text-slate-600">Present</p>
           </div>
         </div>
-        <div className="w-full">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero et
-          odit, est numquam praesentium omnis recusandae soluta? Suscipit alias
-          modi ratione eligendi fugit voluptatum quidem nulla quaerat! Eos,
-          officia distinctio?
-        </div>
+        <div className="w-full">{club.description}</div>
         <div className="w-full text-center">
           <h1 className="mt-5 text-2xl font-medium">Leadership</h1>
           <div className="flex flex-col items-center justify-center">
