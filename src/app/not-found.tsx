@@ -1,5 +1,4 @@
-import Head from 'next/head';
-import NotFound from './liked/page';
+import NotFound from '@src/components/NotFound';
 import { type Metadata } from 'next';
 
 export const metadata: Metadata = {
