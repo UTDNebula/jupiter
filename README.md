@@ -32,7 +32,7 @@ Make sure you have a `.env` file in the root of the project. If you do not, copy
 
 #### Environment Variables
 
-This project uses [NextAuth](https://next-auth.js.org/) for authentication. In order to use NextAuth with OAuth providers, you will need to create a Client ID and Client Secret for [Google](https://next-auth.js.org/providers/google) and [Discord](https://next-auth.js.org/providers/discord) respectively.
+This project uses [NextAuth](https://next-auth.js.org/) for authentication. NextAuth, with their built-in [providers](https://next-auth.js.org/providers/), makes it easy for users to use preexisting logins. Currently, we are using Discord and Google as OAuth Providers, so you will need to create a Client ID and Client Secret for [Google](https://next-auth.js.org/providers/google) and [Discord](https://next-auth.js.org/providers/discord) respectively (or remove the providers if you'd like).
 
 Once you have your Client ID and Client Secrets, add them to your `.env` file.
 
