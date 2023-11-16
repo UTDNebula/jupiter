@@ -1,3 +1,4 @@
+'use server';
 import { format, isSameDay } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -5,16 +6,18 @@ import { MoreIcon } from '../Icons';
 import EventTimeAlert from './EventTimeAlert';
 import { type RouterOutputs } from '@src/trpc/shared';
 import EventLikeButton from '../EventLikeButton';
+import { getServerAuthSession } from '@src/server/auth';
 
 type EventCardProps = {
   event: RouterOutputs['event']['findByFilters']['events'][number];
 };
 
-const HorizontalCard = ({
+const HorizontalCard = async ({
   event,
 }: {
   event: RouterOutputs['event']['findByFilters']['events'][number];
 }) => {
+  const session = await getServerAuthSession();
   return (
     <div className="container flex h-40 flex-row overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-lg">
       <div className="relative h-[160px] w-[225px]">
@@ -49,7 +52,9 @@ const HorizontalCard = ({
           <p className="text-xs font-bold">{event.description}</p>
         </div>
         <div className="ml-auto flex flex-row space-x-4">
-          <EventLikeButton liked={event.liked} eventId={event.id} />
+          {session && (
+            <EventLikeButton liked={event.liked} eventId={event.id} />
+          )}
           <Link
             className=" h-10 w-10 rounded-full bg-blue-primary p-1.5 shadow-lg transition-colors hover:bg-blue-700 active:bg-blue-800"
             href={`/event/${event.id}`}
@@ -62,11 +67,12 @@ const HorizontalCard = ({
     </div>
   );
 };
-const VerticalCard = ({
+const VerticalCard = async ({
   event,
 }: {
   event: RouterOutputs['event']['findByFilters']['events'][number];
 }) => {
+  const session = await getServerAuthSession();
   return (
     <div className="container flex h-96 w-64 flex-col overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-lg">
       <div className="relative">
@@ -117,7 +123,9 @@ const VerticalCard = ({
           >
             <MoreIcon fill="fill-white" />
           </Link>
-          <EventLikeButton liked={event.liked} eventId={event.id} />
+          {session && (
+            <EventLikeButton liked={event.liked} eventId={event.id} />
+          )}
         </div>
       </div>
     </div>
