@@ -1,4 +1,4 @@
-import { eq, ilike, sql, and} from 'drizzle-orm';
+import { eq, ilike, sql, and } from 'drizzle-orm';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { selectClub } from '@src/server/db/models';
@@ -12,10 +12,9 @@ const byIdSchema = z.object({
   id: z.string().default(''),
 });
 
-const  joinLeaveSchema = z.object({
+const joinLeaveSchema = z.object({
   clubid: z.string().default(''),
 });
-
 
 const allSchema = z.object({
   tag: z.string().nullish(),
@@ -74,42 +73,50 @@ export const clubRouter = createTRPCRouter({
       return [];
     }
   }),
-  joinLeave: protectedProcedure.input(joinLeaveSchema).mutation(async ({ctx, input}) =>{
-    const joinuserID = ctx.session.user.id;
-    const {clubid} = input;
-    const dataExists = await ctx.db.query.userMetadataToClubs.findFirst({
-      where: (userMetadataToClubs) => and(eq(userMetadataToClubs.userId, joinuserID),eq(userMetadataToClubs.clubId, clubid))
-    }); 
-    if(dataExists){
-      await ctx.db.delete(userMetadataToClubs).where(and(eq(userMetadataToClubs.userId,joinuserID),eq(userMetadataToClubs.clubId, clubid)));
-    } else{
-      await ctx.db.insert(userMetadataToClubs).values({userId: joinuserID, clubId:clubid});
-      
-    }
-    return dataExists;
-  }),
-  alreadyJoined: protectedProcedure.input(joinLeaveSchema).query(async ({ctx, input}) =>{
-    const joinuserID = ctx.session.user.id;
-    const {clubid} = input;
+  joinLeave: protectedProcedure
+    .input(joinLeaveSchema)
+    .mutation(async ({ ctx, input }) => {
+      const joinuserID = ctx.session.user.id;
+      const { clubid } = input;
+      const dataExists = await ctx.db.query.userMetadataToClubs.findFirst({
+        where: (userMetadataToClubs) =>
+          and(
+            eq(userMetadataToClubs.userId, joinuserID),
+            eq(userMetadataToClubs.clubId, clubid),
+          ),
+      });
+      if (dataExists) {
+        await ctx.db
+          .delete(userMetadataToClubs)
+          .where(
+            and(
+              eq(userMetadataToClubs.userId, joinuserID),
+              eq(userMetadataToClubs.clubId, clubid),
+            ),
+          );
+      } else {
+        await ctx.db
+          .insert(userMetadataToClubs)
+          .values({ userId: joinuserID, clubId: clubid });
+      }
+      return dataExists;
+    }),
+  alreadyJoined: protectedProcedure
+    .input(joinLeaveSchema)
+    .query(async ({ ctx, input }) => {
+      const joinuserID = ctx.session.user.id;
+      const { clubid } = input;
       const isJoined = await ctx.db.query.userMetadataToClubs.findFirst({
-        where: (userMetadataToClubs) => and(eq(userMetadataToClubs.userId, joinuserID),eq(userMetadataToClubs.clubId, clubid))
-      }); 
-      if(isJoined){
+        where: (userMetadataToClubs) =>
+          and(
+            eq(userMetadataToClubs.userId, joinuserID),
+            eq(userMetadataToClubs.clubId, clubid),
+          ),
+      });
+      if (isJoined) {
         return true;
-      } else{
+      } else {
         return false;
       }
-
-
-
-    /*
-    const dataExists = await ctx.db.query.userMetadataToClubs.findFirst({
-      where: (userMetadataToClubs) => and(eq(userMetadataToClubs.userId, joinuserID),eq(userMetadataToClubs.clubId, clubid))
-    }); 
-    if(dataExists){
-      return dataExists;
-    }*/
-  }),
-    
-
+    }),
 });
