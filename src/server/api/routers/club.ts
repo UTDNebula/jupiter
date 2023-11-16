@@ -1,7 +1,8 @@
-import { eq, ilike, sql } from 'drizzle-orm';
-import { createTRPCRouter, publicProcedure } from '../trpc';
+import { eq, ilike, sql, and} from 'drizzle-orm';
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { selectClub } from '@src/server/db/models';
+import { userMetadataToClubs } from '@src/server/db/schema';
 const byNameSchema = z.object({
   name: z.string().default(''),
 });
@@ -9,6 +10,11 @@ const byNameSchema = z.object({
 const byIdSchema = z.object({
   id: z.string().default(''),
 });
+
+const  joinLeaveSchema = z.object({
+  clubid: z.string().default(''),
+});
+
 
 export const clubRouter = createTRPCRouter({
   byName: publicProcedure.input(byNameSchema).query(async ({ input, ctx }) => {
@@ -49,4 +55,41 @@ export const clubRouter = createTRPCRouter({
       return [];
     }
   }),
+  joinLeave: protectedProcedure.input(joinLeaveSchema).mutation(async ({ctx, input}) =>{
+    const joinuserID = ctx.session.user.id;
+    const {clubid} = input;
+    const dataExists = await ctx.db.query.userMetadataToClubs.findFirst({
+      where: (userMetadataToClubs) => and(eq(userMetadataToClubs.userId, joinuserID),eq(userMetadataToClubs.clubId, clubid))
+    }); 
+    if(dataExists){
+      await ctx.db.delete(userMetadataToClubs).where(and(eq(userMetadataToClubs.userId,joinuserID),eq(userMetadataToClubs.clubId, clubid)));
+    } else{
+      await ctx.db.insert(userMetadataToClubs).values({userId: joinuserID, clubId:clubid});
+      
+    }
+    return dataExists;
+  }),
+  alreadyJoined: protectedProcedure.input(joinLeaveSchema).query(async ({ctx, input}) =>{
+    const joinuserID = ctx.session.user.id;
+    const {clubid} = input;
+      const isJoined = await ctx.db.query.userMetadataToClubs.findFirst({
+        where: (userMetadataToClubs) => and(eq(userMetadataToClubs.userId, joinuserID),eq(userMetadataToClubs.clubId, clubid))
+      }); 
+      if(isJoined){
+        return true;
+      } else{
+        return false;
+      }
+    
+
+
+    /*
+    const dataExists = await ctx.db.query.userMetadataToClubs.findFirst({
+      where: (userMetadataToClubs) => and(eq(userMetadataToClubs.userId, joinuserID),eq(userMetadataToClubs.clubId, clubid))
+    }); 
+    if(dataExists){
+      return dataExists;
+    }*/
+  }),
+
 });

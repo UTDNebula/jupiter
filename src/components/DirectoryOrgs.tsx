@@ -2,13 +2,27 @@ import { type FC } from 'react';
 import Image from 'next/image';
 import { GroupIcon, HeartIcon } from './Icons';
 import type { SelectClub as Club } from '@src/server/db/models';
+import { getServerAuthSession } from '@src/server/auth';
+import Joinbutton from './JoinButton';
 import Link from 'next/link';
+import { db } from '@src/server/db';
+import { eq, and } from 'drizzle-orm';
+import { userMetadataToClubs } from '@src/server/db/schema';
+import { api } from '@src/trpc/server';
 
 interface Props {
   club: Club;
 }
 
-const OrgDirectoryCards: FC<Props> = ({ club }) => {
+const OrgDirectoryCards: FC<Props> = async ({ club }) => {
+  const session = await getServerAuthSession();
+  let isJoined;
+  if(session){
+    isJoined = !!await db.query.userMetadataToClubs.findFirst({
+      where: and(eq(userMetadataToClubs.userId, session.user.id), eq(userMetadataToClubs.clubId, club.id))
+    });
+  }
+  
   const desc =
     club.description.length > 50
       ? club.description.slice(0, 150) + '...'
@@ -46,9 +60,7 @@ const OrgDirectoryCards: FC<Props> = ({ club }) => {
         <p className="line-clamp-3 text-xs text-slate-500">Description</p>
         <p className="text-sm text-slate-600">{desc}</p>
         <div className="flex flex-row space-x-2">
-          <button className="rounded-2xl bg-blue-primary px-4 py-2 text-xs font-extrabold text-white transition-colors hover:bg-blue-700">
-            Join
-          </button>
+        <Joinbutton session={session} clubID={club.id} isJoined={isJoined}/>
           <Link
             href={`/directory/${club.id}`}
             className="rounded-2xl bg-blue-600 bg-opacity-10 px-4 py-2 text-xs font-extrabold text-blue-primary  transition-colors hover:bg-blue-200"
