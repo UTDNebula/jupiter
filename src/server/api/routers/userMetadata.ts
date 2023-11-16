@@ -1,14 +1,14 @@
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '../trpc';
-import { eq } from 'drizzle-orm';
-import { userMetadata } from '@src/server/db/schema';
+import { and, eq, sql } from 'drizzle-orm';
+import { userMetadata, userMetadataToClubs } from '@src/server/db/schema';
 import { insertUserMetadata } from '@src/server/db/models';
 
 const byIdSchema = z.object({ id: z.string().uuid() });
 
 const updateByIdSchema = z.object({
-  id: z.string().uuid(),
-  updatedMetadata: insertUserMetadata.omit({ id: true }),
+  updateUser: insertUserMetadata.omit({ id: true }),
+  clubs: z.string().array(),
 });
 
 export const userMetadataRouter = createTRPCRouter({
@@ -24,9 +24,27 @@ export const userMetadataRouter = createTRPCRouter({
   updateById: protectedProcedure
     .input(updateByIdSchema)
     .mutation(async ({ input, ctx }) => {
+      const { updateUser, clubs } = input;
+      const { user } = ctx.session;
+
       await ctx.db
         .update(userMetadata)
-        .set(input.updatedMetadata)
-        .where(eq(userMetadata.id, input.id));
+        .set(updateUser)
+        .where(eq(userMetadata.id, user.id));
+
+      if (clubs.length === 0) {
+        await ctx.db
+          .delete(userMetadataToClubs)
+          .where(and(eq(userMetadataToClubs.userId, user.id)));
+        return;
+      }
+
+      await ctx.db.delete(userMetadataToClubs).where(
+        and(
+          eq(userMetadataToClubs.userId, user.id),
+          // Invert the condition to delete all clubs that are not in the array
+          sql`${userMetadataToClubs.clubId} NOT IN (${clubs})`,
+        ),
+      );
     }),
 });
