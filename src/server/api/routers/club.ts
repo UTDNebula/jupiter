@@ -1,13 +1,17 @@
 import { eq, ilike, sql } from 'drizzle-orm';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 import { z } from 'zod';
-import { selectClub } from '@src/server/db/models';
+import { club } from '@src/server/db/schema';
 const byNameSchema = z.object({
   name: z.string().default(''),
 });
 
 const byIdSchema = z.object({
   id: z.string().default(''),
+});
+
+const allSchema = z.object({
+  tag: z.string().nullish(),
 });
 
 export const clubRouter = createTRPCRouter({
@@ -17,7 +21,7 @@ export const clubRouter = createTRPCRouter({
       where: (club) => ilike(club.name, `%${name}%`),
     });
 
-    if (name === '') return clubs.map((c) => selectClub.parse(c));
+    if (name === '') return clubs;
 
     return clubs.slice(0, 5);
   }),
@@ -35,15 +39,29 @@ export const clubRouter = createTRPCRouter({
       throw e;
     }
   }),
-  all: publicProcedure.query(async ({ ctx }) => {
+  all: publicProcedure.input(allSchema).query(async ({ ctx, input }) => {
     try {
-      const query = await ctx.db.query.club.findMany({
-        limit: 20,
-        orderBy: () => sql`RANDOM()`,
+      let query = ctx.db.select().from(club);
+      if (input.tag && typeof input.tag == 'string' && input.tag !== 'All')
+        query = query.where(sql`${input.tag} = ANY(tags)`);
+      query = query.orderBy(sql`RANDOM()`).limit(20);
+      const res = await query;
+      return res;
+    } catch (e) {
+      console.error(e);
+      return [];
+    }
+  }),
+  distinctTags: publicProcedure.query(async ({ ctx }) => {
+    try {
+      const tags = await ctx.db.selectDistinct({ tags: club.tags }).from(club);
+      const tagSet = new Set<string>(['All']);
+      tags.forEach((club) => {
+        club.tags.forEach((tag) => {
+          tagSet.add(tag);
+        });
       });
-
-      const parsed = query.map((q) => selectClub.parse(q));
-      return parsed;
+      return Array.from(tagSet);
     } catch (e) {
       console.error(e);
       return [];

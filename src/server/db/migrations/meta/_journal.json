@@ -29,6 +29,13 @@
       "when": 1696561282271,
       "tag": "0003_robust_sleepwalker",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1699653344584,
+      "tag": "0004_equal_random",
+      "breakpoints": true
     }
   ]
 }

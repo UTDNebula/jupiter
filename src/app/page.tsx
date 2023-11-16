@@ -3,6 +3,7 @@ import Carousel from '../components/Carousel';
 import TagFilter from '../components/TagFilter';
 import OrgDirectoryGrid from '../components/OrgDirectoryGrid';
 import type { Metadata } from 'next';
+import { api } from '@src/trpc/server';
 
 export const metadata: Metadata = {
   title: 'Jupiter - Nebula',
@@ -16,7 +17,12 @@ export const metadata: Metadata = {
   },
 };
 
-const Home = () => {
+type Params = {
+  searchParams: { [key: string]: string | undefined };
+};
+
+const Home = async (props: Params) => {
+  const tags = await api.club.distinctTags.query();
   return (
     <main className="md:pl-72 ">
       <Header />
@@ -24,8 +30,8 @@ const Home = () => {
         <div className="relative block w-full">
           <Carousel />
         </div>
-        <TagFilter />
-        <OrgDirectoryGrid />
+        <TagFilter tags={tags} />
+        <OrgDirectoryGrid tag={props.searchParams.tag} />
       </div>
     </main>
   );
