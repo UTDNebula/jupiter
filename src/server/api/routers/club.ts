@@ -1,7 +1,6 @@
 import { eq, ilike, sql, and } from 'drizzle-orm';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 import { z } from 'zod';
-import { selectClub } from '@src/server/db/models';
 import { userMetadataToClubs } from '@src/server/db/schema';
 import { club } from '@src/server/db/schema';
 const byNameSchema = z.object({

@@ -1,6 +1,6 @@
 'use client'
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { api } from '@src/trpc/react';
 import { Session } from 'next-auth';
 

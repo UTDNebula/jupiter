@@ -9,7 +9,6 @@ import Link from 'next/link';
 import { db } from '@src/server/db';
 import { eq, and } from 'drizzle-orm';
 import { userMetadataToClubs } from '@src/server/db/schema';
-import { api } from '@src/trpc/server';
 
 interface Props {
   club: Club;

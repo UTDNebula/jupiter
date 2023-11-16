@@ -4,7 +4,6 @@ import type {
   SelectClub,
   SelectContact as Contacts,
 } from '@src/server/db/models';
-import { HeartIcon } from './Icons';
 import Joinbutton from './JoinButton';
 import { getServerAuthSession } from '@src/server/auth';
 import { eq, and } from 'drizzle-orm';
