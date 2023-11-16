@@ -8,4 +8,5 @@ export default {
     connectionString: process.env.DATABASE_URL || '',
   },
   tablesFilter: ['test_*'],
+  verbose: true,
 } satisfies Config;

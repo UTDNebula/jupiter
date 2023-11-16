@@ -10,9 +10,11 @@ import { getServerAuthSession } from '@src/server/auth';
 import { eq, and } from 'drizzle-orm';
 import { db } from '@src/server/db';
 import { userMetadataToClubs } from '@src/server/db/schema';
+import LikeButton from './LikeButton';
 
 type Club = SelectClub & {
   contacts?: Contacts[];
+  tags: string[];
 };
 const OrgHeader = async ({ club }: { club: Club }) => {
   const session = await getServerAuthSession();
@@ -38,14 +40,14 @@ const OrgHeader = async ({ club }: { club: Club }) => {
         <div className="flex h-full w-full flex-row   p-8">
           <div className="flex h-full flex-col">
             <div className="flex flex-row">
-              {/* {['Software', 'Innovation', 'Other'].map((tag) => (
+              {club.tags.map((tag) => (
                 <p
                   key={tag}
                   className="m-2 rounded-full bg-black bg-opacity-50 px-4 py-2 font-semibold text-slate-100"
                 >
                   {tag}
                 </p>
-              ))} */}
+              ))}
             </div>
             <h1 className="mt-auto w-fit rounded-full bg-black bg-opacity-50 p-2 text-center text-4xl font-bold text-slate-100">
               {club.name}
@@ -57,9 +59,7 @@ const OrgHeader = async ({ club }: { club: Club }) => {
               className="rounded-full bg-blue-primary p-2.5 transition-colors hover:bg-blue-700"
               type="button" 
             >
-              <div className={'h-8 w-8'}>
-                <HeartIcon fill="fill-white" />
-              </div>
+              <LikeButton />
             </button>
             <ContactButtons contacts={club.contacts || []} />
           </div>
