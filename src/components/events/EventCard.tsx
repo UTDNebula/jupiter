@@ -1,4 +1,3 @@
-'use server';
 import { format, isSameDay } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -50,7 +49,7 @@ const HorizontalCard = ({
           <p className="text-xs font-bold">{event.description}</p>
         </div>
         <div className="ml-auto flex flex-row space-x-4">
-          <EventLikeButton liked={event.liked ?? false} eventId={event.id} />
+          <EventLikeButton liked={event.liked} eventId={event.id} />
           <Link
             className=" h-10 w-10 rounded-full bg-blue-primary p-1.5 shadow-lg transition-colors hover:bg-blue-700 active:bg-blue-800"
             href={`/event/${event.id}`}
@@ -118,7 +117,7 @@ const VerticalCard = ({
           >
             <MoreIcon fill="fill-white" />
           </Link>
-          <EventLikeButton liked={event.liked ?? false} eventId={event.id} />
+          <EventLikeButton liked={event.liked} eventId={event.id} />
         </div>
       </div>
     </div>

@@ -108,28 +108,6 @@ export const eventRouter = createTRPCRouter({
     }),
   findByFilters: publicProcedure
     .input(findByFilterSchema)
-    .output(
-      z.object({
-        events: z
-          .object({
-            id: z.string(),
-            description: z.string(),
-            clubId: z.string(),
-            name: z.string(),
-            startTime: z.date(),
-            endTime: z.date(),
-            club: z.object({
-              id: z.string(),
-              name: z.string(),
-              image: z.string(),
-              description: z.string(),
-            }),
-            liked: z.boolean().optional(),
-            location: z.string(),
-          })
-          .array(),
-      }),
-    )
     .query(async ({ input, ctx }) => {
       const startTime =
         input.startTime.type === 'now'
@@ -207,7 +185,9 @@ export const eventRouter = createTRPCRouter({
         return { events: eventsWithLike };
       }
       return {
-        events: events,
+        events: events.map((event) => {
+          return { ...event, liked: false };
+        }),
       };
     }),
   byId: publicProcedure.input(byIdSchema).query(async ({ input, ctx }) => {
@@ -250,26 +230,8 @@ export const eventRouter = createTRPCRouter({
           ),
         );
     }),
-  hasUser: protectedProcedure
-    .input(byIdSchema)
-    .query(async ({ input, ctx }) => {
-      const eventId = input.id;
-      const userId = ctx.session.user.id;
-      try {
-        const x = !!(await ctx.db.query.userMetadataToEvents.findFirst({
-          where: and(
-            eq(userMetadataToEvents.userId, userId),
-            eq(userMetadataToEvents.eventId, eventId),
-          ),
-        }));
-        return x;
-      } catch {
-        return false;
-      }
-    }),
   byName: publicProcedure.input(byNameSchema).query(async ({ input, ctx }) => {
     const { name, sortByDate } = input;
-
     try {
       const events = await ctx.db.query.events.findMany({
         where: (event) => ilike(event.name, `%${name}%`),
