@@ -101,11 +101,9 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-  ...(process.env.VERCEL_ENV !== 'preview' && {
-    pages: {
-      signIn: '/auth',
-    },
-  }),
+  pages: {
+    signIn: '/auth',
+  },
   providers:
     process.env.VERCEL_ENV === 'preview'
       ? [
