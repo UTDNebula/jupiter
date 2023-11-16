@@ -1,4 +1,4 @@
-import { type FC } from 'react';
+import { forwardRef, type ForwardedRef } from 'react';
 import Image from 'next/image';
 import { GroupIcon } from './Icons';
 import type { SelectClub as Club } from '@src/server/db/models';
@@ -9,7 +9,10 @@ interface Props {
   club: Club;
 }
 
-const OrgDirectoryCards: FC<Props> = ({ club }) => {
+const OrgDirectoryCards = (
+  { club }: Props,
+  ref: ForwardedRef<HTMLDivElement>,
+) => {
   const desc =
     club.description.length > 50
       ? club.description.slice(0, 150) + '...'
@@ -17,7 +20,10 @@ const OrgDirectoryCards: FC<Props> = ({ club }) => {
   const name =
     club.name.length > 20 ? club.name.slice(0, 30) + '...' : club.name;
   return (
-    <div className="flex h-full min-h-[600px] max-w-xs flex-col rounded-lg bg-white shadow-lg ">
+    <div
+      className="flex h-full min-h-[600px] w-80 flex-col rounded-lg bg-white shadow-lg "
+      ref={ref}
+    >
       <div className="relative h-48 overflow-hidden sm:h-56 md:h-64 lg:h-72">
         <Image
           src={club.image}
@@ -59,5 +65,5 @@ const OrgDirectoryCards: FC<Props> = ({ club }) => {
     </div>
   );
 };
-
-export default OrgDirectoryCards;
+const forwardedOrgDirectoryCard = forwardRef(OrgDirectoryCards);
+export default forwardedOrgDirectoryCard;
