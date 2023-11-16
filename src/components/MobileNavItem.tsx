@@ -1,3 +1,5 @@
+'use client';
+
 import React, { type FC, useState } from 'react';
 import {
   AboutIcon,
@@ -10,7 +12,8 @@ import {
   RightChevron,
   SettingsIcon,
 } from './Icons';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const mainCats = ['Home', 'History', 'Liked', 'Events'] as const;
 const moreCats = ['Settings', 'About', 'Feedback'] as const;
@@ -45,7 +48,6 @@ const MobileNavItem: FC<{ cat: union[number]; active: boolean }> = ({
   active,
 }) => {
   const Icon = IconMap[cat];
-  const router = useRouter();
   const route = routeMap[cat];
 
   if (!route) return null;
@@ -58,10 +60,11 @@ const MobileNavItem: FC<{ cat: union[number]; active: boolean }> = ({
           : 'mb-5'
       }`}
     >
-      <div
+      <Link
         className=" 
         flex h-full w-64 cursor-pointer  items-start rounded-lg bg-transparent px-5 text-sm transition-transform"
-        onClick={() => void router.push(route)}
+        href={route}
+        passHref
       >
         <div className="flex items-center gap-x-4">
           {Icon && (
@@ -78,7 +81,7 @@ const MobileNavItem: FC<{ cat: union[number]; active: boolean }> = ({
         <div className="ml-auto">
           <RightChevron />
         </div>
-      </div>
+      </Link>
     </div>
   );
 };

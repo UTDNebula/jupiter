@@ -1,6 +1,7 @@
+'use client';
+
 import { useState } from 'react';
 import MobileNavMenu from './MobileNavMenu';
-import { boolean } from 'drizzle-orm/mysql-core';
 
 const MobileNav = () => {
   const [isOpen, setIsOpen] = useState(false);

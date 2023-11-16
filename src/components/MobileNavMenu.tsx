@@ -1,7 +1,9 @@
+'use client';
+
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import { useState, type Dispatch, type SetStateAction } from 'react';
 import MobileNavItem from './MobileNavItem';
+import { usePathname } from 'next/navigation';
 
 const mainCats = ['Home', 'History', 'Liked', 'Events'] as const;
 const moreCats = ['Settings', 'About', 'Feedback'] as const;
@@ -24,7 +26,7 @@ const MobileNavMenu = ({
 }: {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const router = useRouter();
+  const pathname = usePathname();
 
   //   const [activeRoute, setActiveRoute] = useState(router.pathname);
 
@@ -55,7 +57,7 @@ const MobileNavMenu = ({
             {mainCats.map((cat) => (
               <MobileNavItem
                 key={cat}
-                active={router.pathname === routeMap[cat]}
+                active={pathname === routeMap[cat]}
                 cat={cat}
               />
             ))}
@@ -69,7 +71,7 @@ const MobileNavMenu = ({
             {moreCats.map((cat) => (
               <MobileNavItem
                 key={cat}
-                active={router.pathname === routeMap[cat]}
+                active={pathname === routeMap[cat]}
                 cat={cat}
               />
             ))}
