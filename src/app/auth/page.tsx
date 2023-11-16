@@ -28,7 +28,7 @@ export default async function Auth({
           </div>
           <div className="z-10 flex flex-col items-center justify-center space-y-12">
             <h1 className="text-6xl font-bold text-white">Sign In / Sign Up</h1>
-            <div className="flex flex-row justify-between py-2.5">
+            <div className="flex w-full flex-row justify-center gap-x-4 py-2.5">
               {Object.values(providers || {}).map((provider) => (
                 <ProviderButton key={provider.id} provider={provider} />
               ))}
