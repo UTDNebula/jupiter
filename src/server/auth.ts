@@ -53,7 +53,7 @@ export interface PreviewUser {
 export const authOptions: NextAuthOptions = {
   adapter: DrizzleAdapter(db, pgTable),
   session: {
-    strategy: process.env.VERCEL_ENV == 'preview' ? 'jwt' : 'database',
+    strategy: process.env.VERCEL_ENV === 'preview' ? 'jwt' : 'database',
   },
   callbacks: {
     async session({ session, user, token }) {
