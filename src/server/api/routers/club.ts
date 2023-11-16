@@ -13,6 +13,10 @@ const byIdSchema = z.object({
 const allSchema = z.object({
   tag: z.string().nullish(),
 });
+const allInfiniteSchema = z.object({
+  tag: z.string().nullish(),
+  cursor: z.number().nullish(),
+});
 
 export const clubRouter = createTRPCRouter({
   byName: publicProcedure.input(byNameSchema).query(async ({ input, ctx }) => {
@@ -39,12 +43,13 @@ export const clubRouter = createTRPCRouter({
       throw e;
     }
   }),
+
   all: publicProcedure.input(allSchema).query(async ({ ctx, input }) => {
     try {
       let query = ctx.db.select().from(club);
       if (input.tag && typeof input.tag == 'string' && input.tag !== 'All')
         query = query.where(sql`${input.tag} = ANY(tags)`);
-      query = query.orderBy(sql`RANDOM()`).limit(20);
+      query = query.limit(20);
       const res = await query;
       return res;
     } catch (e) {
@@ -52,6 +57,22 @@ export const clubRouter = createTRPCRouter({
       return [];
     }
   }),
+  allInfinite: publicProcedure
+    .input(allInfiniteSchema)
+    .query(async ({ ctx, input }) => {
+      try {
+        let query = ctx.db.select().from(club);
+        if (input.tag && typeof input.tag == 'string' && input.tag !== 'All')
+          query = query.where(sql`${input.tag} = ANY(tags)`);
+        query = query.limit(20);
+        query = query.offset(input.cursor ?? 0);
+        const clubs = await query;
+        return { clubs: clubs, cursor: input.cursor ?? 0 + clubs.length };
+      } catch (e) {
+        console.error(e);
+        return { clubs: [], cursor: input.cursor ?? 0 };
+      }
+    }),
   distinctTags: publicProcedure.query(async ({ ctx }) => {
     try {
       const tags = await ctx.db.selectDistinct({ tags: club.tags }).from(club);
