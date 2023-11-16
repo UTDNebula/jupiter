@@ -122,7 +122,7 @@ export const authOptions: NextAuthOptions = {
                 id: 'e5f55898-e3ee-416a-91b6-cf3982599e6b',
                 name: 'J Smith',
                 email: 'jsmith@example.com',
-                image: 'https://picsum.photos/id/237/200/300',
+                image: '/nebula-logo.png',
               } as PreviewUser;
             },
           }),
