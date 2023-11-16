@@ -4,6 +4,8 @@ import {
   type DefaultSession,
 } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import DiscordProvider from 'next-auth/providers/discord';
+import CredentialsProvider from 'next-auth/providers/credentials';
 import { env } from '@src/env.mjs';
 import { DrizzleAdapter } from '@auth/drizzle-adapter';
 import { db } from './db';
@@ -35,6 +37,13 @@ declare module 'next-auth' {
   // }
 }
 
+export interface PreviewUser {
+  id: string;
+  name: string;
+  email: string;
+  image: string;
+}
+
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
  *
@@ -43,8 +52,27 @@ declare module 'next-auth' {
 
 export const authOptions: NextAuthOptions = {
   adapter: DrizzleAdapter(db, pgTable),
+  session: {
+    strategy: 'jwt',
+  },
   callbacks: {
-    async session({ session, user }) {
+    async session({ session, user, token }) {
+      if (token) {
+        const testUserMetadata: UserMetadata = {
+          firstName: 'John',
+          lastName: 'Smith',
+          career: 'Business',
+          major: 'Business',
+          minor: 'Business',
+          role: 'Student',
+          year: 'Grad Student',
+        };
+
+        session.user = { ...session.user, ...testUserMetadata };
+
+        return session;
+      }
+
       let metadata = await db.query.userMetadata.findFirst({
         where: (metadata) => eq(metadata.id, user.id),
       });
@@ -73,25 +101,54 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-  pages: {
-    signIn: '/auth',
-  },
-  providers: [
-    GoogleProvider({
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
-    }),
+  ...(process.env.VERCEL_ENV !== 'preview' && {
+    pages: {
+      signIn: '/auth',
+    },
+  }),
+  providers:
+    process.env.VERCEL_ENV === 'preview'
+      ? [
+          CredentialsProvider({
+            name: 'Credentials',
+            credentials: {
+              username: {
+                label: 'Username',
+                type: 'text',
+                placeholder: 'jsmith',
+              },
+              password: { label: 'Password', type: 'password' },
+            },
+            authorize: () => {
+              return {
+                id: 'e5f55898-e3ee-416a-91b6-cf3982599e6b',
+                name: 'J Smith',
+                email: 'jsmith@example.com',
+                image: 'https://picsum.photos/id/237/200/300',
+              } as PreviewUser;
+            },
+          }),
+        ]
+      : [
+          GoogleProvider({
+            clientId: env.GOOGLE_CLIENT_ID,
+            clientSecret: env.GOOGLE_CLIENT_SECRET,
+          }),
+          DiscordProvider({
+            clientId: env.DISCORD_CLIENT_ID,
+            clientSecret: env.DISCORD_CLIENT_SECRET,
+          }),
+        ],
 
-    /**
-     * ...add more providers here.
-     *
-     * Most other providers require a bit more work than the Discord provider. For example, the
-     * GitHub provider requires you to add the `refresh_token_expires_in` field to the Account
-     * model. Refer to the NextAuth.js docs for the provider you want to use. Example:
-     *
-     * @see https://next-auth.js.org/providers/github
-     */
-  ],
+  /**
+   * ...add more providers here.
+   *
+   * Most other providers require a bit more work than the Discord provider. For example, the
+   * GitHub provider requires you to add the `refresh_token_expires_in` field to the Account
+   * model. Refer to the NextAuth.js docs for the provider you want to use. Example:
+   *
+   * @see https://next-auth.js.org/providers/github
+   */
 };
 
 /**
