@@ -1,7 +1,11 @@
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '../trpc';
 import { and, eq, sql } from 'drizzle-orm';
-import { userMetadata, userMetadataToClubs } from '@src/server/db/schema';
+import {
+  userMetadata,
+  userMetadataToClubs,
+  users,
+} from '@src/server/db/schema';
 import { insertUserMetadata } from '@src/server/db/models';
 
 const byIdSchema = z.object({ id: z.string().uuid() });
@@ -47,4 +51,9 @@ export const userMetadataRouter = createTRPCRouter({
         ),
       );
     }),
+  deleteById: protectedProcedure.mutation(async ({ ctx }) => {
+    const { user } = ctx.session;
+    await ctx.db.delete(users).where(eq(users.id, user.id));
+    await ctx.db.delete(userMetadata).where(eq(userMetadata.id, user.id));
+  }),
 });

@@ -9,6 +9,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import ClubSelector from 'ClubSelector';
 import { api } from '@src/trpc/react';
+import DeleteButton from './DeleteButton';
 
 type Props = {
   clubs: { club: SelectClub }[];
@@ -20,7 +21,7 @@ const settingsSchema = z.object({
   lastName: z.string().min(1),
   major: z.string().min(1),
   minor: z.string().nullable(),
-  year: z.enum(['Freshman', 'Sophomore', 'Junior', 'Senior']),
+  year: z.enum(['Freshman', 'Sophomore', 'Junior', 'Senior', 'Grad Student']),
   role: z.enum(['Student', 'Student Organizer', 'Administrator']),
   clubs: selectClub.pick({ name: true, id: true, image: true }).array(),
 });
@@ -41,6 +42,7 @@ export default function FormCard({ clubs, user }: Props) {
   });
 
   const { mutate } = api.userMetadata.updateById.useMutation();
+
   return (
     <form
       onSubmit={handleSubmit((data) => {
@@ -87,7 +89,13 @@ export default function FormCard({ clubs, user }: Props) {
               label="Year"
               defaultValue={user.year}
               name="year"
-              options={['Freshman', 'Sophomore', 'Junior', 'Senior']}
+              options={[
+                'Freshman',
+                'Sophomore',
+                'Junior',
+                'Senior',
+                'Grad Student',
+              ]}
               register={register}
             />
             <SettingsDropdown
@@ -101,19 +109,13 @@ export default function FormCard({ clubs, user }: Props) {
           </div>
         </div>
 
-        {/* Club section */}
         <div className="w-full md:w-1/2">
           <ClubSelector register={register} control={control} />
         </div>
       </div>
 
       <div className="mt-6 flex justify-between gap-4">
-        <button
-          type="button"
-          className="rounded-full bg-red-500 px-4 py-2 text-white transition duration-300 hover:bg-red-700"
-        >
-          Delete account
-        </button>
+        <DeleteButton />
         <button
           type="submit"
           className="rounded-full bg-blue-500 px-4 py-2 text-white transition duration-300 hover:bg-blue-700"
