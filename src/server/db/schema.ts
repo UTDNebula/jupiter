@@ -60,10 +60,10 @@ export const userMetadataToClubs = pgTable(
   {
     userId: text('user_id')
       .notNull()
-      .references(() => userMetadata.id),
+      .references(() => userMetadata.id, { onDelete: 'cascade' }),
     clubId: text('club_id')
       .notNull()
-      .references(() => club.id),
+      .references(() => club.id, { onDelete: 'cascade' }),
   },
   (t) => ({
     pk: primaryKey(t.userId, t.clubId),
