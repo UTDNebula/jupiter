@@ -35,7 +35,7 @@ const OrgHeader = ({ club }: { club: Club }) => {
                     query: { tag: tag },
                   }}
                   key={tag}
-                  className="m-2 rounded-full bg-black bg-opacity-50 px-4 py-2 font-semibold text-slate-100"
+                  className="m-2 h-min rounded-full bg-black bg-opacity-50 px-4 py-2 align-middle font-semibold text-slate-100"
                 >
                   {tag}
                 </Link>
