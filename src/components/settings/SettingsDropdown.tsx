@@ -19,7 +19,7 @@ const SettingsDropdown = ({
   register,
 }: SettingsDropdownProps) => {
   return (
-    <div className="mb-2 w-full p-2">
+    <div className="mb-2 p-2">
       <label className="mb-2 text-sm font-medium text-slate-500">{label}</label>
       <select
         defaultValue={defaultValue}

@@ -21,7 +21,7 @@ async function SettingsForm({ session }: { session: Session }) {
       <div>
         <div className="h-24 rounded-t-3xl bg-gradient-to-r from-[#5A49F7] from-[4.36%] via-[#9403D8] via-[49.74%] to-[#FD9365] p-6" />
         <div className="bg-white p-6">
-          <h1 className="py-6 text-3xl font-semibold">Settings</h1>
+          <h1 className="py-2 text-3xl font-semibold">Settings</h1>
           <FormCard user={session.user} clubs={clubs} />
         </div>
       </div>

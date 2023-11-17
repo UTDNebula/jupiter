@@ -53,8 +53,8 @@ export default function FormCard({ clubs, user }: Props) {
       })}
     >
       <div className="flex flex-col justify-between md:flex-row">
-        <div className="flex flex-col space-y-6">
-          <div className="flex justify-between space-x-4">
+        <div className="flex flex-col space-y-6 md:w-2/3">
+          <div className="flex space-x-4">
             <SettingsInput
               label="First Name"
               defaultValue={user.firstName}
@@ -68,7 +68,7 @@ export default function FormCard({ clubs, user }: Props) {
               register={register}
             />
           </div>
-          <div className="flex justify-between space-x-4">
+          <div className="flex space-x-4">
             <SettingsInput
               label="Major"
               defaultValue={user.major}
@@ -82,7 +82,7 @@ export default function FormCard({ clubs, user }: Props) {
               register={register}
             />
           </div>
-          <div className="flex justify-between">
+          <div className="flex space-x-4">
             <SettingsDropdown
               label="Year"
               defaultValue={user.year}
@@ -94,27 +94,32 @@ export default function FormCard({ clubs, user }: Props) {
               label="Role"
               defaultValue={user.role}
               name="role"
-              options={['Member']}
+              options={['Student', 'Student Organizer', 'Administrator']}
               disabled
               register={register}
             />
           </div>
+        </div>
+
+        {/* Club section */}
+        <div className="w-full md:w-1/2">
           <ClubSelector register={register} control={control} />
         </div>
-        <div className="mt-6 flex justify-between gap-4">
-          <button
-            type="button"
-            className="rounded bg-red-500 px-4 py-2 text-white transition duration-300 hover:bg-red-700"
-          >
-            Delete account
-          </button>
-          <button
-            type="submit"
-            className="rounded bg-blue-500 px-4 py-2 text-white transition duration-300 hover:bg-blue-700"
-          >
-            Apply Changes
-          </button>
-        </div>
+      </div>
+
+      <div className="mt-6 flex justify-between gap-4">
+        <button
+          type="button"
+          className="rounded-full bg-red-500 px-4 py-2 text-white transition duration-300 hover:bg-red-700"
+        >
+          Delete account
+        </button>
+        <button
+          type="submit"
+          className="rounded-full bg-blue-500 px-4 py-2 text-white transition duration-300 hover:bg-blue-700"
+        >
+          Apply Changes
+        </button>
       </div>
     </form>
   );
