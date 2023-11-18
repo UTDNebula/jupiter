@@ -10,11 +10,12 @@ import {
   type SQL,
   between,
 } from 'drizzle-orm';
-import { createTRPCRouter, publicProcedure } from '../trpc';
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { selectEvent } from '@src/server/db/models';
 import { type DateRange } from 'react-day-picker';
 import { add } from 'date-fns';
+import { userMetadataToEvents } from '@src/server/db/schema';
 function isDateRange(value: unknown): value is DateRange {
   return Boolean(value && typeof value === 'object' && 'from' in value);
 }
@@ -54,6 +55,9 @@ const byIdSchema = z.object({
 const byNameSchema = z.object({
   name: z.string().default(''),
   sortByDate: z.boolean().default(false),
+});
+const joinLeaveSchema = z.object({
+  id: z.string(),
 });
 
 export const eventRouter = createTRPCRouter({
@@ -165,7 +169,26 @@ export const eventRouter = createTRPCRouter({
         },
         limit: 20,
       });
-      return { events: events };
+      if (ctx.session) {
+        const user = ctx.session.user;
+        const eventsWithLike = await Promise.all(
+          events.map(async (ev) => {
+            const liked = !!(await ctx.db.query.userMetadataToEvents.findFirst({
+              where: and(
+                eq(userMetadataToEvents.userId, user.id),
+                eq(userMetadataToEvents.eventId, ev.id),
+              ),
+            }));
+            return { ...ev, liked: liked };
+          }),
+        );
+        return { events: eventsWithLike };
+      }
+      return {
+        events: events.map((event) => {
+          return { ...event, liked: false };
+        }),
+      };
     }),
   byId: publicProcedure.input(byIdSchema).query(async ({ input, ctx }) => {
     const { id } = input;
@@ -183,9 +206,32 @@ export const eventRouter = createTRPCRouter({
       throw e;
     }
   }),
+  joinEvent: protectedProcedure
+    .input(joinLeaveSchema)
+    .mutation(async ({ input, ctx }) => {
+      const eventId = input.id;
+      const userId = ctx.session.user.id;
+      await ctx.db
+        .insert(userMetadataToEvents)
+        .values({ userId: userId, eventId: eventId })
+        .onConflictDoNothing();
+    }),
+  leaveEvent: protectedProcedure
+    .input(joinLeaveSchema)
+    .mutation(async ({ input, ctx }) => {
+      const eventId = input.id;
+      const userId = ctx.session.user.id;
+      await ctx.db
+        .delete(userMetadataToEvents)
+        .where(
+          and(
+            eq(userMetadataToEvents.userId, userId),
+            eq(userMetadataToEvents.eventId, eventId),
+          ),
+        );
+    }),
   byName: publicProcedure.input(byNameSchema).query(async ({ input, ctx }) => {
     const { name, sortByDate } = input;
-
     try {
       const events = await ctx.db.query.events.findMany({
         where: (event) => ilike(event.name, `%${name}%`),
