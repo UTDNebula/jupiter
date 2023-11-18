@@ -7,7 +7,7 @@ export const insertClub = createInsertSchema(club);
 export const selectClub = createSelectSchema(club);
 
 export type InsertClub = z.infer<typeof insertClub>;
-export type SelectClub = z.infer<typeof selectClub>;
+export type SelectClub = typeof club.$inferSelect;
 
 // Schema definition for contacts table
 export const insertContact = createInsertSchema(contacts);
