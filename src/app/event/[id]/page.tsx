@@ -96,8 +96,6 @@ export default async function EventsPage({ params }: Params) {
                 </div>
               </div>
 
-
-
               <div className="mx-12 text-sm flex-grow">
                 <p className="text-slate-700">
                   {club.description}

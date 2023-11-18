@@ -47,7 +47,6 @@ const CountdownTimer: FC<{startTime : Date}> = ({startTime}) => {
     if (isLoading) return 
 
     return (
-        
         <div className="flex font-medium text-gray-600 text-3xl">
             <p className="mr-6">
                 {timeRemaining.days}
@@ -63,8 +62,6 @@ const CountdownTimer: FC<{startTime : Date}> = ({startTime}) => {
             </p>
         </div>
     )
-
-
 }
 
 export default CountdownTimer;
