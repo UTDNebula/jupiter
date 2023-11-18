@@ -5,6 +5,12 @@ import { type FC, useEffect, useState } from "react";
 const calculateTimeRemaining = (eventStartTime: number) => {
     const timeUntilStart = eventStartTime - Date.now();  
 
+    if ( timeUntilStart < 0 ) return ({
+        days: "00",
+        hours: "00",
+        minutes: "00",
+        seconds: "00",
+    })
 
     const timeUntilStartInSeconds = Math.floor( (timeUntilStart % (1000 * 60)) / 1000 );
     const timeUntilStartInMinutes = Math.floor((timeUntilStart % (1000 * 60 * 60)) / (1000 * 60) );
@@ -21,21 +27,21 @@ const calculateTimeRemaining = (eventStartTime: number) => {
 }
 
 
-const CountdownTimer: FC<{eventStartTime: number}> = (eventStartTime) => {
-    const startTime = eventStartTime.eventStartTime;
+const CountdownTimer: FC<{startTime : Date}> = ({startTime}) => {
+    const eventStartTime = startTime.getTime(); 
 
     const [isLoading, setisLoading] = useState(true);
-    const [timeRemaining, setTimeRemaining] = useState(calculateTimeRemaining(startTime));
+    const [timeRemaining, setTimeRemaining] = useState(calculateTimeRemaining(eventStartTime));
 
     useEffect( () => {
         if (isLoading) { setisLoading(false); }
 
         const interval = setInterval( () => {
-            setTimeRemaining(calculateTimeRemaining(startTime));
+            setTimeRemaining(calculateTimeRemaining(eventStartTime));
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [isLoading, startTime])
+    }, [isLoading, eventStartTime])
 
 
     if (isLoading) return 

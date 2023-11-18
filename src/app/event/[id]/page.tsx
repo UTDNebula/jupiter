@@ -3,11 +3,12 @@ import { db } from '@src/server/db';
 import { events } from '@src/server/db/schema';
 import { eq } from 'drizzle-orm';
 import { type Metadata } from 'next';
-import { HeartIcon } from '@src/components/Icons';
+
 import TimeComponent from './TimeComponent';
 import wave from "public/images/Wave.jpg"
 import Image from 'next/image';
-import CountdownTimer from '../CountdownTimer';
+import CountdownTimer from './CountdownTimer';
+import LikeButton from '@src/components/LikeButton';
 
 type Params = { params: { id: string } };
 
@@ -34,7 +35,7 @@ export default async function EventsPage({ params }: Params) {
 
       <section className="mb-5 flex flex-col space-y-6 px-7">
         <div className="relative h-full w-full rounded-xl p-10 shadow-lg flex justify-between bg-[url('/images/Wave.jpg')] bg-cover  ">
-          <section>
+          <section className='text-white'>
             <div className="flex ">
               {clubTags.map( (tag) => (
                 <p
@@ -52,12 +53,10 @@ export default async function EventsPage({ params }: Params) {
           </section>
           <section className="float-right my-auto flex">
             <button
-                className="rounded-full bg-blue-primary p-2.5 transition-colors hover:bg-blue-700 mr-12"
+                className="rounded-full bg-blue-400 p-2.5 transition-colors hover:bg-blue-700 mr-12"
                 type="button"
             >
-              <div className='h-8 w-8 '>
-                  <HeartIcon fill="fill-white" />
-              </div>
+              <LikeButton />
             </button>
             <button className="rounded-full bg-blue-primary px-8 py-4 text-xs font-extrabold text-white transition-colors hover:bg-blue-700 mr-8">
               Register
@@ -67,14 +66,12 @@ export default async function EventsPage({ params }: Params) {
       </section>
 
       <section className="mb-5 flex flex-col space-y-6 px-7 text-black">
-        <div className="relative h-full w-full rounded-xl p-10 shadow-lg flex justify-between ">
-          
-          <div className="flex  w-max m-4 ">
-              <div className="h-full w-5/12">
-                <div className='relative h-32 w-full rounded-b-md overflow-hidden mx-auto '>
+        <div className="relative h-full w-full rounded-xl p-10 shadow-lg flex ">
+          <div className="flex  w-max m-4">
+              <div className="h-full lg:min-w-fit max-w-sm">
+                <div className='relative h-40 w-full rounded-b-md overflow-hidden mx-auto '>
                   <Image src={wave} alt="wave" layout="fill" objectFit='cover' />
                 </div>
-
                 <div>
                   <h1 className=" mt-10 text-sm text-gray-700 font-semibold">
                     Description
@@ -89,7 +86,7 @@ export default async function EventsPage({ params }: Params) {
                         <p className="mr-5">
                           {details}
                         </p>
-                        <p className="font-semibold text-right">
+                        <p className="font-semibold text-right ">
                           {clubDetails[index]}
                         </p>
                       </div>
@@ -99,7 +96,9 @@ export default async function EventsPage({ params }: Params) {
                 </div>
               </div>
 
-              <div className="mx-12 text-sm ">
+
+
+              <div className="mx-12 text-sm flex-grow">
                 <p className="text-slate-700">
                   {club.description}
                 </p>
@@ -108,12 +107,12 @@ export default async function EventsPage({ params }: Params) {
                 </p>
               </div>
 
-              <div className="flex w-fit flex-col ">
+              <div className="flex flex-col ">
                   <h1 className="text-gray-600 font-semibold text-sm">
                     Starts in
                   </h1>
                   <div className="flex justify-start mt-5">
-                    <CountdownTimer eventStartTime= {event.startTime.getTime()} />
+                    <CountdownTimer startTime= {event.startTime} />
                   </div>
                   <div className="flex justify-start font-medium text-gray-400 text-sm mt-5">
                     <p className="mr-7">Days</p>
@@ -122,15 +121,11 @@ export default async function EventsPage({ params }: Params) {
                     <p>Seconds</p>
                   </div>
 
-
-                  <div className=" mt-auto">
-                  <button className="rounded-full border-2 border-blue-primary px-20 py-4 text-xs font-extrabold text-blue-primary transition-colors hover:bg-blue-700 mr-8 break-normal">
+                  <button className="mt-auto block w-full rounded-full border-2 border-blue-primary py-4 text-xs font-extrabold text-blue-primary transition-colors hover:text-white hover:bg-blue-700 mr-8 break-normal">
                     View Club
                   </button>
-                  </div>
               </div>
           </div>
-
         </div>
       </section>
     </main>
