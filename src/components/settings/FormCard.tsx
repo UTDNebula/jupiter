@@ -12,7 +12,7 @@ import { api } from '@src/trpc/react';
 import DeleteButton from './DeleteButton';
 
 type Props = {
-  clubs: { club: SelectClub }[];
+  clubs: SelectClub[];
   user: Session['user'];
 };
 
@@ -32,7 +32,7 @@ export default function FormCard({ clubs, user }: Props) {
   const { register, handleSubmit, control } = useForm<SettingSchema>({
     resolver: zodResolver(settingsSchema),
     defaultValues: {
-      clubs: clubs.map(({ club }) => club),
+      clubs,
       firstName: user.firstName,
       lastName: user.lastName,
       major: user.major,
