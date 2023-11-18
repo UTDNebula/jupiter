@@ -44,7 +44,7 @@ const OrgHeader = ({ club }: { club: Club }) => {
               Join
             </button>
             <button
-              className="rounded-full bg-blue-primary p-2.5 transition-colors hover:bg-blue-700"
+              className="rounded-full bg-blue-primary p-2.5 transition-colors hover:bg-blue-700 "
               type="button"
             >
               <div className={'h-8 w-8'}>

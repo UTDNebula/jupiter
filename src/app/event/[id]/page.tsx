@@ -3,8 +3,11 @@ import { db } from '@src/server/db';
 import { events } from '@src/server/db/schema';
 import { eq } from 'drizzle-orm';
 import { type Metadata } from 'next';
+import { HeartIcon } from '@src/components/Icons';
+import TimeComponent from './TimeComponent';
+import wave from "public/images/Wave.jpg"
 import Image from 'next/image';
-import Link from 'next/link';
+import CountdownTimer from '../CountdownTimer';
 
 type Params = { params: { id: string } };
 
@@ -18,7 +21,15 @@ export default async function EventsPage({ params }: Params) {
 
   const { club, ...event } = res;
 
+  const clubTags = ['Software', 'Innovation', 'Other']
+
+  const clubDescription = ['Club', 'President', 'Location', 'Multi-Day']
+  const clubDetails = [club.name, 'John Doe', 'ESCW 1.232', 'No']
+
+
   return (
+    
+    <main className="w-full md:pl-72 text-white">
   //   <div className="relative">
   //   <div className="h-full w-full">
   //     <Image
@@ -66,35 +77,108 @@ export default async function EventsPage({ params }: Params) {
   // </div>
     <main className="w-full md:pl-72">
       <EventHeader />
-      <div className="mb-5 flex flex-col space-y-6 px-7">
-        <div className="relative h-full w-full rounded-xl bg-slate-50 p-10 shadow-lg">
-          <Image src={club.image} width={100} height={100} alt={club.name} />
-          <hr className="my-3 mt-5 h-[1px] border-0 bg-black" />
-          <div className="mb-3 flex w-full justify-between">
-            <div>
-              <Link
-                className="text-4xl font-semibold"
-                href={`/directory/${club.id}`}
-              >
-                {club.name}
-              </Link>
-              <p className="text-2xl font-semibold">{event.name}</p>
+
+      <section className="mb-5 flex flex-col space-y-6 px-7">
+        <div className="relative h-full w-full rounded-xl p-10 shadow-lg flex justify-between bg-[url('/images/Wave.jpg')] bg-cover  ">
+          <section>
+            <div className="flex ">
+              {clubTags.map( (tag) => (
+                <p
+                  key={tag}
+                  className=" mr-5 pt-4 pb-12 font-semibold "
+                >
+                  {tag}
+                </p>
+              ))}
             </div>
-            <p className="text-2xl font-semibold">
-              {new Date(event.startTime).toString().substring(0, 24)}
-            </p>
-          </div>
-          <p>{event.description}</p>
-          <div className="float-right mt-24">
-            <button className="mr-3 rounded-lg border-[1px] border-black bg-white px-3 py-1">
-              Contact Us
+            <h1 className="text-4xl font-bold mb-4">
+              {event.name}
+            </h1>
+            <TimeComponent date={event.startTime.toLocaleString()} />
+          </section>
+          <section className="float-right my-auto flex">
+            <button
+                className="rounded-full bg-blue-primary p-2.5 transition-colors hover:bg-blue-700 mr-12"
+                type="button"
+            >
+              <div className='h-8 w-8 '>
+                  <HeartIcon fill="fill-white" />
+              </div>
             </button>
-            <button className="rounded-lg border-[1px] border-black bg-white px-3 py-1">
+            <button className="rounded-full bg-blue-primary px-8 py-4 text-xs font-extrabold text-white transition-colors hover:bg-blue-700 mr-8">
               Register
             </button>
-          </div>
+          </section>
         </div>
-      </div>
+      </section>
+
+      <section className="mb-5 flex flex-col space-y-6 px-7 text-black">
+        <div className="relative h-full w-full rounded-xl p-10 shadow-lg flex justify-between ">
+          
+          <div className="flex  w-max m-4 ">
+              <div className="h-full w-5/12">
+                <div className='relative h-32 w-full rounded-b-md overflow-hidden mx-auto '>
+                  <Image src={wave} alt="wave" layout="fill" objectFit='cover' />
+                </div>
+
+                <div>
+                  <h1 className=" mt-10 text-sm text-gray-700 font-semibold">
+                    Description
+                  </h1>
+                  
+                  <div >
+                    {clubDescription.map( (details, index) => (
+                      <div 
+                       key={details}
+                       className="flex text-xs justify-between my-5 text-slate-700"
+                      >
+                        <p className="mr-5">
+                          {details}
+                        </p>
+                        <p className="font-semibold text-right">
+                          {clubDetails[index]}
+                        </p>
+                      </div>
+                    ))
+                    }
+                  </div>
+                </div>
+              </div>
+
+              <div className="mx-12 text-sm ">
+                <p className="text-slate-700">
+                  {club.description}
+                </p>
+                <p className="text-gray-500 mt-4">
+                  {event.description}
+                </p>
+              </div>
+
+              <div className="flex w-fit flex-col ">
+                  <h1 className="text-gray-600 font-semibold text-sm">
+                    Starts in
+                  </h1>
+                  <div className="flex justify-start mt-5">
+                    <CountdownTimer eventStartTime= {event.startTime.getTime()} />
+                  </div>
+                  <div className="flex justify-start font-medium text-gray-400 text-sm mt-5">
+                    <p className="mr-7">Days</p>
+                    <p className="mr-6">Hours</p>
+                    <p className="mr-6">Minutes</p>
+                    <p>Seconds</p>
+                  </div>
+
+
+                  <div className=" mt-auto">
+                  <button className="rounded-full border-2 border-blue-primary px-20 py-4 text-xs font-extrabold text-blue-primary transition-colors hover:bg-blue-700 mr-8 break-normal">
+                    View Club
+                  </button>
+                  </div>
+              </div>
+          </div>
+
+        </div>
+      </section>
     </main>
   );
 }
