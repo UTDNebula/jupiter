@@ -34,7 +34,7 @@ export default async function EventsPage({ params }: Params) {
       <EventHeader />
 
       <section className="mb-5 flex flex-col space-y-6 px-7">
-        <div className="relative h-full w-full rounded-xl p-10 shadow-lg flex justify-between bg-[url('/images/Wave.jpg')] bg-cover  ">
+        <div className="relative h-full w-full rounded-xl p-10 shadow-lg flex justify-between bg-[url('/images/wideWave.jpg')] bg-cover  ">
           <section className='text-white'>
             <div className="flex ">
               {clubTags.map( (tag) => (
