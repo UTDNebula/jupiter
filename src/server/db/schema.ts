@@ -42,13 +42,18 @@ export const careerEnum = pgEnum('career', [
 
 export const officerEnum = pgEnum('officer_type', ['President', 'Officer']);
 
-export const officerData = pgTable('officer_data', {
-  officerId: text('officer_id')
-    .default(sql`nanoid(20)`)
-    .primaryKey(),
-  officerType: officerEnum('officer_type').$default(() => 'Officer'),
-  userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
-});
+export const officerData = pgTable(
+  'officer_data',
+  {
+    officerType: officerEnum('officer_type').$default(() => 'Officer'),
+    title: text('title').default('Officer'),
+    userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
+    clubId: text('club_id').references(() => club.id, { onDelete: 'cascade' }),
+  },
+  (t) => ({
+    pk: primaryKey(t.userId, t.clubId),
+  }),
+);
 
 export const userMetadata = pgTable('user_metadata', {
   id: text('id').notNull().primaryKey(),
@@ -220,16 +225,6 @@ export const userMetadataToClubsRelations = relations(
   }),
 );
 
-export const usersRelation = relations(users, ({ many }) => ({
-  officer: many(officerData),
-}));
-
-export const officerDataToUsersRelations = relations(
-  officerData,
-  ({ one }) => ({
-    users: one(users, {
-      fields: [officerData.userId],
-      references: [users.id],
 export const userMetadataToEventsRelations = relations(
   userMetadataToEvents,
   ({ one }) => ({
@@ -243,3 +238,13 @@ export const userMetadataToEventsRelations = relations(
     }),
   }),
 );
+export const OfficerRelations = relations(officerData, ({ one }) => ({
+  user: one(userMetadata, {
+    fields: [officerData.userId],
+    references: [userMetadata.id],
+  }),
+  club: one(club, {
+    fields: [officerData.clubId],
+    references: [club.id],
+  }),
+}));
