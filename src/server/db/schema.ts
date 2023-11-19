@@ -125,6 +125,10 @@ export const club = pgTable('club', {
   name: text('name').notNull(),
   description: text('description').notNull(),
   image: text('image').default('/nebula-logo.png').notNull(),
+  tags: text('tags')
+    .array()
+    .default(sql`'{}'::text[]`)
+    .notNull(),
 });
 
 export const events = pgTable('events', {
@@ -138,7 +142,23 @@ export const events = pgTable('events', {
   description: text('description').notNull(),
   startTime: timestamp('start_time', { withTimezone: true }).notNull(),
   endTime: timestamp('end_time', { withTimezone: true }).notNull(),
+  location: text('location').default('').notNull(),
 });
+
+export const userMetadataToEvents = pgTable(
+  'user_metadata_to_events',
+  {
+    userId: text('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    eventId: text('event_id')
+      .notNull()
+      .references(() => events.id, { onDelete: 'cascade' }),
+  },
+  (table) => ({
+    pk: primaryKey(table.userId, table.eventId),
+  }),
+);
 
 const platformEnum = pgEnum('platform', [
   'discord',
@@ -210,6 +230,16 @@ export const officerDataToUsersRelations = relations(
     users: one(users, {
       fields: [officerData.userId],
       references: [users.id],
+export const userMetadataToEventsRelations = relations(
+  userMetadataToEvents,
+  ({ one }) => ({
+    event: one(events, {
+      fields: [userMetadataToEvents.eventId],
+      references: [events.id],
+    }),
+    user: one(userMetadata, {
+      fields: [userMetadataToEvents.userId],
+      references: [userMetadata.id],
     }),
   }),
 );
