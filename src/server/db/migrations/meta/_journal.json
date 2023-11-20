@@ -43,6 +43,13 @@
       "when": 1699988716692,
       "tag": "0005_yummy_polaris",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1700435171134,
+      "tag": "0006_free_reavers",
+      "breakpoints": true
     }
   ]
 }
