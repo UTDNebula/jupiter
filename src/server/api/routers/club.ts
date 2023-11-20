@@ -1,7 +1,7 @@
-import { eq, ilike, sql } from 'drizzle-orm';
-import { createTRPCRouter, publicProcedure } from '../trpc';
+import { and, eq, ilike, sql } from 'drizzle-orm';
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 import { z } from 'zod';
-import { club } from '@src/server/db/schema';
+import { club, officerData } from '@src/server/db/schema';
 const byNameSchema = z.object({
   name: z.string().default(''),
 });
@@ -13,7 +13,6 @@ const byIdSchema = z.object({
 const allSchema = z.object({
   tag: z.string().nullish(),
 });
-
 export const clubRouter = createTRPCRouter({
   byName: publicProcedure.input(byNameSchema).query(async ({ input, ctx }) => {
     const { name } = input;
@@ -67,4 +66,22 @@ export const clubRouter = createTRPCRouter({
       return [];
     }
   }),
+  getOfficerClubs: protectedProcedure.query(async ({ ctx }) => {
+    const results = await ctx.db.query.officerData.findMany({
+      where: eq(officerData.userId, ctx.session.user.id),
+      with: { club: true },
+    });
+    type wah = NonNullable<(typeof results)[number]['club']>;
+    return results.map((ele) => ele.club).filter((x): x is wah => x !== null);
+  }),
+  isOfficer: protectedProcedure
+    .input(byIdSchema)
+    .query(async ({ input, ctx }) => {
+      return !!(await ctx.db.query.officerData.findFirst({
+        where: and(
+          eq(officerData.clubId, input.id),
+          eq(officerData.userId, ctx.session.user.id),
+        ),
+      }));
+    }),
 });
