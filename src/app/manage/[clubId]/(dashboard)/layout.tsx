@@ -5,11 +5,15 @@ import { api } from '@src/trpc/server';
 import { type ReactNode } from 'react';
 
 const Layout = async ({
-  children,
   params,
+  children,
+  events,
+  analytics,
 }: {
   params: { clubId: string };
   children: ReactNode;
+  events: ReactNode;
+  analytics: ReactNode;
 }) => {
   const session = await getServerAuthSession();
   if (!session) {
@@ -33,7 +37,13 @@ const Layout = async ({
             {club.name}
           </h1>
         </div>
-        {children}
+        <div className="flex w-full flex-col gap-4">
+          {children}
+          <div className="flex w-full flex-row gap-4 ">
+            {analytics}
+            {events}
+          </div>
+        </div>
       </main>
     </div>
   );
