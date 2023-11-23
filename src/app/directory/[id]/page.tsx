@@ -9,10 +9,11 @@ import { db } from '@src/server/db';
 import { eq } from 'drizzle-orm';
 import { club } from '@src/server/db/schema';
 import { type Metadata } from 'next';
+import NotFound from '@src/components/NotFound';
 
 const OrganizationPage = async ({ params }: { params: { id: string } }) => {
   const club = await api.club.byId.query({ id: params.id });
-  if (!club) return <div>Club not found</div>;
+  if (!club) return <NotFound elementType='Club' />;
 
   return (
     <main className="w-full md:pl-72">

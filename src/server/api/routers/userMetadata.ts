@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '../trpc';
 import { eq } from 'drizzle-orm';
-import { userMetadata } from '@src/server/db/schema';
+import { userMetadata, userMetadataToEvents } from '@src/server/db/schema';
 import { insertUserMetadata } from '@src/server/db/models';
 
 const byIdSchema = z.object({ id: z.string().uuid() });
@@ -29,4 +29,19 @@ export const userMetadataRouter = createTRPCRouter({
         .set(input.updatedMetadata)
         .where(eq(userMetadata.id, input.id));
     }),
+  getEvents: protectedProcedure.query(async ({ ctx }) => {
+    const query = await ctx.db.query.userMetadataToEvents.findMany({
+      where: eq(userMetadataToEvents.userId, ctx.session.user.id),
+      with: {
+        event: {
+          with: {
+            club: true,
+          },
+        },
+      },
+    });
+    return query.map((item) => {
+      return { ...item.event, liked: true };
+    });
+  }),
 });
