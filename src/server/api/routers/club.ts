@@ -1,4 +1,4 @@
-import { eq, ilike, sql, and } from 'drizzle-orm';
+import { eq, ilike, sql, and, notInArray} from 'drizzle-orm';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { userMetadataToClubs } from '@src/server/db/schema';
@@ -72,9 +72,7 @@ export const clubRouter = createTRPCRouter({
       return [];
     }
   }),
-  joinLeave: protectedProcedure
-    .input(joinLeaveSchema)
-    .mutation(async ({ ctx, input }) => {
+  joinLeave: protectedProcedure.input(joinLeaveSchema).mutation(async ({ ctx, input }) => {
       const joinuserID = ctx.session.user.id;
       const { clubid } = input;
       const dataExists = await ctx.db.query.userMetadataToClubs.findFirst({
@@ -100,22 +98,19 @@ export const clubRouter = createTRPCRouter({
       }
       return dataExists;
     }),
-  alreadyJoined: protectedProcedure
-    .input(joinLeaveSchema)
-    .query(async ({ ctx, input }) => {
-      const joinuserID = ctx.session.user.id;
-      const { clubid } = input;
-      const isJoined = await ctx.db.query.userMetadataToClubs.findFirst({
-        where: (userMetadataToClubs) =>
-          and(
-            eq(userMetadataToClubs.userId, joinuserID),
-            eq(userMetadataToClubs.clubId, clubid),
-          ),
-      });
-      if (isJoined) {
-        return true;
-      } else {
-        return false;
+    allButJoined: protectedProcedure.input(allSchema).query(async ({ ctx, input }) => {
+      const userID = ctx.session.user.id;
+      try {
+        const joinedClubs = ctx.db.select({clubid: userMetadataToClubs.clubId}).from(userMetadataToClubs).where(eq(userMetadataToClubs.userId, userID));
+        let query = ctx.db.select().from(club).where(notInArray(club.id, joinedClubs));
+        if (input.tag && typeof input.tag == 'string' && input.tag !== 'All')
+          query = query.where(sql`${input.tag} = ANY(tags)`);
+        query = query.orderBy(sql`RANDOM()`).limit(20);
+        const res = await query;
+        return res;
+      } catch (e) {
+        console.error(e);
+        return [];
       }
     }),
 });
