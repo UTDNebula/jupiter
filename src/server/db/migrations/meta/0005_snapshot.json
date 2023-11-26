@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "02c0b02f-def0-46dc-85f4-c6f3c79453fa",
+  "id": "c8b77efa-473e-4758-b251-d366195825f7",
   "prevId": "5ffb95b2-9470-4635-96e6-7013c743b17a",
   "tables": {
     "account": {
@@ -235,6 +235,13 @@
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true
+        },
+        "location": {
+          "name": "location",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
         }
       },
       "indexes": {},
@@ -336,13 +343,13 @@
           "name": "year",
           "type": "year",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "role": {
           "name": "role",
           "type": "role",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "career": {
           "name": "career",
@@ -385,7 +392,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
+          "onDelete": "no action",
           "onUpdate": "no action"
         },
         "user_metadata_to_clubs_club_id_club_id_fk": {
@@ -398,7 +405,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
+          "onDelete": "no action",
           "onUpdate": "no action"
         }
       },
@@ -408,6 +415,63 @@
           "columns": [
             "user_id",
             "club_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "user_metadata_to_events": {
+      "name": "user_metadata_to_events",
+      "schema": "",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "event_id": {
+          "name": "event_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "user_metadata_to_events_user_id_user_id_fk": {
+          "name": "user_metadata_to_events_user_id_user_id_fk",
+          "tableFrom": "user_metadata_to_events",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "user_metadata_to_events_event_id_events_id_fk": {
+          "name": "user_metadata_to_events_event_id_events_id_fk",
+          "tableFrom": "user_metadata_to_events",
+          "tableTo": "events",
+          "columnsFrom": [
+            "event_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "user_metadata_to_events_user_id_event_id": {
+          "name": "user_metadata_to_events_user_id_event_id",
+          "columns": [
+            "user_id",
+            "event_id"
           ]
         }
       },

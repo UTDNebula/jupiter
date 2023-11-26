@@ -1,7 +1,9 @@
 import Header from '@src/components/BaseHeader';
+import { getServerAuthSession } from '@src/server/auth';
 import { type Metadata } from 'next';
 import Image from 'next/image';
 import React from 'react';
+import LikedEvents from './likedEvents';
 
 export const metadata: Metadata = {
   title: 'Liked - Jupiter',
@@ -15,20 +17,30 @@ export const metadata: Metadata = {
   },
 };
 
-const Liked = () => {
+const Liked = async () => {
+  const session = await getServerAuthSession();
+
+  if (!session) {
+    return (
+      <main className="h-full md:pl-72">
+        <Header />
+        <div className="flex w-full place-content-center items-center pt-20">
+          <Image src="/nebula-logo.png" alt="" width={300} height={300} />
+        </div>
+        <div className="h-full">
+          <h1 className=" text-black-500 pb-1 pt-5 text-center text-3xl font-bold">
+            Please Sign in to Use the liked Page.
+          </h1>
+        </div>
+      </main>
+    );
+  }
   return (
     <main className="h-full md:pl-72">
       <Header />
-      <div className="flex w-full place-content-center items-center pt-20">
-        <Image src="/nebula-logo.png" alt="" width={300} height={300} />
-      </div>
-      <div className="h-full">
-        <h1 className=" text-black-500 pt-5 text-center text-3xl font-bold">
-          The Liked Page is Under Construction!
-        </h1>
-        <h1 className=" text-black-500 pt-2 text-center text-2xl font-bold">
-          Please Come Back Later!
-        </h1>
+      <div className="mx-6 h-full p-2">
+        <h1 className="text-2xl font-bold text-slate-500">Liked Events</h1>
+        <LikedEvents />
       </div>
     </main>
   );

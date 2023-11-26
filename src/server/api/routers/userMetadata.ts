@@ -4,6 +4,7 @@ import { and, eq, sql } from 'drizzle-orm';
 import {
   userMetadata,
   userMetadataToClubs,
+  userMetadataToEvents,
   users,
 } from '@src/server/db/schema';
 import { insertUserMetadata } from '@src/server/db/models';
@@ -55,5 +56,20 @@ export const userMetadataRouter = createTRPCRouter({
     const { user } = ctx.session;
     await ctx.db.delete(users).where(eq(users.id, user.id));
     await ctx.db.delete(userMetadata).where(eq(userMetadata.id, user.id));
+  }),
+  getEvents: protectedProcedure.query(async ({ ctx }) => {
+    const query = await ctx.db.query.userMetadataToEvents.findMany({
+      where: eq(userMetadataToEvents.userId, ctx.session.user.id),
+      with: {
+        event: {
+          with: {
+            club: true,
+          },
+        },
+      },
+    });
+    return query.map((item) => {
+      return { ...item.event, liked: true };
+    });
   }),
 });
