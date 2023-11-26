@@ -1,6 +1,5 @@
 import DirectoryOrgs from './DirectoryOrgs';
 import { api } from '@src/trpc/server';
-import { getServerAuthSession } from '@src/server/auth';
 
 const OrgDirectoryGrid = async ({ tag }: { tag?: string }) => {
   const clubs = await api.club.all.query({ tag });
