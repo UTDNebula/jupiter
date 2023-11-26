@@ -10,6 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import ClubSelector from 'ClubSelector';
 import { api } from '@src/trpc/react';
 import DeleteButton from './DeleteButton';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   clubs: SelectClub[];
@@ -29,6 +30,7 @@ const settingsSchema = z.object({
 export type SettingSchema = z.infer<typeof settingsSchema>;
 
 export default function FormCard({ clubs, user }: Props) {
+  const router = useRouter();
   const { register, handleSubmit, control } = useForm<SettingSchema>({
     resolver: zodResolver(settingsSchema),
     defaultValues: {
@@ -41,7 +43,11 @@ export default function FormCard({ clubs, user }: Props) {
     },
   });
 
-  const { mutate } = api.userMetadata.updateById.useMutation();
+  const { mutate } = api.userMetadata.updateById.useMutation({
+    onSuccess: () => {
+      router.refresh();
+    },
+  });
 
   return (
     <form
