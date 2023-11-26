@@ -45,10 +45,18 @@ export const clubRouter = createTRPCRouter({
     }
   }),
   all: publicProcedure.input(allSchema).query(async ({ ctx, input }) => {
+    const userID = ctx.session?.user.id;
     try {
-      let query = ctx.db.select().from(club);
-      if (input.tag && typeof input.tag == 'string' && input.tag !== 'All')
+      let query;
+      if(userID){
+        const joinedClubs = ctx.db.select({clubid: userMetadataToClubs.clubId}).from(userMetadataToClubs).where(eq(userMetadataToClubs.userId, userID));
+        query = ctx.db.select().from(club).where(notInArray(club.id, joinedClubs));
+      } else{
+        query = ctx.db.select().from(club);
+      }
+      if (input.tag && typeof input.tag == 'string' && input.tag !== 'All'){
         query = query.where(sql`${input.tag} = ANY(tags)`);
+      }
       query = query.orderBy(sql`RANDOM()`).limit(20);
       const res = await query;
       return res;
@@ -97,20 +105,5 @@ export const clubRouter = createTRPCRouter({
           .values({ userId: joinuserID, clubId: clubid });
       }
       return dataExists;
-    }),
-    allButJoined: protectedProcedure.input(allSchema).query(async ({ ctx, input }) => {
-      const userID = ctx.session.user.id;
-      try {
-        const joinedClubs = ctx.db.select({clubid: userMetadataToClubs.clubId}).from(userMetadataToClubs).where(eq(userMetadataToClubs.userId, userID));
-        let query = ctx.db.select().from(club).where(notInArray(club.id, joinedClubs));
-        if (input.tag && typeof input.tag == 'string' && input.tag !== 'All')
-          query = query.where(sql`${input.tag} = ANY(tags)`);
-        query = query.orderBy(sql`RANDOM()`).limit(20);
-        const res = await query;
-        return res;
-      } catch (e) {
-        console.error(e);
-        return [];
-      }
     }),
 });
