@@ -8,12 +8,10 @@ const Layout = async ({
   params,
   children,
   events,
-  analytics,
 }: {
   params: { clubId: string };
   children: ReactNode;
   events: ReactNode;
-  analytics: ReactNode;
 }) => {
   const session = await getServerAuthSession();
   if (!session) {
@@ -39,10 +37,7 @@ const Layout = async ({
         </div>
         <div className="flex w-full flex-col gap-4">
           {children}
-          <div className="flex w-full flex-row gap-4 ">
-            {analytics}
-            {events}
-          </div>
+          <div className="flex w-full flex-row gap-4 ">{events}</div>
         </div>
       </main>
     </div>
