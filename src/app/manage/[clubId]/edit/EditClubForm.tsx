@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type SelectClub, type SelectContact } from '@src/server/db/models';
-import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -33,7 +32,7 @@ const EditClubForm = ({
   });
   return (
     <form onSubmit={submitForm}>
-      <div className="flex h-full w-full flex-col gap-y-5 p-5">
+      <div className="flex h-full w-full flex-col gap-y-5">
         <div className="w-full rounded-md bg-slate-100 p-5 shadow-sm">
           <h1 className="text-xl font-extrabold text-black">
             Edit Organization
@@ -61,34 +60,6 @@ const EditClubForm = ({
           {errors.description && (
             <p className="text-red-500">{errors.description.message}</p>
           )}
-        </div>
-        <div className="w-full rounded-md bg-slate-100 p-5 shadow-sm">
-          <div className="flex flex-row">
-            <h2 className="text-lg">Officers</h2>
-            <button className="ml-auto" type="button">
-              <Link
-                href={{
-                  pathname: `/directory/${club.id}/edit/officers`,
-                }}
-              >
-                Edit
-              </Link>
-            </button>
-          </div>
-        </div>
-        <div className="w-full rounded-md bg-slate-100 p-5 shadow-sm">
-          <div className="flex flex-row">
-            <h2>Contacts</h2>
-            <button className="ml-auto" type="button">
-              <Link
-                href={{
-                  pathname: `/directory/${club.id}/edit/contacts`,
-                }}
-              >
-                Edit
-              </Link>
-            </button>
-          </div>
         </div>
         <div className="flex flex-row justify-end gap-x-4 py-2">
           <button className="rounded-lg bg-slate-200 p-1 font-bold">
