@@ -1,28 +1,31 @@
+import { type SettingSchema } from './FormCard';
+import { type UseFormRegister } from 'react-hook-form';
+
 type SettingsInputProps = {
   label: string;
   defaultValue: string;
-  disabled?: boolean;
+  name: keyof SettingSchema;
+  register: UseFormRegister<SettingSchema>;
 };
 
 const SettingsInput = ({
   label,
   defaultValue,
-  disabled,
+  name,
+  register,
 }: SettingsInputProps) => {
   return (
-    <label className="text-lg">
-      {label}:{' '}
+    <div className="mb-2">
+      <label className="mb-2 block text-xs font-medium text-slate-500">
+        {label}
+      </label>
       <input
-        className={
-          'w-full rounded-sm bg-slate-200 p-1 ' +
-          (disabled ? 'hover:cursor-not-allowed' : '')
-        }
+        type="text"
         defaultValue={defaultValue}
-        aria-label={label}
-        name={label.charAt(0).toLowerCase() + label.replace(' ', '').slice(1)}
-        disabled={disabled}
+        className="rounded-full border p-2"
+        {...register(name)}
       />
-    </label>
+    </div>
   );
 };
 
