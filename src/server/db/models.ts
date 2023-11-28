@@ -28,4 +28,4 @@ export const insertUserMetadata = createInsertSchema(userMetadata);
 export const selectUserMetadata = createSelectSchema(userMetadata);
 
 export type InsertUserMetadata = z.infer<typeof insertUserMetadata>;
-export type SelectUserMetadata = typeof userMetadata.$inferSelect;
+export type SelectUserMetadata = z.infer<typeof selectUserMetadata>;

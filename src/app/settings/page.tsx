@@ -34,15 +34,11 @@ const Settings = async () => {
   }
 
   return (
-    <div className="my-10 flex h-screen w-full flex-col items-center justify-center md:pl-72">
-      <div className="min-h-3/4 w-3/4 rounded-xl bg-slate-50 p-20 shadow-lg">
-        <div className="flex justify-between py-2">
-          <h1 className="text-2xl">Settings</h1>
-        </div>
-        <SettingsForm session={session} />
-      </div>
+    <div className="my-auto flex h-screen w-full flex-col items-center justify-center md:pl-72">
+      <SettingsForm session={session} />
     </div>
   );
 };
 
 export default Settings;
+3;

@@ -61,8 +61,12 @@ export const userMetadata = pgTable('user_metadata', {
   lastName: text('last_name').notNull(),
   major: text('major').notNull(),
   minor: text('minor'),
-  year: yearEnum('year').$default(() => 'Freshman'),
-  role: roleEnum('role').$default(() => 'Student'),
+  year: yearEnum('year')
+    .$default(() => 'Freshman')
+    .notNull(),
+  role: roleEnum('role')
+    .$default(() => 'Student')
+    .notNull(),
   career: careerEnum('career').$default(() => 'Engineering'),
 });
 
@@ -71,10 +75,10 @@ export const userMetadataToClubs = pgTable(
   {
     userId: text('user_id')
       .notNull()
-      .references(() => userMetadata.id),
+      .references(() => userMetadata.id, { onDelete: 'cascade' }),
     clubId: text('club_id')
       .notNull()
-      .references(() => club.id),
+      .references(() => club.id, { onDelete: 'cascade' }),
   },
   (t) => ({
     pk: primaryKey(t.userId, t.clubId),
