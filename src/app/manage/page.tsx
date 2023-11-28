@@ -25,7 +25,7 @@ export default async function Page() {
             create new club
           </Link>
         </div>
-        <div className="flex flex-wrap p-4">
+        <div className="flex h-full w-full flex-wrap gap-4 p-4">
           {clubs.map((club) => (
             <ClubCard key={club.id} club={club} />
           ))}
