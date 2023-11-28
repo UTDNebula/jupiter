@@ -25,5 +25,7 @@ export type SelectEvent = z.infer<typeof selectEvent>;
 
 // Schema types for userMetadata
 export const insertUserMetadata = createInsertSchema(userMetadata);
+export const selectUserMetadata = createSelectSchema(userMetadata);
 
 export type InsertUserMetadata = z.infer<typeof insertUserMetadata>;
+export type SelectUserMetadata = typeof userMetadata.$inferSelect;
