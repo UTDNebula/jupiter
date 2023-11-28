@@ -7,6 +7,7 @@ import {
   type FieldErrors,
 } from 'react-hook-form';
 import { type z } from 'zod';
+import { UserSearchBar } from './SearchBar';
 
 type OfficerSelectorProps = {
   control: Control<z.infer<typeof createClubSchema>>;
@@ -23,18 +24,22 @@ const OfficerSelector = ({
     name: 'officers',
   });
   return (
-    <div>
+    <div className="flex flex-col gap-y-2">
       <div className="flex flex-row py-1">
         <h2>Officers</h2>
-        <button
-          className="ml-auto rounded-lg bg-slate-200 p-2"
-          type="button"
-          onClick={() => {
-            append({ name: '', position: '' });
+      </div>
+      <div>
+        <UserSearchBar
+          passUser={(user) => {
+            append({
+              id: user.id,
+              name: user.name,
+              position: '',
+              president: false,
+              locked: false,
+            });
           }}
-        >
-          add new officer
-        </button>
+        />
       </div>
       <div>
         {errors.officers && (
@@ -49,6 +54,8 @@ const OfficerSelector = ({
             index={index}
             remove={remove}
             errors={errors}
+            locked={field.locked}
+            name={field.name}
           />
         ))}
       </div>
@@ -61,25 +68,25 @@ type OfficerItemProps = {
   register: UseFormRegister<z.infer<typeof createClubSchema>>;
   remove: UseFieldArrayRemove;
   index: number;
+  name: string;
+  locked: boolean;
   errors: FieldErrors<z.infer<typeof createClubSchema>>;
 };
-const OfficerItem = ({ register, index, remove, errors }: OfficerItemProps) => {
+const OfficerItem = ({
+  register,
+  index,
+  name,
+  remove,
+  errors,
+  locked,
+}: OfficerItemProps) => {
   return (
     <div className="flex flex-row items-center rounded-md bg-slate-300 p-2">
       <div className="flex flex-col">
         <div>
-          <input
-            type="text"
-            placeholder="Name"
-            className="mb-1 bg-slate-300 text-xl font-bold text-black"
-            {...register(`officers.${index}.name` as const)}
-            aria-invalid={errors.officers && !!errors.officers[index]?.name}
-          />
-          {errors.officers && errors.officers[index]?.name && (
-            <p className="text-red-500">
-              {errors.officers[index]?.name?.message}
-            </p>
-          )}
+          <h4 className="mb-1 bg-slate-300 text-xl font-bold text-black">
+            {name}
+          </h4>
         </div>
         <div>
           <input
@@ -96,11 +103,14 @@ const OfficerItem = ({ register, index, remove, errors }: OfficerItemProps) => {
           )}
         </div>
       </div>
-      <div className="ml-auto">
-        <button type="button" onClick={() => remove(index)}>
-          remove
-        </button>
-      </div>
+      <button
+        className="ml-auto disabled:hidden"
+        type="button"
+        onClick={() => remove(index)}
+        disabled={locked}
+      >
+        remove
+      </button>
     </div>
   );
 };

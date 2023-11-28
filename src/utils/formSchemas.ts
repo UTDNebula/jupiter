@@ -6,8 +6,11 @@ export const createClubSchema = z.object({
   description: z.string().min(1),
   officers: z
     .object({
-      name: z.string().min(1),
+      id: z.string().min(1),
+      name: z.string(),
       position: z.string().min(1),
+      president: z.boolean(),
+      locked: z.boolean(),
     })
     .array()
     .min(1),

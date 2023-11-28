@@ -7,7 +7,7 @@ import { createClubSchema } from '@src/utils/formSchemas';
 import { useForm } from 'react-hook-form';
 import { type z } from 'zod';
 
-const CreateClubForm = () => {
+const CreateClubForm = ({ user }: { user: { id: string; name: string } }) => {
   const {
     register,
     control,
@@ -15,6 +15,17 @@ const CreateClubForm = () => {
     formState: { errors },
   } = useForm<z.infer<typeof createClubSchema>>({
     resolver: zodResolver(createClubSchema),
+    defaultValues: {
+      officers: [
+        {
+          id: user.id,
+          name: user.name,
+          president: true,
+          locked: true,
+          position: 'President',
+        },
+      ],
+    },
   });
   const submitForm = handleSubmit((data) => {
     //form data is in data
