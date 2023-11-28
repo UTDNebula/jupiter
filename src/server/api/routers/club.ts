@@ -1,8 +1,9 @@
 import { eq, ilike, sql, and, notInArray } from 'drizzle-orm';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 import { z } from 'zod';
-import { userMetadataToClubs } from '@src/server/db/schema';
-import { club, officerData } from '@src/server/db/schema';
+import { club, contacts, userMetadataToClubs } from '@src/server/db/schema';
+import { officerData } from '@src/server/db/schema';
+import { selectContact } from '@src/server/db/models';
 const byNameSchema = z.object({
   name: z.string().default(''),
 });
@@ -17,6 +18,22 @@ const joinLeaveSchema = z.object({
 
 const allSchema = z.object({
   tag: z.string().nullish(),
+});
+const createClubSchema = z.object({
+  name: z.string().min(3),
+  description: z.string().min(1),
+  officers: z
+    .object({
+      id: z.string().min(1),
+      position: z.string().min(1),
+      president: z.boolean(),
+    })
+    .array()
+    .min(1),
+  contacts: selectContact
+    .omit({ clubId: true, url: true })
+    .extend({ url: z.string().url() })
+    .array(),
 });
 export const clubRouter = createTRPCRouter({
   byName: publicProcedure.input(byNameSchema).query(async ({ input, ctx }) => {
@@ -130,5 +147,39 @@ export const clubRouter = createTRPCRouter({
           .values({ userId: joinuserID, clubId: clubid });
       }
       return dataExists;
+    }),
+  create: protectedProcedure
+    .input(createClubSchema)
+    .mutation(async ({ input, ctx }) => {
+      const res = await ctx.db
+        .insert(club)
+        .values({
+          name: input.name,
+          description: input.description,
+        })
+        .returning({ id: club.id });
+      const clubId = res[0]!.id;
+      await ctx.db.insert(contacts).values(
+        input.contacts.map((contact) => {
+          return {
+            platform: contact.platform,
+            url: contact.url,
+            clubId: clubId,
+          };
+        }),
+      );
+      await ctx.db.insert(officerData).values(
+        input.officers.map((officer) => {
+          return {
+            userId: officer.id,
+            clubId: clubId,
+            officerType: officer.president
+              ? ('President' as const)
+              : ('Officer' as const),
+            title: officer.position,
+          };
+        }),
+      );
+      return clubId;
     }),
 });

@@ -2,8 +2,8 @@ import { selectContact } from '@src/server/db/models';
 import { z } from 'zod';
 
 export const createClubSchema = z.object({
-  name: z.string().min(3),
-  description: z.string().min(1),
+  name: z.string().min(3, 'Club name must be at least 3 characters long'),
+  description: z.string().min(1, 'Description is required'),
   officers: z
     .object({
       id: z.string().min(1),
