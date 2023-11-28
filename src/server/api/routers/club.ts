@@ -1,4 +1,4 @@
-import { eq, ilike, sql, and, notInArray} from 'drizzle-orm';
+import { eq, ilike, sql, and, notInArray } from 'drizzle-orm';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { userMetadataToClubs } from '@src/server/db/schema';
@@ -47,13 +47,19 @@ export const clubRouter = createTRPCRouter({
     const userID = ctx.session?.user.id;
     try {
       let query;
-      if(userID){
-        const joinedClubs = ctx.db.select({clubid: userMetadataToClubs.clubId}).from(userMetadataToClubs).where(eq(userMetadataToClubs.userId, userID));
-        query = ctx.db.select().from(club).where(notInArray(club.id, joinedClubs));
-      } else{
+      if (userID) {
+        const joinedClubs = ctx.db
+          .select({ clubid: userMetadataToClubs.clubId })
+          .from(userMetadataToClubs)
+          .where(eq(userMetadataToClubs.userId, userID));
+        query = ctx.db
+          .select()
+          .from(club)
+          .where(notInArray(club.id, joinedClubs));
+      } else {
         query = ctx.db.select().from(club);
       }
-      if (input.tag && typeof input.tag == 'string' && input.tag !== 'All'){
+      if (input.tag && typeof input.tag == 'string' && input.tag !== 'All') {
         query = query.where(sql`${input.tag} = ANY(tags)`);
       }
       query = query.orderBy(sql`RANDOM()`).limit(20);
@@ -96,7 +102,10 @@ export const clubRouter = createTRPCRouter({
           eq(officerData.userId, ctx.session.user.id),
         ),
       }));
-  joinLeave: protectedProcedure.input(joinLeaveSchema).mutation(async ({ ctx, input }) => {
+    }),
+  joinLeave: protectedProcedure
+    .input(joinLeaveSchema)
+    .mutation(async ({ ctx, input }) => {
       const joinuserID = ctx.session.user.id;
       const { clubid } = input;
       const dataExists = await ctx.db.query.userMetadataToClubs.findFirst({
