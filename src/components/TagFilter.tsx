@@ -10,7 +10,7 @@ const TagFilter = ({ tags }: { tags: string[] }) => {
   const selectedTag = params.get('tag') || 'All';
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const onClick = (tag: string) =>
+  const setSelected = (tag: string) =>
     router.replace(`/?tag=${tag}`, { scroll: false });
 
   const handleScrollLeft = () => {

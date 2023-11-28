@@ -24,7 +24,7 @@ import {
   Youtube,
   type logoProps,
 } from './ContactIcons';
-import { type modifyDeletedAction } from '@src/app/directory/[id]/edit/contacts/EditContactForm';
+import { type modifyDeletedAction } from '@src/app/manage/[clubId]/edit/EditContactForm';
 import { type editClubSchema } from '@src/utils/formSchemas';
 
 type Contact = Omit<SelectContact, 'clubId'>;
@@ -115,7 +115,7 @@ const ContactSelector = ({
                 {available.map((plat) => (
                   <DropdownMenuItem
                     key={plat}
-                    onSelect={(e) => {
+                    onSelect={(_e) => {
                       addNew(plat);
                     }}
                   >
