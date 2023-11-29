@@ -25,7 +25,7 @@ import {
   type logoProps,
 } from './ContactIcons';
 import { type modifyDeletedAction } from '@src/app/manage/[clubId]/edit/EditContactForm';
-import { type editClubSchema } from '@src/utils/formSchemas';
+import { type editClubContactSchema } from '@src/utils/formSchemas';
 
 type Contact = Omit<SelectContact, 'clubId'>;
 
@@ -61,9 +61,9 @@ const startContacts: Array<Contact['platform']> = [
 ];
 
 type ContactSelectorProps = {
-  control: Control<z.infer<typeof editClubSchema>>;
-  register: UseFormRegister<z.infer<typeof editClubSchema>>;
-  errors: FieldErrors<z.infer<typeof editClubSchema>>;
+  control: Control<z.infer<typeof editClubContactSchema>>;
+  register: UseFormRegister<z.infer<typeof editClubContactSchema>>;
+  errors: FieldErrors<z.infer<typeof editClubContactSchema>>;
   modifyDeleted: Dispatch<modifyDeletedAction>;
 };
 const ContactSelector = ({
@@ -84,7 +84,7 @@ const ContactSelector = ({
   const removeItem = (index: number, platform: Contact['platform']) => {
     const field = fields[index];
     if (field?.clubId) {
-      modifyDeleted({ type: 'add', target: field.clubId });
+      modifyDeleted({ type: 'add', target: field.platform });
     }
     remove(index);
     dispatch({ type: 'add', target: platform });
@@ -159,11 +159,11 @@ const logo: logoProps = {
 };
 
 type ContactInputProps = {
-  register: UseFormRegister<z.infer<typeof editClubSchema>>;
+  register: UseFormRegister<z.infer<typeof editClubContactSchema>>;
   remove: (index: number, platform: Contact['platform']) => void;
   platform: Contact['platform'];
   index: number;
-  errors: FieldErrors<z.infer<typeof editClubSchema>>;
+  errors: FieldErrors<z.infer<typeof editClubContactSchema>>;
 };
 const ContactInput = ({
   register,

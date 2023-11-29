@@ -19,8 +19,14 @@ export const createClubSchema = z.object({
     .extend({ url: z.string().url() })
     .array(),
 });
-export const editClubSchema = z.object({
+export const editClubContactSchema = z.object({
   contacts: selectContact
     .extend({ clubId: z.string().optional(), url: z.string().url() })
     .array(),
+});
+
+export const editClubSchema = z.object({
+  id: z.string(),
+  name: z.string().min(3),
+  description: z.string().min(1),
 });

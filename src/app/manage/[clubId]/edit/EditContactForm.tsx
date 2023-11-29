@@ -3,12 +3,14 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import EditContactSelector from '@src/components/EditContactSelector';
 import { type SelectClub, type SelectContact } from '@src/server/db/models';
-import { editClubSchema } from '@src/utils/formSchemas';
+import { api } from '@src/trpc/react';
+import { editClubContactSchema } from '@src/utils/formSchemas';
+import { useRouter } from 'next/navigation';
 import { useReducer } from 'react';
 import { useForm } from 'react-hook-form';
 import { type z } from 'zod';
 
-type formData = z.infer<typeof editClubSchema>;
+type formData = z.infer<typeof editClubContactSchema>;
 type x = {
   platform?: boolean | undefined;
   url?: boolean | undefined;
@@ -27,16 +29,22 @@ const modifiedFields = (dirtyFields: x, data: formData) => {
         (previous, current) => previous || current,
       ) && !value.clubId,
   );
-  return { modified: modded, created: created };
+  return {
+    modified: modded as SelectContact[],
+    created: created as Omit<SelectContact, 'clubId'>[],
+  };
 };
 
 export type modifyDeletedAction =
   | {
       type: 'add';
-      target: string;
+      target: formData['contacts'][number]['platform'];
     }
   | { type: 'reset' };
-const deletedReducer = (state: Array<string>, action: modifyDeletedAction) => {
+const deletedReducer = (
+  state: Array<formData['contacts'][number]['platform']>,
+  action: modifyDeletedAction,
+) => {
   switch (action.type) {
     case 'add':
       return [...state, action.target];
@@ -55,24 +63,33 @@ export default function EditContactForm({
     reset,
     handleSubmit,
     formState: { errors, dirtyFields, isDirty },
-  } = useForm<z.infer<typeof editClubSchema>>({
-    resolver: zodResolver(editClubSchema),
+  } = useForm<z.infer<typeof editClubContactSchema>>({
+    resolver: zodResolver(editClubContactSchema),
     defaultValues: {
       contacts: club.contacts,
     },
   });
+  const router = useRouter();
+  const editContacts = api.club.edit.contacts.useMutation({
+    onSuccess: () => {
+      router.refresh();
+    },
+  });
+  const [deleted, modifyDeleted] = useReducer(deletedReducer, []);
   const submitForm = handleSubmit((data) => {
     console.log(data);
     if (dirtyFields.contacts !== undefined) {
       const { modified, created } = modifiedFields(dirtyFields.contacts, data);
-      console.log({
-        deleted: deleted,
-        modified: modified,
-        created: created,
-      });
+      if (!editContacts.isLoading) {
+        editContacts.mutate({
+          clubId: club.id,
+          deleted: deleted,
+          modified: modified,
+          created: created,
+        });
+      }
     }
   });
-  const [deleted, modifyDeleted] = useReducer(deletedReducer, []);
   return (
     <div className="container w-full rounded-md bg-slate-100 p-5 shadow-sm">
       <form onSubmit={submitForm}>

@@ -2,13 +2,12 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type SelectClub, type SelectContact } from '@src/server/db/models';
+import { api } from '@src/trpc/react';
+import { editClubSchema } from '@src/utils/formSchemas';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { type z } from 'zod';
 
-const editClubSchema = z.object({
-  name: z.string().min(3),
-  description: z.string().min(1),
-});
 const EditClubForm = ({
   club,
 }: {
@@ -22,13 +21,21 @@ const EditClubForm = ({
   } = useForm<z.infer<typeof editClubSchema>>({
     resolver: zodResolver(editClubSchema),
     defaultValues: {
+      id: club.id,
       name: club.name,
       description: club.description,
     },
   });
+  const router = useRouter();
+  const editData = api.club.edit.data.useMutation({
+    onSuccess: () => {
+      router.refresh();
+    },
+  });
   const submitForm = handleSubmit((data) => {
-    //form data is in data
-    console.log(data);
+    if (!editData.isLoading) {
+      editData.mutate(data);
+    }
   });
   return (
     <form onSubmit={submitForm}>
@@ -62,13 +69,17 @@ const EditClubForm = ({
           )}
         </div>
         <div className="flex flex-row justify-end gap-x-4 py-2">
-          <button className="rounded-lg bg-slate-200 p-1 font-bold">
+          <button
+            className="rounded-lg bg-slate-200 p-1 font-bold"
+            type="submit"
+          >
             Save Changes
           </button>
           <button
             type="button"
             onClickCapture={() => {
               reset({
+                id: club.id,
                 name: club.name,
                 description: club.description,
               });
