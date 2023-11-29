@@ -5,7 +5,6 @@ import {
 } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import DiscordProvider from 'next-auth/providers/discord';
-import CredentialsProvider from 'next-auth/providers/credentials';
 import { env } from '@src/env.mjs';
 import { DrizzleAdapter } from '@auth/drizzle-adapter';
 import { db } from './db';
@@ -52,27 +51,8 @@ export interface PreviewUser {
 
 export const authOptions: NextAuthOptions = {
   adapter: DrizzleAdapter(db, pgTable),
-  session: {
-    strategy: process.env.VERCEL_ENV === 'preview' ? 'jwt' : 'database',
-  },
   callbacks: {
-    async session({ session, user, token }) {
-      if (token) {
-        const testUserMetadata: UserMetadata = {
-          firstName: 'John',
-          lastName: 'Smith',
-          career: 'Business',
-          major: 'Business',
-          minor: 'Business',
-          role: 'Student',
-          year: 'Grad Student',
-        };
-
-        session.user = { ...session.user, ...testUserMetadata };
-
-        return session;
-      }
-
+    async session({ session, user }) {
       let metadata = await db.query.userMetadata.findFirst({
         where: (metadata) => eq(metadata.id, user.id),
       });
@@ -104,39 +84,16 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: '/auth',
   },
-  providers:
-    process.env.VERCEL_ENV === 'preview'
-      ? [
-          CredentialsProvider({
-            name: 'Credentials',
-            credentials: {
-              username: {
-                label: 'Username',
-                type: 'text',
-                placeholder: 'jsmith',
-              },
-              password: { label: 'Password', type: 'password' },
-            },
-            authorize: () => {
-              return {
-                id: 'e5f55898-e3ee-416a-91b6-cf3982599e6b',
-                name: 'J Smith',
-                email: 'jsmith@example.com',
-                image: '/nebula-logo.png',
-              } as PreviewUser;
-            },
-          }),
-        ]
-      : [
-          GoogleProvider({
-            clientId: env.GOOGLE_CLIENT_ID,
-            clientSecret: env.GOOGLE_CLIENT_SECRET,
-          }),
-          DiscordProvider({
-            clientId: env.DISCORD_CLIENT_ID,
-            clientSecret: env.DISCORD_CLIENT_SECRET,
-          }),
-        ],
+  providers: [
+    GoogleProvider({
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
+    }),
+    DiscordProvider({
+      clientId: env.DISCORD_CLIENT_ID,
+      clientSecret: env.DISCORD_CLIENT_SECRET,
+    }),
+  ],
 
   /**
    * ...add more providers here.
