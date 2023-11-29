@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { club, contacts, userMetadataToClubs } from '@src/server/db/schema';
 import { officerData } from '@src/server/db/schema';
 import { selectContact } from '@src/server/db/models';
+import { clubEditRouter } from './clubEdit';
 const byNameSchema = z.object({
   name: z.string().default(''),
 });
@@ -36,6 +37,7 @@ const createClubSchema = z.object({
     .array(),
 });
 export const clubRouter = createTRPCRouter({
+  edit: clubEditRouter,
   byName: publicProcedure.input(byNameSchema).query(async ({ input, ctx }) => {
     const { name } = input;
     const clubs = await ctx.db.query.club.findMany({
