@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState, type Dispatch, type SetStateAction } from 'react';
+import { type Dispatch, type SetStateAction } from 'react';
 import MobileNavItem from './MobileNavItem';
 import { usePathname } from 'next/navigation';
 
@@ -27,8 +27,6 @@ const MobileNavMenu = ({
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const pathname = usePathname();
-
-  //   const [activeRoute, setActiveRoute] = useState(router.pathname);
 
   return (
     <>

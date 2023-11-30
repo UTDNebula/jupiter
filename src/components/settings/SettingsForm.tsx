@@ -26,38 +26,8 @@ async function SettingsForm({ session }: { session: Session }) {
           <h1 className="py-2 text-3xl font-semibold">Settings</h1>
           <FormCard user={session.user} clubs={formatted} />
         </div>
-<<<<<<< HEAD
-      </form>
-      <button
-        type="submit"
-        form="settings-form"
-        className="mr-2 rounded-2xl bg-blue-500 px-4 py-2 font-bold text-white transition-colors hover:bg-blue-600"
-      >
-        Save Changes
-      </button>
-
-      {isLoading && (
-        <div className="fixed bottom-20 right-32 h-auto animate-pulse rounded-md border border-slate-200 bg-slate-50 p-2">
-          Loading...
-        </div>
-      )}
-
-      {isSuccess && (
-        <div className="fixed bottom-20 right-32 h-auto rounded-md border border-green-200 bg-green-50 p-2">
-          Success!
-        </div>
-      )}
-
-      {isError && (
-        <div className="fixed bottom-20 right-32 h-auto rounded-md border border-red-200 bg-red-50 p-2">
-          Error
-        </div>
-      )}
-    </>
-=======
       </div>
     </div>
->>>>>>> develop
   );
 }
 

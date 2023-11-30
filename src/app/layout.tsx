@@ -6,6 +6,7 @@ import { headers } from 'next/headers';
 import { TRPCReactProvider } from '@src/trpc/react';
 import Sidebar from '@src/components/Sidebar';
 import { type Metadata } from 'next';
+import MobileNav from '@src/components/MobileNav';
 
 const inter = Inter({
   subsets: ['latin'],
