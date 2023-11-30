@@ -2,6 +2,7 @@ import Header from '@src/components/BaseHeader';
 import BackButton from '@src/components/BlueBackButton';
 import { getServerAuthSession } from '@src/server/auth';
 import { api } from '@src/trpc/server';
+import { notFound, redirect } from 'next/navigation';
 import { type ReactNode } from 'react';
 
 const Layout = async ({
@@ -14,16 +15,14 @@ const Layout = async ({
   events: ReactNode;
 }) => {
   const session = await getServerAuthSession();
-  if (!session) {
-    return <div>You need to be signed in</div>;
-  }
+  if (!session) redirect('/auth');
   const canAccess = await api.club.isOfficer.query({ id: params.clubId });
   if (!canAccess) {
-    return <div>You can&apos;t access this 😢</div>;
+    return <div className="md:pl-72">You can&apos;t access this 😢</div>;
   }
   const club = await api.club.byId.query({ id: params.clubId });
   if (!club) {
-    return <div>Club doesn&apos;t exist</div>;
+    notFound();
   }
   return (
     <div className="md:pl-72">

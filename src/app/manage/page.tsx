@@ -3,11 +3,12 @@ import { getServerAuthSession } from '@src/server/auth';
 import { api } from '@src/trpc/server';
 import ClubCard from './ClubCard';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 
 export default async function Page() {
   const session = await getServerAuthSession();
   if (!session) {
-    return <div className="md:pl-72">You need to sign in</div>;
+    redirect('/auth');
   }
   const clubs = await api.club.getOfficerClubs.query();
   return (
