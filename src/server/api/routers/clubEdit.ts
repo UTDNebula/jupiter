@@ -24,6 +24,22 @@ const editContactSchema = z.object({
   modified: selectContact.array(),
   created: selectContact.omit({ clubId: true }).array(),
 });
+const editOfficerSchema = z.object({
+  clubId: z.string(),
+  deleted: z.string().array(),
+  modified: z
+    .object({
+      userId: z.string(),
+      title: z.string(),
+    })
+    .array(),
+  created: z
+    .object({
+      userId: z.string(),
+      title: z.string(),
+    })
+    .array(),
+});
 const deleteSchema = z.object({ clubId: z.string() });
 
 export const clubEditRouter = createTRPCRouter({
@@ -65,18 +81,58 @@ export const clubEditRouter = createTRPCRouter({
         promises.push(prom);
       }
       await Promise.all(promises);
-      await ctx.db
-        .insert(contacts)
-        .values(
-          input.created.map((contact) => {
+      if (input.created.length > 0) {
+        await ctx.db
+          .insert(contacts)
+          .values(
+            input.created.map((contact) => {
+              return {
+                clubId: input.clubId,
+                platform: contact.platform,
+                url: contact.url,
+              };
+            }),
+          )
+          .onConflictDoNothing();
+      }
+    }),
+  officers: protectedProcedure
+    .input(editOfficerSchema)
+    .mutation(async ({ input, ctx }) => {
+      if (!(await isOfficer(ctx.session.user.id, input.clubId))) {
+        throw new TRPCError({
+          message: 'must be an officer to modify this club',
+          code: 'UNAUTHORIZED',
+        });
+      }
+      if (input.deleted.length > 0) {
+        await ctx.db
+          .delete(officerData)
+          .where(
+            and(
+              eq(officerData.clubId, input.clubId),
+              inArray(officerData.userId, input.deleted),
+            ),
+          );
+      }
+      const promises: Promise<unknown>[] = [];
+      for (const modded of input.modified) {
+        const prom = ctx.db.update(officerData).set(modded);
+        promises.push(prom);
+      }
+      await Promise.all(promises);
+      if (input.created.length > 0) {
+        await ctx.db.insert(officerData).values(
+          input.created.map((officer) => {
             return {
+              userId: officer.userId,
               clubId: input.clubId,
-              platform: contact.platform,
-              url: contact.url,
+              officerType: 'Officer' as const,
+              title: officer.title,
             };
           }),
-        )
-        .onConflictDoNothing();
+        );
+      }
     }),
   delete: protectedProcedure
     .input(deleteSchema)

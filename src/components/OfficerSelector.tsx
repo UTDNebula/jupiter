@@ -95,6 +95,7 @@ const OfficerItem = ({
             className="bg-slate-300 font-semibold text-black"
             {...register(`officers.${index}.position` as const)}
             aria-invalid={errors.officers && !!errors.officers[index]?.position}
+            disabled={locked}
           />
           {errors.officers && errors.officers[index]?.position && (
             <p className="text-red-500">

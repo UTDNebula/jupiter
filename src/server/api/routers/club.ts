@@ -161,15 +161,17 @@ export const clubRouter = createTRPCRouter({
         })
         .returning({ id: club.id });
       const clubId = res[0]!.id;
-      await ctx.db.insert(contacts).values(
-        input.contacts.map((contact) => {
-          return {
-            platform: contact.platform,
-            url: contact.url,
-            clubId: clubId,
-          };
-        }),
-      );
+      if (input.contacts.length > 0) {
+        await ctx.db.insert(contacts).values(
+          input.contacts.map((contact) => {
+            return {
+              platform: contact.platform,
+              url: contact.url,
+              clubId: clubId,
+            };
+          }),
+        );
+      }
       await ctx.db.insert(officerData).values(
         input.officers.map((officer) => {
           return {
@@ -183,5 +185,14 @@ export const clubRouter = createTRPCRouter({
         }),
       );
       return clubId;
+    }),
+  getOfficers: protectedProcedure
+    .input(byIdSchema)
+    .query(async ({ input, ctx }) => {
+      const officers = await ctx.db.query.officerData.findMany({
+        where: eq(officerData.clubId, input.id),
+        with: { user: true },
+      });
+      return officers;
     }),
 });

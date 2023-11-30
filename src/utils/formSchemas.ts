@@ -30,3 +30,13 @@ export const editClubSchema = z.object({
   name: z.string().min(3),
   description: z.string().min(1),
 });
+export const editOfficerSchema = z.object({
+  officers: z
+    .object({
+      userId: z.string(),
+      name: z.string(),
+      locked: z.boolean(),
+      position: z.string().min(1),
+    })
+    .array(),
+});
