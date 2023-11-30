@@ -9,8 +9,8 @@ const IUserMetadata = z.object({
   lastName: z.string(),
   major: z.string(),
   minor: z.string().nullish(),
-  year: Year.default('Freshman').nullable(),
-  role: Role.default('Student').nullable(),
+  year: Year.default('Freshman'),
+  role: Role.default('Student'),
   career: Career.default('Engineering').nullable(),
   clubs: z.array(Club).optional(),
 });

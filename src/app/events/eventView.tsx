@@ -1,12 +1,11 @@
-'use client';
+'use server';
 import { GridIcon, ListIcon } from '@src/components/Icons';
 import EventCard from '@src/components/events/EventCard';
 import EventSidebar from '@src/components/events/EventSidebar';
-import { type SelectClub, type SelectEvent } from '@src/server/db/models';
+import { type RouterOutputs } from '@src/trpc/shared';
 import Link from 'next/link';
-
 type Props = {
-  events: Array<SelectEvent & { club: SelectClub }>;
+  events: RouterOutputs['event']['findByFilters']['events'];
   params: Record<string, string | string[] | undefined>;
 };
 
@@ -61,20 +60,15 @@ const EventView = ({ events, params }: Props) => {
       <div className="container flex w-full flex-row space-x-7.5">
         <EventSidebar />
         <div
+          data-view={view}
           className={
             view === 'list'
-              ? 'flex w-full flex-col space-y-7.5 pt-10'
-              : 'flex flex-wrap gap-x-10 gap-y-7.5 pt-10'
+              ? 'group flex w-full flex-col space-y-7.5 pt-10'
+              : 'group flex flex-wrap gap-x-10 gap-y-7.5 pt-10'
           }
         >
           {events.map((event) => {
-            return (
-              <EventCard
-                key={event.id}
-                view={view === 'list' ? 'horizontal' : 'vertical'}
-                event={event}
-              />
-            );
+            return <EventCard key={event.id} event={event} />;
           })}
         </div>
       </div>

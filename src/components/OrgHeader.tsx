@@ -4,13 +4,26 @@ import type {
   SelectClub,
   SelectContact as Contacts,
 } from '@src/server/db/models';
+import Joinbutton from './JoinButton';
+import { getServerAuthSession } from '@src/server/auth';
+import { eq, and } from 'drizzle-orm';
+import { db } from '@src/server/db';
+import { userMetadataToClubs } from '@src/server/db/schema';
 import LikeButton from './LikeButton';
+import Link from 'next/link';
 
 type Club = SelectClub & {
   contacts?: Contacts[];
   tags: string[];
 };
-const OrgHeader = ({ club }: { club: Club }) => {
+const OrgHeader = async ({ club }: { club: Club }) => {
+  const session = await getServerAuthSession();
+  let isJoined;
+  if(session){
+    isJoined = !!await db.query.userMetadataToClubs.findFirst({
+      where: and(eq(userMetadataToClubs.userId, session.user.id), eq(userMetadataToClubs.clubId, club.id))
+    });
+  }
   return (
     <div className="relative">
       <div className="h-full w-full">
@@ -28,12 +41,16 @@ const OrgHeader = ({ club }: { club: Club }) => {
           <div className="flex h-full flex-col">
             <div className="flex flex-row">
               {club.tags.map((tag) => (
-                <p
+                <Link
+                  href={{
+                    pathname: '/',
+                    query: { tag: tag },
+                  }}
                   key={tag}
-                  className="m-2 rounded-full bg-black bg-opacity-50 px-4 py-2 font-semibold text-slate-100"
+                  className="m-2 h-min rounded-full bg-black bg-opacity-50 px-4 py-2 align-middle font-semibold text-slate-100"
                 >
                   {tag}
-                </p>
+                </Link>
               ))}
             </div>
             <h1 className="mt-auto w-fit rounded-full bg-black bg-opacity-50 p-2 text-center text-4xl font-bold text-slate-100">
@@ -41,12 +58,10 @@ const OrgHeader = ({ club }: { club: Club }) => {
             </h1>
           </div>
           <div className="ml-auto flex h-min flex-row items-center gap-x-12 self-center">
-            <button className="rounded-full bg-blue-primary px-8 py-4 text-xs font-extrabold text-white transition-colors hover:bg-blue-700">
-              Join
-            </button>
+            <Joinbutton session={session} isHeader clubID={club.id} isJoined={isJoined}/>
             <button
               className="rounded-full bg-blue-primary p-2.5 transition-colors hover:bg-blue-700"
-              type="button"
+              type="button" 
             >
               <LikeButton />
             </button>
@@ -56,6 +71,7 @@ const OrgHeader = ({ club }: { club: Club }) => {
       </div>
     </div>
   );
+  
 };
 
 export default OrgHeader;
