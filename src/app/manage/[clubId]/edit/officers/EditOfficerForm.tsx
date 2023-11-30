@@ -15,8 +15,11 @@ import {
 import { type z } from 'zod';
 
 type x = {
-  name?: boolean | undefined;
-  position?: boolean | undefined;
+  userId?: boolean;
+  name?: boolean;
+  locked?: boolean;
+  title?: boolean;
+  position?: boolean;
 }[];
 const modifiedFields = (
   dirtyFields: x,
@@ -30,23 +33,15 @@ const modifiedFields = (
 ) => {
   const modded = data.officers.filter(
     (value, index) =>
-      Object.values(dirtyFields[index] ?? {}).reduce(
-        (previous, current) => previous || current,
-      ) && !!officers.find((off) => off.userId === value.userId),
+      !!officers.find((off) => off.userId === value.userId) &&
+      dirtyFields[index]?.title,
   );
   const created = data.officers.filter(
-    (value, index) =>
-      Object.values(dirtyFields[index] ?? {}).reduce(
-        (previous, current) => previous || current,
-      ) && !officers.find((off) => off.userId === value.userId),
+    (value, index) => dirtyFields[index]?.userId,
   );
   return {
-    modified: modded.map((officer) => {
-      return { userId: officer.userId, title: officer.position };
-    }),
-    created: created.map((officer) => {
-      return { userId: officer.userId, title: officer.position };
-    }),
+    modified: modded,
+    created: created,
   };
 };
 
@@ -74,7 +69,8 @@ type EditOfficerFormProps = {
     userId: string;
     name: string;
     locked: boolean;
-    position: string;
+    title: string;
+    position: 'President' | 'Officer';
   }[];
 };
 const EditOfficerForm = ({ clubId, officers }: EditOfficerFormProps) => {
@@ -131,7 +127,8 @@ const EditOfficerForm = ({ clubId, officers }: EditOfficerFormProps) => {
                 append({
                   userId: user.id,
                   name: user.name,
-                  position: '',
+                  title: '',
+                  position: 'Officer',
                   locked: false,
                 });
               }}
@@ -214,13 +211,13 @@ const OfficerItem = ({
             type="text"
             placeholder="Position"
             className="bg-slate-300 font-semibold text-black"
-            {...register(`officers.${index}.position` as const)}
-            aria-invalid={errors.officers && !!errors.officers[index]?.position}
+            {...register(`officers.${index}.title` as const)}
+            aria-invalid={errors.officers && !!errors.officers[index]?.title}
             disabled={locked}
           />
-          {errors.officers && errors.officers[index]?.position && (
+          {errors.officers && errors.officers[index]?.title && (
             <p className="text-red-500">
-              {errors.officers[index]?.position?.message}
+              {errors.officers[index]?.title?.message}
             </p>
           )}
         </div>

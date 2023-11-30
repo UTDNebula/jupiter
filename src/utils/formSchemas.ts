@@ -36,7 +36,8 @@ export const editOfficerSchema = z.object({
       userId: z.string(),
       name: z.string(),
       locked: z.boolean(),
-      position: z.string().min(1),
+      title: z.string().min(1),
+      position: z.enum(['President', 'Officer']),
     })
     .array(),
 });

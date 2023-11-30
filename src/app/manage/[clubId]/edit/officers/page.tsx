@@ -14,7 +14,8 @@ export default async function Page({
         userId: officer.userId,
         name: officer.user.firstName + ' ' + officer.user.lastName,
         locked: officer.officerType == 'President',
-        position: officer.title,
+        position: officer.officerType,
+        title: officer.title,
       };
     },
   );

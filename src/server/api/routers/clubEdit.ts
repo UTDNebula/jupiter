@@ -31,6 +31,7 @@ const editOfficerSchema = z.object({
     .object({
       userId: z.string(),
       title: z.string(),
+      position: z.enum(['President', 'Officer']),
     })
     .array(),
   created: z
@@ -77,7 +78,15 @@ export const clubEditRouter = createTRPCRouter({
       }
       const promises: Promise<unknown>[] = [];
       for (const modded of input.modified) {
-        const prom = ctx.db.update(contacts).set(modded);
+        const prom = ctx.db
+          .update(contacts)
+          .set({ url: modded.url })
+          .where(
+            and(
+              eq(contacts.clubId, modded.clubId),
+              eq(contacts.platform, modded.platform),
+            ),
+          );
         promises.push(prom);
       }
       await Promise.all(promises);
@@ -117,7 +126,17 @@ export const clubEditRouter = createTRPCRouter({
       }
       const promises: Promise<unknown>[] = [];
       for (const modded of input.modified) {
-        const prom = ctx.db.update(officerData).set(modded);
+        const prom = ctx.db
+          .update(officerData)
+          .set({
+            title: modded.title,
+          })
+          .where(
+            and(
+              eq(officerData.userId, modded.userId),
+              eq(officerData.clubId, input.clubId),
+            ),
+          );
         promises.push(prom);
       }
       await Promise.all(promises);
