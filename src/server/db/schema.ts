@@ -45,10 +45,16 @@ export const officerEnum = pgEnum('officer_type', ['President', 'Officer']);
 export const officerData = pgTable(
   'officer_data',
   {
-    officerType: officerEnum('officer_type').$default(() => 'Officer'),
-    title: text('title').default('Officer'),
-    userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),
-    clubId: text('club_id').references(() => club.id, { onDelete: 'cascade' }),
+    officerType: officerEnum('officer_type')
+      .$default(() => 'Officer')
+      .notNull(),
+    title: text('title').notNull().default('Officer'),
+    userId: text('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    clubId: text('club_id')
+      .notNull()
+      .references(() => club.id, { onDelete: 'cascade' }),
   },
   (t) => ({
     pk: primaryKey(t.userId, t.clubId),

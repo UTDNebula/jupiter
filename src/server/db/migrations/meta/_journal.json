@@ -57,6 +57,13 @@
       "when": 1701205616443,
       "tag": "0007_striped_forge",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1701307283474,
+      "tag": "0008_perpetual_randall_flagg",
+      "breakpoints": true
     }
   ]
 }
