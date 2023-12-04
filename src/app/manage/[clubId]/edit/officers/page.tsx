@@ -12,10 +12,11 @@ export default async function Page({
     (officer) => {
       return {
         userId: officer.userId,
-        name: officer.user.firstName + ' ' + officer.user.lastName,
-        locked: officer.officerType == 'President',
-        position: officer.officerType,
-        title: officer.title,
+        name:
+          officer.userMetadata.firstName + ' ' + officer.userMetadata.lastName,
+        locked: officer.memberType == 'President',
+        position: officer.memberType as 'President' | 'Officer',
+        title: officer.title as string,
       };
     },
   );

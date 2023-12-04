@@ -1,22 +1,28 @@
 import { db } from '@src/server/db';
 import { createTRPCRouter, protectedProcedure } from '../trpc';
-import { and, eq, inArray } from 'drizzle-orm';
-import { club, contacts, officerData } from '@src/server/db/schema';
+import { and, eq, inArray, sql } from 'drizzle-orm';
+import { club, contacts, userMetadataToClubs } from '@src/server/db/schema';
 import { editClubSchema } from '@src/utils/formSchemas';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { selectContact } from '@src/server/db/models';
 async function isOfficer(userId: string, clubId: string) {
-  const officer = await db.query.officerData.findFirst({
-    where: and(eq(officerData.userId, userId), eq(officerData.clubId, clubId)),
+  const officer = await db.query.userMetadataToClubs.findFirst({
+    where: and(
+      eq(userMetadataToClubs.userId, userId),
+      eq(userMetadataToClubs.clubId, clubId),
+    ),
   });
-  return !!officer;
+  return officer?.memberType == 'Officer' || 'President';
 }
 async function isPresident(userId: string, clubId: string) {
-  const officer = await db.query.officerData.findFirst({
-    where: and(eq(officerData.userId, userId), eq(officerData.clubId, clubId)),
+  const officer = await db.query.userMetadataToClubs.findFirst({
+    where: and(
+      eq(userMetadataToClubs.userId, userId),
+      eq(userMetadataToClubs.clubId, clubId),
+    ),
   });
-  return officer?.officerType == 'President';
+  return officer?.memberType == 'President';
 }
 const editContactSchema = z.object({
   clubId: z.string(),
@@ -116,41 +122,48 @@ export const clubEditRouter = createTRPCRouter({
       }
       if (input.deleted.length > 0) {
         await ctx.db
-          .delete(officerData)
+          .delete(userMetadataToClubs)
           .where(
             and(
-              eq(officerData.clubId, input.clubId),
-              inArray(officerData.userId, input.deleted),
+              eq(userMetadataToClubs.clubId, input.clubId),
+              inArray(userMetadataToClubs.userId, input.deleted),
             ),
           );
       }
       const promises: Promise<unknown>[] = [];
       for (const modded of input.modified) {
         const prom = ctx.db
-          .update(officerData)
+          .update(userMetadataToClubs)
           .set({
             title: modded.title,
           })
           .where(
             and(
-              eq(officerData.userId, modded.userId),
-              eq(officerData.clubId, input.clubId),
+              eq(userMetadataToClubs.userId, modded.userId),
+              eq(userMetadataToClubs.clubId, input.clubId),
             ),
           );
         promises.push(prom);
       }
       await Promise.all(promises);
       if (input.created.length > 0) {
-        await ctx.db.insert(officerData).values(
-          input.created.map((officer) => {
-            return {
-              userId: officer.userId,
-              clubId: input.clubId,
-              officerType: 'Officer' as const,
-              title: officer.title,
-            };
-          }),
-        );
+        await ctx.db
+          .insert(userMetadataToClubs)
+          .values(
+            input.created.map((officer) => {
+              return {
+                userId: officer.userId,
+                clubId: input.clubId,
+                officerType: 'Officer' as const,
+                title: officer.title,
+              };
+            }),
+          )
+          .onConflictDoUpdate({
+            target: [userMetadataToClubs.userId, userMetadataToClubs.clubId],
+            set: { memberType: 'Officer' as const, title: sql`excluded.title` },
+            where: eq(userMetadataToClubs.memberType, 'Member'),
+          });
       }
     }),
   delete: protectedProcedure

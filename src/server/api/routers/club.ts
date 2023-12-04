@@ -1,8 +1,7 @@
-import { eq, ilike, sql, and, notInArray } from 'drizzle-orm';
+import { eq, ilike, sql, and, notInArray, inArray } from 'drizzle-orm';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { club, contacts, userMetadataToClubs } from '@src/server/db/schema';
-import { officerData } from '@src/server/db/schema';
 import { selectContact } from '@src/server/db/models';
 import { clubEditRouter } from './clubEdit';
 const byNameSchema = z.object({
@@ -105,8 +104,11 @@ export const clubRouter = createTRPCRouter({
     }
   }),
   getOfficerClubs: protectedProcedure.query(async ({ ctx }) => {
-    const results = await ctx.db.query.officerData.findMany({
-      where: eq(officerData.userId, ctx.session.user.id),
+    const results = await ctx.db.query.userMetadataToClubs.findMany({
+      where: and(
+        eq(userMetadataToClubs.userId, ctx.session.user.id),
+        inArray(userMetadataToClubs.memberType, ['Officer', 'President']),
+      ),
       with: { club: true },
     });
     type wah = NonNullable<(typeof results)[number]['club']>;
@@ -115,10 +117,11 @@ export const clubRouter = createTRPCRouter({
   isOfficer: protectedProcedure
     .input(byIdSchema)
     .query(async ({ input, ctx }) => {
-      return !!(await ctx.db.query.officerData.findFirst({
+      return !!(await ctx.db.query.userMetadataToClubs.findFirst({
         where: and(
-          eq(officerData.clubId, input.id),
-          eq(officerData.userId, ctx.session.user.id),
+          eq(userMetadataToClubs.clubId, input.id),
+          eq(userMetadataToClubs.userId, ctx.session.user.id),
+          inArray(userMetadataToClubs.memberType, ['Officer', 'President']),
         ),
       }));
     }),
@@ -172,12 +175,12 @@ export const clubRouter = createTRPCRouter({
           }),
         );
       }
-      await ctx.db.insert(officerData).values(
+      await ctx.db.insert(userMetadataToClubs).values(
         input.officers.map((officer) => {
           return {
             userId: officer.id,
             clubId: clubId,
-            officerType: officer.president
+            memberType: officer.president
               ? ('President' as const)
               : ('Officer' as const),
             title: officer.position,
@@ -189,9 +192,12 @@ export const clubRouter = createTRPCRouter({
   getOfficers: protectedProcedure
     .input(byIdSchema)
     .query(async ({ input, ctx }) => {
-      const officers = await ctx.db.query.officerData.findMany({
-        where: eq(officerData.clubId, input.id),
-        with: { user: true },
+      const officers = await ctx.db.query.userMetadataToClubs.findMany({
+        where: and(
+          eq(userMetadataToClubs.clubId, input.id),
+          inArray(userMetadataToClubs.memberType, ['Officer', 'President']),
+        ),
+        with: { userMetadata: true },
       });
       return officers;
     }),
