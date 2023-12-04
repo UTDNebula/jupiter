@@ -91,16 +91,14 @@ export default function EditContactForm({
     }
   });
   return (
-    <div className="container w-full rounded-md bg-slate-100 p-5 shadow-sm">
+    <div className="container w-full rounded-md bg-slate-100 p-4 shadow-sm">
       <form onSubmit={submitForm}>
-        <div>
-          <EditContactSelector
-            control={control}
-            register={register}
-            errors={errors}
-            modifyDeleted={modifyDeleted}
-          />
-        </div>
+        <EditContactSelector
+          control={control}
+          register={register}
+          errors={errors}
+          modifyDeleted={modifyDeleted}
+        />
         <div className="flex flex-row justify-end gap-x-4 py-2">
           <button className="rounded-lg bg-slate-200 p-1 font-bold">
             Save Changes

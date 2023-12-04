@@ -98,7 +98,7 @@ const ContactSelector = ({
   }, [fields]);
   return (
     <div>
-      <div className="mb-5 flex flex-row items-center p-4">
+      <div className="mb-2 flex flex-row items-center">
         <h2 className="text-xl font-bold">Edit Contacts</h2>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -129,7 +129,7 @@ const ContactSelector = ({
           </DropdownMenuPortal>
         </DropdownMenu>
       </div>
-      <div className="space-y-2 rounded-lg bg-slate-200 p-4">
+      <div className="space-y-2 rounded-lg bg-slate-200 p-2">
         {fields.map((field, index) => (
           <ContactInput
             key={field.id}
