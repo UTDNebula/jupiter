@@ -80,7 +80,7 @@ const EditClubForm = ({
             </button>
             <button
               type="button"
-              onClickCapture={() => {
+              onClick={() => {
                 reset({
                   id: club.id,
                   name: club.name,

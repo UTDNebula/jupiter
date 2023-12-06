@@ -163,7 +163,7 @@ const EditOfficerForm = ({ clubId, officers }: EditOfficerFormProps) => {
           </button>
           <button
             type="button"
-            onClickCapture={() => {
+            onClick={() => {
               reset({
                 officers: officers,
               });

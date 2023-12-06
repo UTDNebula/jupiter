@@ -105,7 +105,7 @@ export default function EditContactForm({
           </button>
           <button
             type="button"
-            onClickCapture={() => {
+            onClick={() => {
               reset({ contacts: club.contacts });
               modifyDeleted({ type: 'reset' });
             }}
