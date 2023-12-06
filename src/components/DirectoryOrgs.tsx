@@ -33,9 +33,7 @@ const OrgDirectoryCards: FC<Props> = async ({ club }) => {
             <div className="h-7 w-7 text-white">
               <GroupIcon />
             </div>
-            <div className="ml-1 h-fit w-fit text-xs font-bold text-white">
-              {30} Members
-            </div>
+            
           </div>
           <button className="ml-auto rounded-full bg-black bg-opacity-50 p-1.5 font-bold text-white transition-colors">
             <LikeButton />
