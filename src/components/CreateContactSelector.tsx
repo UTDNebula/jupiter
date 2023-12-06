@@ -66,11 +66,11 @@ const ContactSelector = ({
     name: 'contacts',
   });
   const [available, dispatch] = useReducer(Reducer, startContacts);
-  const addNew = (platform: Contact['platform']) => {
+  const takeFromAvailable = (platform: Contact['platform']) => {
     dispatch({ type: 'remove', target: platform });
     append({ platform: platform, url: '' });
   };
-  const removeItem = (index: number, platform: Contact['platform']) => {
+  const returnToAvailable = (index: number, platform: Contact['platform']) => {
     remove(index);
     dispatch({ type: 'add', target: platform });
   };
@@ -94,7 +94,7 @@ const ContactSelector = ({
                   <DropdownMenuItem
                     key={plat}
                     onSelect={() => {
-                      addNew(plat);
+                      takeFromAvailable(plat);
                     }}
                   >
                     <div className="group h-8 w-8" title={plat}>
@@ -114,7 +114,7 @@ const ContactSelector = ({
             index={index}
             register={register}
             platform={field.platform}
-            remove={removeItem}
+            remove={returnToAvailable}
             errors={errors}
           />
         ))}
