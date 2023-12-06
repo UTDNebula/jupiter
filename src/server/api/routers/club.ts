@@ -125,6 +125,19 @@ export const clubRouter = createTRPCRouter({
         ),
       }));
     }),
+  memberType: protectedProcedure
+    .input(byIdSchema)
+    .query(async ({ input, ctx }) => {
+      return (
+        await ctx.db.query.userMetadataToClubs.findFirst({
+          where: and(
+            eq(userMetadataToClubs.clubId, input.id),
+            eq(userMetadataToClubs.userId, ctx.session.user.id),
+            inArray(userMetadataToClubs.memberType, ['Officer', 'President']),
+          ),
+        })
+      )?.memberType;
+    }),
   joinLeave: protectedProcedure
     .input(joinLeaveSchema)
     .mutation(async ({ ctx, input }) => {
