@@ -3,7 +3,7 @@ import BackButton from '@src/components/BlueBackButton';
 import EditOfficerForm from './EditOfficerForm';
 import { api } from '@src/trpc/server';
 import { getServerAuthSession } from '@src/server/auth';
-import { notFound, redirect } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 export default async function Page({
   params: { clubId },
