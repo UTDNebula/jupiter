@@ -137,7 +137,7 @@ export const clubRouter = createTRPCRouter({
             eq(userMetadataToClubs.clubId, clubid),
           ),
       });
-      if (dataExists) {
+      if (dataExists && dataExists.memberType == 'Member') {
         await ctx.db
           .delete(userMetadataToClubs)
           .where(
