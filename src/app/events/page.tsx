@@ -74,7 +74,7 @@ const Events = async ({ searchParams }: { searchParams: searchPams }) => {
   return (
     <main className="pb-10 md:pl-72">
       <EventHeader />
-      <EventView events={events} params={searchParams} />
+      <EventView params={searchParams} events={events} />
     </main>
   );
 };
