@@ -20,7 +20,7 @@ const Sidebar = () => {
       </div>
       <div className="w-full px-5 py-5">
         <h1 className="px-4 text-xs font-light capitalize text-slate-500">
-          Main Categories
+          Main
         </h1>
         <div className="mb-5 mt-6">
           {mainCats.map((cat) => (
