@@ -19,10 +19,13 @@ type Club = SelectClub & {
 const OrgHeader = async ({ club }: { club: Club }) => {
   const session = await getServerAuthSession();
   let isJoined;
-  if(session){
-    isJoined = !!await db.query.userMetadataToClubs.findFirst({
-      where: and(eq(userMetadataToClubs.userId, session.user.id), eq(userMetadataToClubs.clubId, club.id))
-    });
+  if (session) {
+    isJoined = !!(await db.query.userMetadataToClubs.findFirst({
+      where: and(
+        eq(userMetadataToClubs.userId, session.user.id),
+        eq(userMetadataToClubs.clubId, club.id),
+      ),
+    }));
   }
   return (
     <div className="relative">
@@ -58,10 +61,15 @@ const OrgHeader = async ({ club }: { club: Club }) => {
             </h1>
           </div>
           <div className="ml-auto flex h-min flex-row items-center gap-x-12 self-center">
-            <Joinbutton session={session} isHeader clubID={club.id} isJoined={isJoined}/>
+            <Joinbutton
+              session={session}
+              isHeader
+              clubID={club.id}
+              isJoined={isJoined}
+            />
             <button
               className="rounded-full bg-blue-primary p-2.5 transition-colors hover:bg-blue-700"
-              type="button" 
+              type="button"
             >
               <LikeButton />
             </button>
@@ -71,7 +79,6 @@ const OrgHeader = async ({ club }: { club: Club }) => {
       </div>
     </div>
   );
-  
 };
 
 export default OrgHeader;
