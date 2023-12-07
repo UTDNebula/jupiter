@@ -1,6 +1,8 @@
 import { api } from '@src/trpc/server';
 import { type FC } from 'react';
 
+const MAX_DESCRIPTION_LENGTH = 150;
+
 const OrgUpcomingEvents: FC<{ club_id: string }> = async ({ club_id }) => {
   const cur_time = new Date();
 
@@ -11,27 +13,36 @@ const OrgUpcomingEvents: FC<{ club_id: string }> = async ({ club_id }) => {
   });
 
   return (
-    <div className="w-full rounded-lg bg-slate-100 p-10">
-      <h1 className="mt-5 text-2xl font-medium">Upcoming Events</h1>
-      <div className="mt-5 flex flex-col items-start  justify-evenly md:flex-row">
-        {data && data.length > 0 ? (
+    <div className="w-full rounded-lg bg-slate-100 p-6 md:p-10">
+      <h1 className="text-2xl font-semibold text-gray-800">Upcoming Events</h1>
+      <div className="mt-4 flex flex-col space-y-4 md:mt-6 md:flex-row md:space-x-4 md:space-y-0">
+        {data.length > 0 ? (
           data.map((event) => (
             <div
               key={event.id}
-              className=" cursor-pointer rounded-lg bg-blue-500 p-4"
+              className="w-60 cursor-pointer rounded-lg bg-blue-500 p-4 transition-colors duration-300 hover:bg-blue-600"
             >
-              <div className="font-medium">{event.name}</div>
-              <div>- {event.description}</div>
-              <div>
-                -{' '}
-                {`${
-                  event.startTime.getMonth() + 1
-                }/${event.startTime.getDate()}`}
-              </div>
+              <h2 className="text-lg font-medium text-white">{event.name}</h2>
+              <p className="mt-2 text-sm text-blue-100">
+                {event.description.length > MAX_DESCRIPTION_LENGTH
+                  ? `${event.description.substring(
+                      0,
+                      MAX_DESCRIPTION_LENGTH,
+                    )}...`
+                  : event.description}
+              </p>
+              <p className="mt-2 text-xs font-light text-blue-200">
+                {new Intl.DateTimeFormat('en-US', {
+                  month: 'long',
+                  day: 'numeric',
+                }).format(new Date(event.startTime))}
+              </p>
             </div>
           ))
         ) : (
-          <div className="font-medium">There are no upcoming events</div>
+          <div className="text-md font-medium text-gray-700">
+            There are no upcoming events
+          </div>
         )}
       </div>
     </div>
