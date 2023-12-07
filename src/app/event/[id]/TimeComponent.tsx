@@ -1,19 +1,12 @@
 'use client';
 
-import { useEffect, useState } from "react";
-
 type Props = {
   date: string;
 };
 
 const TimeComponent = (props: Props) => {
-  const [isLoading, setIsLoading] = useState(true);
-  
-  useEffect( () => {
-    setIsLoading(false);
-  }, [])
-
-  const dateString = new Date(props.date).toLocaleString('en-US', {
+  const date = new Date(props.date);
+  const dateString = date.toLocaleString('en-US', {
     weekday: 'short',
     year: 'numeric',
     month: 'long',
@@ -22,8 +15,7 @@ const TimeComponent = (props: Props) => {
     minute: '2-digit',
   });
 
-  
-  return (isLoading) ? null : <p className="text-sm">{dateString}</p>;
+  return <p className="text-sm">{dateString}</p>;
 };
 
 export default TimeComponent;

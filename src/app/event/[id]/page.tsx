@@ -5,14 +5,16 @@ import { eq } from 'drizzle-orm';
 import { type Metadata } from 'next';
 
 import TimeComponent from './TimeComponent';
-import wave from 'public/images/Wave.jpg';
 import Image from 'next/image';
 import CountdownTimer from './CountdownTimer';
 import LikeButton from '@src/components/LikeButton';
+import Link from 'next/link';
+import { getServerAuthSession } from '@src/server/auth';
 
 type Params = { params: { id: string } };
 
 export default async function EventsPage({ params }: Params) {
+  const session = await getServerAuthSession();
   const res = await db.query.events.findFirst({
     where: eq(events.id, params.id),
     with: { club: true },
@@ -23,7 +25,12 @@ export default async function EventsPage({ params }: Params) {
   const { club, ...event } = res;
 
   const clubDescription = ['Club', 'President', 'Location', 'Multi-Day'];
-  const clubDetails = [club.name, 'John Doe', 'ESCW 1.232', 'No'];
+  const clubDetails = [club.name, 'John Doe', event.location, 'No'];
+
+  const truncatedDescription =
+    club.description.length > 350
+      ? club.description.slice(0, 350) + '...'
+      : club.description;
 
   return (
     <main className="w-full md:pl-72">
@@ -43,15 +50,18 @@ export default async function EventsPage({ params }: Params) {
             <TimeComponent date={event.startTime.toISOString()} />
           </section>
           <section className="float-right my-auto flex">
-            <button
-              className="mr-12 rounded-full bg-blue-400 p-2.5 transition-colors hover:bg-blue-700"
-              type="button"
-            >
-              <LikeButton />
-            </button>
-            <button className="mr-8 rounded-full bg-blue-primary px-8 py-4 text-xs font-extrabold text-white transition-colors hover:bg-blue-700">
-              Register
-            </button>
+            {session && (
+                <button
+                  className="mr-12 rounded-full bg-blue-400 p-2.5 transition-colors hover:bg-blue-700"
+                  type="button"
+                >
+                  <LikeButton />
+                </button>
+              ) && (
+                <button className="mr-8 rounded-full bg-blue-primary px-8 py-4 text-xs font-extrabold text-white transition-colors hover:bg-blue-700">
+                  Register
+                </button>
+              )}
           </section>
         </div>
       </section>
@@ -61,7 +71,12 @@ export default async function EventsPage({ params }: Params) {
           <div className="m-4  flex w-max">
             <div className="h-full max-w-sm lg:min-w-fit">
               <div className="relative mx-auto h-40 w-full overflow-hidden rounded-b-md ">
-                <Image src={wave} alt="wave" layout="fill" objectFit="cover" />
+                <Image
+                  src={club.image}
+                  alt={club.name + ' logo'}
+                  fill
+                  className="object-cover"
+                />
               </div>
               <div>
                 <h1 className=" mt-10 text-sm font-semibold text-gray-700">
@@ -85,25 +100,31 @@ export default async function EventsPage({ params }: Params) {
             </div>
 
             <div className="mx-12 flex-grow text-sm">
-              <p className="text-slate-700">{club.description}</p>
+              <div className="">
+                {truncatedDescription.split('\n').map((str, i) => (
+                  <p className="text-slate-700" key={i}>
+                    {str}
+                  </p>
+                ))}
+                <Link
+                  className="text-slate-500 underline transition-colors hover:text-slate-700"
+                  href={`/directory/${club.id}`}
+                >
+                  see more
+                </Link>
+              </div>
               <p className="mt-4 text-gray-500">{event.description}</p>
             </div>
 
             <div className="flex flex-col ">
-              <h1 className="text-sm font-semibold text-gray-600">Starts in</h1>
-              <div className="mt-5 flex justify-start">
-                <CountdownTimer startTime={event.startTime} />
-              </div>
-              <div className="mt-5 flex justify-start text-sm font-medium text-gray-400">
-                <p className="mr-7">Days</p>
-                <p className="mr-6">Hours</p>
-                <p className="mr-6">Minutes</p>
-                <p>Seconds</p>
-              </div>
+              <CountdownTimer startTime={event.startTime} />
 
-              <button className="mr-8 mt-auto block w-full break-normal rounded-full border-2 border-blue-primary py-4 text-xs font-extrabold text-blue-primary transition-colors hover:bg-blue-700 hover:text-white">
+              <Link
+                href={`/directory/${club.id}`}
+                className="mr-8 mt-auto block w-36 break-normal rounded-full border-2 border-blue-primary py-4 text-center text-xs font-extrabold text-blue-primary transition-colors hover:bg-blue-700 hover:text-white"
+              >
                 View Club
-              </button>
+              </Link>
             </div>
           </div>
         </div>
