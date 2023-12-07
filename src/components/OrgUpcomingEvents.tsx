@@ -1,4 +1,5 @@
 import { api } from '@src/trpc/server';
+import Link from 'next/link';
 import { type FC } from 'react';
 
 const MAX_DESCRIPTION_LENGTH = 150;
@@ -18,9 +19,10 @@ const OrgUpcomingEvents: FC<{ club_id: string }> = async ({ club_id }) => {
       <div className="mt-4 flex flex-col space-y-4 md:mt-6 md:flex-row md:space-x-4 md:space-y-0">
         {data.length > 0 ? (
           data.map((event) => (
-            <div
+            <Link
               key={event.id}
               className="w-60 cursor-pointer rounded-lg bg-blue-500 p-4 transition-colors duration-300 hover:bg-blue-600"
+              href={`/event/${event.id}`}
             >
               <h2 className="text-lg font-medium text-white">{event.name}</h2>
               <p className="mt-2 text-sm text-blue-100">
@@ -37,7 +39,7 @@ const OrgUpcomingEvents: FC<{ club_id: string }> = async ({ club_id }) => {
                   day: 'numeric',
                 }).format(new Date(event.startTime))}
               </p>
-            </div>
+            </Link>
           ))
         ) : (
           <div className="text-md font-medium text-gray-700">

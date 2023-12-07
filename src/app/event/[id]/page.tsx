@@ -100,7 +100,7 @@ export default async function EventsPage({ params }: Params) {
             </div>
 
             <div className="mx-12 flex-grow text-sm">
-              <div className="">
+              <div>
                 {truncatedDescription.split('\n').map((str, i) => (
                   <p className="text-slate-700" key={i}>
                     {str}
@@ -113,7 +113,11 @@ export default async function EventsPage({ params }: Params) {
                   see more
                 </Link>
               </div>
-              <p className="mt-4 text-gray-500">{event.description}</p>
+              {event.description.split('\n').map((desc, i) => (
+                <p className="mt-4 text-gray-500" key={i}>
+                  {desc}
+                </p>
+              ))}
             </div>
 
             <div className="flex flex-col ">
