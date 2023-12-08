@@ -111,8 +111,8 @@ export const clubRouter = createTRPCRouter({
       ),
       with: { club: true },
     });
-    type wah = NonNullable<(typeof results)[number]['club']>;
-    return results.map((ele) => ele.club).filter((x): x is wah => x !== null);
+    // type wah = NonNullable<(typeof results)[number]['club']>;
+    return results.map((ele) => ele.club);
   }),
   isOfficer: protectedProcedure
     .input(byIdSchema)
