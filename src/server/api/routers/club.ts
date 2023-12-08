@@ -126,9 +126,10 @@ export const clubRouter = createTRPCRouter({
       });
       return !!found;
     }),
-  memberType: protectedProcedure
+  memberType: publicProcedure
     .input(byIdSchema)
     .query(async ({ input, ctx }) => {
+      if (!ctx.session) return undefined;
       return (
         await ctx.db.query.userMetadataToClubs.findFirst({
           where: and(
