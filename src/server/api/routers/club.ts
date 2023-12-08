@@ -1,9 +1,11 @@
 import { eq, ilike, sql, and, notInArray, inArray } from 'drizzle-orm';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 import { z } from 'zod';
-import { club, contacts, userMetadataToClubs } from '@src/server/db/schema';
 import { selectContact } from '@src/server/db/models';
 import { clubEditRouter } from './clubEdit';
+import { userMetadataToClubs } from '@src/server/db/schema/users';
+import { club } from '@src/server/db/schema/club';
+import { contacts } from '@src/server/db/schema/contacts';
 const byNameSchema = z.object({
   name: z.string().default(''),
 });

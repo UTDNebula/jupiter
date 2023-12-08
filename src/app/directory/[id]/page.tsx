@@ -7,7 +7,6 @@ import { api } from '@src/trpc/server';
 import { PlusIcon } from '@src/components/Icons';
 import { db } from '@src/server/db';
 import { eq } from 'drizzle-orm';
-import { club } from '@src/server/db/schema';
 import { type Metadata } from 'next';
 import NotFound from '@src/components/NotFound';
 
@@ -44,7 +43,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const id = params.id;
 
-  const found = await db.query.club.findFirst({ where: eq(club.id, id) });
+  const found = await db.query.club.findFirst({
+    where: (club) => eq(club.id, id),
+  });
 
   if (!found)
     return {
