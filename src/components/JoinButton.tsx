@@ -21,13 +21,13 @@ const Joinbutton = ({
   const clubid = clubID;
   const [isDisabled, setDisabled] = useState(isJoined ?? false);
   const handleJoin = () => {
-    mutation.mutate({ clubid });
+    mutation.mutate({ clubId: clubid });
     setDisabled(!isDisabled);
   };
   if (!session) {
     return (
       <button
-        className={`text-xs font-extrabold text-white disabled:bg-slate-700 
+        className={`text-xs font-extrabold text-white disabled:bg-slate-700
         ${
           isHeader
             ? 'rounded-full px-8 py-4'
@@ -42,7 +42,7 @@ const Joinbutton = ({
   return (
     <button
       onClick={handleJoin}
-      className={`bg-blue-primary text-xs font-extrabold text-white transition-colors hover:bg-blue-700 disabled:bg-blue-700 
+      className={`bg-blue-primary text-xs font-extrabold text-white transition-colors hover:bg-blue-700 disabled:bg-blue-700
       ${isHeader ? 'rounded-full  px-8 py-4 ' : 'mr-2 rounded-2xl px-4 py-2'}`}
     >
       {isDisabled ? 'Joined' : 'Join'}

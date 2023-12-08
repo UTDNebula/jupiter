@@ -13,18 +13,16 @@ export default async function Page({
   const session = await getServerAuthSession();
   if (!session) redirect('/auth');
   const role = await api.club.memberType.query({ id: clubId });
-  const officers = (await api.club.getOfficers.query({ id: clubId })).map(
-    (officer) => {
-      return {
-        userId: officer.userId,
-        name:
-          officer.userMetadata.firstName + ' ' + officer.userMetadata.lastName,
-        locked: officer.memberType == 'President' || role == 'Officer',
-        position: officer.memberType as 'President' | 'Officer',
-        title: officer.title as string,
-      };
-    },
-  );
+  const officers = await api.club.getOfficers.query({ id: clubId });
+
+  const mapped = officers.map((officer) => ({
+    userId: officer.userId,
+    name: officer.userMetadata.firstName + ' ' + officer.userMetadata.lastName,
+    locked: officer.memberType == 'President' || role == 'Officer',
+    position: officer.memberType as 'President' | 'Officer',
+    title: officer.title as string,
+  }));
+
   return (
     <main className="h-full md:pl-72">
       <Header />
@@ -33,7 +31,7 @@ export default async function Page({
         <h1 className="text-2xl font-extrabold text-blue-primary">
           Edit club officers
         </h1>
-        <EditOfficerForm clubId={clubId} officers={officers} />
+        <EditOfficerForm clubId={clubId} officers={mapped} />
       </div>
     </main>
   );

@@ -13,7 +13,7 @@ const ContactButtons = ({ contacts }: contentButtonProps) => {
           key={item.url}
           className="group relative h-min self-center rounded-full bg-slate-100 p-2.5 transition-colors hover:bg-blue-700"
         >
-          <Link href={item.url}>
+          <Link href={item.url} target="_blank">
             <div className="relative h-8 w-8">{logo[item.platform]}</div>
           </Link>
         </button>

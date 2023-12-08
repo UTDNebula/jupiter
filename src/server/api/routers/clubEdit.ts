@@ -6,16 +6,17 @@ import { editClubSchema } from '@src/utils/formSchemas';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { selectContact } from '@src/server/db/models';
-async function isOfficer(userId: string, clubId: string) {
+async function isUserOfficer(userId: string, clubId: string) {
   const officer = await db.query.userMetadataToClubs.findFirst({
     where: and(
       eq(userMetadataToClubs.userId, userId),
       eq(userMetadataToClubs.clubId, clubId),
     ),
   });
-  return officer?.memberType == 'Officer' || 'President';
+  if (!officer || !officer.memberType) return false;
+  return officer.memberType !== 'Member';
 }
-async function isPresident(userId: string, clubId: string) {
+async function isUserPresident(userId: string, clubId: string) {
   const officer = await db.query.userMetadataToClubs.findFirst({
     where: and(
       eq(userMetadataToClubs.userId, userId),
@@ -53,9 +54,9 @@ export const clubEditRouter = createTRPCRouter({
   data: protectedProcedure
     .input(editClubSchema)
     .mutation(async ({ input, ctx }) => {
-      if (!(await isOfficer(ctx.session.user.id, input.id))) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
-      }
+      const isOfficer = await isUserOfficer(ctx.session.user.id, input.id);
+      if (!isOfficer) throw new TRPCError({ code: 'UNAUTHORIZED' });
+
       const updatedClub = await ctx.db
         .update(club)
         .set({ name: input.name, description: input.description })
@@ -66,12 +67,13 @@ export const clubEditRouter = createTRPCRouter({
   contacts: protectedProcedure
     .input(editContactSchema)
     .mutation(async ({ input, ctx }) => {
-      if (!(await isOfficer(ctx.session.user.id, input.clubId))) {
+      const isOfficer = await isUserOfficer(ctx.session.user.id, input.clubId);
+      if (!isOfficer)
         throw new TRPCError({
           message: 'must be an officer to modify this club',
           code: 'UNAUTHORIZED',
         });
-      }
+
       if (input.deleted.length > 0) {
         await ctx.db
           .delete(contacts)
@@ -95,26 +97,25 @@ export const clubEditRouter = createTRPCRouter({
           );
         promises.push(prom);
       }
-      await Promise.all(promises);
-      if (input.created.length > 0) {
-        await ctx.db
-          .insert(contacts)
-          .values(
-            input.created.map((contact) => {
-              return {
-                clubId: input.clubId,
-                platform: contact.platform,
-                url: contact.url,
-              };
-            }),
-          )
-          .onConflictDoNothing();
-      }
+      await Promise.allSettled(promises);
+      if (input.created.length === 0) return;
+
+      await ctx.db
+        .insert(contacts)
+        .values(
+          input.created.map((contact) => ({
+            clubId: input.clubId,
+            platform: contact.platform,
+            url: contact.url,
+          })),
+        )
+        .onConflictDoNothing();
     }),
   officers: protectedProcedure
     .input(editOfficerSchema)
     .mutation(async ({ input, ctx }) => {
-      if (!(await isOfficer(ctx.session.user.id, input.clubId))) {
+      const isOfficer = await isUserOfficer(ctx.session.user.id, input.clubId);
+      if (!isOfficer) {
         throw new TRPCError({
           message: 'must be an officer to modify this club',
           code: 'UNAUTHORIZED',
@@ -134,9 +135,7 @@ export const clubEditRouter = createTRPCRouter({
       for (const modded of input.modified) {
         const prom = ctx.db
           .update(userMetadataToClubs)
-          .set({
-            title: modded.title,
-          })
+          .set({ title: modded.title })
           .where(
             and(
               eq(userMetadataToClubs.userId, modded.userId),
@@ -145,33 +144,34 @@ export const clubEditRouter = createTRPCRouter({
           );
         promises.push(prom);
       }
-      await Promise.all(promises);
-      if (input.created.length > 0) {
-        await ctx.db
-          .insert(userMetadataToClubs)
-          .values(
-            input.created.map((officer) => {
-              return {
-                userId: officer.userId,
-                clubId: input.clubId,
-                officerType: 'Officer' as const,
-                title: officer.title,
-              };
-            }),
-          )
-          .onConflictDoUpdate({
-            target: [userMetadataToClubs.userId, userMetadataToClubs.clubId],
-            set: { memberType: 'Officer' as const, title: sql`excluded.title` },
-            where: eq(userMetadataToClubs.memberType, 'Member'),
-          });
-      }
+      await Promise.allSettled(promises);
+      if (input.created.length === 0) return;
+
+      await ctx.db
+        .insert(userMetadataToClubs)
+        .values(
+          input.created.map((officer) => ({
+            userId: officer.userId,
+            clubId: input.clubId,
+            officerType: 'Officer' as const,
+            title: officer.title,
+          })),
+        )
+        .onConflictDoUpdate({
+          target: [userMetadataToClubs.userId, userMetadataToClubs.clubId],
+          set: { memberType: 'Officer' as const, title: sql`excluded.title` },
+          where: eq(userMetadataToClubs.memberType, 'Member'),
+        });
     }),
   delete: protectedProcedure
     .input(deleteSchema)
     .mutation(async ({ input, ctx }) => {
-      if (!(await isPresident(ctx.session.user.id, input.clubId))) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
-      }
+      const isPresident = await isUserPresident(
+        ctx.session.user.id,
+        input.clubId,
+      );
+      if (!isPresident) throw new TRPCError({ code: 'UNAUTHORIZED' });
+
       await ctx.db.delete(club).where(eq(club.id, input.clubId));
     }),
 });

@@ -13,7 +13,7 @@ const byIdSchema = z.object({
 });
 
 const joinLeaveSchema = z.object({
-  clubid: z.string().default(''),
+  clubId: z.string().default(''),
 });
 
 const allSchema = z.object({
@@ -67,7 +67,7 @@ export const clubRouter = createTRPCRouter({
       let query;
       if (userID) {
         const joinedClubs = ctx.db
-          .select({ clubid: userMetadataToClubs.clubId })
+          .select({ clubId: userMetadataToClubs.clubId })
           .from(userMetadataToClubs)
           .where(eq(userMetadataToClubs.userId, userID));
         query = ctx.db
@@ -117,13 +117,14 @@ export const clubRouter = createTRPCRouter({
   isOfficer: protectedProcedure
     .input(byIdSchema)
     .query(async ({ input, ctx }) => {
-      return !!(await ctx.db.query.userMetadataToClubs.findFirst({
+      const found = await ctx.db.query.userMetadataToClubs.findFirst({
         where: and(
           eq(userMetadataToClubs.clubId, input.id),
           eq(userMetadataToClubs.userId, ctx.session.user.id),
           inArray(userMetadataToClubs.memberType, ['Officer', 'President']),
         ),
-      }));
+      });
+      return !!found;
     }),
   memberType: protectedProcedure
     .input(byIdSchema)
@@ -141,13 +142,13 @@ export const clubRouter = createTRPCRouter({
   joinLeave: protectedProcedure
     .input(joinLeaveSchema)
     .mutation(async ({ ctx, input }) => {
-      const joinuserID = ctx.session.user.id;
-      const { clubid } = input;
+      const joinUserId = ctx.session.user.id;
+      const { clubId } = input;
       const dataExists = await ctx.db.query.userMetadataToClubs.findFirst({
         where: (userMetadataToClubs) =>
           and(
-            eq(userMetadataToClubs.userId, joinuserID),
-            eq(userMetadataToClubs.clubId, clubid),
+            eq(userMetadataToClubs.userId, joinUserId),
+            eq(userMetadataToClubs.clubId, clubId),
           ),
       });
       if (dataExists && dataExists.memberType == 'Member') {
@@ -155,14 +156,14 @@ export const clubRouter = createTRPCRouter({
           .delete(userMetadataToClubs)
           .where(
             and(
-              eq(userMetadataToClubs.userId, joinuserID),
-              eq(userMetadataToClubs.clubId, clubid),
+              eq(userMetadataToClubs.userId, joinUserId),
+              eq(userMetadataToClubs.clubId, clubId),
             ),
           );
       } else {
         await ctx.db
           .insert(userMetadataToClubs)
-          .values({ userId: joinuserID, clubId: clubid });
+          .values({ userId: joinUserId, clubId });
       }
       return dataExists;
     }),
@@ -176,7 +177,9 @@ export const clubRouter = createTRPCRouter({
           description: input.description,
         })
         .returning({ id: club.id });
+
       const clubId = res[0]!.id;
+
       if (input.contacts.length > 0) {
         await ctx.db.insert(contacts).values(
           input.contacts.map((contact) => {
@@ -188,6 +191,7 @@ export const clubRouter = createTRPCRouter({
           }),
         );
       }
+
       await ctx.db.insert(userMetadataToClubs).values(
         input.officers.map((officer) => {
           return {

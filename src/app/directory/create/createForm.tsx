@@ -34,34 +34,32 @@ const CreateClubForm = ({ user }: { user: { id: string; name: string } }) => {
     onSuccess: (id) => router.push(`/directory/${id}`),
   });
   const submitForm = handleSubmit((data) => {
-    if (!createClub.isLoading) {
-      createClub.mutate(data);
-    }
+    if (!createClub.isLoading) createClub.mutate(data);
   });
   return (
     <form onSubmit={submitForm}>
-      <div className="flex h-full w-full flex-col gap-y-5 p-5">
-        <div className="w-full rounded-md bg-slate-100 p-5 shadow-sm">
-          <h1 className="text-lg font-extrabold text-black">
-            Create new Organization
+      <div className="flex flex-col gap-4 p-4">
+        <div className="rounded bg-slate-100 p-4 shadow">
+          <h1 className="mb-2 text-2xl font-bold text-gray-800">
+            Create New Organization
           </h1>
         </div>
-        <div className="w-full rounded-md bg-slate-100 p-5 shadow-sm">
-          <h2>Organization name</h2>
+        <div className="rounded bg-slate-100 p-4 shadow">
+          <h2 className="mb-2 text-lg font-semibold">Organization name</h2>
           <input
             type="text"
             id="name"
-            className=" w-full bg-transparent"
+            className="w-full rounded border border-gray-300 p-2"
             {...register('name')}
             aria-invalid={errors.name ? 'true' : 'false'}
           />
           {errors.name && <p className="text-red-500">{errors.name.message}</p>}
         </div>
-        <div className="h-44 w-full rounded-md bg-slate-100 p-5 shadow-sm">
-          <h2>Description</h2>
+        <div className="rounded bg-slate-100 p-4 shadow">
+          <h2 className="mb-2 text-lg font-semibold">Description</h2>
           <textarea
             id="desc"
-            className="h-24 w-full"
+            className="w-full rounded border border-gray-300 p-2"
             {...register('description')}
             aria-invalid={errors.description ? 'true' : 'false'}
           />

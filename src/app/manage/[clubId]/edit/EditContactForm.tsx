@@ -77,7 +77,6 @@ export default function EditContactForm({
   });
   const [deleted, modifyDeleted] = useReducer(deletedReducer, []);
   const submitForm = handleSubmit((data) => {
-    console.log(data);
     if (dirtyFields.contacts !== undefined) {
       const { modified, created } = modifiedFields(dirtyFields.contacts, data);
       if (!editContacts.isLoading) {

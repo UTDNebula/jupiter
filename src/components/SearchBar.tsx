@@ -189,6 +189,7 @@ export const UserSearchBar = ({ passUser }: UserSearchBarProps) => {
       searchResults={res}
       onClick={(user) => {
         passUser({ id: user.id, name: user.name });
+        setSearch('');
       }}
     />
   );
