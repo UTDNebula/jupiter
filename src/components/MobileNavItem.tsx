@@ -1,6 +1,6 @@
 'use client';
 
-import React, { type FC, useState } from 'react';
+import React, { type FC } from 'react';
 import {
   AboutIcon,
   EventsIcon,
@@ -12,7 +12,6 @@ import {
   RightChevron,
   SettingsIcon,
 } from './Icons';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 const mainCats = ['Home', 'History', 'Liked', 'Events'] as const;
