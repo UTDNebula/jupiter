@@ -40,6 +40,12 @@ export const careerEnum = pgEnum('career', [
   'Public Service',
 ]);
 
+export const clubRoleEnum = pgEnum('member_type', [
+  'President',
+  'Officer',
+  'Member',
+]);
+
 export const userMetadata = pgTable('user_metadata', {
   id: text('id').notNull().primaryKey(),
   firstName: text('first_name').notNull(),
@@ -64,6 +70,10 @@ export const userMetadataToClubs = pgTable(
     clubId: text('club_id')
       .notNull()
       .references(() => club.id, { onDelete: 'cascade' }),
+    memberType: clubRoleEnum('member_type')
+      .$default(() => 'Member')
+      .notNull(),
+    title: text('title'),
   },
   (t) => ({
     pk: primaryKey(t.userId, t.clubId),
@@ -213,6 +223,7 @@ export const userMetadataToClubsRelations = relations(
     }),
   }),
 );
+
 export const userMetadataToEventsRelations = relations(
   userMetadataToEvents,
   ({ one }) => ({

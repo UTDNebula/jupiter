@@ -13,12 +13,12 @@ import NotFound from '@src/components/NotFound';
 
 const OrganizationPage = async ({ params }: { params: { id: string } }) => {
   const club = await api.club.byId.query({ id: params.id });
-  if (!club) return <NotFound elementType='Club' />;
+  if (!club) return <NotFound elementType="Club" />;
 
   return (
     <main className="w-full md:pl-72">
       <Header />
-      <div className="mb-5 flex flex-col space-y-8 px-7">
+      <div className="mb-5 flex flex-col space-y-4 px-3">
         <OrgHeader club={club} />
         <OrgInfoSegment club={club} />
         <OrgUpcomingEvents club_id={club.id} />

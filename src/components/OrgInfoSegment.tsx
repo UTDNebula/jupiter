@@ -6,7 +6,7 @@ const OrgInfoSegment: FC<{ club: Club }> = ({ club }) => {
   return (
     <div className="w-full rounded-lg bg-slate-100 p-10">
       <div className="flex flex-col items-start justify-between md:flex-row">
-        <div className="w-full">
+        <div className="pr-12">
           <Image
             src={club.image}
             alt="Picture of the club"
@@ -32,7 +32,13 @@ const OrgInfoSegment: FC<{ club: Club }> = ({ club }) => {
             <p className="text-right text-sm text-slate-600">Present</p>
           </div>
         </div>
-        <div className="w-full">{club.description}</div>
+        <div className="w-full">
+          {club.description.split('\n').map((str, i) => (
+            <p className="text-slate-700" key={i}>
+              {str}
+            </p>
+          ))}
+        </div>
         <div className="w-full text-center">
           <h1 className="mt-5 text-2xl font-medium">Leadership</h1>
           <div className="flex flex-col items-center justify-center">
