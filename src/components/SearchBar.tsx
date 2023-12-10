@@ -6,7 +6,7 @@ import {
   type ChangeEvent,
   useEffect,
 } from 'react';
-import { SearchIcon } from './Icons';
+import { SearchIcon } from '../icons/Icons';
 import { useRouter } from 'next/navigation';
 import type {
   SelectClub as Club,

@@ -5,21 +5,7 @@ import { type Dispatch, type SetStateAction } from 'react';
 import MobileNavItem from './MobileNavItem';
 import { usePathname } from 'next/navigation';
 
-const mainCats = ['Home', 'History', 'Liked', 'Events'] as const;
-const moreCats = ['Settings', 'About', 'Feedback'] as const;
-
-type allCats = (typeof mainCats)[number] | (typeof moreCats)[number];
-const routeMap: {
-  [key in allCats[number]]: string;
-} = {
-  Home: '/',
-  History: '/history',
-  Liked: '/liked',
-  Events: '/events',
-  Settings: '/settings',
-  About: '/about',
-  Feedback: '/feedback',
-};
+import { mainCats, moreCats, routeMap } from '@src/constants/categories';
 
 const MobileNavMenu = ({
   setIsOpen,
@@ -36,7 +22,7 @@ const MobileNavMenu = ({
         }}
         className="fixed left-0 top-0 z-50 h-screen w-full bg-black bg-opacity-50"
       ></div>
-      <nav className="p-y fixed left-0 top-0 z-50 h-screen bg-slate-100 md:hidden">
+      <nav className="p-y fixed left-0 top-0 z-50 h-screen w-1/2 bg-slate-100 max-[600px]:w-3/4 md:hidden">
         <div className="flex w-full place-content-center items-center pb-7 pt-10">
           <Image
             src="/nebula-logo.png"

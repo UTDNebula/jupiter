@@ -4,7 +4,7 @@ import OrgHeader from '@src/components/OrgHeader';
 import OrgInfoSegment from '@src/components/OrgInfoSegment';
 import OrgUpcomingEvents from '@src/components/OrgUpcomingEvents';
 import { api } from '@src/trpc/server';
-import { PlusIcon } from '@src/components/Icons';
+import { PlusIcon } from '@src/icons/Icons';
 import { db } from '@src/server/db';
 import { eq } from 'drizzle-orm';
 import { club } from '@src/server/db/schema';

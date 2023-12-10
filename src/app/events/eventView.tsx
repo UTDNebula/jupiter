@@ -1,5 +1,5 @@
 'use server';
-import { GridIcon, ListIcon } from '@src/components/Icons';
+import { GridIcon, ListIcon } from '@src/icons/Icons';
 import EventCard from '@src/components/events/EventCard';
 import EventSidebar from '@src/components/events/EventSidebar';
 import { type RouterOutputs } from '@src/trpc/shared';

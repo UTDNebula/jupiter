@@ -1,48 +1,12 @@
 'use client';
 
 import React, { type FC } from 'react';
-import {
-  AboutIcon,
-  EventsIcon,
-  FeedbackIcon,
-  HistoryIcon,
-  HomeIcon,
-  type IconType,
-  LikedIcon,
-  RightChevron,
-  SettingsIcon,
-} from './Icons';
 import Link from 'next/link';
 
-const mainCats = ['Home', 'History', 'Liked', 'Events'] as const;
-const moreCats = ['Settings', 'About', 'Feedback'] as const;
+import { IconMap, type allCats, routeMap } from '@src/constants/categories';
+import { RightChevron } from '../icons/Icons';
 
-type union = (typeof mainCats)[number] | (typeof moreCats)[number];
-const IconMap: {
-  [key in union[number]]: IconType;
-} = {
-  Home: HomeIcon,
-  History: HistoryIcon,
-  Liked: LikedIcon,
-  Events: EventsIcon,
-  Settings: SettingsIcon,
-  About: AboutIcon,
-  Feedback: FeedbackIcon,
-};
-
-const routeMap: {
-  [key in union[number]]: string;
-} = {
-  Home: '/',
-  History: '/history',
-  Liked: '/liked',
-  Events: '/events',
-  Settings: '/settings',
-  About: '/about',
-  Feedback: '/feedback',
-};
-
-const MobileNavItem: FC<{ cat: union[number]; active: boolean }> = ({
+const MobileNavItem: FC<{ cat: allCats[number]; active: boolean }> = ({
   cat,
   active,
 }) => {
@@ -61,7 +25,7 @@ const MobileNavItem: FC<{ cat: union[number]; active: boolean }> = ({
     >
       <Link
         className=" 
-        flex h-full w-64 cursor-pointer  items-start rounded-lg bg-transparent px-5 text-sm transition-transform"
+        flex h-full w-full cursor-pointer  items-start rounded-lg bg-transparent px-5 text-sm transition-transform"
         href={route}
         passHref
       >
