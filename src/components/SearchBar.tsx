@@ -8,7 +8,10 @@ import {
 } from 'react';
 import { SearchIcon } from './Icons';
 import { useRouter } from 'next/navigation';
-import type { SelectClub as Club } from '@src/server/db/models';
+import type {
+  SelectClub as Club,
+  SelectUserMetadata,
+} from '@src/server/db/models';
 import { api } from '@src/trpc/react';
 import type { SelectEvent as Event } from '@src/server/db/models';
 
@@ -151,6 +154,41 @@ export const EventClubSearchBar = ({ addClub }: EventClubSearchBarProps) => {
       searchResults={res}
       onClick={(club) => {
         addClub(club.id);
+        setSearch('');
+      }}
+    />
+  );
+};
+type UserSearchBarProps = {
+  passUser: (user: { id: string; name: string }) => void;
+};
+type User = {
+  name: string;
+} & SelectUserMetadata;
+export const UserSearchBar = ({ passUser }: UserSearchBarProps) => {
+  const [search, setSearch] = useState('');
+  const [res, setRes] = useState<User[]>([]);
+  api.userMetadata.searchByName.useQuery(
+    { name: search },
+    {
+      onSuccess: (data) => {
+        const newData = data.map((val) => {
+          return { name: val.firstName + ' ' + val.lastName, ...val };
+        });
+        setRes(newData);
+        return newData;
+      },
+      enabled: !!search,
+    },
+  );
+  return (
+    <SearchBar
+      placeholder="Search for Someone"
+      setSearch={setSearch}
+      value={search}
+      searchResults={res}
+      onClick={(user) => {
+        passUser({ id: user.id, name: user.name });
         setSearch('');
       }}
     />

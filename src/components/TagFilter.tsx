@@ -10,7 +10,7 @@ const TagFilter = ({ tags }: { tags: string[] }) => {
   const selectedTag = params.get('tag') || 'All';
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const onClick = (tag: string) =>
+  const setSelected = (tag: string) =>
     router.replace(`/?tag=${tag}`, { scroll: false });
 
   const handleScrollLeft = () => {
@@ -45,7 +45,7 @@ const TagFilter = ({ tags }: { tags: string[] }) => {
                   ? 'bg-blue-primary text-white hover:bg-blue-700'
                   : 'bg-gray-100 text-slate-600 hover:bg-gray-200'
               } whitespace-nowrap rounded-3xl px-8 py-4 text-xs font-extrabold transition-colors duration-200 focus:outline-none`}
-              onClick={() => onClick(tag)}
+              onClick={() => setSelected(tag)}
             >
               {tag}
             </button>
