@@ -5,7 +5,8 @@ type Props = {
 };
 
 const TimeComponent = (props: Props) => {
-  const dateString = new Date(props.date).toLocaleString('en-US', {
+  const date = new Date(props.date);
+  const dateString = date.toLocaleString('en-US', {
     weekday: 'short',
     year: 'numeric',
     month: 'long',
@@ -13,7 +14,8 @@ const TimeComponent = (props: Props) => {
     hour: '2-digit',
     minute: '2-digit',
   });
-  return <p className="text-2xl font-semibold">{dateString}</p>;
+
+  return <p className="text-sm">{dateString}</p>;
 };
 
 export default TimeComponent;
