@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { useState } from 'react';
-import { LeftArrowIcon, RightArrowIcon } from './Icons';
+import { LeftArrowIcon, RightArrowIcon } from '../icons/Icons';
 import Link from 'next/link';
 
 type featuredClub = {

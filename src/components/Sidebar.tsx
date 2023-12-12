@@ -1,8 +1,6 @@
 import SidebarItems from './SidebarItems';
 import Image from 'next/image';
-
-const mainCats = ['Home', 'History', 'Liked', 'Events'] as const;
-const moreCats = ['Settings', 'About', 'Feedback'] as const;
+import { mainCats, moreCats } from '@src/constants/categories';
 
 // Keep in mind that in all routes we need pl-72 for the sidebar
 const Sidebar = () => {

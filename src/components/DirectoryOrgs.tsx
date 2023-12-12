@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 import Image from 'next/image';
-import { GroupIcon } from './Icons';
+import { GroupIcon } from '../icons/Icons';
 import type { SelectClub as Club } from '@src/server/db/models';
 import { getServerAuthSession } from '@src/server/auth';
 import Joinbutton from './JoinButton';
@@ -41,7 +41,7 @@ const OrgDirectoryCards: FC<Props> = async ({ club }) => {
         <p className="line-clamp-3 text-xs text-slate-500">Description</p>
         <p className="text-sm text-slate-600">{desc}</p>
         <div className="flex flex-row space-x-2">
-        <Joinbutton session={session} clubID={club.id}/>
+          <Joinbutton session={session} clubID={club.id} />
           <Link
             href={`/directory/${club.id}`}
             className="rounded-2xl bg-blue-600 bg-opacity-10 px-4 py-2 text-xs font-extrabold text-blue-primary  transition-colors hover:bg-blue-200"
