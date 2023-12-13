@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { HeartIcon, HeartOutline } from './Icons';
+import { HeartIcon, HeartOutline } from '../icons/Icons';
 
 const LikeButton = () => {
   const [liked, setLiked] = useState(false);

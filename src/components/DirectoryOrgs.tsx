@@ -1,6 +1,5 @@
 import { type FC } from 'react';
 import Image from 'next/image';
-import { GroupIcon } from './Icons';
 import type { SelectClub as Club } from '@src/server/db/models';
 import { getServerAuthSession } from '@src/server/auth';
 import Joinbutton from './JoinButton';
@@ -29,14 +28,7 @@ const OrgDirectoryCards: FC<Props> = async ({ club }) => {
           className="select-none object-cover"
         />
         <div className="absolute left-2 right-2 top-2 flex h-fit flex-row items-center space-x-2">
-          <div className="flex flex-row items-center rounded-full bg-black bg-opacity-50 px-4 py-1.5">
-            <div className="h-7 w-7 text-white">
-              <GroupIcon />
-            </div>
-            <div className="ml-1 h-fit w-fit text-xs font-bold text-white">
-              {30} Members
-            </div>
-          </div>
+          
           <button className="ml-auto rounded-full bg-black bg-opacity-50 p-1.5 font-bold text-white transition-colors">
             <LikeButton />
           </button>
