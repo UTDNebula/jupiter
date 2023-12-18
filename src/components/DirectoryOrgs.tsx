@@ -1,4 +1,3 @@
-'use client';
 import { type FC } from 'react';
 import Image from 'next/image';
 import type { SelectClub as Club } from '@src/server/db/models';
@@ -17,7 +16,7 @@ const OrgDirectoryCards: FC<Props> = ({ club, session }) => {
   const name =
     club.name.length > 20 ? club.name.slice(0, 30) + '...' : club.name;
   return (
-    <div className="flex h-full min-h-[600px] max-w-xs flex-col rounded-lg bg-white shadow-lg ">
+    <div className="flex h-full min-h-[600px] max-w-xs flex-col justify-between rounded-lg bg-white shadow-lg">
       <div className="relative h-48 overflow-hidden sm:h-56 md:h-64 lg:h-72">
         <Image
           src={club.image}
@@ -36,15 +35,15 @@ const OrgDirectoryCards: FC<Props> = ({ club, session }) => {
         <h2 className="text-sm font-light text-slate-500">Founded in {2020}</h2>
         <p className="line-clamp-3 text-xs text-slate-500">Description</p>
         <p className="text-sm text-slate-600">{desc}</p>
-        <div className="flex flex-row space-x-2">
-          <JoinButton session={session} clubID={club.id} />
-          <Link
-            href={`/directory/${club.id}`}
-            className="rounded-2xl bg-blue-600 bg-opacity-10 px-4 py-2 text-xs font-extrabold text-blue-primary  transition-colors hover:bg-blue-200"
-          >
-            Learn More
-          </Link>
-        </div>
+      </div>
+      <div className="m-5 flex flex-row space-x-2">
+        <JoinButton session={session} clubID={club.id} />
+        <Link
+          href={`/directory/${club.id}`}
+          className="rounded-2xl bg-blue-600 bg-opacity-10 px-4 py-2 text-xs font-extrabold text-blue-primary  transition-colors hover:bg-blue-200"
+        >
+          Learn More
+        </Link>
       </div>
     </div>
   );
