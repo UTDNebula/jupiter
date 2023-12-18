@@ -18,7 +18,7 @@ const OrgDirectoryGrid: FC<Props> = async ({ tag }) => {
         <DirectoryOrgs key={club.id} club={club} session={session} />
       ))}
       {clubs.length === 20 && (
-        <InfiniteScrollGrid tag={tag} cursor={clubs.length} session={session} />
+        <InfiniteScrollGrid tag={tag} session={session} />
       )}
     </div>
   );

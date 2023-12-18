@@ -7,17 +7,16 @@ import DirectoryOrgs, { OrgDirectoryCardSkeleton } from './DirectoryOrgs';
 type Props = {
   session: Session | null;
   tag?: string;
-  cursor: number;
 };
 
-export default function InfiniteScrollGrid({ session, tag, cursor }: Props) {
+export default function InfiniteScrollGrid({ session, tag }: Props) {
   const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } =
     api.club.all.useInfiniteQuery(
       { tag, limit: 20 },
       {
         getNextPageParam: (lastPage) =>
           lastPage.clubs.length < 20 ? undefined : lastPage.cursor,
-        initialCursor: cursor,
+        initialCursor: 20,
       },
     );
 
