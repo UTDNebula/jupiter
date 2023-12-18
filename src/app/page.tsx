@@ -4,7 +4,6 @@ import TagFilter from '../components/TagFilter';
 import OrgDirectoryGrid from '../components/OrgDirectoryGrid';
 import type { Metadata } from 'next';
 import { api } from '@src/trpc/server';
-import { getServerAuthSession } from '@src/server/auth';
 
 export const metadata: Metadata = {
   title: 'Jupiter - Nebula',
@@ -24,7 +23,6 @@ type Params = {
 
 const Home = async (props: Params) => {
   const tags = await api.club.distinctTags.query();
-  const session = await getServerAuthSession();
   return (
     <main className="md:pl-72 ">
       <Header />
@@ -33,7 +31,7 @@ const Home = async (props: Params) => {
           <Carousel />
         </div>
         <TagFilter tags={tags} />
-        <OrgDirectoryGrid tag={props.searchParams.tag} session={session} />
+        <OrgDirectoryGrid tag={props.searchParams.tag} />
       </div>
     </main>
   );

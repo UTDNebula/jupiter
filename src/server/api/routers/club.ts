@@ -20,6 +20,7 @@ const allSchema = z.object({
   tag: z.string().nullish(),
   cursor: z.number().min(0).default(0),
   limit: z.number().min(1).max(50).default(10),
+  initialCursor: z.number().min(0).default(0),
 });
 const createClubSchema = z.object({
   name: z.string().min(3),
