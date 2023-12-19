@@ -18,6 +18,9 @@ const joinLeaveSchema = z.object({
 
 const allSchema = z.object({
   tag: z.string().nullish(),
+  cursor: z.number().min(0).default(0),
+  limit: z.number().min(1).max(50).default(10),
+  initialCursor: z.number().min(0).default(0),
 });
 const createClubSchema = z.object({
   name: z.string().min(3),
@@ -64,28 +67,36 @@ export const clubRouter = createTRPCRouter({
   all: publicProcedure.input(allSchema).query(async ({ ctx, input }) => {
     const userID = ctx.session?.user.id;
     try {
-      let query;
+      let query = ctx.db.select().from(club);
       if (userID) {
         const joinedClubs = ctx.db
           .select({ clubId: userMetadataToClubs.clubId })
           .from(userMetadataToClubs)
           .where(eq(userMetadataToClubs.userId, userID));
-        query = ctx.db
-          .select()
-          .from(club)
-          .where(notInArray(club.id, joinedClubs));
-      } else {
-        query = ctx.db.select().from(club);
+
+        query = query.where(notInArray(club.id, joinedClubs));
       }
-      if (input.tag && typeof input.tag == 'string' && input.tag !== 'All') {
+
+      if (input.tag && input.tag !== 'All')
         query = query.where(sql`${input.tag} = ANY(tags)`);
-      }
-      query = query.orderBy(sql`RANDOM()`).limit(20);
-      const res = await query;
-      return res;
+
+      const res = await query
+        .orderBy(club.name)
+        .limit(input.limit)
+        .offset(input.cursor);
+
+      const newOffset = input.cursor + res.length;
+
+      return {
+        clubs: res,
+        cursor: newOffset,
+      };
     } catch (e) {
       console.error(e);
-      return [];
+      return {
+        clubs: [],
+        cursor: 0,
+      };
     }
   }),
   distinctTags: publicProcedure.query(async ({ ctx }) => {
