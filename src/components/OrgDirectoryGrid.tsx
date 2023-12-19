@@ -3,6 +3,7 @@ import DirectoryOrgs from './DirectoryOrgs';
 import { api } from '@src/trpc/server';
 import { getServerAuthSession } from '@src/server/auth';
 import InfiniteScrollGrid from './InfiniteScrollGrid';
+import ScrollTop from './ScrollTop';
 
 interface Props {
   tag?: string;
@@ -20,6 +21,7 @@ const OrgDirectoryGrid: FC<Props> = async ({ tag }) => {
       {clubs.length === 20 && (
         <InfiniteScrollGrid tag={tag} session={session} />
       )}
+      <ScrollTop />
     </div>
   );
 };
