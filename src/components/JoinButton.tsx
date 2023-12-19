@@ -11,17 +11,17 @@ type JoinButtonProps = {
   clubID: string;
 };
 
-const Joinbutton = ({
+const JoinButton = ({
   isHeader,
   session,
   isJoined,
   clubID,
 }: JoinButtonProps) => {
   const mutation = api.club.joinLeave.useMutation();
-  const clubid = clubID;
+  const clubId = clubID;
   const [isDisabled, setDisabled] = useState(isJoined ?? false);
   const handleJoin = () => {
-    mutation.mutate({ clubId: clubid });
+    mutation.mutate({ clubId });
     setDisabled(!isDisabled);
   };
   if (!session) {
@@ -50,4 +50,4 @@ const Joinbutton = ({
   );
 };
 
-export default Joinbutton;
+export default JoinButton;

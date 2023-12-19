@@ -1,6 +1,6 @@
 'use client';
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { HeartIcon, HeartOutline } from './Icons';
+import { HeartIcon, HeartOutline } from '../icons/Icons';
 import { api } from '@src/trpc/react';
 import { useRouter } from 'next/navigation';
 
