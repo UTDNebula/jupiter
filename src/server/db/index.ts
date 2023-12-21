@@ -7,7 +7,8 @@ import * as club from './schema/club';
 import * as contacts from './schema/contacts';
 import * as events from './schema/events';
 import * as users from './schema/users';
+import * as admin from './schema/admin';
 
-const schema = { ...club, ...contacts, ...events, ...users };
+const schema = { ...club, ...contacts, ...events, ...users, ...admin };
 
 export const db = drizzle(postgres(env.DATABASE_URL), { schema });
