@@ -16,10 +16,10 @@ export default async function Page({ params: { id } }: Props) {
   const officers = await api.club.getOfficers.query({ id: org.id });
   return (
     <div className="container m-5 h-screen md:pl-72">
-      <h1>{org.name}</h1>
-      <h2>Officers</h2>
-      <OfficerTable officers={officers} />
+      <h1 className="text-center text-4xl font-bold">{org.name}</h1>
+      <h2 className="text-center text-2xl font-bold">Officers</h2>
       <AddOfficer clubId={org.id} />
+      <OfficerTable officers={officers} />
     </div>
   );
 }

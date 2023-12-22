@@ -52,11 +52,12 @@ export default function AddOfficer({ clubId }: { clubId: string }) {
       </div>
       <div className="flex items-center p-3">
         <button
-          className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+          className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
           onClick={() => {
             if (!toAdd) return;
             mutate({ clubId, officerId: toAdd.id, role: toAdd.role });
           }}
+          disabled={!toAdd || !toAdd.id || !toAdd.role}
         >
           Add
         </button>
