@@ -1,5 +1,4 @@
 'use client';
-import { type SelectClub } from '@src/server/db/models';
 import {
   useReactTable,
   type ColumnDef,
@@ -16,9 +15,7 @@ import { useMemo, useRef, useState } from 'react';
 import Filter from './Filter';
 import { api } from '@src/trpc/react';
 import { useRouter } from 'next/navigation';
-import { fuzzyFilter } from '@src/utils/table';
-
-type Club = Omit<SelectClub, 'description' | 'image'>;
+import { type Club, fuzzyFilter } from '@src/utils/table';
 
 export default function OrgTable({ clubs }: { clubs: Club[] }) {
   const router = useRouter();
