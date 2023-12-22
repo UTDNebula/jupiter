@@ -61,7 +61,7 @@ export default function AddOfficer({ clubId }: { clubId: string }) {
         >
           Add
         </button>
-        {toAdd && (
+        {toAdd && toAdd.id !== '' && toAdd.name !== '' && (
           <span
             className="text-bold
             ml-3
