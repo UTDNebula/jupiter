@@ -1,6 +1,5 @@
 'use client';
 import { type SelectClub } from '@src/server/db/models';
-import { rankItem } from '@tanstack/match-sorter-utils';
 import {
   useReactTable,
   type ColumnDef,
@@ -8,7 +7,6 @@ import {
   getSortedRowModel,
   flexRender,
   type Row,
-  type FilterFn,
   type ColumnFiltersState,
   getFilteredRowModel,
 } from '@tanstack/react-table';
@@ -18,14 +16,9 @@ import { useMemo, useRef, useState } from 'react';
 import Filter from './Filter';
 import { api } from '@src/trpc/react';
 import { useRouter } from 'next/navigation';
+import { fuzzyFilter } from '@src/utils/table';
 
 type Club = Omit<SelectClub, 'description' | 'image'>;
-
-const fuzzyFilter: FilterFn<Club> = (row, columnId, value, addMeta) => {
-  const itemRank = rankItem(row.getValue(columnId), value as string);
-  addMeta({ itemRank });
-  return itemRank.passed;
-};
 
 export default function OrgTable({ clubs }: { clubs: Club[] }) {
   const router = useRouter();
