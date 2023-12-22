@@ -41,7 +41,7 @@ export default function OrgTable({ clubs }: { clubs: Club[] }) {
         id: 'view',
         cell: ({ row }) => (
           <Link
-            href={`/org/${row.original.id}`}
+            href={`orgs/${row.original.id}`}
             className="rounded-md bg-slate-300 px-2 py-1 text-blue-500 transition-colors hover:bg-slate-400 hover:text-blue-600"
           >
             View
