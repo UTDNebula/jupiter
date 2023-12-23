@@ -1,8 +1,10 @@
 import Image from 'next/image';
-import React, { type FC } from 'react';
+import { type FC } from 'react';
 import type { SelectClub as Club } from '@src/server/db/models';
+import { api } from '@src/trpc/server';
 
-const OrgInfoSegment: FC<{ club: Club }> = ({ club }) => {
+const OrgInfoSegment: FC<{ club: Club }> = async ({ club }) => {
+  const isActive = await api.club.isActive.query({ id: club.id });
   return (
     <div className="w-full rounded-lg bg-slate-100 p-10">
       <div className="flex flex-col items-start justify-between md:flex-row">
@@ -29,7 +31,9 @@ const OrgInfoSegment: FC<{ club: Club }> = ({ club }) => {
           </div>
           <div className="mt-2 flex w-36 justify-between">
             <p className="text-sm text-slate-400">Active</p>
-            <p className="text-right text-sm text-slate-600">Present</p>
+            <p className="text-right text-sm text-slate-600">
+              {isActive ? 'Present' : 'Inactive'}
+            </p>
           </div>
         </div>
         <div className="w-full">

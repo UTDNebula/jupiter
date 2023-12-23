@@ -232,4 +232,13 @@ export const clubRouter = createTRPCRouter({
       });
       return officers;
     }),
+  isActive: publicProcedure.input(byIdSchema).query(async ({ input, ctx }) => {
+    const hasPresident = await ctx.db.query.userMetadataToClubs.findFirst({
+      where: and(
+        eq(userMetadataToClubs.clubId, input.id),
+        eq(userMetadataToClubs.memberType, 'President'),
+      ),
+    });
+    return !!hasPresident;
+  }),
 });
