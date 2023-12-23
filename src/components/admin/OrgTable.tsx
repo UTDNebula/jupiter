@@ -33,6 +33,7 @@ export default function OrgTable({ clubs }: { clubs: Club[] }) {
           <Link
             href={`orgs/${row.original.id}`}
             className="rounded-md bg-slate-300 px-2 py-1 text-blue-500 transition-colors hover:bg-slate-400 hover:text-blue-600"
+            target="_blank"
           >
             View
           </Link>
@@ -55,7 +56,7 @@ export default function OrgTable({ clubs }: { clubs: Club[] }) {
               {tags.map((tag) => (
                 <div
                   key={tag}
-                  className="rounded-full bg-gray-200 px-2 py-1 text-xs"
+                  className="rounded-full bg-gray-200 px-2 py-1 text-center text-xs"
                 >
                   {tag}
                 </div>
