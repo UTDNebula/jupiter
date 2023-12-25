@@ -271,7 +271,6 @@ const EventSidebar = () => {
     </div>
   );
 };
-export default EventSidebar;
 const SelectedClub = ({
   clubId,
   setFilterState,
@@ -306,3 +305,24 @@ const SelectedClub = ({
     </div>
   );
 };
+const MobileWrap = () => {
+  const [open, setOpen] = useState(true);
+  return (
+    <div>
+      <button
+        className="text-lg font-extrabold text-slate-500 sm:hidden"
+        type="button"
+        onClick={() => setOpen(!open)}
+      >
+        Filters
+      </button>
+      <div
+        data-open={open}
+        className="hidden data-[open=true]:contents sm:contents"
+      >
+        <EventSidebar />
+      </div>
+    </div>
+  );
+};
+export default MobileWrap;

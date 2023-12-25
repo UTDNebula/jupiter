@@ -14,9 +14,9 @@ const EventView = ({ events, params }: Props) => {
 
   return (
     <div className="w-full px-6">
-      <div className="flex flex-row pb-12 pr-7.5 pt-4">
+      <div className="flex flex-col pb-12 pr-7.5 pt-4 sm:flex-row">
         <h1 className="text-2xl font-bold text-[#4D5E80]">Events</h1>
-        <div className="relative z-0 ml-auto flex flex-row gap-x-16">
+        <div className="relative z-0 flex flex-row gap-x-16 sm:ml-auto">
           <Link
             className={`z-20 flex flex-row items-center gap-x-4 ${
               view === 'list'
@@ -57,7 +57,7 @@ const EventView = ({ events, params }: Props) => {
           </Link>
         </div>
       </div>
-      <div className="container flex w-full flex-row space-x-7.5">
+      <div className="container flex w-full flex-col space-x-7.5 sm:flex-row">
         <EventSidebar />
         <div
           data-view={view}
