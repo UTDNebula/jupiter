@@ -1,4 +1,4 @@
-import { eq, ilike, sql, and, notInArray, inArray } from 'drizzle-orm';
+import { eq, ilike, sql, and, notInArray, inArray, lt, gt } from 'drizzle-orm';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { selectContact } from '@src/server/db/models';
@@ -6,6 +6,7 @@ import { clubEditRouter } from './clubEdit';
 import { userMetadataToClubs } from '@src/server/db/schema/users';
 import { club } from '@src/server/db/schema/club';
 import { contacts } from '@src/server/db/schema/contacts';
+import { carousel } from '@src/server/db/schema/admin';
 const byNameSchema = z.object({
   name: z.string().default(''),
 });
@@ -240,5 +241,14 @@ export const clubRouter = createTRPCRouter({
       ),
     });
     return !!hasPresident;
+  }),
+  getCarousel: publicProcedure.query(async ({ ctx }) => {
+    const now = new Date();
+    const currentItems = await ctx.db.query.carousel.findMany({
+      where: and(lt(carousel.startTime, now), gt(carousel.endTime, now)),
+      with: { club: true },
+    });
+
+    return currentItems;
   }),
 });

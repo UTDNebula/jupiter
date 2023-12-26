@@ -15,6 +15,20 @@
       "when": 1703006445550,
       "tag": "0001_melodic_pestilence",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1703471526365,
+      "tag": "0002_lean_obadiah_stane",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1703484329154,
+      "tag": "0003_slim_sleeper",
+      "breakpoints": true
     }
   ]
 }

@@ -1,8 +1,14 @@
 import { z } from 'zod';
-import { createTRPCRouter, protectedProcedure } from '../trpc';
-import { and, eq } from 'drizzle-orm';
+import { adminProcedure, createTRPCRouter } from '../trpc';
+import { and, eq, gt } from 'drizzle-orm';
 import { club } from '@src/server/db/schema/club';
 import { userMetadataToClubs } from '@src/server/db/schema/users';
+import { type DateRange } from 'react-day-picker';
+import { carousel } from '@src/server/db/schema/admin';
+
+function isDateRange(value: unknown): value is DateRange {
+  return Boolean(value && typeof value === 'object' && 'from' in value);
+}
 
 const deleteSchema = z.object({
   id: z.string(),
@@ -14,12 +20,13 @@ const updateOfficer = z.object({
   role: z.enum(['President', 'Officer', 'Member']),
 });
 
+const carouselSchema = z.object({
+  orgId: z.string(),
+  range: z.custom<DateRange>((val) => isDateRange(val)),
+});
+
 export const adminRouter = createTRPCRouter({
-  allOrgs: protectedProcedure.query(async ({ ctx }) => {
-    const isAdmin = await ctx.db.query.admin.findFirst({
-      where: (admin) => eq(admin.userId, ctx.session.user.id),
-    });
-    if (!isAdmin) throw new Error('Not an admin');
+  allOrgs: adminProcedure.query(async ({ ctx }) => {
     const orgs = await ctx.db.query.club.findMany({
       columns: {
         id: true,
@@ -29,24 +36,14 @@ export const adminRouter = createTRPCRouter({
     });
     return orgs;
   }),
-  deleteOrg: protectedProcedure
+  deleteOrg: adminProcedure
     .input(deleteSchema)
     .mutation(async ({ ctx, input }) => {
-      const isAdmin = await ctx.db.query.admin.findFirst({
-        where: (admin) => eq(admin.userId, ctx.session.user.id),
-      });
-      if (!isAdmin) throw new Error('Not an admin');
-
       await ctx.db.delete(club).where(eq(club.id, input.id));
     }),
-  updateOfficer: protectedProcedure
+  updateOfficer: adminProcedure
     .input(updateOfficer)
     .mutation(async ({ ctx, input }) => {
-      const isAdmin = await ctx.db.query.admin.findFirst({
-        where: (admin) => eq(admin.userId, ctx.session.user.id),
-      });
-      if (!isAdmin) throw new Error('Not an admin');
-
       await ctx.db
         .update(userMetadataToClubs)
         .set({ memberType: input.role })
@@ -57,14 +54,9 @@ export const adminRouter = createTRPCRouter({
           ),
         );
     }),
-  addOfficer: protectedProcedure
+  addOfficer: adminProcedure
     .input(updateOfficer)
     .mutation(async ({ ctx, input }) => {
-      const isAdmin = await ctx.db.query.admin.findFirst({
-        where: (admin) => eq(admin.userId, ctx.session.user.id),
-      });
-      if (!isAdmin) throw new Error('Not an admin');
-
       // Make sure the user is not already an officer
       const exists = await ctx.db.query.userMetadataToClubs.findFirst({
         where: (userMetadataToClubs) =>
@@ -90,6 +82,44 @@ export const adminRouter = createTRPCRouter({
         clubId: input.clubId,
         userId: input.officerId,
         memberType: input.role,
+      });
+    }),
+  upcomingCarousels: adminProcedure.query(async ({ ctx }) => {
+    const carousels = await ctx.db.query.carousel.findMany({
+      where: (carousel) => gt(carousel.startTime, new Date()),
+      orderBy: (carousel) => carousel.startTime,
+      with: {
+        club: true,
+      },
+    });
+
+    return carousels;
+  }),
+  addOrgCarousel: adminProcedure
+    .input(carouselSchema)
+    .mutation(async ({ ctx, input }) => {
+      if (!input.range.from || !input.range.to)
+        throw new Error('Invalid date range');
+
+      // Check if there is already a carousel for this org
+      const exists = await ctx.db.query.carousel.findFirst({
+        where: (carousel) => eq(carousel.orgId, input.orgId),
+      });
+
+      if (exists) {
+        await ctx.db
+          .update(carousel)
+          .set({
+            startTime: input.range.from,
+            endTime: input.range.to,
+          })
+          .where(eq(carousel.orgId, input.orgId));
+        return;
+      }
+      await ctx.db.insert(carousel).values({
+        orgId: input.orgId,
+        startTime: input.range.from,
+        endTime: input.range.to,
       });
     }),
 });

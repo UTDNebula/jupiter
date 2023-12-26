@@ -3,6 +3,7 @@ import { pgTable, text } from 'drizzle-orm/pg-core';
 import { events } from './events';
 import { userMetadataToClubs } from './users';
 import { contacts } from './contacts';
+import { carousel } from './admin';
 
 export const club = pgTable('club', {
   id: text('id')
@@ -21,4 +22,5 @@ export const clubRelations = relations(club, ({ many }) => ({
   contacts: many(contacts),
   events: many(events),
   userMetadataToClubs: many(userMetadataToClubs),
+  carousel: many(carousel),
 }));
