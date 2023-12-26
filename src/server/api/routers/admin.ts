@@ -122,4 +122,9 @@ export const adminRouter = createTRPCRouter({
         endTime: input.range.to,
       });
     }),
+  removeOrgCarousel: adminProcedure
+    .input(deleteSchema)
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.delete(carousel).where(eq(carousel.orgId, input.id));
+    }),
 });

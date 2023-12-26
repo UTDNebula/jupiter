@@ -1,13 +1,19 @@
 'use client';
-import { type api } from '@src/trpc/server';
+import { api } from '@src/trpc/react';
+import { type api as API } from '@src/trpc/server';
 import Image from 'next/image';
-type Feature = Awaited<ReturnType<typeof api.club.getCarousel.query>>[0];
+import { useRouter } from 'next/navigation';
+type Feature = Awaited<ReturnType<typeof API.club.getCarousel.query>>[number];
 
 type Props = {
   item: Feature;
 };
 
 export default function CarouselCard({ item }: Props) {
+  const router = useRouter();
+  const { mutate } = api.admin.removeOrgCarousel.useMutation({
+    onSuccess: () => router.refresh(),
+  });
   return (
     <div
       className="flex flex-col items-center rounded-lg bg-white p-5 shadow-lg"
@@ -30,6 +36,14 @@ export default function CarouselCard({ item }: Props) {
         {item.endTime.toLocaleDateString(undefined, {
           dateStyle: 'short',
         })}
+      </div>
+      <div className="mt-2">
+        <button
+          className="rounded-md bg-red-500 px-4 py-2 font-semibold text-white transition-colors hover:bg-red-600"
+          onClick={() => mutate({ id: item.orgId })}
+        >
+          Remove
+        </button>
       </div>
     </div>
   );

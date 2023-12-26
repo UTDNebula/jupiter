@@ -25,6 +25,8 @@ export default function AddOrg() {
     onSuccess: async () => {
       await utils.admin.upcomingCarousels.invalidate();
       await utils.club.getCarousel.invalidate();
+      await utils.club.getCarousel.refetch();
+      await utils.admin.upcomingCarousels.refetch();
       router.push('/admin/carousel');
     },
   });
