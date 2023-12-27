@@ -16,6 +16,7 @@ import Filter from './Filter';
 import { api } from '@src/trpc/react';
 import { useRouter } from 'next/navigation';
 import { type Club, fuzzyFilter } from '@src/utils/table';
+import StatusFilter from './StatusFilter';
 
 export default function OrgTable({ clubs }: { clubs: Club[] }) {
   const router = useRouter();
@@ -46,13 +47,14 @@ export default function OrgTable({ clubs }: { clubs: Club[] }) {
         sortingFn: (a, b) => a.original.name.localeCompare(b.original.name),
         filterFn: fuzzyFilter,
         enableColumnFilter: true,
+        header: () => <div className="text-center">Name</div>,
       },
       {
         accessorKey: 'tags',
         cell: (info) => {
           const tags = info.getValue() as string[];
           return (
-            <div className="flex items-center space-x-1">
+            <div className="space-1 flex flex-wrap items-center">
               {tags.map((tag) => (
                 <div
                   key={tag}
@@ -79,7 +81,30 @@ export default function OrgTable({ clubs }: { clubs: Club[] }) {
         ),
         size: 25,
       },
+      {
+        id: 'status',
+        filterFn: 'equals',
+        accessorFn: (row) => row.approved,
+        size: 5,
+        cell: ({ row }) => {
+          const approved = row.original.approved;
+          const color =
+            approved === 'pending'
+              ? 'bg-yellow-500'
+              : approved === 'approved'
+              ? 'bg-green-500'
+              : 'bg-red-500';
+
+          return (
+            <div className="flex justify-center">
+              <div className={`h-3 w-3 rounded-full ${color}`} />
+            </div>
+          );
+        },
+        header: () => <div className="text-center">Status</div>,
+      },
     ],
+
     [],
   );
 
@@ -142,8 +167,15 @@ export default function OrgTable({ clubs }: { clubs: Club[] }) {
                             }[header.column.getIsSorted() as string] ?? null}
                           </div>
                           {header.column.getCanFilter() ? (
-                            <div>
-                              <Filter column={header.column} table={table} />
+                            <div className="flex w-full justify-center">
+                              {header.column.id !== 'status' ? (
+                                <Filter column={header.column} table={table} />
+                              ) : (
+                                <StatusFilter
+                                  column={header.column}
+                                  table={table}
+                                />
+                              )}
                             </div>
                           ) : null}
                         </>

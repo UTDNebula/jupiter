@@ -56,7 +56,7 @@ export default function Filter<T>({ column, table }: Props<T>) {
         value={(columnFilterValue ?? '') as string}
         onChange={(value) => column.setFilterValue(value)}
         placeholder="Search"
-        className="w-36 rounded border shadow"
+        className="rounded border shadow"
         list={column.id + 'list'}
       />
       <div className="h-1" />

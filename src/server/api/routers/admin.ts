@@ -25,6 +25,11 @@ const carouselSchema = z.object({
   range: z.custom<DateRange>((val) => isDateRange(val)),
 });
 
+const changeOrgStatusSchema = z.object({
+  orgId: z.string(),
+  status: z.enum(['approved', 'pending', 'rejected']),
+});
+
 export const adminRouter = createTRPCRouter({
   allOrgs: adminProcedure.query(async ({ ctx }) => {
     const orgs = await ctx.db.query.club.findMany({
@@ -32,6 +37,7 @@ export const adminRouter = createTRPCRouter({
         id: true,
         name: true,
         tags: true,
+        approved: true,
       },
     });
     return orgs;
@@ -126,5 +132,13 @@ export const adminRouter = createTRPCRouter({
     .input(deleteSchema)
     .mutation(async ({ ctx, input }) => {
       await ctx.db.delete(carousel).where(eq(carousel.orgId, input.id));
+    }),
+  changeOrgStatus: adminProcedure
+    .input(changeOrgStatusSchema)
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .update(club)
+        .set({ approved: input.status })
+        .where(eq(club.id, input.orgId));
     }),
 });

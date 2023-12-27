@@ -46,7 +46,8 @@ export const clubRouter = createTRPCRouter({
   byName: publicProcedure.input(byNameSchema).query(async ({ input, ctx }) => {
     const { name } = input;
     const clubs = await ctx.db.query.club.findMany({
-      where: (club) => ilike(club.name, `%${name}%`),
+      where: (club) =>
+        and(ilike(club.name, `%${name}%`), eq(club.approved, 'approved')),
     });
 
     if (name === '') return clubs;
@@ -83,6 +84,7 @@ export const clubRouter = createTRPCRouter({
       if (input.tag && input.tag !== 'All')
         query = query.where(sql`${input.tag} = ANY(tags)`);
 
+      query = query.where(eq(club.approved, 'approved'));
       const res = await query
         .orderBy(club.name)
         .limit(input.limit)

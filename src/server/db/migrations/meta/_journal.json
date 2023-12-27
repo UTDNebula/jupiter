@@ -29,6 +29,13 @@
       "when": 1703484329154,
       "tag": "0003_slim_sleeper",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1703689775540,
+      "tag": "0004_smart_shadow_king",
+      "breakpoints": true
     }
   ]
 }
