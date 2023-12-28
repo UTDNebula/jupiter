@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { useState } from 'react';
+import { type TouchEvent, useRef, useState } from 'react';
 import { LeftArrowIcon, RightArrowIcon } from '../icons/Icons';
 import Link from 'next/link';
 import { type SelectClub } from '@src/server/db/models';
@@ -8,6 +8,8 @@ import { type SelectClub } from '@src/server/db/models';
 type Props = { clubs: SelectClub[] };
 const Carousel = ({ clubs }: Props) => {
   const [slide, setSlide] = useState(0);
+  const touchStart = useRef(0);
+  const touchEnd = useRef(0);
 
   const onClick = (acc: 1 | -1) => {
     setSlide((prevSlide) => {
@@ -16,6 +18,21 @@ const Carousel = ({ clubs }: Props) => {
       if (nextSlide >= clubs.length) return 0;
       return nextSlide;
     });
+  };
+
+  const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
+    if (!e.touches[0]) return;
+    touchStart.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    const minSwipeDistance = 50;
+
+    if (touchEnd.current - touchStart.current > minSwipeDistance) {
+      onClick(-1);
+    } else if (touchStart.current - touchEnd.current > minSwipeDistance) {
+      onClick(1);
+    }
   };
 
   const getSlideStyle = (key: number) => {
@@ -31,7 +48,11 @@ const Carousel = ({ clubs }: Props) => {
 
   return (
     <div className="mx-auto w-full max-w-6xl">
-      <div className="relative aspect-video w-full overflow-hidden rounded-lg">
+      <div
+        className="relative aspect-video w-full overflow-hidden rounded-lg"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         <div className="flex h-full w-full">
           {clubs.map((club, key) => (
             <Link
@@ -50,31 +71,31 @@ const Carousel = ({ clubs }: Props) => {
                   priority
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-5">
-                  <div className="absolute bottom-4 left-4 right-4 rounded-lg bg-black bg-opacity-50 p-4 md:p-6">
-                    <h1 className="text-xl font-bold text-white md:text-3xl">
+                  <div className="absolute bottom-4 left-4 right-4 rounded-lg bg-black bg-opacity-50 p-2 sm:p-4 md:p-6">
+                    <h1 className="text-lg font-bold text-white sm:text-xl md:text-3xl">
                       {club.name}
                     </h1>
-                    <p className="mt-2 line-clamp-2 text-sm text-white md:text-base">
+                    <p className="mt-2 line-clamp-2 text-xs text-white sm:text-sm md:text-base">
                       {club.description}
                     </p>
                   </div>
                 </div>
-                <div className="absolute left-4 top-4 m-5 rounded-full bg-black bg-opacity-50 p-3 font-extrabold text-white">
+                <div className="absolute left-4 top-4 m-5 rounded-full bg-black bg-opacity-50 p-2 font-extrabold text-white sm:p-3">
                   FEATURED CLUB
                 </div>
               </div>
             </Link>
           ))}
         </div>
-        <div className="pointer-events-none absolute inset-0 flex h-full w-full items-center justify-between px-4 md:px-10">
+        <div className="pointer-events-none absolute inset-0 flex h-full w-full items-center justify-between px-4 sm:px-6 md:px-10">
           <button
-            className="pointer-events-auto flex items-center justify-center rounded-full bg-black bg-opacity-70 p-4 transition-all duration-300 hover:scale-110 hover:bg-opacity-80"
+            className="pointer-events-auto flex items-center justify-center rounded-full bg-black bg-opacity-70 p-2 transition-all duration-300 hover:scale-110 hover:bg-opacity-80 sm:p-3 md:p-4"
             onClick={() => onClick(-1)}
           >
             <LeftArrowIcon />
           </button>
           <button
-            className="pointer-events-auto flex items-center justify-center rounded-full bg-black bg-opacity-70 p-4 transition-all duration-300 hover:scale-110 hover:bg-opacity-80"
+            className="pointer-events-auto flex items-center justify-center rounded-full bg-black bg-opacity-70 p-2 transition-all duration-300 hover:scale-110 hover:bg-opacity-80 sm:p-3 md:p-4"
             onClick={() => onClick(1)}
           >
             <RightArrowIcon />
