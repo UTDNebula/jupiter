@@ -44,7 +44,7 @@ export default function ChangeOrgStatus({ status: initial, orgId }: Props) {
   };
 
   return (
-    <div className="flex bg-gray-100">
+    <div className="flex">
       <select
         className={`rounded-lg border-2 border-gray-300 p-2 text-lg focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 ${statusColor()}`}
         value={status}
