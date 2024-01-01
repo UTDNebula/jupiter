@@ -1,15 +1,16 @@
 'use client';
 import Image from 'next/image';
-import { type TouchEvent, useRef, useState } from 'react';
+import { useState, type TouchEventHandler } from 'react';
 import { LeftArrowIcon, RightArrowIcon } from '../icons/Icons';
 import Link from 'next/link';
 import { type SelectClub } from '@src/server/db/models';
 
+const minSwipeDistance = 50;
+
 type Props = { clubs: SelectClub[] };
 const Carousel = ({ clubs }: Props) => {
   const [slide, setSlide] = useState(0);
-  const touchStart = useRef(0);
-  const touchEnd = useRef(0);
+  const [touchStart, setTouchStart] = useState(0);
 
   const onClick = (acc: 1 | -1) => {
     setSlide((prevSlide) => {
@@ -20,19 +21,18 @@ const Carousel = ({ clubs }: Props) => {
     });
   };
 
-  const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
+  const handleTouchStart: TouchEventHandler = (e) => {
     if (!e.touches[0]) return;
-    touchStart.current = e.touches[0].clientX;
+    setTouchStart(e.touches[0].clientX);
   };
 
-  const handleTouchEnd = () => {
-    const minSwipeDistance = 50;
+  const handleTouchEnd: TouchEventHandler = (e) => {
+    if (!e.changedTouches[0]) return;
+    const touchEnd = e.changedTouches[0].clientX;
+    const swipeDistance = touchStart - touchEnd;
 
-    if (touchEnd.current - touchStart.current > minSwipeDistance) {
-      onClick(-1);
-    } else if (touchStart.current - touchEnd.current > minSwipeDistance) {
-      onClick(1);
-    }
+    if (swipeDistance > minSwipeDistance) onClick(1);
+    else if (swipeDistance < -minSwipeDistance) onClick(-1);
   };
 
   const getSlideStyle = (key: number) => {
@@ -47,7 +47,7 @@ const Carousel = ({ clubs }: Props) => {
   };
 
   return (
-    <div className="mx-auto w-full max-w-6xl">
+    <div className="mx-auto w-full max-w-6xl touch-none">
       <div
         className="relative aspect-video w-full overflow-hidden rounded-lg"
         onTouchStart={handleTouchStart}
