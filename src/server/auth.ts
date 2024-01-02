@@ -9,10 +9,10 @@ import { env } from '@src/env.mjs';
 import { DrizzleAdapter } from '@auth/drizzle-adapter';
 import { db } from './db';
 import { eq } from 'drizzle-orm';
-import { userMetadata } from './db/schema';
 import { type InsertUserMetadata } from './db/models';
 import { type UserMetadata } from '@src/models/userMetadata';
 import { pgTable } from 'drizzle-orm/pg-core';
+import { userMetadata } from './db/schema/users';
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`

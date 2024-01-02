@@ -24,7 +24,7 @@ type Params = {
 const Home = async (props: Params) => {
   const tags = await api.club.distinctTags.query();
   return (
-    <main className="md:pl-72 ">
+    <main className="md:pl-72">
       <Header />
       <div className="px-5">
         <div className="relative block w-full">

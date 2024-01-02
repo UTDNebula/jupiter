@@ -15,7 +15,8 @@ import { z } from 'zod';
 import { selectEvent } from '@src/server/db/models';
 import { type DateRange } from 'react-day-picker';
 import { add } from 'date-fns';
-import { userMetadataToEvents } from '@src/server/db/schema';
+import { userMetadataToEvents } from '@src/server/db/schema/users';
+
 function isDateRange(value: unknown): value is DateRange {
   return Boolean(value && typeof value === 'object' && 'from' in value);
 }
@@ -174,10 +175,11 @@ export const eventRouter = createTRPCRouter({
         const eventsWithLike = await Promise.all(
           events.map(async (ev) => {
             const liked = !!(await ctx.db.query.userMetadataToEvents.findFirst({
-              where: and(
-                eq(userMetadataToEvents.userId, user.id),
-                eq(userMetadataToEvents.eventId, ev.id),
-              ),
+              where: (userMetadataToEvents) =>
+                and(
+                  eq(userMetadataToEvents.userId, user.id),
+                  eq(userMetadataToEvents.eventId, ev.id),
+                ),
             }));
             return { ...ev, liked: liked };
           }),

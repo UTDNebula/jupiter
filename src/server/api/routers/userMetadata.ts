@@ -1,13 +1,13 @@
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 import { and, eq, sql } from 'drizzle-orm';
+
+import { insertUserMetadata } from '@src/server/db/models';
 import {
   userMetadata,
   userMetadataToClubs,
-  userMetadataToEvents,
   users,
-} from '@src/server/db/schema';
-import { insertUserMetadata } from '@src/server/db/models';
+} from '@src/server/db/schema/users';
 
 const byIdSchema = z.object({ id: z.string().uuid() });
 
@@ -62,7 +62,8 @@ export const userMetadataRouter = createTRPCRouter({
   }),
   getEvents: protectedProcedure.query(async ({ ctx }) => {
     const query = await ctx.db.query.userMetadataToEvents.findMany({
-      where: eq(userMetadataToEvents.userId, ctx.session.user.id),
+      where: (userMetadataToEvents) =>
+        eq(userMetadataToEvents.userId, ctx.session.user.id),
       with: {
         event: {
           with: {

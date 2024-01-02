@@ -1,27 +1,32 @@
 import { db } from '@src/server/db';
 import { createTRPCRouter, protectedProcedure } from '../trpc';
 import { and, eq, inArray, sql } from 'drizzle-orm';
-import { club, contacts, userMetadataToClubs } from '@src/server/db/schema';
 import { editClubSchema } from '@src/utils/formSchemas';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { selectContact } from '@src/server/db/models';
+import { club } from '@src/server/db/schema/club';
+import { contacts } from '@src/server/db/schema/contacts';
+import { userMetadataToClubs } from '@src/server/db/schema/users';
+
 async function isUserOfficer(userId: string, clubId: string) {
   const officer = await db.query.userMetadataToClubs.findFirst({
-    where: and(
-      eq(userMetadataToClubs.userId, userId),
-      eq(userMetadataToClubs.clubId, clubId),
-    ),
+    where: (userMetadataToClubs) =>
+      and(
+        eq(userMetadataToClubs.userId, userId),
+        eq(userMetadataToClubs.clubId, clubId),
+      ),
   });
   if (!officer || !officer.memberType) return false;
   return officer.memberType !== 'Member';
 }
 async function isUserPresident(userId: string, clubId: string) {
   const officer = await db.query.userMetadataToClubs.findFirst({
-    where: and(
-      eq(userMetadataToClubs.userId, userId),
-      eq(userMetadataToClubs.clubId, clubId),
-    ),
+    where: (userMetadataToClubs) =>
+      and(
+        eq(userMetadataToClubs.userId, userId),
+        eq(userMetadataToClubs.clubId, clubId),
+      ),
   });
   return officer?.memberType == 'President';
 }
