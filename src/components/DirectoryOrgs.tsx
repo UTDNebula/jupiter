@@ -38,7 +38,7 @@ const OrgDirectoryCards: FC<Props> = async ({ club }) => {
         <h2 className="text-sm font-light text-slate-500">Founded in {2020}</h2>
         <p className="line-clamp-3 text-xs text-slate-500">Description</p>
         <p className="text-sm text-slate-600">{desc}</p>
-        <div className="flex flex-row space-x-2">
+        <div className="mt-auto flex flex-row space-x-2">
           <Joinbutton session={session} clubID={club.id} />
           <Link
             href={`/directory/${club.id}`}
@@ -53,4 +53,3 @@ const OrgDirectoryCards: FC<Props> = async ({ club }) => {
 };
 
 export default OrgDirectoryCards;
-
