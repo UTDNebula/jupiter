@@ -65,7 +65,7 @@ const EventView = ({ events, params }: Props) => {
           data-view={view}
           className={
             view === 'list'
-              ? 'group flex flex-col justify-center space-y-7.5 pt-10 sm:justify-start'
+              ? 'group flex flex-col items-center space-y-7.5 pt-10 sm:justify-start'
               : 'group flex flex-wrap justify-center gap-x-10 gap-y-7.5 pt-10 sm:justify-start'
           }
         >
