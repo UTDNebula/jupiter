@@ -141,14 +141,14 @@ const VerticalCard = async ({
 
 const EventCard = ({ event }: EventCardProps) => {
   return (
-    <div>
+    <>
       <div className="hidden lg:group-data-[view=list]:contents">
         <HorizontalCard event={event} />
       </div>
       <div className="contents lg:group-data-[view=list]:hidden">
         <VerticalCard event={event} />
       </div>
-    </div>
+    </>
   );
 };
 export default EventCard;

@@ -21,6 +21,7 @@ import { type DateRange } from 'react-day-picker';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 import { api } from '@src/trpc/react';
 import { format, isEqual } from 'date-fns';
+import { ExpandLess, ExpandMore } from '@src/icons/Icons';
 
 export const filters = [
   'Upcoming Events',
@@ -88,7 +89,7 @@ function createFilterState(searchParams: ReadonlyURLSearchParams): filterState {
   }
 }
 
-const EventSidebar = () => {
+const Filters = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -305,24 +306,27 @@ const SelectedClub = ({
     </div>
   );
 };
-const MobileWrap = () => {
+const EventSidebar = () => {
   const [open, setOpen] = useState(true);
   return (
-    <div>
+    <div className="flex flex-col">
       <button
-        className="text-lg font-extrabold text-slate-500 sm:hidden"
+        className="flex items-center text-lg font-extrabold text-slate-500 sm:hidden"
         type="button"
         onClick={() => setOpen(!open)}
       >
-        Filters
+        <div className="w-8">{open ? <ExpandLess /> : <ExpandMore />}</div>
+        <p>Filters</p>
       </button>
       <div
         data-open={open}
-        className="hidden data-[open=true]:contents sm:contents"
+        className="hidden justify-items-center overflow-clip data-[open=true]:contents sm:contents"
       >
-        <EventSidebar />
+        <div className="flex justify-center">
+          <Filters />
+        </div>
       </div>
     </div>
   );
 };
-export default MobileWrap;
+export default EventSidebar;
