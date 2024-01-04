@@ -1,6 +1,5 @@
 import { EventHeader } from '@src/components/BaseHeader';
 import { db } from '@src/server/db';
-import { events } from '@src/server/db/schema';
 import { eq } from 'drizzle-orm';
 import { type Metadata } from 'next';
 
@@ -16,7 +15,7 @@ type Params = { params: { id: string } };
 export default async function EventsPage({ params }: Params) {
   const session = await getServerAuthSession();
   const res = await db.query.events.findFirst({
-    where: eq(events.id, params.id),
+    where: (events) => eq(events.id, params.id),
     with: { club: true },
   });
 
@@ -145,7 +144,7 @@ export async function generateMetadata({
   const id = params.id;
 
   const found = await db.query.events.findFirst({
-    where: eq(events.id, id),
+    where: (events) => eq(events.id, id),
     with: { club: true },
   });
   if (!found)

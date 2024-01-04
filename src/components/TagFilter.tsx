@@ -25,7 +25,7 @@ const TagFilter = ({ tags }: { tags: string[] }) => {
     container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
   };
   return (
-    <div className="flex w-full justify-center py-9">
+    <div className="flex w-full justify-center py-9" id="top">
       <div className="relative flex w-full items-center space-x-1">
         <button
           className="absolute left-0 cursor-pointer rounded-full bg-white px-3 py-2 opacity-80 shadow-md hover:bg-gray-100 focus:outline-none"

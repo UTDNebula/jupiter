@@ -1,1 +1,0 @@
-ALTER TABLE "events" ALTER COLUMN "id" SET DATA TYPE text;
