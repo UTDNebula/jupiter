@@ -1,6 +1,7 @@
 'use client';
 import { useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { LeftArrowIcon, RightArrowIcon } from '@src/icons/Icons';
 
 const scrollAmount = 300;
 
@@ -31,7 +32,7 @@ const TagFilter = ({ tags }: { tags: string[] }) => {
           className="absolute left-0 cursor-pointer rounded-full bg-white px-3 py-2 opacity-80 shadow-md hover:bg-gray-100 focus:outline-none"
           onClick={handleScrollLeft}
         >
-          {'<'}
+          <LeftArrowIcon fill="fill-slate-500" />
         </button>
         <div
           className="tag-container flex flex-1 space-x-1 overflow-x-auto overflow-y-hidden px-6"
@@ -55,7 +56,7 @@ const TagFilter = ({ tags }: { tags: string[] }) => {
           className="absolute right-0 cursor-pointer rounded-full bg-white px-3 py-2 opacity-80 shadow-md hover:bg-gray-100 focus:outline-none"
           onClick={handleScrollRight}
         >
-          {'>'}
+          <RightArrowIcon fill="fill-slate-500" />
         </button>
       </div>
     </div>

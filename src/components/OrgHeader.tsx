@@ -55,7 +55,9 @@ const OrgHeader = async ({ club }: { club: Club }) => {
               <Link
                 href={`/manage/${club.id}`}
                 className="rounded-full bg-blue-primary p-2.5 text-white transition-colors hover:bg-blue-700"
-              >Manage</Link>
+              >
+                Manage
+              </Link>
             ) : (
               <>
                 <JoinButton
