@@ -16,7 +16,7 @@ const OrgDirectoryCards: FC<Props> = ({ club, session }) => {
   const name =
     club.name.length > 20 ? club.name.slice(0, 30) + '...' : club.name;
   return (
-    <div className="flex h-full min-h-[600px] w-80 flex-col rounded-lg bg-white shadow-lg justify-between">
+    <div className="flex h-full w-80  flex-col rounded-lg bg-white shadow-lg">
       <div className="relative h-48 overflow-hidden sm:h-56 md:h-64 lg:h-72">
         <Image
           src={club.image}
@@ -31,12 +31,13 @@ const OrgDirectoryCards: FC<Props> = ({ club, session }) => {
         </div>
       </div>
       <div className="flex flex-col space-y-2 p-6">
-        <h1 className="text-xl font-medium text-slate-800">{name}</h1>
-        <h2 className="text-sm font-light text-slate-500">Founded in {2020}</h2>
-        <p className="line-clamp-3 text-xs text-slate-500">Description</p>
-        <p className="text-sm text-slate-600">{desc}</p>
+        <h1 className="line-clamp-1 text-xl font-medium text-slate-800">
+          {name}
+        </h1>
+        <p className="text-xs text-slate-500">Description</p>
+        <p className=" text-sm text-slate-600">{desc}</p>
       </div>
-      <div className="m-5 flex flex-row space-x-2">
+      <div className="m-5 mt-auto flex flex-row space-x-2">
         <JoinButton session={session} clubID={club.id} />
         <Link
           href={`/directory/${club.id}`}
