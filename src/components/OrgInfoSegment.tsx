@@ -52,15 +52,12 @@ const OrgInfoSegment: FC<{ club: Club }> = async ({ club }) => {
           ))}
         </div>
         {officers.length != 0 && (
-          <div className="w-full text-center">
+          <div className="min-w-fit">
             <>
-              <h1 className="mt-5 text-2xl font-medium">Leadership</h1>
-              <div className="flex flex-col items-center justify-center">
+              <h1 className="text-center text-2xl font-medium">Leadership</h1>
+              <div className="flex flex-col justify-center align-middle">
                 {officers.map((officer) => (
-                  <div
-                    className="mt-5 flex flex-row items-center justify-center align-middle"
-                    key={officer.userId}
-                  >
+                  <div className="mt-5 flex flex-row" key={officer.userId}>
                     <Image
                       src={club.image}
                       alt="Picture of the author"
@@ -68,8 +65,8 @@ const OrgInfoSegment: FC<{ club: Club }> = async ({ club }) => {
                       height={60}
                       className="m-3 rounded-full"
                     />
-                    <div className="mx-5 flex flex-col items-center justify-center align-middle">
-                      <p className="text-sm text-slate-600">
+                    <div className="mx-5 flex flex-col justify-center align-middle">
+                      <p className="text-left text-sm text-slate-600">
                         {officer.userMetadata.firstName +
                           ' ' +
                           officer.userMetadata.lastName}
