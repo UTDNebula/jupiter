@@ -220,7 +220,7 @@ export const clubRouter = createTRPCRouter({
       );
       return clubId;
     }),
-  getOfficers: protectedProcedure
+  getOfficers: publicProcedure
     .input(byIdSchema)
     .query(async ({ input, ctx }) => {
       const officers = await ctx.db.query.userMetadataToClubs.findMany({
