@@ -232,4 +232,25 @@ export const clubRouter = createTRPCRouter({
       });
       return officers;
     }),
+  getDirectoryInfo: publicProcedure
+    .input(byIdSchema)
+    .query(async ({ input: { id }, ctx }) => {
+      try {
+        const byId = await ctx.db.query.club.findFirst({
+          where: (club) => eq(club.id, id),
+          with: {
+            contacts: true,
+            userMetadataToClubs: {
+              with: {
+                userMetadata: { columns: { firstName: true, lastName: true } },
+              },
+            },
+          },
+        });
+        return byId;
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    }),
 });

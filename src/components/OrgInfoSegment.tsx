@@ -1,12 +1,11 @@
-'use server';
 import Image from 'next/image';
 import React, { type FC } from 'react';
-import type { SelectClub as Club } from '@src/server/db/models';
-import { api } from '@src/trpc/server';
+import { type RouterOutputs } from '@src/trpc/shared';
 
-const OrgInfoSegment: FC<{ club: Club }> = async ({ club }) => {
-  const officers = await api.club.getOfficers.query({ id: club.id });
-  const president = officers.find(
+const OrgInfoSegment: FC<{
+  club: NonNullable<RouterOutputs['club']['getDirectoryInfo']>;
+}> = ({ club }) => {
+  const president = club.userMetadataToClubs.find(
     (officer) => officer.memberType === 'President',
   );
   return (
@@ -51,12 +50,12 @@ const OrgInfoSegment: FC<{ club: Club }> = async ({ club }) => {
             </p>
           ))}
         </div>
-        {officers.length != 0 && (
+        {club.userMetadataToClubs.length != 0 && (
           <div className="min-w-fit">
             <>
               <h1 className="text-center text-2xl font-medium">Leadership</h1>
               <div className="flex flex-col justify-center align-middle">
-                {officers.map((officer) => (
+                {club.userMetadataToClubs.map((officer) => (
                   <div className="mt-5 flex flex-row" key={officer.userId}>
                     <Image
                       src={club.image}
