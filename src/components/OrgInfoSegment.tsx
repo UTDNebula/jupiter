@@ -1,8 +1,13 @@
 import Image from 'next/image';
 import React, { type FC } from 'react';
-import type { SelectClub as Club } from '@src/server/db/models';
+import { type RouterOutputs } from '@src/trpc/shared';
 
-const OrgInfoSegment: FC<{ club: Club }> = ({ club }) => {
+const OrgInfoSegment: FC<{
+  club: NonNullable<RouterOutputs['club']['getDirectoryInfo']>;
+}> = ({ club }) => {
+  const president = club.userMetadataToClubs.find(
+    (officer) => officer.memberType === 'President',
+  );
   return (
     <div className="w-full rounded-lg bg-slate-100 p-10">
       <div className="flex flex-col items-start justify-between md:flex-row">
@@ -23,10 +28,16 @@ const OrgInfoSegment: FC<{ club: Club }> = ({ club }) => {
             <p className="text-sm text-slate-400">Founded</p>
             <p className="text-right text-sm text-slate-600">May 2020</p>
           </div>
-          <div className="mt-2 flex w-36 justify-between">
-            <p className="text-sm text-slate-400">President</p>
-            <p className="text-right text-sm text-slate-600">John Doe</p>
-          </div>
+          {president && (
+            <div className="mt-2 flex w-36 justify-between">
+              <p className="text-sm text-slate-400">President</p>
+              <p className="text-right text-sm text-slate-600">
+                {president.userMetadata.firstName +
+                  ' ' +
+                  president.userMetadata.lastName}
+              </p>
+            </div>
+          )}
           <div className="mt-2 flex w-36 justify-between">
             <p className="text-sm text-slate-400">Active</p>
             <p className="text-right text-sm text-slate-600">Present</p>
@@ -39,37 +50,36 @@ const OrgInfoSegment: FC<{ club: Club }> = ({ club }) => {
             </p>
           ))}
         </div>
-        <div className="w-full text-center">
-          <h1 className="mt-5 text-2xl font-medium">Leadership</h1>
-          <div className="flex flex-col items-center justify-center">
-            <div className="mt-5 flex flex-row items-center justify-center align-middle">
-              <Image
-                src={club.image}
-                alt="Picture of the author"
-                width={60}
-                height={60}
-                className="m-3 rounded-full"
-              />
-              <div className="mx-5 flex flex-col items-center justify-center align-middle">
-                <p className="text-sm text-slate-600">John Doe</p>
-                <p className="mt-2 text-sm text-slate-400">President</p>
+        {club.userMetadataToClubs.length != 0 && (
+          <div className="min-w-fit">
+            <>
+              <h1 className="text-center text-2xl font-medium">Leadership</h1>
+              <div className="flex flex-col justify-center align-middle">
+                {club.userMetadataToClubs.map((officer) => (
+                  <div className="mt-5 flex flex-row" key={officer.userId}>
+                    <Image
+                      src={club.image}
+                      alt="Picture of the author"
+                      width={60}
+                      height={60}
+                      className="m-3 rounded-full"
+                    />
+                    <div className="mx-5 flex flex-col justify-center align-middle">
+                      <p className="text-left text-sm text-slate-600">
+                        {officer.userMetadata.firstName +
+                          ' ' +
+                          officer.userMetadata.lastName}
+                      </p>
+                      <p className="mt-2 text-sm text-slate-400">
+                        {officer.title ?? 'Officer'}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            </div>
-            <div className="mt-5 flex flex-row items-center justify-center align-middle">
-              <Image
-                src={club.image}
-                alt="Picture of the author"
-                width={60}
-                height={60}
-                className="m-3 rounded-full"
-              />
-              <div className="mx-5 flex flex-col items-center justify-center align-middle">
-                <p className="text-sm text-slate-600">John Doe</p>
-                <p className="mt-2 text-sm text-slate-400">Treasurer</p>
-              </div>
-            </div>
+            </>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
