@@ -1,4 +1,4 @@
-import { eq, ilike, sql, and, notInArray, inArray } from 'drizzle-orm';
+import { eq, ilike, sql, and, notInArray, inArray, or } from 'drizzle-orm';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { selectContact } from '@src/server/db/models';
@@ -241,6 +241,11 @@ export const clubRouter = createTRPCRouter({
           with: {
             contacts: true,
             userMetadataToClubs: {
+              where: (row) =>
+                or(
+                  eq(row.memberType, 'President'),
+                  eq(row.memberType, 'Officer'),
+                ),
               with: {
                 userMetadata: { columns: { firstName: true, lastName: true } },
               },
