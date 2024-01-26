@@ -18,7 +18,7 @@ const OrgDirectoryCards: FC<Props> = ({ club, session }) => {
     club.name.length > 20 ? club.name.slice(0, 30) + '...' : club.name;
   return (
     <div className="flex h-full min-h-[600px] min-w-[300px] max-w-xs flex-col justify-between rounded-lg bg-white shadow-lg">
-      <div className="relative h-48 overflow-hidden sm:h-56 md:h-64 lg:h-72">
+      <div className="relative h-48 overflow-hidden rounded-t-lg sm:h-56 md:h-64 lg:h-72">
         <Image
           src={club.profileImage ? generateUrl(club.profileImage) : club.image}
           layout="fill"
