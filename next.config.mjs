@@ -10,7 +10,7 @@ const config = {
     domains: [
       'lh3.googleusercontent.com',
       'cdn.discordapp.com',
-      'imagedelivery.net',
+      'jupiter.nlmc.workers.dev',
     ],
   },
   experimental: {

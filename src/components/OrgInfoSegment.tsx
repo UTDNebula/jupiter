@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import React, { type FC } from 'react';
 import { type RouterOutputs } from '@src/trpc/shared';
-import { generateUrl } from '@src/utils/images';
 
 const OrgInfoSegment: FC<{
   club: NonNullable<RouterOutputs['club']['getDirectoryInfo']>;
@@ -14,9 +13,7 @@ const OrgInfoSegment: FC<{
       <div className="flex flex-col items-start justify-between md:flex-row">
         <div className="pr-12">
           <Image
-            src={
-              club.profileImage ? generateUrl(club.profileImage) : club.image
-            }
+            src={club.profileImage ? club.profileImage : club.image}
             alt="Picture of the club"
             width={100}
             height={100}

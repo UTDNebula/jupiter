@@ -5,7 +5,6 @@ import JoinButton from './JoinButton';
 import LikeButton from './LikeButton';
 import Link from 'next/link';
 import { type Session } from 'next-auth';
-import { generateUrl } from '@src/utils/images';
 
 type Props = { club: Club; session: Session | null };
 
@@ -20,7 +19,7 @@ const OrgDirectoryCards: FC<Props> = ({ club, session }) => {
     <div className="flex h-full min-h-[600px] min-w-[300px] max-w-xs flex-col justify-between rounded-lg bg-white shadow-lg">
       <div className="relative h-48 overflow-hidden rounded-t-lg sm:h-56 md:h-64 lg:h-72">
         <Image
-          src={club.profileImage ? generateUrl(club.profileImage) : club.image}
+          src={club.profileImage ? club.profileImage : club.image}
           layout="fill"
           alt={club.name}
           className="select-none object-cover"
