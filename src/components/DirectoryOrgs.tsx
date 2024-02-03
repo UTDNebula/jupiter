@@ -20,7 +20,7 @@ const OrgDirectoryCards: FC<Props> = ({ club, session, priority }) => {
       <div className="relative h-48 overflow-hidden rounded-t-lg sm:h-56 md:h-64 lg:h-72">
         <Image
           src={club.profileImage ? club.profileImage : club.image}
-          layout="fill"
+          fill
           alt={club.name}
           priority={priority}
           className="select-none object-cover"
