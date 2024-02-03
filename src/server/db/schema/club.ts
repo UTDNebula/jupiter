@@ -15,6 +15,7 @@ export const club = pgTable('club', {
     .array()
     .default(sql`'{}'::text[]`)
     .notNull(),
+  profileImage: text('profile_image'),
 });
 
 export const clubRelations = relations(club, ({ many }) => ({
