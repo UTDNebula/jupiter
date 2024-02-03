@@ -6,9 +6,9 @@ import LikeButton from './LikeButton';
 import Link from 'next/link';
 import { type Session } from 'next-auth';
 
-type Props = { club: Club; session: Session | null };
+type Props = { club: Club; session: Session | null; priority: boolean };
 
-const OrgDirectoryCards: FC<Props> = ({ club, session }) => {
+const OrgDirectoryCards: FC<Props> = ({ club, session, priority }) => {
   const desc =
     club.description.length > 50
       ? club.description.slice(0, 150) + '...'
@@ -22,6 +22,7 @@ const OrgDirectoryCards: FC<Props> = ({ club, session }) => {
           src={club.profileImage ? club.profileImage : club.image}
           layout="fill"
           alt={club.name}
+          priority={priority}
           className="select-none object-cover"
         />
         <div className="absolute left-2 right-2 top-2 flex h-fit flex-row items-center space-x-2">
