@@ -38,6 +38,7 @@ export const adminRouter = createTRPCRouter({
         name: true,
         tags: true,
         approved: true,
+        profileImage: true,
       },
     });
     return orgs;
