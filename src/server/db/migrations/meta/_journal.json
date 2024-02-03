@@ -36,6 +36,13 @@
       "when": 1703689775540,
       "tag": "0004_smart_shadow_king",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1706922435227,
+      "tag": "0005_futuristic_taskmaster",
+      "breakpoints": true
     }
   ]
 }

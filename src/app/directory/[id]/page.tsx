@@ -11,7 +11,7 @@ import { type Metadata } from 'next';
 import NotFound from '@src/components/NotFound';
 
 const OrganizationPage = async ({ params }: { params: { id: string } }) => {
-  const club = await api.club.byId.query({ id: params.id });
+  const club = await api.club.getDirectoryInfo.query({ id: params.id });
   if (!club) return <NotFound elementType="Club" />;
 
   return (
@@ -20,7 +20,7 @@ const OrganizationPage = async ({ params }: { params: { id: string } }) => {
       <div className="mb-5 flex flex-col space-y-4 px-3">
         <OrgHeader club={club} />
         <OrgInfoSegment club={club} />
-        <OrgUpcomingEvents club_id={club.id} />
+        <OrgUpcomingEvents clubId={club.id} />
         <ClubDocuments />
         <div className="flex h-full w-full flex-row items-center justify-between rounded-lg bg-blue-100 px-14 py-7">
           <div className="text-lg font-bold text-blue-primary">Promo text</div>

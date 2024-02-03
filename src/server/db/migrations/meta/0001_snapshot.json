@@ -1,39 +1,9 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "b504e999-2e03-403b-a506-19820fe4a176",
+  "id": "829b275c-a72c-4e19-9481-7e3dffc23d7d",
   "prevId": "f2b17a86-7372-4ddf-b655-0758889c36ab",
   "tables": {
-    "admin": {
-      "name": "admin",
-      "schema": "",
-      "columns": {
-        "userId": {
-          "name": "userId",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "admin_userId_user_metadata_id_fk": {
-          "name": "admin_userId_user_metadata_id_fk",
-          "tableFrom": "admin",
-          "tableTo": "user_metadata",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
     "club": {
       "name": "club",
       "schema": "",
@@ -70,6 +40,12 @@
           "primaryKey": false,
           "notNull": true,
           "default": "'{}'::text[]"
+        },
+        "profile_image": {
+          "name": "profile_image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},

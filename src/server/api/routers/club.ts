@@ -1,4 +1,14 @@
-import { eq, ilike, sql, and, notInArray, inArray, lt, gt } from 'drizzle-orm';
+import {
+  eq,
+  ilike,
+  sql,
+  and,
+  notInArray,
+  inArray,
+  or,
+  lt,
+  gt,
+} from 'drizzle-orm';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { selectContact } from '@src/server/db/models';
@@ -71,7 +81,14 @@ export const clubRouter = createTRPCRouter({
   all: publicProcedure.input(allSchema).query(async ({ ctx, input }) => {
     const userID = ctx.session?.user.id;
     try {
-      let query = ctx.db.select().from(club);
+      let query = ctx.db
+        .select()
+        .from(club)
+        .limit(input.limit)
+        .orderBy(club.name)
+        .offset(input.cursor)
+        .where(eq(club.approved, 'approved'));
+
       if (userID) {
         const joinedClubs = ctx.db
           .select({ clubId: userMetadataToClubs.clubId })
@@ -81,15 +98,11 @@ export const clubRouter = createTRPCRouter({
         query = query.where(notInArray(club.id, joinedClubs));
       }
 
-      if (input.tag && input.tag !== 'All')
-        query = query.where(sql`${input.tag} = ANY(tags)`);
+      if (input.tag && input.tag !== 'All') {
+        query = query.where(sql`${input.tag} = ANY(${club.tags})`);
+      }
 
-      query = query.where(eq(club.approved, 'approved'));
-      const res = await query
-        .orderBy(club.name)
-        .limit(input.limit)
-        .offset(input.cursor);
-
+      const res = await query.execute();
       const newOffset = input.cursor + res.length;
 
       return {
@@ -253,4 +266,30 @@ export const clubRouter = createTRPCRouter({
 
     return currentItems;
   }),
+  getDirectoryInfo: publicProcedure
+    .input(byIdSchema)
+    .query(async ({ input: { id }, ctx }) => {
+      try {
+        const byId = await ctx.db.query.club.findFirst({
+          where: (club) => eq(club.id, id),
+          with: {
+            contacts: true,
+            userMetadataToClubs: {
+              where: (row) =>
+                or(
+                  eq(row.memberType, 'President'),
+                  eq(row.memberType, 'Officer'),
+                ),
+              with: {
+                userMetadata: { columns: { firstName: true, lastName: true } },
+              },
+            },
+          },
+        });
+        return byId;
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    }),
 });

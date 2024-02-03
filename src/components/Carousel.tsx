@@ -63,7 +63,7 @@ const Carousel = ({ clubs }: Props) => {
             >
               <div className="relative h-full w-full">
                 <Image
-                  src={club.image}
+                  src={club.profileImage ? club.profileImage : club.image}
                   alt="Picture of the club"
                   width={1920}
                   height={1080}

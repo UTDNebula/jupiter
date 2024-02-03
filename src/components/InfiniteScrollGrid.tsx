@@ -1,7 +1,7 @@
 'use client';
 import { api } from '@src/trpc/react';
 import { type Session } from 'next-auth';
-import { Fragment, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import DirectoryOrgs, { OrgDirectoryCardSkeleton } from './DirectoryOrgs';
 
 type Props = {
@@ -12,11 +12,11 @@ type Props = {
 export default function InfiniteScrollGrid({ session, tag }: Props) {
   const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } =
     api.club.all.useInfiniteQuery(
-      { tag, limit: 20 },
+      { tag, limit: 9 },
       {
         getNextPageParam: (lastPage) =>
-          lastPage.clubs.length < 20 ? undefined : lastPage.cursor,
-        initialCursor: 20,
+          lastPage.clubs.length < 9 ? undefined : lastPage.cursor,
+        initialCursor: 9,
       },
     );
 
@@ -57,7 +57,11 @@ export default function InfiniteScrollGrid({ session, tag }: Props) {
                   ref={isLastElement ? lastOrgElementRef : null}
                   key={club.id}
                 >
-                  <DirectoryOrgs club={club} session={session} />
+                  <DirectoryOrgs
+                    club={club}
+                    session={session}
+                    priority={false}
+                  />
                 </div>
               );
             }),

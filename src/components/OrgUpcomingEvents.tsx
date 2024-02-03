@@ -4,11 +4,11 @@ import { type FC } from 'react';
 
 const MAX_DESCRIPTION_LENGTH = 150;
 
-const OrgUpcomingEvents: FC<{ club_id: string }> = async ({ club_id }) => {
+const OrgUpcomingEvents: FC<{ clubId: string }> = async ({ clubId }) => {
   const cur_time = new Date();
 
   const data = await api.event.byClubId.query({
-    clubId: club_id,
+    clubId: clubId,
     currentTime: cur_time,
     sortByDate: true,
   });
