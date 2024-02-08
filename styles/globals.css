@@ -1,0 +1,80 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, 'Helvetica Neue', sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.org-card {
+  width:150px;
+  height:250px;
+  padding-top:10px;
+  padding-left:5px;
+}
+
+.organizations-grid {
+  padding-left: 20px;
+  padding-right: 10px;
+  justify-content: space-evenly;
+}
+
+.org-image {
+  background: rgb(185, 184, 184);
+  height: 200;
+}
+
+.rectangle {
+  width: 150px;
+  height: 150px;
+  padding-bottom:10px;
+  background: rgb(185, 184, 184);
+}
+
+.signUpButton {
+  background-color: #4659A7;
+}
+
+.orgTag  {
+  display: inline;
+  width: 50px;
+  height: 18px;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 1px;
+  padding-bottom: 2px;
+  position: relative;
+  background: #75ACFF;
+  border-radius:10px;
+}
+
+.bannerImage {
+  height:500px;
+  width:100vw;
+  background-size: 100vw;
+  background-clip: border-box;
+  position: absolute;
+  display: flex;
+  font-family: 'Jost', sans-serif;
+  background-blend-mode:darken;
+  left: -0px; /* this must be TWICE the required offset distance*/
+  background-position-x: left;
+  background-image: 
+  linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)),
+   url('../public/banner.png');
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Jost&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
