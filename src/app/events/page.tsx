@@ -5,6 +5,7 @@ import { type findByFilterSchema } from '@src/server/api/routers/event';
 import EventView from './eventView';
 import { type Metadata } from 'next';
 import { eventParamsSchema } from '@src/utils/paramSchemas';
+import EventCard from '@src/components/events/EventCard';
 
 function getStartTime(
   filterState: z.infer<typeof eventParamsSchema>,
@@ -43,7 +44,11 @@ const Events = async ({
   return (
     <main className="pb-10 md:pl-72">
       <EventHeader />
-      <EventView params={parsed} events={events} />
+      <EventView>
+        {events.map((event) => {
+          return <EventCard key={event.id} event={event} />;
+        })}
+      </EventView>
     </main>
   );
 };
