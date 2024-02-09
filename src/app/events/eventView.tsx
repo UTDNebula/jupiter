@@ -1,7 +1,7 @@
 'use client';
 import EventSidebar from '@src/components/events/EventSidebar';
 import { GridIcon, ListIcon } from '@src/icons/Icons';
-import { eventParamsSchema } from '@src/utils/paramSchemas';
+import { eventParamsSchema } from '@src/utils/eventFilter';
 import useSearch from '@src/utils/useSearch';
 import { type ReactNode } from 'react';
 type Props = {

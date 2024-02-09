@@ -4,7 +4,7 @@ import { type z } from 'zod';
 import { type findByFilterSchema } from '@src/server/api/routers/event';
 import EventView from './eventView';
 import { type Metadata } from 'next';
-import { eventParamsSchema } from '@src/utils/paramSchemas';
+import { eventParamsSchema } from '@src/utils/eventFilter';
 import EventCard from '@src/components/events/EventCard';
 
 function getStartTime(
@@ -17,6 +17,8 @@ function getStartTime(
       return { type: 'distance', options: { days: -7 } };
     case 'Last month events':
       return { type: 'distance', options: { days: -30 } };
+    default:
+      return { type: 'now' };
   }
 }
 export const metadata: Metadata = {
