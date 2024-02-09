@@ -5,14 +5,14 @@ import { z } from 'zod';
 export const eventParamsSchema = z.object({
   filter: z
     .enum(['Upcoming Events', 'Last weeks events', 'Last month events'])
-    .default('Upcoming Events'),
+    .catch('Upcoming Events'),
   clubs: z
     .string()
     .default('[]')
     .transform((s) => JSON.parse(decodeURIComponent(s)) as string[])
-    .pipe(z.string().array().default([])),
+    .pipe(z.string().array().catch([])),
   order: z
     .enum(['soon', 'later', 'shortest duration', 'longest duration'])
     .default('soon'),
-  view: z.enum(['list', 'grid']).default('list'),
+  view: z.enum(['list', 'grid']).catch('list'),
 });
