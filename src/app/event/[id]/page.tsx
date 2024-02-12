@@ -6,7 +6,6 @@ import { type Metadata } from 'next';
 import TimeComponent from './TimeComponent';
 import Image from 'next/image';
 import CountdownTimer from './CountdownTimer';
-import LikeButton from '@src/components/LikeButton';
 import Link from 'next/link';
 import { getServerAuthSession } from '@src/server/auth';
 
@@ -23,114 +22,77 @@ export default async function EventsPage({ params }: Params) {
 
   const { club, ...event } = res;
 
-  const clubDescription = ['Club', 'President', 'Location', 'Multi-Day'];
-  const clubDetails = [club.name, 'John Doe', event.location, 'No'];
-
-  const truncatedDescription =
-    club.description.length > 350
-      ? club.description.slice(0, 350) + '...'
-      : club.description;
+  const clubDescription = ['Club', 'Location', 'Multi-Day'];
+  const clubDetails = [club.name, event.location, 'No'];
 
   return (
     <main className="w-full md:pl-72">
       <EventHeader />
-
-      <section className="mb-5 flex flex-col space-y-6 px-7">
-        <div className="relative flex h-full w-full justify-between rounded-xl bg-[url('/images/wideWave.jpg')] bg-cover p-10 shadow-lg ">
-          <section className="text-white">
-            <div className="flex ">
-              {club.tags.map((tag) => (
-                <p key={tag} className=" mr-5 pb-12 pt-4 font-semibold ">
-                  {tag}
-                </p>
-              ))}
-            </div>
-            <h1 className="mb-4 text-4xl font-bold">{event.name}</h1>
-            <TimeComponent date={event.startTime.toISOString()} />
-          </section>
-          <section className="float-right my-auto flex">
-            {session && (
-                <button
-                  className="mr-12 rounded-full bg-blue-400 p-2.5 transition-colors hover:bg-blue-700"
-                  type="button"
-                >
-                  <LikeButton />
-                </button>
-              ) && (
+      <section className="px-7">
+        <section className="mb-5 flex flex-col space-y-6">
+          <div className="relative flex h-full w-full flex-col justify-between gap-4 rounded-xl bg-[url('/images/wideWave.jpg')] bg-cover p-10 shadow-lg md:flex-row md:gap-0 ">
+            <section className="text-white">
+              <div className="flex">
+                {club.tags.map((tag) => (
+                  <p key={tag} className=" mr-5 pb-12 pt-4 font-semibold ">
+                    {tag}
+                  </p>
+                ))}
+              </div>
+              <h1 className="mb-4 text-4xl font-bold">{event.name}</h1>
+              <TimeComponent date={event.startTime.toISOString()} />
+            </section>
+            <section className="flex md:float-right md:my-auto">
+              {session && (
                 <button className="mr-8 rounded-full bg-blue-primary px-8 py-4 text-xs font-extrabold text-white transition-colors hover:bg-blue-700">
                   Register
                 </button>
               )}
-          </section>
-        </div>
-      </section>
-
-      <section className="mb-5 flex flex-col space-y-6 px-7 text-black">
-        <div className="relative flex h-full w-full rounded-xl p-10 shadow-lg ">
-          <div className="m-4  flex w-max">
-            <div className="h-full max-w-sm lg:min-w-fit">
-              <div className="relative mx-auto h-40 w-full overflow-hidden rounded-b-md ">
-                <Image
-                  src={club.image}
-                  alt={club.name + ' logo'}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div>
-                <h1 className=" mt-10 text-sm font-semibold text-gray-700">
-                  Description
-                </h1>
-
-                <div>
-                  {clubDescription.map((details, index) => (
-                    <div
-                      key={details}
-                      className="my-5 flex justify-between text-xs text-slate-700"
-                    >
-                      <p className="mr-5">{details}</p>
-                      <p className="text-right font-semibold ">
-                        {clubDetails[index]}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+            </section>
+          </div>
+        </section>
+        <section className="mb-5 flex flex-col space-y-6 rounded-xl bg-slate-100 p-5 text-black shadow-lg md:flex-row md:p-10">
+          <div className="h-full max-w-sm lg:min-w-fit">
+            <div className="relative mx-auto h-40 w-full overflow-hidden rounded-b-md ">
+              <Image
+                src={club.image}
+                alt={club.name + ' logo'}
+                fill
+                className="object-cover"
+              />
             </div>
-
-            <div className="mx-12 flex-grow text-sm">
-              <div>
-                {truncatedDescription.split('\n').map((str, i) => (
-                  <p className="text-slate-700" key={i}>
-                    {str}
-                  </p>
-                ))}
-                <Link
-                  className="text-slate-500 underline transition-colors hover:text-slate-700"
-                  href={`/directory/${club.id}`}
+            <div className="mt-10 flex flex-col space-y-2 md:space-y-5">
+              <h1 className="text-md font-semibold text-gray-700 md:text-sm">
+                Description
+              </h1>
+              {clubDescription.map((details, index) => (
+                <div
+                  key={details}
+                  className="flex justify-between text-sm text-slate-700 md:text-xs"
                 >
-                  see more
-                </Link>
-              </div>
-              {event.description.split('\n').map((desc, i) => (
-                <p className="mt-4 text-gray-500" key={i}>
-                  {desc}
-                </p>
+                  <p className="mr-5">{details}</p>
+                  <p className="text-right font-semibold ">
+                    {clubDetails[index]}
+                  </p>
+                </div>
               ))}
             </div>
-
-            <div className="flex flex-col ">
-              <CountdownTimer startTime={event.startTime} />
-
-              <Link
-                href={`/directory/${club.id}`}
-                className="mr-8 mt-auto block w-36 break-normal rounded-full border-2 border-blue-primary py-4 text-center text-xs font-extrabold text-blue-primary transition-colors hover:bg-blue-700 hover:text-white"
-              >
-                View Club
-              </Link>
-            </div>
           </div>
-        </div>
+          <div className="flex-grow text-sm md:mx-12">
+            <p className="mt-4 whitespace-pre-wrap text-gray-500">
+              {event.description}
+            </p>
+          </div>
+          <div className="flex flex-col ">
+            <CountdownTimer startTime={event.startTime} />
+            <Link
+              href={`/directory/${club.id}`}
+              className="mr-8 mt-auto block w-36 break-normal rounded-full border-2 border-blue-primary py-4 text-center text-xs font-extrabold text-blue-primary transition-colors hover:bg-blue-700 hover:text-white"
+            >
+              View Club
+            </Link>
+          </div>
+        </section>
       </section>
     </main>
   );
