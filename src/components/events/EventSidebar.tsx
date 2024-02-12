@@ -320,9 +320,9 @@ const EventSidebar = () => {
       </button>
       <div
         data-open={open}
-        className="hidden justify-items-center overflow-clip data-[open=true]:contents sm:contents"
+        className="hidden overflow-clip data-[open=true]:contents sm:contents"
       >
-        <div className="flex justify-center">
+        <div className="flex">
           <Filters />
         </div>
       </div>
