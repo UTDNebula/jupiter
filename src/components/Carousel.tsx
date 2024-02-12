@@ -59,7 +59,7 @@ const Carousel = () => {
                 <div className="absolute z-10 h-full w-full">
                   <div className="flex h-full w-full flex-col justify-between p-6 md:p-[3.75rem]">
                     <div className="mt-auto flex flex-row justify-center">
-                      <h1 className="text-2xl font-bold text-white">
+                      <h1 className="text-3xl font-bold text-white md:text-2xl">
                         {club.name}
                       </h1>
                       <div className="ml-auto text-lg text-white">
@@ -79,13 +79,13 @@ const Carousel = () => {
           </div>
           <div className="flex flex-row">
             <button
-              className="pointer-events-auto flex scale-75 items-center justify-center rounded-full bg-black bg-opacity-50 p-4 hover:bg-opacity-70 md:scale-100"
+              className="pointer-events-auto flex items-center justify-center rounded-full bg-black bg-opacity-50 p-4 hover:bg-opacity-70"
               onClick={() => onClick(-1)}
             >
               <LeftArrowIcon />
             </button>
             <button
-              className="pointer-events-auto ml-auto flex scale-75 items-center justify-center rounded-full bg-black bg-opacity-50 p-4 hover:bg-opacity-70 md:scale-100"
+              className="pointer-events-auto ml-auto flex items-center justify-center rounded-full bg-black bg-opacity-50 p-4 hover:bg-opacity-70"
               onClick={() => onClick(1)}
             >
               <RightArrowIcon />

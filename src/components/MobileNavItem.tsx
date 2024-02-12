@@ -25,7 +25,7 @@ const MobileNavItem: FC<{ cat: allCats[number]; active: boolean }> = ({
     >
       <Link
         className=" 
-        flex h-full w-full cursor-pointer  items-start rounded-lg bg-transparent px-5 text-sm transition-transform"
+        flex h-full w-full cursor-pointer  items-start rounded-lg bg-transparent px-5 text-base transition-transform"
         href={route}
         passHref
       >
@@ -34,7 +34,7 @@ const MobileNavItem: FC<{ cat: allCats[number]; active: boolean }> = ({
             <Icon fill={`${active ? 'fill-blue-primary' : 'fill-slate-500'}`} />
           )}
           <h1
-            className={`text-sm font-medium capitalize ${
+            className={`text-base font-medium capitalize ${
               active ? 'text-blue-primary' : 'text-slate-500'
             }`}
           >
