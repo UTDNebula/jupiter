@@ -49,7 +49,7 @@ const HorizontalCard = async ({
               )}
             </span>
           </h4>
-          <p className="text-xs font-bold">{event.description}</p>
+          <p className="text-xs font-bold">{( event.description.length > 390) ? (event.description.substring(0, 390)) + "..." : event.description }</p>
         </div>
         <div className="ml-auto flex flex-row space-x-4">
           {session && (
@@ -76,7 +76,7 @@ const VerticalCard = async ({
   return (
     <div className="container flex h-96 w-64 flex-col overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-lg">
       <div className="relative">
-        <div className="h-40 w-96">
+        <div className=" h-52 w-96">
           <Image
             src={'/event_default.jpg'}
             alt="event image"
