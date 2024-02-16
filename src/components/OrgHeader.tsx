@@ -30,7 +30,7 @@ const OrgHeader = async ({ club }: { club: Club }) => {
         />
       </div>
       <div className="absolute left-0 top-0 h-full w-full">
-        <div className="flex h-full w-full flex-row   p-8">
+        <div className="flex h-full w-full flex-col p-8   sm:flex-row">
           <div className="flex h-full flex-col">
             <div className="flex flex-row">
               {club.tags.map((tag) => (

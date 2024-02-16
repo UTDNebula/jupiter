@@ -24,7 +24,7 @@ const LikedEvents = async () => {
   }
   return (
     <div
-      className="group flex w-full flex-col space-y-7.5 pt-10"
+      className="group flex w-full flex-col items-center space-y-7.5 pt-10 sm:items-start"
       data-view={'list'}
     >
       {events.map((event) => (
