@@ -49,9 +49,9 @@ const HorizontalCard = async ({
               )}
             </span>
           </h4>
-          <p className="text-xs font-bold">{ event.description.length > 390 ? 
-                                              event.description.substring(0, 390) + "..." : 
-                                              event.description }</p>
+          <p className="line-clamp-3 overflow-clip text-ellipsis text-xs font-bold">
+            {event.description}
+          </p>
         </div>
         <div className="ml-auto flex flex-row space-x-4">
           {session && (
