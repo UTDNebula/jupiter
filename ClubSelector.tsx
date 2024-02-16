@@ -23,7 +23,7 @@ export default function ClubSelector({ control }: Props) {
       <div className="flex flex-wrap">
         {fields.map((club, i) => (
           <div
-            className="m-5 flex min-w-[10rem] items-center justify-center rounded-full border p-2"
+            className="m-2 flex min-w-[10rem] items-center justify-center rounded-full border p-2"
             key={club.id}
           >
             <Image
