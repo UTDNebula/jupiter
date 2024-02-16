@@ -30,7 +30,7 @@ export default async function Auth({
             <h1 className="text-center text-6xl font-bold text-white sm:text-left">
               Sign In /<br className="sm:hidden" /> Sign Up
             </h1>
-            <div className="flex w-full flex-col justify-center gap-x-4 space-y-4 py-2.5 sm:flex-row sm:space-y-0">
+            <div className="flex w-full flex-col items-center justify-center gap-x-4 space-y-4 py-2.5 sm:flex-row sm:space-y-0">
               {Object.values(providers || {}).map((provider) => (
                 <ProviderButton key={provider.id} provider={provider} />
               ))}
