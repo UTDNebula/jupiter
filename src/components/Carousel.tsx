@@ -56,13 +56,13 @@ const Carousel = () => {
                 priority
               />
               <div className="absolute inset-0 h-full w-full">
-                <div className="absolute inset-0 z-10 h-full w-full">
-                  <div className="relative flex h-full w-full flex-col justify-between p-2 md:p-[3.75rem]">
+                <div className="absolute z-10 h-full w-full">
+                  <div className="flex h-full w-full flex-col justify-between p-6 md:p-[3.75rem]">
                     <div className="mt-auto flex flex-row justify-center">
-                      <h1 className="text-2xl font-bold text-white">
+                      <h1 className="text-3xl font-bold text-white md:text-2xl">
                         {club.name}
                       </h1>
-                      <div className="ml-auto pr-8 text-lg text-white">
+                      <div className="ml-auto text-lg text-white">
                         {club.shortDesc}
                       </div>
                     </div>
@@ -73,8 +73,8 @@ const Carousel = () => {
             </div>
           </Link>
         ))}
-        <div className="pointer-events-none absolute inset-0 flex h-full w-full flex-col justify-between p-2 md:p-[3.75rem]">
-          <div className="pointer-events-auto w-fit rounded-[1.25rem] bg-black bg-opacity-50 px-5 py-2.5 text-center text-xs font-extrabold text-white md:text-base">
+        <div className="pointer-events-none absolute inset-0 flex h-full w-full flex-col justify-between p-6 md:p-[3.75rem]">
+          <div className="pointer-events-auto invisible w-fit rounded-[1.25rem] bg-black bg-opacity-50 px-5 py-2.5 text-center text-xs font-extrabold text-white md:visible md:text-base">
             Featured Clubs
           </div>
           <div className="flex flex-row">

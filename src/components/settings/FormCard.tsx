@@ -60,9 +60,9 @@ export default function FormCard({ clubs, user }: Props) {
         });
       })}
     >
-      <div className="flex flex-col justify-between md:flex-row">
+      <div className="flex flex-col justify-between lg:flex-row">
         <div className="flex flex-col space-y-6 md:w-2/3">
-          <div className="flex space-x-4">
+          <div className="flex flex-col sm:flex-row sm:space-x-4">
             <SettingsInput
               label="First Name"
               defaultValue={user.firstName}
@@ -76,7 +76,7 @@ export default function FormCard({ clubs, user }: Props) {
               register={register}
             />
           </div>
-          <div className="flex space-x-4">
+          <div className="flex flex-col sm:flex-row sm:space-x-4">
             <SettingsInput
               label="Major"
               defaultValue={user.major}
