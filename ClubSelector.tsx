@@ -18,9 +18,8 @@ export default function ClubSelector({ control }: Props) {
     keyName: 'club.id',
   });
   return (
-    <div className="-mt-4 w-1/2 md:mx-6">
-      <h2 className="mb-4 font-medium text-slate-500">Clubs</h2>
-      <div className="flex flex-wrap">
+    <div className="-mt-4 max-w-2xl">
+      <div className="flex w-full flex-wrap">
         {fields.map((club, i) => (
           <div
             className="m-2 flex min-w-[10rem] items-center justify-center rounded-full border p-2"
@@ -34,9 +33,10 @@ export default function ClubSelector({ control }: Props) {
               className="-pl-1 rounded-full pr-1"
             />
             <h1 className="truncate p-1 text-xs font-bold">{club.name}</h1>
+
             <button
               type="button"
-              className="ml-2 text-xs font-bold text-red-500"
+              className="ml-2 rounded-full bg-red-500 px-1  text-xs font-bold text-white"
               onClick={() => remove(i)}
             >
               X
