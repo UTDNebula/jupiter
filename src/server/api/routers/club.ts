@@ -1,4 +1,14 @@
-import { eq, ilike, sql, and, notInArray, inArray, or } from 'drizzle-orm';
+import {
+  eq,
+  ilike,
+  sql,
+  and,
+  notInArray,
+  inArray,
+  or,
+  lt,
+  gt,
+} from 'drizzle-orm';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { selectContact } from '@src/server/db/models';
@@ -6,6 +16,7 @@ import { clubEditRouter } from './clubEdit';
 import { userMetadataToClubs } from '@src/server/db/schema/users';
 import { club } from '@src/server/db/schema/club';
 import { contacts } from '@src/server/db/schema/contacts';
+import { carousel } from '@src/server/db/schema/admin';
 const byNameSchema = z.object({
   name: z.string().default(''),
 });
@@ -45,7 +56,8 @@ export const clubRouter = createTRPCRouter({
   byName: publicProcedure.input(byNameSchema).query(async ({ input, ctx }) => {
     const { name } = input;
     const clubs = await ctx.db.query.club.findMany({
-      where: (club) => ilike(club.name, `%${name}%`),
+      where: (club) =>
+        and(ilike(club.name, `%${name}%`), eq(club.approved, 'approved')),
     });
 
     if (name === '') return clubs;
@@ -69,7 +81,14 @@ export const clubRouter = createTRPCRouter({
   all: publicProcedure.input(allSchema).query(async ({ ctx, input }) => {
     const userID = ctx.session?.user.id;
     try {
-      let query = ctx.db.select().from(club);
+      let query = ctx.db
+        .select()
+        .from(club)
+        .limit(input.limit)
+        .orderBy(club.name)
+        .offset(input.cursor)
+        .where(eq(club.approved, 'approved'));
+
       if (userID) {
         const joinedClubs = ctx.db
           .select({ clubId: userMetadataToClubs.clubId })
@@ -79,14 +98,11 @@ export const clubRouter = createTRPCRouter({
         query = query.where(notInArray(club.id, joinedClubs));
       }
 
-      if (input.tag && input.tag !== 'All')
-        query = query.where(sql`${input.tag} = ANY(tags)`);
+      if (input.tag && input.tag !== 'All') {
+        query = query.where(sql`${input.tag} = ANY(${club.tags})`);
+      }
 
-      const res = await query
-        .orderBy(club.name)
-        .limit(input.limit)
-        .offset(input.cursor);
-
+      const res = await query.execute();
       const newOffset = input.cursor + res.length;
 
       return {
@@ -232,6 +248,24 @@ export const clubRouter = createTRPCRouter({
       });
       return officers;
     }),
+  isActive: publicProcedure.input(byIdSchema).query(async ({ input, ctx }) => {
+    const hasPresident = await ctx.db.query.userMetadataToClubs.findFirst({
+      where: and(
+        eq(userMetadataToClubs.clubId, input.id),
+        eq(userMetadataToClubs.memberType, 'President'),
+      ),
+    });
+    return !!hasPresident;
+  }),
+  getCarousel: publicProcedure.query(async ({ ctx }) => {
+    const now = new Date();
+    const currentItems = await ctx.db.query.carousel.findMany({
+      where: and(lt(carousel.startTime, now), gt(carousel.endTime, now)),
+      with: { club: true },
+    });
+
+    return currentItems;
+  }),
   getDirectoryInfo: publicProcedure
     .input(byIdSchema)
     .query(async ({ input: { id }, ctx }) => {

@@ -23,12 +23,14 @@ type Params = {
 
 const Home = async (props: Params) => {
   const tags = await api.club.distinctTags.query();
+  const featured = await api.club.getCarousel.query();
+  const onlyClubs = featured.map((item) => item.club);
   return (
     <main className="md:pl-72">
       <Header />
       <div className="px-2 md:px-5">
         <div className="relative block w-full">
-          <Carousel />
+          <Carousel clubs={onlyClubs} />
         </div>
         <TagFilter tags={tags} />
         <OrgDirectoryGrid tag={props.searchParams.tag} />
