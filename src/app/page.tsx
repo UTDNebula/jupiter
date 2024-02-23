@@ -28,7 +28,7 @@ const Home = async (props: Params) => {
   return (
     <main className="md:pl-72">
       <Header />
-      <div className="px-5">
+      <div className="px-2 md:px-5">
         <div className="relative block w-full">
           <Carousel clubs={onlyClubs} />
         </div>

@@ -48,11 +48,9 @@ const OrgInfoSegment: FC<{
           </div>
         </div>
         <div className="w-full">
-          {club.description.split('\n').map((str, i) => (
-            <p className="text-slate-700" key={i}>
-              {str}
-            </p>
-          ))}
+          <p className="whitespace-pre-wrap text-slate-700">
+            {club.description}
+          </p>
         </div>
         {club.userMetadataToClubs.length != 0 && (
           <div className="min-w-fit">
