@@ -32,17 +32,9 @@ const Feedback = () => {
     <main className="h-full md:pl-72 ">
       <Header />
 
-      <div className="flex h-full w-full flex-row " > 
+      <div className="flex h-full w-full flex-row mb-20" > 
         
-        <section className="h-[20vh] w-[20vw] first-line:text-white rounded-md  bg-green-500 relative m-auto hidden xl:flex">
-          <Image
-            src={jupiterPic}
-            alt="Jupiter"
-            fill
-          />
-        </section>
-
-        <section className='bg-white m-auto justift-center items-center text-center py-6 px-10 shadow-lg rounded-lg'>
+        <section className='bg-white m-auto justift-center items-center text-center py-6 px-10 shadow-lg rounded-lg mt-3'>
           <form className='relative  text-slate-700'>
             <div className="w-14 h-14 absolute -top-3 left-0 ">
               <Image 
