@@ -16,7 +16,7 @@ const OrgDirectoryCards: FC<Props> = ({ club, session, priority }) => {
   const name =
     club.name.length > 20 ? club.name.slice(0, 30) + '...' : club.name;
   return (
-    <div className="flex h-full min-h-[400px] min-w-[300px] max-w-xs flex-col justify-between rounded-lg bg-white shadow-lg md:min-h-[600px]">
+    <div className="flex h-full min-h-[400px] min-w-[300px] max-w-xs flex-col justify-between rounded-lg bg-white shadow-lg lg:min-h-[500px]">
       <div className="relative h-48 overflow-hidden rounded-t-lg sm:h-56 md:h-64 lg:h-72">
         <Image
           src={club.profileImage ? club.profileImage : club.image}
@@ -31,7 +31,7 @@ const OrgDirectoryCards: FC<Props> = ({ club, session, priority }) => {
           </button>
         </div>
       </div>
-      <div className="flex flex-col space-y-2 p-6">
+      <div className="flex flex-col space-y-2 px-8 pt-8">
         <h1 className="line-clamp-1 text-2xl font-medium text-slate-800 md:text-xl">
           {name}
         </h1>
