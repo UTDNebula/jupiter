@@ -3,7 +3,7 @@ import React from 'react';
 import Header from '@src/components/BaseHeader';
 import { type Metadata } from 'next';
 import Image from 'next/image';
-import jupiterPic from "assets/media/icons/Jupiter.png"
+import { handleForm } from '@src/app/feedback/formAction';
 import nebulaPic from "public/android-chrome-192x192.png"
 
 export const metadata: Metadata = {
@@ -18,6 +18,10 @@ export const metadata: Metadata = {
   },
 };
 
+/*
+-- Create zod to validate the form data 
+
+*/
 const Feedback = () => {
   
   // function handleSubmit( e : React.FormEvent<HTMLFormElement>) {
@@ -35,7 +39,7 @@ const Feedback = () => {
       <div className="flex h-full w-full flex-row mb-20" > 
         
         <section className='bg-white m-auto justift-center items-center text-center py-6 px-10 shadow-lg rounded-lg mt-3'>
-          <form className='relative  text-slate-700'>
+          <form action={ handleForm } className='relative  text-slate-700'>
             <div className="w-14 h-14 absolute -top-3 left-0 ">
               <Image 
                 src={nebulaPic}

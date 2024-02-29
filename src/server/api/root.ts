@@ -2,6 +2,7 @@ import { createTRPCRouter } from '@src/server/api/trpc';
 import { clubRouter } from './routers/club';
 import { eventRouter } from './routers/event';
 import { userMetadataRouter } from './routers/userMetadata';
+import { formRouter } from './routers/form';
 
 /**
  * This is the primary router for your server.
@@ -12,6 +13,7 @@ export const appRouter = createTRPCRouter({
   club: clubRouter,
   event: eventRouter,
   userMetadata: userMetadataRouter,
+  form: formRouter,
 });
 
 // export type definition of API
