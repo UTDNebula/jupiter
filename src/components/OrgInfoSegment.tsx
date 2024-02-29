@@ -1,10 +1,12 @@
 import Image from 'next/image';
-import React, { type FC } from 'react';
+import { type FC } from 'react';
 import { type RouterOutputs } from '@src/trpc/shared';
+import { api } from '@src/trpc/server';
 
 const OrgInfoSegment: FC<{
   club: NonNullable<RouterOutputs['club']['getDirectoryInfo']>;
-}> = ({ club }) => {
+}> = async ({ club }) => {
+  const isActive = await api.club.isActive.query({ id: club.id });
   const president = club.userMetadataToClubs.find(
     (officer) => officer.memberType === 'President',
   );
@@ -40,7 +42,9 @@ const OrgInfoSegment: FC<{
           )}
           <div className="mt-2 flex w-36 justify-between">
             <p className="text-sm text-slate-400">Active</p>
-            <p className="text-right text-sm text-slate-600">Present</p>
+            <p className="text-right text-sm text-slate-600">
+              {isActive ? 'Present' : 'Inactive'}
+            </p>
           </div>
         </div>
         <div className="w-full">

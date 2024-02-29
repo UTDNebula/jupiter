@@ -27,7 +27,7 @@ type SearchBarProps<T extends SearchElement> = {
   onClick?: (input: T) => void;
 };
 
-const SearchBar = <T extends SearchElement>({
+export const SearchBar = <T extends SearchElement>({
   placeholder,
   value,
   setSearch,

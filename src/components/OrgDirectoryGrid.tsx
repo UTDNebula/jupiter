@@ -16,12 +16,7 @@ const OrgDirectoryGrid: FC<Props> = async ({ tag }) => {
   return (
     <div className="grid w-full auto-rows-fr grid-cols-[repeat(auto-fill,320 px)] lg:grid-cols-[repeat(auto-fill,290px)] justify-center gap-x-8 gap-y-6">
       {clubs.map((club) => (
-        <DirectoryOrgs
-          key={club.id}
-          club={club}
-          session={session}
-          priority={true}
-        />
+        <DirectoryOrgs key={club.id} club={club} session={session} priority />
       ))}
       {clubs.length === 9 && <InfiniteScrollGrid tag={tag} session={session} />}
       <ScrollTop />
