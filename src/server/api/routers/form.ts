@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { createTRPCRouter, protectedProcedure } from '../trpc';
+import { createTRPCRouter, publicProcedure } from '../trpc';
 import { forms } from '@src/server/db/schema/forms';
 
 export const feedbackFormSchema = z.object({
@@ -11,7 +11,7 @@ export const feedbackFormSchema = z.object({
 })
 
 export const formRouter = createTRPCRouter({
-    sendForm: protectedProcedure.
+    sendForm: publicProcedure.
         input(feedbackFormSchema).
         mutation( async ( {input, ctx}) => { 
             const { rating, likes, dislikes, features } = input; 
