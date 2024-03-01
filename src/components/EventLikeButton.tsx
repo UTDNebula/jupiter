@@ -1,6 +1,6 @@
 'use client';
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { CheckIcon, EventsIcon, GroupIcon, HeartIcon, HeartOutline, HistoryIcon, PlusIcon } from '../icons/Icons';
+import { CheckIcon, PlusIcon } from '../icons/Icons';
 import { api } from '@src/trpc/react';
 import { useRouter } from 'next/navigation';
 
