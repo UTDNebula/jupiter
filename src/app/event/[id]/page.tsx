@@ -8,6 +8,7 @@ import Image from 'next/image';
 import CountdownTimer from './CountdownTimer';
 import Link from 'next/link';
 import { getServerAuthSession } from '@src/server/auth';
+import RegisterButton from '@src/components/RegisterButton';
 
 type Params = { params: { id: string } };
 
@@ -44,9 +45,7 @@ export default async function EventsPage({ params }: Params) {
             </section>
             <section className="flex md:float-right md:my-auto">
               {session && (
-                <button className="mr-8 rounded-full bg-blue-primary px-8 py-4 text-xs font-extrabold text-white transition-colors hover:bg-blue-700">
-                  Register
-                </button>
+                <RegisterButton eventId={event.id} />
               )}
             </section>
           </div>
