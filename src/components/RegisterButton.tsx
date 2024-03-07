@@ -16,11 +16,14 @@ const RegisterButton: FC<RegisterButtonProps> = ({ eventId, isRegistered }) => {
 	const onClick = () => {
 		// If user is already registered, they should be unregistered from event
 		if (registered) {
-			leaveMutation.mutate({ id: eventId });
+			void leaveMutation.mutateAsync({ id: eventId }).then(() => {
+				setRegistered(!registered);
+			});
 		} else {
-			joinMutation.mutate({ id: eventId });
+			void joinMutation.mutateAsync({ id: eventId }).then(() => {
+				setRegistered(!registered);
+			});
 		}
-		setRegistered(!registered);
 	}
 
 	return (
