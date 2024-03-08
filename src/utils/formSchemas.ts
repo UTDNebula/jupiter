@@ -43,7 +43,7 @@ export const editOfficerSchema = z.object({
 });
 
 export const feedbackFormSchema = z.object({
-  rating: z.number().min(1).max(5),
+  rating: z.number().min(1).max(10),
   likes: z.string().default(''),
   dislikes: z.string().default(''),
   features: z.string().default(''),
