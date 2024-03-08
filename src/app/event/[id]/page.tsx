@@ -1,6 +1,6 @@
 import { EventHeader } from '@src/components/BaseHeader';
 import { db } from '@src/server/db';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { type Metadata } from 'next';
 
 import TimeComponent from './TimeComponent';
@@ -8,6 +8,7 @@ import Image from 'next/image';
 import CountdownTimer from './CountdownTimer';
 import Link from 'next/link';
 import { getServerAuthSession } from '@src/server/auth';
+import RegisterButton from '@src/components/RegisterButton';
 
 type Params = { params: { id: string } };
 
@@ -21,6 +22,13 @@ export default async function EventsPage({ params }: Params) {
   if (!res) return <div>Event Not Found.</div>;
 
   const { club, ...event } = res;
+
+  const isRegistered = (session && await db.query.userMetadataToEvents.findFirst({
+	where: (userMetadataToEvents) => and(
+		eq(userMetadataToEvents.eventId, event.id),
+		eq(userMetadataToEvents.userId, session.user.id)
+	)
+  }) !== undefined) || false;
 
   const clubDescription = ['Club', 'Location', 'Multi-Day'];
   const clubDetails = [club.name, event.location, 'No'];
@@ -44,9 +52,7 @@ export default async function EventsPage({ params }: Params) {
             </section>
             <section className="flex md:float-right md:my-auto">
               {session && (
-                <button className="mr-8 rounded-full bg-blue-primary px-8 py-4 text-xs font-extrabold text-white transition-colors hover:bg-blue-700">
-                  Register
-                </button>
+                <RegisterButton eventId={event.id} isRegistered={isRegistered} />
               )}
             </section>
           </div>
