@@ -2,7 +2,8 @@ import React from 'react';
 import Header from '@src/components/BaseHeader';
 import { type Metadata } from 'next';
 import  Form  from '@src/app/feedback/Form';
-
+import FormPopUp from '@src/app/feedback/formPopUp';
+//import { useState } from 'react';
 
 
 export const metadata: Metadata = {
@@ -17,19 +18,14 @@ export const metadata: Metadata = {
   },
 };
 
-/*
--- Create zod to validate the form data 
 
-*/
 const Feedback = () => {
-
-
 
   return (
     <main className="h-full md:pl-72 ">
       <Header />
 
-      <div className="flex h-full w-full flex-row mb-20" > 
+      <div className="flex h-full w-full flex-row mb-20 " > 
         <section className='bg-white m-auto justift-center items-center text-center py-6 px-10 shadow-lg rounded-lg mt-3'>
           <Form />
         </section>

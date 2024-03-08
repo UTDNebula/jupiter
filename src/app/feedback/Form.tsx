@@ -8,11 +8,18 @@ import { api } from '@src/trpc/react';
 import { type z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type FormEventHandler } from 'react';
+import  FormPopUp  from "@src/app/feedback/formPopUp";
+import { useState } from 'react';
 
 import nebulaPic from "public/android-chrome-192x192.png"
 
 const Form = () =>{ 
     // TODO add popup when form is submitted  
+    const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
+
+    const handlePopup = () => { 
+      setIsPopupOpen(!isPopupOpen)
+    }
 
     const handleRangeChange: FormEventHandler<HTMLInputElement> = (event) => {
       const inputValue = event.currentTarget.value; 
@@ -30,8 +37,10 @@ const Form = () =>{
     })
 
     return (
+        <main className='relative'>
+          <FormPopUp onClose = {handlePopup} isOpen = { isPopupOpen } />
           <form onSubmit={ submitForm }
-                className = 'relative  text-slate-700'
+                className = 'relative  text-slate-700 z-0'
           >
             <div className="w-14 h-14 absolute -top-3 left-0 ">
               <Image 
@@ -92,6 +101,7 @@ const Form = () =>{
               Submit
             </button>
           </form>
+        </main>
     )
 }
 
