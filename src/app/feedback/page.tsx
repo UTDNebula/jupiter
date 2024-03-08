@@ -30,11 +30,9 @@ const Feedback = () => {
       <Header />
 
       <div className="flex h-full w-full flex-row mb-20" > 
-        
         <section className='bg-white m-auto justift-center items-center text-center py-6 px-10 shadow-lg rounded-lg mt-3'>
           <Form />
         </section>
-
       </div>
     </main>
   );

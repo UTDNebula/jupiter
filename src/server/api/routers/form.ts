@@ -1,20 +1,13 @@
-import { z } from 'zod';
 import { createTRPCRouter, publicProcedure } from '../trpc';
 import { forms } from '@src/server/db/schema/forms';
+import { feedbackFormSchema } from '@src/utils/formSchemas';
 
-export const feedbackFormSchema = z.object({
-    rating: z.number().min(1).max(5),
-    likes: z.string().default(''),
-    dislikes: z.string().default(''),
-    features: z.string().default(''),
-    submit_on: z.date().default(new Date()),
-})
 
 export const formRouter = createTRPCRouter({
     sendForm: publicProcedure.
         input(feedbackFormSchema).
         mutation( async ( {input, ctx}) => { 
-            const { rating, likes, dislikes, features } = input; 
+            const { rating, likes, dislikes, features, submit_on } = input; 
 
             await ctx.db
                 .insert(forms)
@@ -23,12 +16,10 @@ export const formRouter = createTRPCRouter({
                          likes : likes,
                          dislikes: dislikes,
                          features: features, 
-                         submit_on: new Date(),
+                         submit_on: submit_on,
                         }).catch( (err) => {
                             console.log(err)
-                            return { success: false}
-                        })
 
-            return { success: true } 
+                        })
         } )
     })

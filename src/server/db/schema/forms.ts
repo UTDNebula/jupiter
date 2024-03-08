@@ -1,7 +1,7 @@
 import {  sql } from "drizzle-orm";
 import { pgTable, text, timestamp, integer } from "drizzle-orm/pg-core"
 
-export const forms = pgTable("forms", { 
+export const forms = pgTable("formSubmission", { 
     id: text("id")
         .default(sql`nanoid(20)`)
         .primaryKey(),
