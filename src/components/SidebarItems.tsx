@@ -1,47 +1,10 @@
 'use client';
 import { type FC, useState } from 'react';
-import {
-  AboutIcon,
-  EventsIcon,
-  FeedbackIcon,
-  HistoryIcon,
-  HomeIcon,
-  type IconType,
-  LikedIcon,
-  RightChevron,
-  SettingsIcon,
-} from './Icons';
 import { useRouter, usePathname } from 'next/navigation';
+import { IconMap, type allCats, routeMap } from '@src/constants/categories';
+import { RightChevron } from '../icons/Icons';
 
-const mainCats = ['Home', 'History', 'Liked', 'Events'] as const;
-const moreCats = ['Settings', 'About', 'Feedback'] as const;
-
-type union = (typeof mainCats)[number] | (typeof moreCats)[number];
-const IconMap: {
-  [key in union[number]]: IconType;
-} = {
-  Home: HomeIcon,
-  History: HistoryIcon,
-  Liked: LikedIcon,
-  Events: EventsIcon,
-  Settings: SettingsIcon,
-  About: AboutIcon,
-  Feedback: FeedbackIcon,
-};
-
-const routeMap: {
-  [key in union[number]]: string;
-} = {
-  Home: '/',
-  History: '/history',
-  Liked: '/liked',
-  Events: '/events',
-  Settings: '/settings',
-  About: '/about',
-  Feedback: '/feedback',
-};
-
-const SidebarItems: FC<{ cat: union[number] }> = ({ cat }) => {
+const SidebarItems: FC<{ cat: allCats[number] }> = ({ cat }) => {
   const Icon = IconMap[cat];
   const router = useRouter();
   const route = routeMap[cat];
@@ -63,7 +26,7 @@ const SidebarItems: FC<{ cat: union[number] }> = ({ cat }) => {
 
   return (
     <div
-      className={`${
+      className={` ${
         active || mouseOver
           ? `-my-2.5 mb-2.5 rounded-3xl bg-white py-2.5 shadow-md last:-mb-2.5`
           : 'mb-5'
@@ -72,8 +35,8 @@ const SidebarItems: FC<{ cat: union[number] }> = ({ cat }) => {
       onMouseOut={handleMouseOut}
     >
       <div
-        className="
-        flex h-full w-64 cursor-pointer items-start  rounded-lg bg-transparent px-5 text-sm transition-transform"
+        className=" 
+        flex h-full w-64 cursor-pointer  items-start rounded-lg bg-transparent px-5 text-sm transition-transform"
         onClick={() => void router.push(route)}
       >
         <div className="flex items-center gap-x-4">

@@ -7,7 +7,11 @@ await import('./src/env.mjs');
 /** @type {import("next").NextConfig} */
 const config = {
   images: {
-    domains: ['lh3.googleusercontent.com'],
+    domains: [
+      'lh3.googleusercontent.com',
+      'cdn.discordapp.com',
+      'jupiter.nlmc.workers.dev',
+    ],
   },
   experimental: {
     serverActions: true,

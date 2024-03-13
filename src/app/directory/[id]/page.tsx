@@ -4,23 +4,23 @@ import OrgHeader from '@src/components/OrgHeader';
 import OrgInfoSegment from '@src/components/OrgInfoSegment';
 import OrgUpcomingEvents from '@src/components/OrgUpcomingEvents';
 import { api } from '@src/trpc/server';
-import { PlusIcon } from '@src/components/Icons';
+import { PlusIcon } from '@src/icons/Icons';
 import { db } from '@src/server/db';
 import { eq } from 'drizzle-orm';
-import { club } from '@src/server/db/schema';
 import { type Metadata } from 'next';
+import NotFound from '@src/components/NotFound';
 
 const OrganizationPage = async ({ params }: { params: { id: string } }) => {
-  const club = await api.club.byId.query({ id: params.id });
-  if (!club) return <div>Club not found</div>;
+  const club = await api.club.getDirectoryInfo.query({ id: params.id });
+  if (!club) return <NotFound elementType="Club" />;
 
   return (
     <main className="w-full md:pl-72">
       <Header />
-      <div className="mb-5 flex flex-col space-y-8 px-7">
+      <div className="mb-5 flex flex-col space-y-4 px-3">
         <OrgHeader club={club} />
         <OrgInfoSegment club={club} />
-        <OrgUpcomingEvents club_id={club.id} />
+        <OrgUpcomingEvents clubId={club.id} />
         <ClubDocuments />
         <div className="flex h-full w-full flex-row items-center justify-between rounded-lg bg-blue-100 px-14 py-7">
           <div className="text-lg font-bold text-blue-primary">Promo text</div>
@@ -43,7 +43,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const id = params.id;
 
-  const found = await db.query.club.findFirst({ where: eq(club.id, id) });
+  const found = await db.query.club.findFirst({
+    where: (club) => eq(club.id, id),
+  });
 
   if (!found)
     return {

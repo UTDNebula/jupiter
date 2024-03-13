@@ -3,6 +3,7 @@ import { type FC } from 'react';
 export type IconType = FC<{ fill?: string }>;
 const defaultFill = 'fill-slate-400';
 const defaultHeartFill = 'fill-slate-800';
+
 export const HomeIcon: IconType = ({ fill = defaultFill }) => (
   <svg
     width="30"
@@ -139,7 +140,7 @@ export const RightChevron = () => (
   </svg>
 );
 
-export const HeartIcon: IconType = ({ fill = defaultHeartFill }) => (
+export const HeartOutline: IconType = ({ fill = defaultHeartFill }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="auto"
@@ -155,7 +156,39 @@ export const HeartIcon: IconType = ({ fill = defaultHeartFill }) => (
     />
   </svg>
 );
+export const HeartIcon: IconType = ({ fill = defaultHeartFill }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="auto"
+    height="auto"
+    viewBox="0 0 30 30"
+    fill="none"
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M16.3536 24.1307C15.5936 24.8207 14.4236 24.8207 13.6636 24.1207L13.5536 24.0207C8.30357 19.2707 4.87357 16.1607 5.00357 12.2807C5.06357 10.5807 5.93357 8.95065 7.34357 7.99065C9.98357 6.19065 13.2436 7.03065 15.0036 9.09065C16.7636 7.03065 20.0236 6.18065 22.6636 7.99065C24.0736 8.95065 24.9436 10.5807 25.0036 12.2807C25.1436 16.1607 21.7036 19.2707 16.4536 24.0407L16.3536 24.1307Z"
+      className={fill}
+    />
+  </svg>
+);
 
+export const MoreIcon: IconType = ({ fill = defaultFill }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="auto"
+    height="auto"
+    viewBox="0 0 28 28"
+    fill="none"
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M8.40011 12.1333C7.37345 12.1333 6.53345 12.9733 6.53345 14C6.53345 15.0267 7.37345 15.8667 8.40011 15.8667C9.42678 15.8667 10.2668 15.0267 10.2668 14C10.2668 12.9733 9.42678 12.1333 8.40011 12.1333ZM19.6001 12.1333C18.5734 12.1333 17.7334 12.9733 17.7334 14C17.7334 15.0267 18.5734 15.8667 19.6001 15.8667C20.6268 15.8667 21.4668 15.0267 21.4668 14C21.4668 12.9733 20.6268 12.1333 19.6001 12.1333ZM14.0001 12.1333C12.9734 12.1333 12.1334 12.9733 12.1334 14C12.1334 15.0267 12.9734 15.8667 14.0001 15.8667C15.0268 15.8667 15.8668 15.0267 15.8668 14C15.8668 12.9733 15.0268 12.1333 14.0001 12.1333Z"
+      className={`transition-colors  ${fill} `}
+    />
+  </svg>
+);
 export const SearchIcon: IconType = () => (
   <svg
     width="18"
@@ -172,7 +205,7 @@ export const SearchIcon: IconType = () => (
     />
   </svg>
 );
-export const LeftArrowIcon: IconType = () => (
+export const LeftArrowIcon: IconType = ({ fill }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="30"
@@ -184,26 +217,28 @@ export const LeftArrowIcon: IconType = () => (
       fillRule="evenodd"
       clipRule="evenodd"
       d="M21.5825 13.5925H10.4125L15.2925 8.71249C15.6825 8.32249 15.6825 7.68249 15.2925 7.29249C15.1057 7.10523 14.852 7 14.5875 7C14.323 7 14.0693 7.10523 13.8825 7.29249L7.2925 13.8825C6.9025 14.2725 6.9025 14.9025 7.2925 15.2925L13.8825 21.8825C14.2725 22.2725 14.9025 22.2725 15.2925 21.8825C15.6825 21.4925 15.6825 20.8625 15.2925 20.4725L10.4125 15.5925H21.5825C22.1325 15.5925 22.5825 15.1425 22.5825 14.5925C22.5825 14.0425 22.1325 13.5925 21.5825 13.5925Z"
-      fill="white"
+      className={fill ?? 'fill-white'}
     />
   </svg>
 );
-export const RightArrowIcon: IconType = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="30"
-    height="30"
-    viewBox="0 0 30 30"
-    fill="none"
-  >
-    <path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M8 15.5925H19.17L14.29 20.4725C13.9 20.8625 13.9 21.5025 14.29 21.8925C14.68 22.2825 15.31 22.2825 15.7 21.8925L22.29 15.3025C22.68 14.9125 22.68 14.2825 22.29 13.8925L15.71 7.29249C15.5232 7.10523 15.2695 7 15.005 7C14.7405 7 14.4868 7.10523 14.3 7.29249C13.91 7.68249 13.91 8.31249 14.3 8.70249L19.17 13.5925H8C7.45 13.5925 7 14.0425 7 14.5925C7 15.1425 7.45 15.5925 8 15.5925Z"
-      fill="white"
-    />
-  </svg>
-);
+export const RightArrowIcon: IconType = ({ fill }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="30"
+      height="30"
+      viewBox="0 0 30 30"
+      fill="none"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M8 15.5925H19.17L14.29 20.4725C13.9 20.8625 13.9 21.5025 14.29 21.8925C14.68 22.2825 15.31 22.2825 15.7 21.8925L22.29 15.3025C22.68 14.9125 22.68 14.2825 22.29 13.8925L15.71 7.29249C15.5232 7.10523 15.2695 7 15.005 7C14.7405 7 14.4868 7.10523 14.3 7.29249C13.91 7.68249 13.91 8.31249 14.3 8.70249L19.17 13.5925H8C7.45 13.5925 7 14.0425 7 14.5925C7 15.1425 7.45 15.5925 8 15.5925Z"
+        className={fill ?? 'fill-white'}
+      />
+    </svg>
+  );
+};
 export const PlusIcon: IconType = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -233,6 +268,86 @@ export const GroupIcon: IconType = () => (
       clipRule="evenodd"
       d="M19 14C20.66 14 21.99 12.66 21.99 11C21.99 9.34 20.66 8 19 8C17.34 8 16 9.34 16 11C16 12.66 17.34 14 19 14ZM11 14C12.66 14 13.99 12.66 13.99 11C13.99 9.34 12.66 8 11 8C9.34 8 8 9.34 8 11C8 12.66 9.34 14 11 14ZM11 16C8.67 16 4 17.17 4 19.5V21C4 21.55 4.45 22 5 22H17C17.55 22 18 21.55 18 21V19.5C18 17.17 13.33 16 11 16ZM19 16C18.71 16 18.38 16.02 18.03 16.05C18.05 16.06 18.06 16.08 18.07 16.09C19.21 16.92 20 18.03 20 19.5V21C20 21.35 19.93 21.69 19.82 22H25C25.55 22 26 21.55 26 21V19.5C26 17.17 21.33 16 19 16Z"
       fill="currentColor"
+    />
+  </svg>
+);
+export const ListIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="auto"
+    height="auto"
+    viewBox="0 0 30 30"
+    fill="none"
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M8 17H10C10.55 17 11 16.55 11 16V14C11 13.45 10.55 13 10 13H8C7.45 13 7 13.45 7 14V16C7 16.55 7.45 17 8 17ZM8 22H10C10.55 22 11 21.55 11 21V19C11 18.45 10.55 18 10 18H8C7.45 18 7 18.45 7 19V21C7 21.55 7.45 22 8 22ZM8 12H10C10.55 12 11 11.55 11 11V9C11 8.45 10.55 8 10 8H8C7.45 8 7 8.45 7 9V11C7 11.55 7.45 12 8 12ZM13 17H23C23.55 17 24 16.55 24 16V14C24 13.45 23.55 13 23 13H13C12.45 13 12 13.45 12 14V16C12 16.55 12.45 17 13 17ZM13 22H23C23.55 22 24 21.55 24 21V19C24 18.45 23.55 18 23 18H13C12.45 18 12 18.45 12 19V21C12 21.55 12.45 22 13 22ZM12 9V11C12 11.55 12.45 12 13 12H23C23.55 12 24 11.55 24 11V9C24 8.45 23.55 8 23 8H13C12.45 8 12 8.45 12 9Z"
+      fill="#C3CAD9"
+    />
+  </svg>
+);
+export const GridIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="auto"
+    height="auto"
+    viewBox="0 0 30 30"
+    fill="none"
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M8 15H11C11.55 15 12 14.55 12 14V10C12 9.45 11.55 9 11 9H8C7.45 9 7 9.45 7 10V14C7 14.55 7.45 15 8 15ZM8 22H11C11.55 22 12 21.55 12 21V17C12 16.45 11.55 16 11 16H8C7.45 16 7 16.45 7 17V21C7 21.55 7.45 22 8 22ZM14 22H17C17.55 22 18 21.55 18 21V17C18 16.45 17.55 16 17 16H14C13.45 16 13 16.45 13 17V21C13 21.55 13.45 22 14 22ZM20 22H23C23.55 22 24 21.55 24 21V17C24 16.45 23.55 16 23 16H20C19.45 16 19 16.45 19 17V21C19 21.55 19.45 22 20 22ZM14 15H17C17.55 15 18 14.55 18 14V10C18 9.45 17.55 9 17 9H14C13.45 9 13 9.45 13 10V14C13 14.55 13.45 15 14 15ZM19 10V14C19 14.55 19.45 15 20 15H23C23.55 15 24 14.55 24 14V10C24 9.45 23.55 9 23 9H20C19.45 9 19 9.45 19 10Z"
+      fill="#C3CAD9"
+    />
+  </svg>
+);
+export const ExpandMore = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="auto"
+    height="auto"
+    viewBox="0 0 30 30"
+    fill="none"
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M18.4625 12.2925L14.5825 16.1725L10.7025 12.2925C10.5157 12.1052 10.262 12 9.9975 12C9.73298 12 9.47933 12.1052 9.2925 12.2925C8.9025 12.6825 8.9025 13.3125 9.2925 13.7025L13.8825 18.2925C14.2725 18.6825 14.9025 18.6825 15.2925 18.2925L19.8825 13.7025C20.2725 13.3125 20.2725 12.6825 19.8825 12.2925C19.4925 11.9125 18.8525 11.9025 18.4625 12.2925Z"
+      className="fill-slate-500"
+    />
+  </svg>
+);
+export const ExpandLess = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="auto"
+    height="auto"
+    viewBox="0 0 30 30"
+    fill="none"
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M13.8825 12.2925L9.2925 16.8825C8.9025 17.2725 8.9025 17.9025 9.2925 18.2925C9.6825 18.6825 10.3125 18.6825 10.7025 18.2925L14.5925 14.4125L18.4725 18.2925C18.8625 18.6825 19.4925 18.6825 19.8825 18.2925C20.2725 17.9025 20.2725 17.2725 19.8825 16.8825L15.2925 12.2925C14.9125 11.9025 14.2725 11.9025 13.8825 12.2925Z"
+      className="fill-slate-500"
+    />
+  </svg>
+);
+export const AccountIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="30"
+    height="30"
+    viewBox="0 0 30 30"
+    fill="none"
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M15 15C17.21 15 19 13.21 19 11C19 8.79 17.21 7 15 7C12.79 7 11 8.79 11 11C11 13.21 12.79 15 15 15ZM15 17C12.33 17 7 18.34 7 21V22C7 22.55 7.45 23 8 23H22C22.55 23 23 22.55 23 22V21C23 18.34 17.67 17 15 17Z"
+      fill="#C3CAD9"
     />
   </svg>
 );

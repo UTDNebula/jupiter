@@ -1,21 +1,15 @@
 import {
-  timestamp,
-  pgTable,
-  text,
-  primaryKey,
   integer,
   pgEnum,
+  pgTable,
+  primaryKey,
+  text,
+  timestamp,
 } from 'drizzle-orm/pg-core';
-import type { AdapterAccount } from 'next-auth/adapters';
-import { relations, sql } from 'drizzle-orm';
-
-export const users = pgTable('user', {
-  id: text('id').notNull().primaryKey(),
-  name: text('name'),
-  email: text('email').notNull(),
-  emailVerified: timestamp('emailVerified', { mode: 'date' }),
-  image: text('image'),
-});
+import { type AdapterAccount } from 'next-auth/adapters';
+import { club } from './club';
+import { events } from './events';
+import { relations } from 'drizzle-orm';
 
 export const yearEnum = pgEnum('year', [
   'Freshman',
@@ -40,31 +34,34 @@ export const careerEnum = pgEnum('career', [
   'Public Service',
 ]);
 
+export const clubRoleEnum = pgEnum('member_type', [
+  'President',
+  'Officer',
+  'Member',
+]);
+
+export const users = pgTable('user', {
+  id: text('id').notNull().primaryKey(),
+  name: text('name'),
+  email: text('email').notNull(),
+  emailVerified: timestamp('emailVerified', { mode: 'date' }),
+  image: text('image'),
+});
+
 export const userMetadata = pgTable('user_metadata', {
   id: text('id').notNull().primaryKey(),
   firstName: text('first_name').notNull(),
   lastName: text('last_name').notNull(),
   major: text('major').notNull(),
   minor: text('minor'),
-  year: yearEnum('year').$default(() => 'Freshman'),
-  role: roleEnum('role').$default(() => 'Student'),
+  year: yearEnum('year')
+    .$default(() => 'Freshman')
+    .notNull(),
+  role: roleEnum('role')
+    .$default(() => 'Student')
+    .notNull(),
   career: careerEnum('career').$default(() => 'Engineering'),
 });
-
-export const userMetadataToClubs = pgTable(
-  'user_metadata_to_clubs',
-  {
-    userId: text('user_id')
-      .notNull()
-      .references(() => userMetadata.id),
-    clubId: text('club_id')
-      .notNull()
-      .references(() => club.id),
-  },
-  (t) => ({
-    pk: primaryKey(t.userId, t.clubId),
-  }),
-);
 
 export const accounts = pgTable(
   'account',
@@ -108,74 +105,44 @@ export const verificationTokens = pgTable(
   }),
 );
 
-export const club = pgTable('club', {
-  id: text('id')
-    .default(sql`nanoid(20)`)
-    .primaryKey(),
-  name: text('name').notNull(),
-  description: text('description').notNull(),
-  image: text('image').default('/nebula-logo.png').notNull(),
-});
-
-export const events = pgTable('events', {
-  id: text('id')
-    .default(sql`nanoid(20)`)
-    .primaryKey(),
-  clubId: text('club_id')
-    .notNull()
-    .references(() => club.id, { onDelete: 'cascade' }),
-  name: text('name').notNull(),
-  description: text('description').notNull(),
-  startTime: timestamp('start_time', { withTimezone: true }).notNull(),
-  endTime: timestamp('end_time', { withTimezone: true }).notNull(),
-});
-
-const platformEnum = pgEnum('platform', [
-  'discord',
-  'youtube',
-  'twitch',
-  'facebook',
-  'twitter',
-  'instagram',
-  'website',
-  'email',
-  'other',
-]);
-
-export const contacts = pgTable(
-  'contacts',
+export const userMetadataToClubs = pgTable(
+  'user_metadata_to_clubs',
   {
-    platform: platformEnum('platform').notNull(),
-    url: text('url').notNull(),
+    userId: text('user_id')
+      .notNull()
+      .references(() => userMetadata.id, { onDelete: 'cascade' }),
     clubId: text('club_id')
       .notNull()
       .references(() => club.id, { onDelete: 'cascade' }),
+    memberType: clubRoleEnum('member_type')
+      .$default(() => 'Member')
+      .notNull(),
+    title: text('title'),
   },
-  (table) => ({
-    pk: primaryKey(table.platform, table.clubId),
+  (t) => ({
+    pk: primaryKey(t.userId, t.clubId),
   }),
 );
 
-export const contactsRelation = relations(contacts, ({ one }) => ({
-  club: one(club, { fields: [contacts.clubId], references: [club.id] }),
-}));
+export const userMetadataToEvents = pgTable(
+  'user_metadata_to_events',
+  {
+    userId: text('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    eventId: text('event_id')
+      .notNull()
+      .references(() => events.id, { onDelete: 'cascade' }),
+  },
+  (table) => ({
+    pk: primaryKey(table.userId, table.eventId),
+  }),
+);
 
-export const eventsRelation = relations(events, ({ one }) => ({
-  club: one(club, { fields: [events.clubId], references: [club.id] }),
-}));
-
-export const clubRelations = relations(club, ({ many }) => ({
-  contacts: many(contacts),
-  events: many(events),
-  userMetadataToClubs: many(userMetadataToClubs), // for many-many relation
-}));
-
-// connects userMetadata table to junction table
 export const userMetadataRelation = relations(userMetadata, ({ many }) => ({
   clubs: many(userMetadataToClubs),
 }));
 
-// connects junction table to userMetadata and club table
 export const userMetadataToClubsRelations = relations(
   userMetadataToClubs,
   ({ one }) => ({
@@ -185,6 +152,20 @@ export const userMetadataToClubsRelations = relations(
     }),
     userMetadata: one(userMetadata, {
       fields: [userMetadataToClubs.userId],
+      references: [userMetadata.id],
+    }),
+  }),
+);
+
+export const userMetadataToEventsRelations = relations(
+  userMetadataToEvents,
+  ({ one }) => ({
+    event: one(events, {
+      fields: [userMetadataToEvents.eventId],
+      references: [events.id],
+    }),
+    user: one(userMetadata, {
+      fields: [userMetadataToEvents.userId],
       references: [userMetadata.id],
     }),
   }),

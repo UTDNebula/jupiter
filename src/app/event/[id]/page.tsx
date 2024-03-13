@@ -1,17 +1,21 @@
 import { EventHeader } from '@src/components/BaseHeader';
 import { db } from '@src/server/db';
-import { events } from '@src/server/db/schema';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { type Metadata } from 'next';
-import Image from 'next/image';
-import Link from 'next/link';
+
 import TimeComponent from './TimeComponent';
+import Image from 'next/image';
+import CountdownTimer from './CountdownTimer';
+import Link from 'next/link';
+import { getServerAuthSession } from '@src/server/auth';
+import RegisterButton from '@src/components/RegisterButton';
 
 type Params = { params: { id: string } };
 
 export default async function EventsPage({ params }: Params) {
+  const session = await getServerAuthSession();
   const res = await db.query.events.findFirst({
-    where: eq(events.id, params.id),
+    where: (events) => eq(events.id, params.id),
     with: { club: true },
   });
 
@@ -19,36 +23,83 @@ export default async function EventsPage({ params }: Params) {
 
   const { club, ...event } = res;
 
+  const isRegistered = (session && await db.query.userMetadataToEvents.findFirst({
+	where: (userMetadataToEvents) => and(
+		eq(userMetadataToEvents.eventId, event.id),
+		eq(userMetadataToEvents.userId, session.user.id)
+	)
+  }) !== undefined) || false;
+
+  const clubDescription = ['Club', 'Location', 'Multi-Day'];
+  const clubDetails = [club.name, event.location, 'No'];
+
   return (
     <main className="w-full md:pl-72">
       <EventHeader />
-      <div className="mb-5 flex flex-col space-y-6 px-7">
-        <div className="relative h-full w-full rounded-xl bg-slate-50 p-10 shadow-lg">
-          <Image src={club.image} width={100} height={100} alt={club.name} />
-          <hr className="my-3 mt-5 h-[1px] border-0 bg-black" />
-          <div className="mb-3 flex w-full justify-between">
-            <div>
-              <Link
-                className="text-4xl font-semibold"
-                href={`/directory/${club.id}`}
-              >
-                {club.name}
-              </Link>
-              <p className="text-2xl font-semibold">{event.name}</p>
+      <section className="px-7">
+        <section className="mb-5 flex flex-col space-y-6">
+          <div className="relative flex h-full w-full flex-col justify-between gap-4 rounded-xl bg-[url('/images/wideWave.jpg')] bg-cover p-10 shadow-lg md:flex-row md:gap-0 ">
+            <section className="text-white">
+              <div className="flex">
+                {club.tags.map((tag) => (
+                  <p key={tag} className=" mr-5 pb-12 pt-4 font-semibold ">
+                    {tag}
+                  </p>
+                ))}
+              </div>
+              <h1 className="mb-4 text-4xl font-bold">{event.name}</h1>
+              <TimeComponent date={event.startTime.toISOString()} />
+            </section>
+            <section className="flex md:float-right md:my-auto">
+              {session && (
+                <RegisterButton eventId={event.id} isRegistered={isRegistered} />
+              )}
+            </section>
+          </div>
+        </section>
+        <section className="mb-5 flex flex-col space-y-6 rounded-xl bg-slate-100 p-5 text-black shadow-lg md:flex-row md:p-10">
+          <div className="h-full max-w-sm lg:min-w-fit">
+            <div className="relative mx-auto h-40 w-full overflow-hidden rounded-b-md ">
+              <Image
+                src={club.image}
+                alt={club.name + ' logo'}
+                fill
+                className="object-cover"
+              />
             </div>
-            <TimeComponent date={event.startTime.toISOString()} />
+            <div className="mt-10 flex flex-col space-y-2 md:space-y-5">
+              <h1 className="text-md font-semibold text-gray-700 md:text-sm">
+                Description
+              </h1>
+              {clubDescription.map((details, index) => (
+                <div
+                  key={details}
+                  className="flex justify-between text-sm text-slate-700 md:text-xs"
+                >
+                  <p className="mr-5">{details}</p>
+                  <p className="text-right font-semibold ">
+                    {clubDetails[index]}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
-          <p>{event.description}</p>
-          <div className="float-right mt-24">
-            <button className="mr-3 rounded-lg border-[1px] border-black bg-white px-3 py-1">
-              Contact Us
-            </button>
-            <button className="rounded-lg border-[1px] border-black bg-white px-3 py-1">
-              Register
-            </button>
+          <div className="flex-grow text-sm md:mx-12">
+            <p className="mt-4 whitespace-pre-wrap text-gray-500">
+              {event.description}
+            </p>
           </div>
-        </div>
-      </div>
+          <div className="flex flex-col ">
+            <CountdownTimer startTime={event.startTime} />
+            <Link
+              href={`/directory/${club.id}`}
+              className="mr-8 mt-auto block w-36 break-normal rounded-full border-2 border-blue-primary py-4 text-center text-xs font-extrabold text-blue-primary transition-colors hover:bg-blue-700 hover:text-white"
+            >
+              View Club
+            </Link>
+          </div>
+        </section>
+      </section>
     </main>
   );
 }
@@ -61,7 +112,7 @@ export async function generateMetadata({
   const id = params.id;
 
   const found = await db.query.events.findFirst({
-    where: eq(events.id, id),
+    where: (events) => eq(events.id, id),
     with: { club: true },
   });
   if (!found)
