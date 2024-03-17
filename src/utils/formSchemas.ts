@@ -17,6 +17,7 @@ const genericPlatformSchema = z.object({
 
 const emailSchema = z.object({
   platform: z.literal('email'),
+  clubId: z.string().optional(),
   url: z.string().email(),
 });
 const contactSchema = z.discriminatedUnion('platform', [
