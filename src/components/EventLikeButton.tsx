@@ -1,6 +1,6 @@
 'use client';
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { HeartIcon, HeartOutline } from '../icons/Icons';
+import { CheckIcon, PlusIcon } from '../icons/Icons';
 import { api } from '@src/trpc/react';
 import { useRouter } from 'next/navigation';
 
@@ -29,9 +29,9 @@ const EventLikeButton = ({ eventId, liked }: buttonProps) => {
       }}
     >
       {liked ? (
-        <HeartIcon fill="fill-red-600" />
+        <CheckIcon fill = "fill-slate-800"/>
       ) : (
-        <HeartOutline fill="fill-slate-500" />
+        <PlusIcon fill = "fill-slate-800"/>
       )}
     </button>
   );
