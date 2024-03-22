@@ -301,3 +301,68 @@ export const GridIcon = () => (
     />
   </svg>
 );
+export const ExpandMore = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="auto"
+    height="auto"
+    viewBox="0 0 30 30"
+    fill="none"
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M18.4625 12.2925L14.5825 16.1725L10.7025 12.2925C10.5157 12.1052 10.262 12 9.9975 12C9.73298 12 9.47933 12.1052 9.2925 12.2925C8.9025 12.6825 8.9025 13.3125 9.2925 13.7025L13.8825 18.2925C14.2725 18.6825 14.9025 18.6825 15.2925 18.2925L19.8825 13.7025C20.2725 13.3125 20.2725 12.6825 19.8825 12.2925C19.4925 11.9125 18.8525 11.9025 18.4625 12.2925Z"
+      className="fill-slate-500"
+    />
+  </svg>
+);
+export const ExpandLess = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="auto"
+    height="auto"
+    viewBox="0 0 30 30"
+    fill="none"
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M13.8825 12.2925L9.2925 16.8825C8.9025 17.2725 8.9025 17.9025 9.2925 18.2925C9.6825 18.6825 10.3125 18.6825 10.7025 18.2925L14.5925 14.4125L18.4725 18.2925C18.8625 18.6825 19.4925 18.6825 19.8825 18.2925C20.2725 17.9025 20.2725 17.2725 19.8825 16.8825L15.2925 12.2925C14.9125 11.9025 14.2725 11.9025 13.8825 12.2925Z"
+      className="fill-slate-500"
+    />
+  </svg>
+);
+export const AccountIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="30"
+    height="30"
+    viewBox="0 0 30 30"
+    fill="none"
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M15 15C17.21 15 19 13.21 19 11C19 8.79 17.21 7 15 7C12.79 7 11 8.79 11 11C11 13.21 12.79 15 15 15ZM15 17C12.33 17 7 18.34 7 21V22C7 22.55 7.45 23 8 23H22C22.55 23 23 22.55 23 22V21C23 18.34 17.67 17 15 17Z"
+      fill="#C3CAD9"
+    />
+  </svg>
+);
+
+export const CloseIcon = () => (
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+</svg>
+
+
+)
+
+export const CheckIcon = () => (
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-16 h-16 stroke-current stroke-2">
+  <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+</svg>
+
+
+
+)

@@ -17,9 +17,9 @@ export const formRouter = createTRPCRouter({
                          dislikes: dislikes,
                          features: features, 
                          submit_on: submit_on,
-                        }).catch( (err) => {
-                            console.log(err)
-
+                        }).catch ((e) => {
+                            console.error(e);
+                            throw e;
                         })
         } )
     })

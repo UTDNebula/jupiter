@@ -8,13 +8,13 @@ import { api } from '@src/trpc/react';
 import { type z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type FormEventHandler } from 'react';
-import  FormPopUp  from "@src/app/feedback/formPopUp";
+import  FormPopUp  from "@src/app/feedback/FormPopUp";
 import { useState } from 'react';
 
 import nebulaPic from "public/android-chrome-192x192.png"
 
 const Form = () =>{ 
-    // TODO add popup when form is submitted  
+    
     const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
 
     const handlePopup = () => { 
@@ -34,6 +34,7 @@ const Form = () =>{
     
     const submitForm = handleSubmit(( data ) => {
         if (!createForm.isLoading) createForm.mutate(data);
+        handlePopup();
     })
 
     return (
@@ -97,7 +98,7 @@ const Form = () =>{
                       {...register("features")}
                       className="resize-none w-4/5 h-15 p-1 text-left  shadow-xl border-gray-500 border-2 rounded-md"></textarea>
             <br></br> 
-            <button type="submit" className="mx-auto my-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <button type="submit" className="mx-auto my-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" >
               Submit
             </button>
           </form>
