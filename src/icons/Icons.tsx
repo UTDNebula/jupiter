@@ -305,8 +305,8 @@ export const GridIcon = () => (
 );
 export const CheckIcon: IconType = ({ fill = defaultFill }) => (
   <svg
-    width="30"
-    height="30"
+    width="auto"
+    height="auto"
     viewBox="0 0 30 30"
     fill={fill}
     xmlns="http://www.w3.org/2000/svg"
@@ -369,18 +369,18 @@ export const AccountIcon = () => (
 );
 
 export const CloseIcon = () => (
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-</svg>
-
-
-)
-
-export const CheckIcon = () => (
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-16 h-16 stroke-current stroke-2">
-  <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-</svg>
-
-
-
-)
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className="h-6 w-6"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M6 18 18 6M6 6l12 12"
+    />
+  </svg>
+);
