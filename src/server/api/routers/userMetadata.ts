@@ -84,7 +84,6 @@ export const userMetadataRouter = createTRPCRouter({
           userMetadata.lastName
         }) ilike ${'%' + input.name + '%'}`,
       });
-      console.log(users.toSQL());
       return await users;
     }),
 });

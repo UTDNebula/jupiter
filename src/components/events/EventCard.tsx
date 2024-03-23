@@ -20,9 +20,14 @@ const HorizontalCard = async ({
   const session = await getServerAuthSession();
   return (
     <div className="container flex h-40 flex-row overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-lg">
-      <div className="relative h-[160px] w-[225px]">
-        <div className="h-[160px] w-[225px]">
-          <Image fill src={'/event_default.jpg'} alt="event image" />
+      <div className="relative h-[160px] w-1/3 max-w-[225px]">
+        <div className="h-[160px]">
+          <Image
+            fill
+            src={'/event_default.jpg'}
+            alt="event image"
+            className="object-cover object-left"
+          />
         </div>
         <div className="absolute inset-0 p-2 text-white">
           <EventTimeAlert event={event} />
@@ -31,7 +36,7 @@ const HorizontalCard = async ({
       <div className="flex w-full flex-row px-6 py-5">
         <div className="flex flex-col space-y-2.5">
           <h3 className="font-bold">{event.name}</h3>
-          <h4 className="text-xs font-bold">
+          <h4 className="whitespace-nowrap text-xs font-bold">
             <Link
               href={`/directory/${event.clubId ?? ''}`}
               className="hover:text-blue-primary"
@@ -39,7 +44,7 @@ const HorizontalCard = async ({
             >
               {event.club.name}
             </Link>{' '}
-            •{' '}
+            •<wbr />
             <span className="text-blue-primary">
               {format(event.startTime, 'E, MMM d, p')}
               {isSameDay(event.startTime, event.endTime) ? (
@@ -133,13 +138,14 @@ const VerticalCard = async ({
     </div>
   );
 };
+
 const EventCard = ({ event }: EventCardProps) => {
   return (
     <div>
-      <div className="hidden group-data-[view=list]:contents">
+      <div className="hidden lg:group-data-[view=list]:contents">
         <HorizontalCard event={event} />
       </div>
-      <div className="hidden group-data-[view=grid]:contents">
+      <div className="contents lg:group-data-[view=list]:hidden">
         <VerticalCard event={event} />
       </div>
     </div>
