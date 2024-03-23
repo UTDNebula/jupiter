@@ -13,12 +13,16 @@ import { useState } from 'react';
 
 import nebulaPic from "public/android-chrome-192x192.png"
 
-const Form = () =>{ 
+const Form = () => { 
     
     const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
+    const [showForm, setShowForm] = useState<boolean>(true);
 
     const handlePopup = () => { 
-      setIsPopupOpen(!isPopupOpen)
+      setIsPopupOpen(!isPopupOpen);
+    }
+    const handleShowForm = () => { 
+      setShowForm(!showForm);
     }
 
     const handleRangeChange: FormEventHandler<HTMLInputElement> = (event) => {
@@ -35,15 +39,16 @@ const Form = () =>{
     const submitForm = handleSubmit(( data ) => {
         if (!createForm.isLoading) createForm.mutate(data);
         handlePopup();
+        handleShowForm();
     })
 
     return (
         <main className='relative'>
           <FormPopUp onClose = {handlePopup} isOpen = { isPopupOpen } />
           <form onSubmit={ submitForm }
-                className = 'relative  text-slate-700 z-0'
+                className = {`relative  text-slate-700 z-0 ${showForm ? 'block' : 'hidden' }`}
           >
-            <div className="w-14 h-14 absolute -top-3 left-0 ">
+            <div className="w-14 h-14 absolute -top-3 left-0 hidden md:block">
               <Image 
                 src={nebulaPic}
                 alt="Nebula"
@@ -102,9 +107,12 @@ const Form = () =>{
               Submit
             </button>
           </form>
-          Testing
+          <div className={`${showForm ? 'hidden' : 'block'}`}>
+            The form has been submitted successfully!
+          </div>
         </main>
     )
-}
+  }
+
 
 export default Form;
