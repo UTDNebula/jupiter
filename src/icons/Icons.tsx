@@ -384,3 +384,22 @@ export const CloseIcon = () => (
     />
   </svg>
 );
+
+export const ContentClearIcon = () => (
+  <svg
+    // width="9"
+    // height="9"
+    viewBox="0 0 9 9"
+    // className="h-4 w-4"  
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M1 8L8 1M1 1L8 8"
+      stroke="#5B5B5B"
+      stroke-width="1.67"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+);

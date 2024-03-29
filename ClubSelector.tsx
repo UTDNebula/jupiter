@@ -5,6 +5,7 @@ import {
   useFieldArray,
 } from 'react-hook-form';
 import Image from 'next/image';
+import { ContentClearIcon } from '@src/icons/Icons';
 
 type Props = {
   register: UseFormRegister<SettingSchema>;
@@ -34,13 +35,17 @@ export default function ClubSelector({ control }: Props) {
             />
             <h1 className="truncate p-1 text-xs font-bold">{club.name}</h1>
 
-            <button
+            {/* <button
               type="button"
               className="ml-2 rounded-full  px-1  text-xs font-bold text-black"
               onClick={() => remove(i)}
             >
               X
-            </button>
+            </button> */}
+            <div className="ml-2 h-2 w-2">
+              {' '}
+              <ContentClearIcon />
+            </div>
           </div>
         ))}
       </div>
