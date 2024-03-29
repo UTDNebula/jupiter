@@ -60,9 +60,9 @@ export default function FormCard({ clubs, user }: Props) {
         });
       })}
     >
-      <div className="grid w-fit grid-cols-1 gap-3 md:grid-cols-2">
+      <div className="grid w-fit grid-cols-1 gap-3  lg:grid-cols-2">
         <div className="flex flex-col space-y-2">
-          <div className="flex flex-col space-x-2 sm:flex-row">
+          <div className="grid grid-cols-2 space-x-2">
             <SettingsInput
               label="First Name"
               defaultValue={user.firstName}
@@ -76,7 +76,7 @@ export default function FormCard({ clubs, user }: Props) {
               register={register}
             />
           </div>
-          <div className="flex flex-col space-x-2 sm:flex-row">
+          <div className="grid grid-cols-2 space-x-2">
             <SettingsInput
               label="Major"
               defaultValue={user.major}
@@ -90,7 +90,7 @@ export default function FormCard({ clubs, user }: Props) {
               register={register}
             />
           </div>
-          <div className="flex space-x-4">
+          <div className="grid grid-cols-2 space-x-2">
             <SettingsDropdown
               label="Year"
               defaultValue={user.year}
