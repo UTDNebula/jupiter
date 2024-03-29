@@ -36,7 +36,7 @@ export default function ClubSelector({ control }: Props) {
 
             <button
               type="button"
-              className="ml-2 rounded-full bg-red-500 px-1  text-xs font-bold text-white"
+              className="ml-2 rounded-full  px-1  text-xs font-bold text-black"
               onClick={() => remove(i)}
             >
               X
