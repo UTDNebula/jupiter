@@ -43,6 +43,13 @@
       "when": 1706922435227,
       "tag": "0005_futuristic_taskmaster",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1710890177407,
+      "tag": "0006_narrow_mad_thinker",
+      "breakpoints": true
     }
   ]
 }
