@@ -15,7 +15,11 @@ const clubs: Array<featuredClub> = [
     id: '654d361fbfe4308bcdfc4145',
     shortDesc: 'cool club',
   },
-  { name: 'ACM', id: '654d35edbfe4308bcdfc4004', shortDesc: 'cool club' },
+  { 
+    name: 'ACM', 
+    id: '654d35edbfe4308bcdfc4004', 
+    shortDesc: 'cool club' 
+  },
   {
     name: 'Comet Robotics',
     id: '654d35f8bfe4308bcdfc405b',
@@ -50,8 +54,8 @@ const Carousel = () => {
               <Image
                 src="/banner.png"
                 alt="Picture of the club"
-                width={1920}
-                height={1080}
+                width={window.innerWidth}
+                height={window.innerHeight}
                 className="h-full w-full rounded-lg object-cover"
                 priority
               />
