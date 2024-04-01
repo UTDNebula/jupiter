@@ -50,7 +50,7 @@ const twitterSchema = z.object({
     .regex(/https:\/\/(twitter|x)\.(com)\/.+/, 'Must be a twitter link'),
 });
 const instagramSchema = z.object({
-  platform: z.literal('instragram'),
+  platform: z.literal('instagram'),
   clubId: z.string().optional(),
   url: z
     .string()
@@ -84,3 +84,4 @@ export const contactSchema = z.discriminatedUnion('platform', [
   websiteSchema,
   otherSchema,
 ]);
+export type contact = z.infer<typeof contactSchema>;
