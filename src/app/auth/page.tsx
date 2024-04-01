@@ -23,12 +23,14 @@ export default async function Auth({
           <Image src={'/banner.png'} alt="background" fill objectFit="cover" />
         </div>
         <div className="flex flex-col gap-16">
-          <div className="z-10 flex w-fit">
+          <div className="absolute inset-5 z-10 flex w-fit sm:static">
             <BackButton />
           </div>
           <div className="z-10 flex flex-col items-center justify-center space-y-12">
-            <h1 className="text-6xl font-bold text-white">Sign In / Sign Up</h1>
-            <div className="flex w-full flex-row justify-center gap-x-4 py-2.5">
+            <h1 className="text-center text-6xl font-bold text-white sm:text-left">
+              Sign In /<br className="sm:hidden" /> Sign Up
+            </h1>
+            <div className="flex w-full flex-col items-center justify-center gap-x-4 space-y-4 py-2.5 sm:flex-row sm:space-y-0">
               {Object.values(providers || {}).map((provider) => (
                 <ProviderButton key={provider.id} provider={provider} />
               ))}

@@ -1,7 +1,7 @@
 'use client';
 import { api } from '@src/trpc/react';
 import { type Session } from 'next-auth';
-import { Fragment, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import DirectoryOrgs, { OrgDirectoryCardSkeleton } from './DirectoryOrgs';
 
 type Props = {

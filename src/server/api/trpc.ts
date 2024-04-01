@@ -14,6 +14,7 @@ import { ZodError } from 'zod';
 
 import { getServerAuthSession } from '@src/server/auth';
 import { db } from '@src/server/db';
+import { eq } from 'drizzle-orm';
 
 /**
  * 1. CONTEXT
@@ -128,3 +129,17 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
+
+/**
+ * Admin procedures
+ * Make sure the user invoking the procedure is an admin
+ */
+
+export const adminProcedure = protectedProcedure.use(async ({ ctx, next }) => {
+  const isAdmin = await ctx.db.query.admin.findFirst({
+    where: (admin) => eq(admin.userId, ctx.session.user.id),
+  });
+  if (!isAdmin) throw new TRPCError({ code: 'UNAUTHORIZED' });
+
+  return next();
+});

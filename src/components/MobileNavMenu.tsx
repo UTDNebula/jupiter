@@ -34,7 +34,7 @@ const MobileNavMenu = ({
           <h1 className=" text-2xl font-medium">Jupiter</h1>
         </div>
         <div className="w-full px-5 py-5">
-          <h1 className="px-4 text-xs font-light capitalize text-slate-500">
+          <h1 className="px-4 text-sm font-light capitalize text-slate-500">
             Main Categories
           </h1>
           <div className="mb-5 mt-6">
@@ -48,7 +48,7 @@ const MobileNavMenu = ({
           </div>
         </div>
         <div className="w-full py-5 pl-5">
-          <h1 className="px-4 text-xs font-light capitalize text-slate-500">
+          <h1 className="px-4 text-sm font-light capitalize text-slate-500">
             More
           </h1>
           <div className="mb-5 mt-6">
