@@ -1,5 +1,5 @@
 import { relations, sql } from 'drizzle-orm';
-import { pgEnum, pgTable, text } from 'drizzle-orm/pg-core';
+import { boolean, pgEnum, pgTable, text } from 'drizzle-orm/pg-core';
 import { events } from './events';
 import { userMetadataToClubs } from './users';
 import { contacts } from './contacts';
@@ -26,6 +26,7 @@ export const club = pgTable('club', {
   // * This allows us to have a pending state for clubs and keep info about them in the database
   approved: approvedEnum('approved').notNull().default('pending'),
   profileImage: text('profile_image'),
+  soc: boolean('soc').notNull().default(false),
 });
 
 export const clubRelations = relations(club, ({ many }) => ({

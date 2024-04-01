@@ -103,6 +103,21 @@ export default function OrgTable({ clubs }: { clubs: Club[] }) {
         },
         header: () => <div className="text-center">Status</div>,
       },
+      {
+        accessorKey: 'soc',
+        enableColumnFilter: false,
+        header: () => <div className="text-center">from SOC</div>,
+        cell: (info) => (
+          <div className="flex justify-center">
+            <div
+              className={`h-3 w-3 rounded-full ${
+                info.getValue() ? 'bg-green-500' : 'bg-red-500'
+              }`}
+            />
+          </div>
+        ),
+        size: 5,
+      },
     ],
 
     [],
