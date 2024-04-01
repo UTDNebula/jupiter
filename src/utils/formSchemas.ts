@@ -1,29 +1,5 @@
 import { z } from 'zod';
-
-const genericPlatformSchema = z.object({
-  platform: z.enum([
-    'discord',
-    'youtube',
-    'twitch',
-    'facebook',
-    'twitter',
-    'instagram',
-    'website',
-    'other',
-  ]),
-  clubId: z.string().optional(),
-  url: z.string().url(),
-});
-
-const emailSchema = z.object({
-  platform: z.literal('email'),
-  clubId: z.string().optional(),
-  url: z.string().email(),
-});
-const contactSchema = z.discriminatedUnion('platform', [
-  genericPlatformSchema,
-  emailSchema,
-]);
+import { contactSchema } from './contact';
 
 export const createClubSchema = z.object({
   name: z.string().min(3, 'Club name must be at least 3 characters long'),
@@ -67,4 +43,5 @@ export const feedbackFormSchema = z.object({
   dislikes: z.string().default(''),
   features: z.string().default(''),
   submit_on: z.date().default(new Date()),
-})
+});
+
