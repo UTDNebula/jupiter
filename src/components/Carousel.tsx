@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { useState, type TouchEventHandler } from 'react';
+import { useState, useRef, type TouchEventHandler } from 'react';
 import { LeftArrowIcon, RightArrowIcon } from '../icons/Icons';
 import Link from 'next/link';
 import { type SelectClub } from '@src/server/db/models';
@@ -65,8 +65,8 @@ const Carousel = ({ clubs }: Props) => {
                 <Image
                   src={club.profileImage ? club.profileImage : club.image}
                   alt="Picture of the club"
-                  width={window.innerWidth}
-                  height={window.innerHeight}
+                  width={window.outerWidth}
+                  height={window.outerHeight}
                   className="h-full w-full rounded-lg object-cover"
                   priority
                 />
