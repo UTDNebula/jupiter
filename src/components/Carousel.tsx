@@ -47,7 +47,7 @@ const Carousel = ({ clubs }: Props) => {
   };
 
   return (
-    <div className="mx-auto w-full max-w-6xl touch-none">
+    <div className="mx-auto w-full touch-none">
       <div
         className="relative aspect-video w-full overflow-hidden rounded-lg"
         onTouchStart={handleTouchStart}
@@ -65,8 +65,8 @@ const Carousel = ({ clubs }: Props) => {
                 <Image
                   src={club.profileImage ? club.profileImage : club.image}
                   alt="Picture of the club"
-                  width={1920}
-                  height={1080}
+                  width={window.outerWidth}
+                  height={window.outerHeight}
                   className="h-full w-full rounded-lg object-cover"
                   priority
                 />
