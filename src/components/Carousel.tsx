@@ -47,7 +47,7 @@ const Carousel = ({ clubs }: Props) => {
   };
 
   return (
-    <div className="mx-auto w-full max-w-6xl touch-none">
+    <div className="mx-auto w-full touch-none">
       <div
         className="relative aspect-video w-full overflow-hidden rounded-lg"
         onTouchStart={handleTouchStart}
