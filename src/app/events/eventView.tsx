@@ -14,7 +14,7 @@ const EventView = ({ children }: Props) => {
           date picker here
         </div>
       </div>
-      <div className="container flex w-full flex-row space-x-7.5">
+      <div className="sm:space-x-7.5 container flex w-full flex-col overflow-x-clip sm:flex-row">
         <EventSidebar />
         <div
           data-view={'list'}

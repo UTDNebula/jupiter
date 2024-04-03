@@ -137,7 +137,6 @@ const EventSidebar = () => {
     </div>
   );
 };
-export default EventSidebar;
 const SelectedClub = ({
   clubId,
   removeClub,
@@ -164,3 +163,27 @@ const SelectedClub = ({
     </div>
   );
 };
+const EventSidebar = () => {
+  const [open, setOpen] = useState(true);
+  return (
+    <div className="flex flex-col">
+      <button
+        className="flex items-center text-lg font-extrabold text-slate-500 sm:hidden"
+        type="button"
+        onClick={() => setOpen(!open)}
+      >
+        <div className="w-8">{open ? <ExpandLess /> : <ExpandMore />}</div>
+        <p>Filters</p>
+      </button>
+      <div
+        data-open={open}
+        className="hidden overflow-clip data-[open=true]:contents sm:contents"
+      >
+        <div className="flex">
+          <Filters />
+        </div>
+      </div>
+    </div>
+  );
+};
+export default EventSidebar;
