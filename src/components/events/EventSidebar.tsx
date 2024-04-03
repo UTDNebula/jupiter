@@ -8,13 +8,15 @@ import { EventClubSearchBar } from '../SearchBar';
 import { api } from '@src/trpc/react';
 import useSearch from '@src/utils/useSearch';
 import { eventParamsSchema, order } from '@src/utils/eventFilter';
+import { useState } from 'react';
+import { ExpandLess, ExpandMore } from '@src/icons/Icons';
 
 export const basicFilters = [
   'Upcoming Events',
   'Last weeks events',
   'Last month events',
 ] as const;
-const EventSidebar = () => {
+const Filters = () => {
   const [filterState, setFilterState] = useSearch(eventParamsSchema);
 
   return (
