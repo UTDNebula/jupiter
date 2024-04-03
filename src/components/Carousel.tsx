@@ -87,20 +87,22 @@ const Carousel = ({ clubs }: Props) => {
             </Link>
           ))}
         </div>
-        <div className="pointer-events-none absolute inset-0 flex h-full w-full items-center justify-between px-4 sm:px-6 md:px-10">
-          <button
-            className="pointer-events-auto flex items-center justify-center rounded-full bg-black bg-opacity-70 p-2 transition-all duration-300 hover:scale-110 hover:bg-opacity-80 sm:p-3 md:p-4"
-            onClick={() => onClick(-1)}
-          >
-            <LeftArrowIcon />
-          </button>
-          <button
-            className="pointer-events-auto flex items-center justify-center rounded-full bg-black bg-opacity-70 p-2 transition-all duration-300 hover:scale-110 hover:bg-opacity-80 sm:p-3 md:p-4"
-            onClick={() => onClick(1)}
-          >
-            <RightArrowIcon />
-          </button>
-        </div>
+        {clubs.length > 1 && (
+          <div className="pointer-events-none absolute inset-0 flex h-full w-full items-center justify-between px-4 sm:px-6 md:px-10">
+            <button
+              className="pointer-events-auto flex items-center justify-center rounded-full bg-black bg-opacity-70 p-2 transition-all duration-300 hover:scale-110 hover:bg-opacity-80 sm:p-3 md:p-4"
+              onClick={() => onClick(-1)}
+            >
+              <LeftArrowIcon />
+            </button>
+            <button
+              className="pointer-events-auto flex items-center justify-center rounded-full bg-black bg-opacity-70 p-2 transition-all duration-300 hover:scale-110 hover:bg-opacity-80 sm:p-3 md:p-4"
+              onClick={() => onClick(1)}
+            >
+              <RightArrowIcon />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
