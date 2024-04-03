@@ -55,7 +55,7 @@ const instagramSchema = z.object({
   url: z
     .string()
     .url('Vaid url required')
-    .regex(/https:\/\/instagram\.(com)\/.+/, 'Must be a instagram link'),
+    .regex(/https:\/\/www\.instagram\.(com)\/.+/, 'Must be a instagram link'),
 });
 
 const websiteSchema = z.object({
