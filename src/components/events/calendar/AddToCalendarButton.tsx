@@ -15,7 +15,7 @@ export default function AddToCalendarButton( {
   const [isOpen, setIsOpen] = useState(false);
 
   const handlePopUp = () => { setIsOpen(!isOpen); }
-  
+
   return (
     
     <main className="relative flex h-10 w-10 cursor-pointer items-center justify-center rounded-full shadow-md inset-0 overflow-visible">

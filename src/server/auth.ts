@@ -24,6 +24,7 @@ declare module 'next-auth' {
   interface Session extends DefaultSession {
     user: {
       id: string;
+      access_token: string;
       // ...other properties
       // role: UserRole;
     } & DefaultSession['user'] &
@@ -41,6 +42,7 @@ export interface PreviewUser {
   name: string;
   email: string;
   image: string;
+
 }
 
 /**
@@ -56,7 +58,6 @@ export const authOptions: NextAuthOptions = {
       let metadata = await db.query.userMetadata.findFirst({
         where: (metadata) => eq(metadata.id, user.id),
       });
-
       if (!metadata) {
         const firstName = user.name?.split(' ')[0] ?? '';
         const lastName = user.name?.split(' ')[1] ?? '';
@@ -71,15 +72,23 @@ export const authOptions: NextAuthOptions = {
         metadata = (
           await db.insert(userMetadata).values(insert).returning()
         ).at(0);
-      }
+      } 
+      
 
       if (session.user) {
-        session.user = { ...session.user, ...metadata };
+        session.user = { ...session.user, ...metadata }; 
         // session.user.role = user.role; <-- put other properties on the session here
       }
 
       return session;
-    },
+    }, 
+    jwt: ({token, account }) => {
+      if (account?.access_token) {
+        token.access_token = account.access_token;
+      }
+      return token;
+    }
+
   },
   pages: {
     signIn: '/auth',
@@ -88,6 +97,11 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
+      authorization: {
+        params: {
+          scope: "openid https://www.googleapis.com/auth/calendar.events"
+        } 
+      },
     }),
     DiscordProvider({
       clientId: env.DISCORD_CLIENT_ID,
