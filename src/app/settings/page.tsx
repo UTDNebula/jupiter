@@ -3,6 +3,7 @@ import SettingsForm from '@src/components/settings/SettingsForm';
 import { type Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import Header from '@src/components/BaseHeader';
+import { signInRoute } from '@src/utils/redirect';
 export const metadata: Metadata = {
   title: 'Settings - Jupiter',
   description: 'Settings for your Jupiter account',
@@ -18,7 +19,7 @@ const Settings = async () => {
   const session = await getServerAuthSession();
 
   if (!session) {
-    redirect('/auth');
+    redirect(signInRoute('settings'));
   }
 
   return (
