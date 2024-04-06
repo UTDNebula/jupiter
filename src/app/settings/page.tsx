@@ -31,4 +31,3 @@ const Settings = async () => {
 };
 
 export default Settings;
-3;
