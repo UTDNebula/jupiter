@@ -4,14 +4,14 @@ import EventCard from '@src/components/events/EventCard';
 import { api } from '@src/trpc/server';
 import Link from 'next/link';
 
-const LikedEvents = async () => {
+const CommunityEvents = async () => {
   const events = await api.userMetadata.getEvents.query();
   if (events.length == 0) {
     return (
       <div className="font-bold text-slate-500">
-        <div>you haven&apos;t liked any events yet 😢</div>
+        <div>You haven&apos;t liked any community events yet 😭</div>
         <div>
-          you can check out new events{' '}
+          You can check out new events{' '}
           <Link
             href={'/events'}
             className="text-lg text-blue-primary transition-colors hover:text-blue-700"
@@ -33,4 +33,4 @@ const LikedEvents = async () => {
     </div>
   );
 };
-export default LikedEvents;
+export default CommunityEvents;
