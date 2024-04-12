@@ -9,7 +9,7 @@ const CommunityEvents = async () => {
   if (events.length == 0) {
     return (
       <div className="font-bold text-slate-500">
-        <div>You haven&apos;t liked any community events yet 😭</div>
+        <div>You haven&apos;t added any community events yet 😭</div>
         <div>
           You can check out new events{' '}
           <Link

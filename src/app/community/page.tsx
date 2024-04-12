@@ -6,14 +6,14 @@ import React from 'react';
 import CommunityEvents from './communityEvents';
 
 export const metadata: Metadata = {
-  title: 'Community - Jupiter',
+  title: 'My Community - Jupiter',
   description: 'Community Page',
   alternates: {
     canonical: 'https://jupiter.utdnebula.com/community',
   },
   openGraph: {
     url: 'https://jupiter.utdnebula.com/community',
-    description: 'Community - Jupiter',
+    description: 'My Community - Jupiter',
   },
 };
 
@@ -29,7 +29,7 @@ const Community = async () => {
         </div>
         <div className="h-full">
           <h1 className=" text-black-500 pb-1 pt-5 text-center text-3xl font-bold">
-            Please Sign in to Use the Community Events Page.
+            Please Sign in to Use the Community Page.
           </h1>
         </div>
       </main>
