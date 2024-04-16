@@ -1,3 +1,4 @@
+'use client';
 import { DayPicker, useInput } from 'react-day-picker';
 import {
   Popover,
@@ -9,19 +10,28 @@ import {
 
 import 'react-day-picker/dist/style.css';
 import { addDays, subDays } from 'date-fns';
+import { LeftArrowIcon, RightArrowIcon } from '@src/icons/Icons';
+import { useEffect } from 'react';
+import { eventParamsSchema } from '@src/utils/eventFilter';
+import useSearch from '@src/utils/useSearch';
 const DateBrowser = () => {
   const { inputProps, dayPickerProps, setSelected } = useInput({
     defaultSelected: new Date(),
   });
+  const [filterState] = useSearch(eventParamsSchema);
 
   return (
-    <div>
+    <div className="flex flex-row rounded-xl bg-white p-1 align-middle">
       <button
         onClick={() => {
           setSelected(subDays(dayPickerProps.selected!, 1));
         }}
+        aria-label="back one day"
+        type="button"
       >
-        back
+        <div>
+          <LeftArrowIcon fill="fill-black" />
+        </div>
       </button>
       <Popover defaultOpen={false}>
         <PopoverTrigger>
@@ -40,8 +50,11 @@ const DateBrowser = () => {
         onClick={() => {
           setSelected(addDays(dayPickerProps.selected!, 1));
         }}
+        aria-label="forward one day"
       >
-        forward
+        <div>
+          <RightArrowIcon fill="fill-black" />
+        </div>
       </button>
     </div>
   );

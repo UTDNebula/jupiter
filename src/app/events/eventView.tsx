@@ -9,9 +9,9 @@ type Props = {
 const EventView = ({ children }: Props) => {
   return (
     <div className="w-full px-6">
-      <div className="flex flex-row pb-12 pr-7.5 pt-4">
+      <div className="flex flex-col  pr-7.5 pt-4 md:flex-row md:pb-12">
         <h1 className="text-2xl font-bold text-[#4D5E80]">Events</h1>
-        <div className="relative z-0 ml-auto flex flex-row gap-x-16">
+        <div className="relative z-0 flex flex-row gap-x-16 md:ml-auto">
           <DateBrowser />
         </div>
       </div>
