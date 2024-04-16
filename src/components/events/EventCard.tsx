@@ -3,10 +3,14 @@ import { format, isSameDay } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
 import { MoreIcon } from '../../icons/Icons';
-import EventTimeAlert from './EventTimeAlert';
 import { type RouterOutputs } from '@src/trpc/shared';
 import EventLikeButton from '../EventLikeButton';
 import { getServerAuthSession } from '@src/server/auth';
+import dynamic from 'next/dynamic';
+
+const EventTimeAlert = dynamic(() => import('./EventTimeAlert'), {
+  ssr: false,
+});
 
 type EventCardProps = {
   event: RouterOutputs['event']['findByFilters']['events'][number];
