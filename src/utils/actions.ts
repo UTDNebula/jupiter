@@ -11,9 +11,11 @@ export async function eventTimeUpdate(
   formData: FormData,
 ) {
   const udate = formData.get('date');
-  const date = parse(typeof udate === 'string' ? udate : '', 'PP', new Date());
+  if (typeof udate !== 'string') throw new Error('uh oh');
+  const date = parse(udate, 'PP', new Date());
   console.log(date);
   if (date && isDate(date)) {
+    console.log('hello');
     queryParams.date = date;
     const newQuery = EncodeParams(queryParams);
     redirect(`/events?${newQuery}`);

@@ -9,6 +9,7 @@ export const order = [
 export const eventParamsSchema = z.object({
   date: z
     .string()
+    .default('')
     .transform((s) => toDate(Number.parseInt(s)))
     .pipe(z.date().catch(startOfToday())),
   clubs: z

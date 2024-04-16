@@ -1,5 +1,7 @@
 'use client';
 
+import 'react-day-picker/dist/style.css';
+import { LeftArrowIcon, RightArrowIcon } from '@src/icons/Icons';
 import { DayPicker, useInput } from 'react-day-picker';
 import {
   Popover,
@@ -8,31 +10,25 @@ import {
   PopoverPortal,
   PopoverTrigger,
 } from '@radix-ui/react-popover';
-
-import 'react-day-picker/dist/style.css';
 import { addDays, subDays } from 'date-fns';
-import { LeftArrowIcon, RightArrowIcon } from '@src/icons/Icons';
-import { eventParamsSchema } from '@src/utils/eventFilter';
-import useSearch from '@src/utils/useSearch';
+import { type eventParamsSchema } from '@src/utils/eventFilter';
 import { eventTimeUpdate } from '@src/utils/actions';
-const DateBrowser = () => {
+const DateBrowser = ({ filterState }: { filterState: eventParamsSchema }) => {
+  const changeTime = eventTimeUpdate.bind(null, filterState);
   const { inputProps, dayPickerProps, setSelected } = useInput({
     defaultSelected: new Date(),
   });
-  const [filterState] = useSearch(eventParamsSchema);
-  const changeDate = eventTimeUpdate.bind(null, filterState);
-
   return (
     <div className="flex flex-row rounded-xl bg-white p-1 align-middle">
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-      <form action={changeDate}>
+      <form action={changeTime}>
         <button
           onClick={(e) => {
             setSelected(subDays(dayPickerProps.selected!, 1));
             e.currentTarget.form?.requestSubmit();
           }}
           aria-label="back one day"
-          type="button"
+          type="submit"
         >
           <div>
             <LeftArrowIcon fill="fill-black" />
@@ -44,8 +40,8 @@ const DateBrowser = () => {
           </PopoverTrigger>
           <PopoverPortal>
             <PopoverContent className="flex items-center rounded-lg bg-white p-2 shadow-md">
-              <PopoverClose className="h-5 w-5 text-blue-primary" />
               <DayPicker mode="default" {...dayPickerProps} />
+              <PopoverClose className="h-5 w-5 text-blue-primary" />
             </PopoverContent>
           </PopoverPortal>
         </Popover>
@@ -55,7 +51,7 @@ const DateBrowser = () => {
             e.currentTarget.form?.requestSubmit();
           }}
           aria-label="forward one day"
-          type="button"
+          type="submit"
         >
           <div>
             <RightArrowIcon fill="fill-black" />
