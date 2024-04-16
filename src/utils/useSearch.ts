@@ -22,6 +22,8 @@ const useSearch = <T extends z.SomeZodObject>(schema: T) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
+
+  // parses params and typesafety mumbo jumbo, nextjs is trying it's hardest
   const [params, setParams] = useReducer(
     (state: z.infer<typeof schema>, action: Partial<z.infer<T>>) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -41,6 +43,7 @@ const useSearch = <T extends z.SomeZodObject>(schema: T) => {
     },
   );
   useEffect(() => {
+    // whenever the query params are updated, sync them
     const temp: Record<string, unknown> = {};
     Object.keys(schema.shape).map((key) => {
       temp[key] = searchParams.get(key) ?? undefined;

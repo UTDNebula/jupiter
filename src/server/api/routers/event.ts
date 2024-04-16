@@ -13,13 +13,8 @@ import {
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { selectEvent } from '@src/server/db/models';
-import { type DateRange } from 'react-day-picker';
-import { add } from 'date-fns';
+import { add, startOfDay } from 'date-fns';
 import { userMetadataToEvents } from '@src/server/db/schema/users';
-
-function isDateRange(value: unknown): value is DateRange {
-  return Boolean(value && typeof value === 'object' && 'from' in value);
-}
 
 const byClubIdSchema = z.object({
   clubId: z.string().default(''),
@@ -32,19 +27,7 @@ const byDateRangeSchema = z.object({
   endTime: z.date(),
 });
 export const findByFilterSchema = z.object({
-  startTime: z.union([
-    z.object({
-      type: z.literal('now'),
-    }),
-    z.object({
-      type: z.literal('distance'),
-      options: z.object({ days: z.number().int() }),
-    }),
-    z.object({
-      type: z.literal('range'),
-      options: z.custom<DateRange>((val) => isDateRange(val)),
-    }),
-  ]),
+  date: z.date(),
   order: z.enum(['soon', 'later', 'shortest duration', 'longest duration']),
   club: z.string().array(),
 });
@@ -110,43 +93,22 @@ export const eventRouter = createTRPCRouter({
   findByFilters: publicProcedure
     .input(findByFilterSchema)
     .query(async ({ input, ctx }) => {
-      const startTime =
-        input.startTime.type === 'now'
-          ? new Date()
-          : input.startTime.type === 'distance'
-          ? add(new Date(), input.startTime.options)
-          : input.startTime.options.from ?? new Date();
-      const endTime =
-        input.startTime.type === 'distance'
-          ? new Date()
-          : input.startTime.type === 'range'
-          ? input.startTime.options.to
-            ? add(input.startTime.options.to, { days: 1 })
-            : add(startTime, { days: 1 })
-          : undefined;
+      const startTime = startOfDay(input.date);
+      const endTime = add(startTime, { days: 1 });
       const events = await ctx.db.query.events.findMany({
         where: (event) => {
           const whereElements: Array<SQL<unknown> | undefined> = [];
-          if (!endTime) {
-            whereElements.push(
-              or(
-                gte(event.startTime, startTime),
+          whereElements.push(
+            or(
+              between(event.startTime, startTime, endTime),
+              between(event.endTime, startTime, endTime),
+              and(
+                lte(event.startTime, startTime),
                 gte(event.endTime, startTime),
               ),
-            );
-          } else {
-            whereElements.push(
-              or(
-                between(event.startTime, startTime, endTime),
-                between(event.endTime, startTime, endTime),
-                and(
-                  lte(event.startTime, startTime),
-                  gte(event.endTime, startTime),
-                ),
-                and(lte(event.startTime, endTime), gte(event.endTime, endTime)),
-              ),
-            );
-          }
+              and(lte(event.startTime, endTime), gte(event.endTime, endTime)),
+            ),
+          );
 
           if (input.club.length !== 0) {
             whereElements.push(inArray(event.clubId, input.club));

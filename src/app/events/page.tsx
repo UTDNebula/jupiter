@@ -7,20 +7,6 @@ import { type Metadata } from 'next';
 import { eventParamsSchema } from '@src/utils/eventFilter';
 import EventCard from '@src/components/events/EventCard';
 
-function getStartTime(
-  filterState: z.infer<typeof eventParamsSchema>,
-): z.infer<typeof findByFilterSchema>['startTime'] {
-  switch (filterState.filter) {
-    case 'Upcoming Events':
-      return { type: 'now' };
-    case 'Last weeks events':
-      return { type: 'distance', options: { days: -7 } };
-    case 'Last month events':
-      return { type: 'distance', options: { days: -30 } };
-    default:
-      return { type: 'now' };
-  }
-}
 export const metadata: Metadata = {
   title: 'Events - Jupiter',
   description: 'Get connected on campus.',
@@ -39,7 +25,7 @@ const Events = async ({
 }) => {
   const parsed = eventParamsSchema.parse(searchParams);
   const { events } = await api.event.findByFilters.query({
-    startTime: getStartTime(parsed),
+    date: parsed.date,
     club: parsed.clubs,
     order: parsed.order,
   });
