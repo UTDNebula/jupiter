@@ -1,7 +1,5 @@
 import { EventHeader } from '@src/components/BaseHeader';
 import { api } from '@src/trpc/server';
-import { type z } from 'zod';
-import { type findByFilterSchema } from '@src/server/api/routers/event';
 import EventView from './eventView';
 import { type Metadata } from 'next';
 import { eventParamsSchema } from '@src/utils/eventFilter';
@@ -32,7 +30,7 @@ const Events = async ({
   return (
     <main className="pb-10 md:pl-72">
       <EventHeader />
-      <EventView>
+      <EventView searchParams={parsed}>
         {events.map((event) => {
           return <EventCard key={event.id} event={event} />;
         })}
