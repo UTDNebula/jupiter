@@ -10,7 +10,7 @@ interface Props {
 }
 
 const OrgDirectoryGrid: FC<Props> = async ({ tag }) => {
-  const { clubs } = await api.club.all.query({ tag, limit: 9 });
+  const { clubs } = await api.club.all({ tag, limit: 9 });
   const session = await getServerAuthSession();
 
   return (
