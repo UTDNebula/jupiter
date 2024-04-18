@@ -32,6 +32,7 @@ const Filters = ({ filterState }: { filterState: eventParamsSchema }) => {
 
   return (
     <div className="flex w-64 flex-col space-y-10">
+      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <form action={eventFilterChange} ref={formRef}>
         <div className="flex flex-col space-y-7.5">
           <h2 className="text-sm font-bold text-slate-500">Search for Club</h2>
