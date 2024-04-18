@@ -4,6 +4,7 @@ import EditOfficerForm from './EditOfficerForm';
 import { api } from '@src/trpc/server';
 import { getServerAuthSession } from '@src/server/auth';
 import { redirect } from 'next/navigation';
+import { signInRoute } from '@src/utils/redirect';
 
 export default async function Page({
   params: { clubId },
@@ -11,7 +12,7 @@ export default async function Page({
   params: { clubId: string };
 }) {
   const session = await getServerAuthSession();
-  if (!session) redirect('/auth');
+  if (!session) redirect(signInRoute(`manage/${clubId}/edit/officers`));
   const role = await api.club.memberType.query({ id: clubId });
   const officers = await api.club.getOfficers.query({ id: clubId });
 

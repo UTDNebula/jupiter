@@ -3,21 +3,21 @@ import { getServerAuthSession } from '@src/server/auth';
 import { type Metadata } from 'next';
 import Image from 'next/image';
 import React from 'react';
-import LikedEvents from './likedEvents';
+import CommunityEvents from './communityEvents';
 
 export const metadata: Metadata = {
-  title: 'Liked - Jupiter',
-  description: 'Liked Page',
+  title: 'My Community - Jupiter',
+  description: 'Community Page',
   alternates: {
-    canonical: 'https://jupiter.utdnebula.com/liked',
+    canonical: 'https://jupiter.utdnebula.com/community',
   },
   openGraph: {
-    url: 'https://jupiter.utdnebula.com/liked',
-    description: 'Liked - Jupiter',
+    url: 'https://jupiter.utdnebula.com/community',
+    description: 'My Community - Jupiter',
   },
 };
 
-const Liked = async () => {
+const Community = async () => {
   const session = await getServerAuthSession();
 
   if (!session) {
@@ -29,7 +29,7 @@ const Liked = async () => {
         </div>
         <div className="h-full">
           <h1 className=" text-black-500 pb-1 pt-5 text-center text-3xl font-bold">
-            Please Sign in to Use the liked Page.
+            Please Sign in to Use the Community Page.
           </h1>
         </div>
       </main>
@@ -39,11 +39,11 @@ const Liked = async () => {
     <main className="h-full md:pl-72">
       <Header />
       <div className="mx-6 h-full p-2">
-        <h1 className="text-2xl font-bold text-slate-500">Liked Events</h1>
-        <LikedEvents />
+        <h1 className="text-2xl font-bold text-slate-500">Community Events</h1>
+        <CommunityEvents />
       </div>
     </main>
   );
 };
 
-export default Liked;
+export default Community;
