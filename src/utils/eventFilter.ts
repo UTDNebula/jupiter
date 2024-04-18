@@ -1,4 +1,4 @@
-import { startOfToday, toDate } from 'date-fns';
+import { parseJSON, startOfToday } from 'date-fns';
 import { z } from 'zod';
 export const order = [
   'soon',
@@ -10,7 +10,7 @@ export const eventParamsSchema = z.object({
   date: z
     .string()
     .default('')
-    .transform((s) => toDate(Number.parseInt(s)))
+    .transform((s) => parseJSON(decodeURIComponent(s)))
     .pipe(z.date().catch(startOfToday())),
   clubs: z
     .string()

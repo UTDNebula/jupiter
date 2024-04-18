@@ -13,15 +13,20 @@ import {
 import { addDays, subDays } from 'date-fns';
 import { type eventParamsSchema } from '@src/utils/eventFilter';
 import { eventTimeUpdate } from '@src/utils/actions';
+import { useEffect, useRef } from 'react';
 const DateBrowser = ({ filterState }: { filterState: eventParamsSchema }) => {
   const changeTime = eventTimeUpdate.bind(null, filterState);
   const { inputProps, dayPickerProps, setSelected } = useInput({
     defaultSelected: new Date(),
   });
+  const formRef = useRef<HTMLFormElement>(null);
+  useEffect(() => {
+    formRef.current?.requestSubmit();
+  }, [dayPickerProps.selected]);
   return (
     <div className="flex flex-row rounded-xl bg-white p-1 align-middle">
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-      <form action={changeTime}>
+      <form action={changeTime} ref={formRef}>
         <button
           onClick={(e) => {
             setSelected(subDays(dayPickerProps.selected!, 1));

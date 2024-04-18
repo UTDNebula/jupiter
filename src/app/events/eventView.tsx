@@ -18,7 +18,7 @@ const EventView = ({ children, searchParams }: Props) => {
         </div>
       </div>
       <div className="container flex w-full flex-col overflow-x-clip sm:flex-row sm:space-x-7.5">
-        <EventSidebar />
+        <EventSidebar filterState={searchParams} />
         <div
           data-view={'list'}
           className={'group flex w-full flex-col space-y-7.5 pt-10'}
