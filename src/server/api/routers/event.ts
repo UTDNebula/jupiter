@@ -15,7 +15,10 @@ import { z } from 'zod';
 import { selectEvent } from '@src/server/db/models';
 import { type DateRange } from 'react-day-picker';
 import { add } from 'date-fns';
-import { userMetadataToEvents } from '@src/server/db/schema/users';
+import { userMetadataToClubs, userMetadataToEvents } from '@src/server/db/schema/users';
+import { createEventSchema } from '@src/utils/formSchemas';
+import { TRPCError } from '@trpc/server';
+import { events } from '@src/server/db/schema/events';
 
 function isDateRange(value: unknown): value is DateRange {
   return Boolean(value && typeof value === 'object' && 'from' in value);
@@ -231,6 +234,25 @@ export const eventRouter = createTRPCRouter({
             eq(userMetadataToEvents.eventId, eventId),
           ),
         );
+    }),
+  createEvent: protectedProcedure
+    .input(createEventSchema)
+    .mutation(async ({ input, ctx }) => {
+      const { clubId } = input
+      const userId = ctx.session.user.id;
+
+      const isOfficer = await ctx.db.query.userMetadataToClubs.findFirst({
+        where: and(
+          eq(userMetadataToClubs.userId, userId),
+          eq(userMetadataToClubs.clubId, clubId),
+          inArray(userMetadataToClubs.memberType, ["Officer", "President"])
+        )
+      });
+      if (!isOfficer) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      await ctx.db.insert(events).values({ ...input });
     }),
   byName: publicProcedure.input(byNameSchema).query(async ({ input, ctx }) => {
     const { name, sortByDate } = input;
