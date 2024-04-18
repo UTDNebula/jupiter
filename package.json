@@ -32,7 +32,7 @@
     "dotenv": "^16.0.3",
     "drizzle-orm": "^0.28.5",
     "drizzle-zod": "^0.5.1",
-    "next": "^13.5.4",
+    "next": "^14.2.2",
     "next-auth": "^4.23.0",
     "postgres": "^3.3.5",
     "react": "18.2.0",
