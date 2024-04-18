@@ -13,9 +13,6 @@ const config = {
       'jupiter.nlmc.workers.dev',
     ],
   },
-  experimental: {
-    serverActions: true,
-  },
 };
 
 export default config;
