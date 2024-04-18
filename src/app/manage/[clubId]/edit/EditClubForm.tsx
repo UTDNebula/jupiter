@@ -33,7 +33,7 @@ const EditClubForm = ({
     },
   });
   const submitForm = handleSubmit((data) => {
-    if (!editData.isLoading) {
+    if (!editData.isPending) {
       editData.mutate(data);
     }
   });
