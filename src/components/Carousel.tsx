@@ -65,8 +65,8 @@ const Carousel = ({ clubs }: Props) => {
                 <Image
                   src={club.profileImage ? club.profileImage : club.image}
                   alt="Picture of the club"
-                  width={window.outerWidth}
-                  height={window.outerHeight}
+                  width={1920}
+                  height={1080}
                   className="h-full w-full rounded-lg object-cover"
                   priority
                 />

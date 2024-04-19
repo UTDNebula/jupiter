@@ -34,7 +34,7 @@ const CreateClubForm = ({ user }: { user: { id: string; name: string } }) => {
     onSuccess: (id) => router.push(`/directory/${id}`),
   });
   const submitForm = handleSubmit((data) => {
-    if (!createClub.isLoading) createClub.mutate(data);
+    if (!createClub.isPending) createClub.mutate(data);
   });
   return (
     <form onSubmit={submitForm}>

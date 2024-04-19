@@ -7,7 +7,7 @@ import ChangeOrgStatus from './ChangeOrgStatus';
 
 type Props = { org: SelectClub };
 export default async function AcceptedOrg({ org }: Props) {
-  const officers = await api.club.getOfficers.query({ id: org.id });
+  const officers = await api.club.getOfficers({ id: org.id });
 
   return (
     <>

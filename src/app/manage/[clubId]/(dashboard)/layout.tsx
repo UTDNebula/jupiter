@@ -17,11 +17,11 @@ const Layout = async ({
 }) => {
   const session = await getServerAuthSession();
   if (!session) redirect(signInRoute(`manage/${params.clubId}`));
-  const canAccess = await api.club.isOfficer.query({ id: params.clubId });
+  const canAccess = await api.club.isOfficer({ id: params.clubId });
   if (!canAccess) {
     return <div className="md:pl-72">You can&apos;t access this 😢</div>;
   }
-  const club = await api.club.byId.query({ id: params.clubId });
+  const club = await api.club.byId({ id: params.clubId });
   if (!club) {
     notFound();
   }

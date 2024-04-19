@@ -7,7 +7,7 @@ const MAX_DESCRIPTION_LENGTH = 150;
 const OrgUpcomingEvents: FC<{ clubId: string }> = async ({ clubId }) => {
   const cur_time = new Date();
 
-  const data = await api.event.byClubId.query({
+  const data = await api.event.byClubId({
     clubId: clubId,
     currentTime: cur_time,
     sortByDate: true,
