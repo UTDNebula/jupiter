@@ -2,11 +2,11 @@
 /* eslint-disable @typescript-eslint/require-await */
 
 import { isDate } from 'util/types';
-import { order, type eventParamsSchema } from './eventFilter';
 import { redirect } from 'next/navigation';
 import { parse } from 'date-fns';
-import EncodeParams from './encodeParams';
 import { z } from 'zod';
+import { type eventParamsSchema, order } from '@src/utils/eventFilter';
+import EncodeParams from '@src/utils/encodeParams';
 
 export async function eventTimeUpdate(
   queryParams: eventParamsSchema,

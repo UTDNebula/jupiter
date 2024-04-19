@@ -9,7 +9,7 @@ import { api } from '@src/trpc/react';
 import { type eventParamsSchema, order } from '@src/utils/eventFilter';
 import { useEffect, useRef, useState } from 'react';
 import { ExpandLess, ExpandMore } from '@src/icons/Icons';
-import { eventFilterUpdate } from '@src/utils/actions';
+import { eventFilterUpdate } from '@src/app/actions';
 
 export const basicFilters = [
   'Upcoming Events',

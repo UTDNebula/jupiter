@@ -12,8 +12,8 @@ import {
 } from '@radix-ui/react-popover';
 import { addDays, subDays } from 'date-fns';
 import { type eventParamsSchema } from '@src/utils/eventFilter';
-import { eventTimeUpdate } from '@src/utils/actions';
 import { useEffect, useRef } from 'react';
+import { eventTimeUpdate } from '@src/app/actions';
 const DateBrowser = ({ filterState }: { filterState: eventParamsSchema }) => {
   const changeTime = eventTimeUpdate.bind(null, filterState);
   const { inputProps, dayPickerProps, setSelected } = useInput({
