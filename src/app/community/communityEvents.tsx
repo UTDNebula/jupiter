@@ -5,7 +5,7 @@ import { api } from '@src/trpc/server';
 import Link from 'next/link';
 
 const CommunityEvents = async () => {
-  const events = await api.userMetadata.getEvents.query();
+  const events = await api.userMetadata.getEvents();
   if (events.length == 0) {
     return (
       <div className="font-bold text-slate-500">

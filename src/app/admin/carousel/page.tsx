@@ -3,8 +3,8 @@ import { api } from '@src/trpc/server';
 import Link from 'next/link';
 
 export default async function Page() {
-  const carouselItems = await api.club.getCarousel.query();
-  const upcoming = await api.admin.upcomingCarousels.query();
+  const carouselItems = await api.club.getCarousel();
+  const upcoming = await api.admin.upcomingCarousels();
   return (
     <div className="m-5 md:pl-72">
       <h1 className="mb-10 text-center text-4xl font-bold text-gray-800">

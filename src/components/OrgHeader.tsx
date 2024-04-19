@@ -16,7 +16,7 @@ type Club = SelectClub & {
 };
 const OrgHeader = async ({ club }: { club: Club }) => {
   const session = await getServerAuthSession();
-  const memberType = await api.club.memberType.query({ id: club.id });
+  const memberType = await api.club.memberType({ id: club.id });
   return (
     <div className="relative">
       <div className="h-full w-full">
@@ -46,7 +46,11 @@ const OrgHeader = async ({ club }: { club: Club }) => {
                 </Link>
               ))}
             </div>
-            <h1 className={`mt-auto w-fit rounded-full bg-black bg-opacity-50 p-2 text-center font-bold text-slate-100  ${ club.name.length > 10 ?  'text-2xl' : 'text-4xl' }`}>
+            <h1
+              className={`mt-auto w-fit rounded-full bg-black bg-opacity-50 p-2 text-center font-bold text-slate-100  ${
+                club.name.length > 10 ? 'text-2xl' : 'text-4xl'
+              }`}
+            >
               {club.name}
             </h1>
           </div>

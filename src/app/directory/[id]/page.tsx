@@ -11,7 +11,7 @@ import { type Metadata } from 'next';
 import NotFound from '@src/components/NotFound';
 
 const OrganizationPage = async ({ params }: { params: { id: string } }) => {
-  const club = await api.club.getDirectoryInfo.query({ id: params.id });
+  const club = await api.club.getDirectoryInfo({ id: params.id });
   if (!club) return <NotFound elementType="Club" />;
 
   return (
