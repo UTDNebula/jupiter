@@ -22,7 +22,7 @@ const Events = async ({
   searchParams: (typeof eventParamsSchema)['_input'];
 }) => {
   const parsed = eventParamsSchema.parse(searchParams);
-  const { events } = await api.event.findByFilters.query({
+  const { events } = await api.event.findByFilters({
     date: parsed.date,
     club: parsed.clubs,
     order: parsed.order,

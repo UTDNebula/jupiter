@@ -10,7 +10,7 @@ export default async function Page({
 }: {
   params: { clubId: string };
 }) {
-  const club = await api.club.byId.query({ id: clubId });
+  const club = await api.club.byId({ id: clubId });
   if (!club) notFound();
   return (
     <main>

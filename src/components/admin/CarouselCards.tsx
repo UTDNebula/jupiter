@@ -3,7 +3,7 @@ import { api } from '@src/trpc/react';
 import { type api as API } from '@src/trpc/server';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-type Feature = Awaited<ReturnType<typeof API.club.getCarousel.query>>[number];
+type Feature = Awaited<ReturnType<typeof API.club.getCarousel>>[number];
 
 type Props = {
   item: Feature;

@@ -18,7 +18,6 @@ export const metadata: Metadata = {
   manifest: 'site.webmanifest',
   description:
     'A student organization portal to connect organizations on campus with interested students at UTD.',
-  themeColor: '#573DFF',
   openGraph: {
     title: 'Jupiter',
     description:
@@ -30,6 +29,9 @@ export const metadata: Metadata = {
     card: 'summary',
     site: 'jupiter.utdnebula.com',
   },
+};
+export const viewport = {
+  themeColor: '#573DFF',
 };
 
 export default function RootLayout({
