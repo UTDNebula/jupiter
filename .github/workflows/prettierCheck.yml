@@ -1,4 +1,4 @@
-name: Prettier Formatting Check
+name: Formatting Check
 run-name: Running formatting check
 on: [push]
 jobs:
@@ -10,11 +10,15 @@ jobs:
         with:
           node-version: 18
           cache: 'npm'
-      - run: npm ci
-      - name: Prettier check
+      - name: Run npm install
+        run: |
+          mv package.json package.json.bak
+          npm i --no-save prettier prettier-plugin-tailwindcss
+          mv package.json.bak package.json
+      - name: Run prettier
         run: |
           files=`npx prettier . -l` || st=$?
           echo status=`echo $st`>>"$GITHUB_ENV"
           echo files=`echo $files`>> "$GITHUB_ENV"
-      - name: generate github check message
+      - name: generate errors/summary
         run: .github/workflows/generateCheck.sh
