@@ -1,0 +1,14 @@
+name: Prettier Formatting Check
+run-name: Running formatting check
+on: [push]
+jobs:
+  check-formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prettier check
+        run: |
+          echo files=`npx prettier . --check`>> "$GITHUB_ENV"
+          echo status=`echo $?`>>"$GITHUB_ENV"
+      - name: generate github check message
+        run: .github/workflows/generateCheck.sh
