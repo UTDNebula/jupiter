@@ -7,6 +7,6 @@ else
 	echo "### Files with bad formatting:" >>$GITHUB_STEP_SUMMARY
 	for file in $files; do
 		echo "- $file" >>$GITHUB_STEP_SUMMARY
-		echo "::error file={$file},title=File Not Formatted correctly"
+		echo "::error file=$file::File Not Formatted correctly"
 	done
 fi
