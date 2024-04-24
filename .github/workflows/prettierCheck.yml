@@ -10,7 +10,7 @@ jobs:
         with:
           node-version: 18
           cache: 'npm'
-      - run: npm ci
+      - run: npm i -g prettier prettier-plugin-tailwindcss
       - name: Prettier check
         run: |
           files=`npx prettier . -l` || st=$?
