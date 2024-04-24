@@ -8,22 +8,6 @@ import { z } from 'zod';
 import { type eventParamsSchema, order } from '@src/utils/eventFilter';
 import EncodeParams from '@src/utils/encodeParams';
 
-export async function eventTimeUpdate(
-  queryParams: eventParamsSchema,
-  formData: FormData,
-) {
-  const udate = formData.get('date');
-  if (typeof udate !== 'string') throw new Error('uh oh');
-  const date = parse(udate, 'PP', new Date());
-  console.log(date);
-  if (date && isDate(date)) {
-    console.log('hello');
-    queryParams.date = date;
-    const newQuery = EncodeParams(queryParams);
-    redirect(`/events?${newQuery}`);
-  }
-}
-
 const FilterSchema = z.object({
   clubs: z.string().array(),
   order: z.enum(order),
@@ -34,7 +18,6 @@ export async function eventFilterUpdate(
   clubs: string[],
   formData: FormData,
 ) {
-  console.log(formData.getAll('clubs'));
   const parsed = FilterSchema.safeParse({
     clubs: clubs,
     order: formData.get('order'),
