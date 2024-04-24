@@ -24,7 +24,7 @@ const Filters = ({ filterState, setParams }: FilterProps) => {
   return (
     <div className="flex w-64 flex-col space-y-10">
       <div className="flex flex-col space-y-7.5">
-        <h2 className="text-sm font-bold text-slate-500">Search for Club</h2>
+        <h2 className="text-sm font-bold text-slate-500">Filter by Clubs</h2>
         <div>
           <EventClubSearchBar
             addClub={(val) => {
