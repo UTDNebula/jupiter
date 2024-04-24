@@ -13,7 +13,7 @@ jobs:
       - run: npm ci
       - name: Prettier check
         run: |
-          echo files=`npx prettier . --check`>> "$GITHUB_ENV"
+          echo files=`npx prettier . -l`>> "$GITHUB_ENV"
           echo status=`echo $?`>>"$GITHUB_ENV"
       - name: generate github check message
         run: .github/workflows/generateCheck.sh
