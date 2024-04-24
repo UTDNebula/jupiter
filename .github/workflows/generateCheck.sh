@@ -1,4 +1,4 @@
-if [ $status == 0]; then
+if [ $status == 0 ]; then
 	echo "## Formatting Check passed 🥳" >>$GITHUB_STEP_SUMMARY
 	echo "All files are formatted correctly" >>$GITHUB_STEP_SUMMARY
 else
