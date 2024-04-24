@@ -43,4 +43,3 @@ const FormPopUp: React.FC<formPopUpProps> = ({ onClose, isOpen }) => {
 };
 
 export default FormPopUp;
-

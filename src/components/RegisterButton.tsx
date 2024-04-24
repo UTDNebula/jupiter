@@ -38,4 +38,3 @@ const RegisterButton: FC<RegisterButtonProps> = ({ eventId, isRegistered }) => {
 };
 
 export default RegisterButton;
-
