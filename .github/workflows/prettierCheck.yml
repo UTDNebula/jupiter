@@ -6,9 +6,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+      - run: npm ci
       - name: Prettier check
         run: |
-          npm i --no-save prettier-plugin-tailwindcss prettier
           echo files=`npx prettier . --check`>> "$GITHUB_ENV"
           echo status=`echo $?`>>"$GITHUB_ENV"
       - name: generate github check message
