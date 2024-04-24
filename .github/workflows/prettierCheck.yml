@@ -17,7 +17,7 @@ jobs:
           mv package.json.bak package.json
       - name: Run prettier
         run: |
-          files=`npx prettier . -l` || st=$?
+          files=`npx prettier . -l` || st=$? && st=$?
           echo status=`echo $st`>>"$GITHUB_ENV"
           echo files=`echo $files`>> "$GITHUB_ENV"
       - name: generate errors/summary
