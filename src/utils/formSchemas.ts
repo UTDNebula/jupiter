@@ -48,4 +48,4 @@ export const feedbackFormSchema = z.object({
   dislikes: z.string().default(''),
   features: z.string().default(''),
   submit_on: z.date().default(new Date()),
-})
+});
