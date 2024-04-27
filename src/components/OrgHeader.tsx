@@ -6,7 +6,6 @@ import type {
 } from '@src/server/db/models';
 import JoinButton from './JoinButton';
 import { getServerAuthSession } from '@src/server/auth';
-import LikeButton from './LikeButton';
 import Link from 'next/link';
 import { api } from '@src/trpc/server';
 
@@ -21,10 +20,14 @@ const OrgHeader = async ({ club }: { club: Club }) => {
     <div className="relative">
       <div className="h-full w-full">
         <Image
-          src={club.image}
+          src={'/images/wideWave.jpg'}
           alt="Picture of the club"
-          width={400}
+          style={{
+            width: '100%',
+            height: 'auto',
+          }}
           height={150}
+          width={450}
           className="rounded-lg object-cover"
           priority
         />
@@ -70,12 +73,6 @@ const OrgHeader = async ({ club }: { club: Club }) => {
                   clubID={club.id}
                   isJoined={memberType !== undefined}
                 />
-                <button
-                  className="rounded-full bg-blue-primary p-2.5 transition-colors hover:bg-blue-700"
-                  type="button"
-                >
-                  <LikeButton />
-                </button>
               </>
             )}
             <ContactButtons contacts={club.contacts || []} />

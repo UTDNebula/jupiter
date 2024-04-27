@@ -120,34 +120,21 @@ export const Email = ({ className }: IconProps) => {
     </svg>
   );
 };
+const logoStyling = 'fill-slate-800 transition-colors group-hover:fill-white';
 export const logo: logoProps = {
-  discord: (
-    <Discord className="fill-slate-300 transition-colors group-hover:fill-white" />
-  ),
+  discord: <Discord className={logoStyling} />,
 
-  youtube: (
-    <Youtube className="fill-slate-300 transition-colors group-hover:fill-white" />
-  ),
+  youtube: <Youtube className={logoStyling} />,
 
   twitch: '/nebula-logo.png',
 
-  facebook: (
-    <Facebook className="fill-slate-300 transition-colors group-hover:fill-white" />
-  ),
+  facebook: <Facebook className={logoStyling} />,
 
-  twitter: (
-    <Twitter className="fill-slate-300 transition-colors group-hover:fill-white" />
-  ),
+  twitter: <Twitter className={logoStyling} />,
 
-  instagram: (
-    <Instagram className="fill-slate-300 transition-colors group-hover:fill-white" />
-  ),
-  website: (
-    <Website className="fill-slate-300 transition-colors group-hover:fill-white" />
-  ),
-  email: (
-    <Email className="fill-slate-300 transition-colors group-hover:fill-white" />
-  ),
+  instagram: <Instagram className={logoStyling} />,
+  website: <Website className={logoStyling} />,
+  email: <Email className={logoStyling} />,
 
   other: '/Jupiter.png',
 } as const;
