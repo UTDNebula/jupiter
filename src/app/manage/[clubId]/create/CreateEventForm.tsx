@@ -29,7 +29,17 @@ const CreateEventForm = ({ clubId, officerClubs }: { clubId: string, officerClub
 	});
 	const router = useRouter();
 	const [watchDescription, watchStartTime] = watch(['description', 'startTime']);
-	const [eventPreview, setEventPreview] = useState<RouterOutputs['event']['findByFilters']['events'][number]|undefined>();
+	const [eventPreview, setEventPreview] = useState<RouterOutputs['event']['findByFilters']['events'][number]>({
+		name: "",
+		clubId,
+		description: "",
+		location: "",
+		liked: false,
+		id: "",
+		startTime: new Date(Date.now()),
+		endTime: new Date(Date.now()),
+		club: officerClubs.filter((v) => v.id == clubId)[0]!,
+	});
 	useEffect(() => {
 		const subscription = watch((data, info) => {
 			const { name, clubId, description, location, startTime, endTime } = data;
@@ -66,13 +76,15 @@ const CreateEventForm = ({ clubId, officerClubs }: { clubId: string, officerClub
 
 	return (<form onSubmit={(e) => void onSubmit(e)} className="w-full flex flex-row flex-wrap justify-start gap-10 overflow-x-clip text-[#4D5E80] pb-4">
 		<div className="form-fields flex flex-col flex-1 gap-10 min-w-[320px] max-w-[830px]">
-			<div className="create-dropdown text-2xl font-bold py-2">
-				Create Club Event <span className="text-[#3361FF]">for </span>
-				<select {...register("clubId")} className="bg-inherit text-[#3361FF] max-w-xs outline-none text-ellipsis overflow-hidden whitespace-nowrap" defaultValue={clubId}>
-					{officerClubs.map((club) => {
-						return (<option key={club.id} value={club.id}>{club.name}</option>)
-					})}
-				</select>
+			<div className="create-dropdown text-2xl font-bold py-2 flex flex-row justify-start whitespace-nowrap gap-1 max-w-full">
+				<span>Create Club Event <span className="text-[#3361FF]">for</span></span>
+				<div className="flex-1">
+					<select {...register("clubId")} className="bg-inherit text-[#3361FF] outline-none text-ellipsis overflow-hidden whitespace-nowrap w-full" defaultValue={clubId}>
+						{officerClubs.map((club) => {
+							return (<option key={club.id} value={club.id}>{club.name}</option>)
+						})}
+					</select>
+				</div>
 			</div>
 			<div className="event-pic w-full">
 				<h1 className="font-bold mb-4">Event Picture</h1>
@@ -109,7 +121,7 @@ const CreateEventForm = ({ clubId, officerClubs }: { clubId: string, officerClub
 			<TimeSelect register={register} setValue={setValue} getValues={getValues} watchStartTime={watchStartTime} />
 			<input className="bg-[#3361FF] text-white py-6 hover:cursor-pointer font-black text-xs rounded-md" type="submit" value="Create Event" />
 		</div>
-		<div className="form-preview w-64 flex flex-col gap-10">
+		<div className="form-preview w-64 flex flex-col gap-14">
 			<h1 className="text-lg font-bold">Preview</h1>
 			{eventPreview && <EventCardPreview event={eventPreview} />}
 		</div>

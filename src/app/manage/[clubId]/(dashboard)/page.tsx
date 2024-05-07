@@ -19,6 +19,12 @@ const Page = ({ params }: { params: { clubId: string } }) => {
         <button className="rounded-md bg-blue-primary p-1 font-semibold text-white">
           View members
         </button>
+        <Link
+          href={`/manage/${params.clubId}/create`}
+          className="rounded-md bg-blue-primary p-1 font-semibold text-white"
+        >
+          Create Event
+        </Link>
       </div>
     </>
   );
