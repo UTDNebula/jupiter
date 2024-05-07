@@ -117,16 +117,16 @@ export const eventRouter = createTRPCRouter({
         input.startTime.type === 'now'
           ? new Date()
           : input.startTime.type === 'distance'
-          ? add(new Date(), input.startTime.options)
-          : input.startTime.options.from ?? new Date();
+            ? add(new Date(), input.startTime.options)
+            : input.startTime.options.from ?? new Date();
       const endTime =
         input.startTime.type === 'distance'
           ? new Date()
           : input.startTime.type === 'range'
-          ? input.startTime.options.to
-            ? add(input.startTime.options.to, { days: 1 })
-            : add(startTime, { days: 1 })
-          : undefined;
+            ? input.startTime.options.to
+              ? add(input.startTime.options.to, { days: 1 })
+              : add(startTime, { days: 1 })
+            : undefined;
       const events = await ctx.db.query.events.findMany({
         where: (event) => {
           const whereElements: Array<SQL<unknown> | undefined> = [];

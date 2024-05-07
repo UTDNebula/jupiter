@@ -13,8 +13,8 @@ export default async function Page({
 }) {
   const session = await getServerAuthSession();
   if (!session) redirect(signInRoute(`manage/${clubId}/edit/officers`));
-  const role = await api.club.memberType.query({ id: clubId });
-  const officers = await api.club.getOfficers.query({ id: clubId });
+  const role = await api.club.memberType({ id: clubId });
+  const officers = await api.club.getOfficers({ id: clubId });
 
   const mapped = officers.map((officer) => ({
     userId: officer.userId,

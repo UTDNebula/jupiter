@@ -23,12 +23,16 @@ export default async function EventsPage({ params }: Params) {
 
   const { club, ...event } = res;
 
-  const isRegistered = (session && await db.query.userMetadataToEvents.findFirst({
-	where: (userMetadataToEvents) => and(
-		eq(userMetadataToEvents.eventId, event.id),
-		eq(userMetadataToEvents.userId, session.user.id)
-	)
-  }) !== undefined) || false;
+  const isRegistered =
+    (session &&
+      (await db.query.userMetadataToEvents.findFirst({
+        where: (userMetadataToEvents) =>
+          and(
+            eq(userMetadataToEvents.eventId, event.id),
+            eq(userMetadataToEvents.userId, session.user.id),
+          ),
+      })) !== undefined) ||
+    false;
 
   const clubDescription = ['Club', 'Location', 'Multi-Day'];
   const clubDetails = [club.name, event.location, 'No'];
@@ -52,7 +56,10 @@ export default async function EventsPage({ params }: Params) {
             </section>
             <section className="flex md:float-right md:my-auto">
               {session && (
-                <RegisterButton eventId={event.id} isRegistered={isRegistered} />
+                <RegisterButton
+                  eventId={event.id}
+                  isRegistered={isRegistered}
+                />
               )}
             </section>
           </div>

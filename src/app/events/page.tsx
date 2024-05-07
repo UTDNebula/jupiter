@@ -66,7 +66,7 @@ const Events = async ({ searchParams }: { searchParams: searchPams }) => {
     order: searchParams.order ?? 'soon',
     types: searchParams.types ?? [],
   };
-  const { events } = await api.event.findByFilters.query({
+  const { events } = await api.event.findByFilters({
     startTime: getStartTime(filters),
     club: filters.clubs,
     order: filters.order,

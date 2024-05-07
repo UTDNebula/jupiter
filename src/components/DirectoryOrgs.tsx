@@ -2,7 +2,6 @@ import { type FC } from 'react';
 import Image from 'next/image';
 import type { SelectClub as Club } from '@src/server/db/models';
 import JoinButton from './JoinButton';
-import LikeButton from './LikeButton';
 import Link from 'next/link';
 import { type Session } from 'next-auth';
 
@@ -25,11 +24,6 @@ const OrgDirectoryCards: FC<Props> = ({ club, session, priority }) => {
           priority={priority}
           className="select-none object-cover"
         />
-        <div className="absolute left-2 right-2 top-2 flex h-fit flex-row items-center space-x-2">
-          <button className="ml-auto rounded-full bg-black bg-opacity-50 p-1.5 font-bold text-white transition-colors">
-            <LikeButton />
-          </button>
-        </div>
       </div>
       <div className="flex flex-col space-y-2 p-6">
         <h1 className="line-clamp-1 text-2xl font-medium text-slate-800 md:text-xl">

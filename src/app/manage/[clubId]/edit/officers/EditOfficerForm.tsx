@@ -107,7 +107,7 @@ const EditOfficerForm = ({ clubId, officers }: EditOfficerFormProps) => {
         data,
         officers,
       );
-      if (!editOfficers.isLoading) {
+      if (!editOfficers.isPending) {
         editOfficers.mutate({
           clubId: clubId,
           deleted: deleted,

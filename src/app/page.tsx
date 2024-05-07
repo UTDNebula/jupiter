@@ -22,8 +22,8 @@ type Params = {
 };
 
 const Home = async (props: Params) => {
-  const tags = await api.club.distinctTags.query();
-  const featured = await api.club.getCarousel.query();
+  const tags = await api.club.distinctTags();
+  const featured = await api.club.getCarousel();
   const onlyClubs = featured.map((item) => item.club);
   return (
     <main className="md:pl-72">
