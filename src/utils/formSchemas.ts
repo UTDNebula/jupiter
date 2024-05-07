@@ -44,11 +44,11 @@ export const editOfficerSchema = z.object({
 
 export const createEventSchema = z.object({
   clubId: z.string(),
-  name: z.string(),
-  location: z.string(),
+  name: z.string().min(1),
+  location: z.string().min(1),
   description: z.string().max(1000),
-  startTime: z.date(),
-  endTime: z.date(),
+  startTime: z.coerce.date(),
+  endTime: z.coerce.date(),
 })
 
 export const feedbackFormSchema = z.object({

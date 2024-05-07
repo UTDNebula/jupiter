@@ -235,7 +235,7 @@ export const eventRouter = createTRPCRouter({
           ),
         );
     }),
-  createEvent: protectedProcedure
+  create: protectedProcedure
     .input(createEventSchema)
     .mutation(async ({ input, ctx }) => {
       const { clubId } = input
