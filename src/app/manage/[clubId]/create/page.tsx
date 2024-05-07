@@ -11,7 +11,7 @@ const Page = async ({ params }: { params: { clubId: string } }) => {
 		redirect(signInRoute(`manage/${params.clubId}/create`));
 	}
 
-	const officerClubs = await api.club.getOfficerClubs.query();
+	const officerClubs = await api.club.getOfficerClubs();
 	const currentClub = officerClubs.filter(val => {
 		return val.id == params.clubId
 	})[0];

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { type SelectClub } from "@src/server/db/models";
 import { createEventSchema } from "@src/utils/formSchemas";
 import { useForm } from "react-hook-form";
@@ -9,7 +9,9 @@ import { type z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { UploadIcon } from "@src/icons/Icons";
+import EventCardPreview from "./EventCardPreview";
 import TimeSelect from "./TimeSelect";
+import { type RouterOutputs } from "@src/trpc/shared";
 
 const CreateEventForm = ({ clubId, officerClubs }: { clubId: string, officerClubs: SelectClub[]}) => {
 	const {
@@ -27,28 +29,44 @@ const CreateEventForm = ({ clubId, officerClubs }: { clubId: string, officerClub
 	});
 	const router = useRouter();
 	const [watchDescription, watchStartTime] = watch(['description', 'startTime']);
+	const [eventPreview, setEventPreview] = useState<RouterOutputs['event']['findByFilters']['events'][number]|undefined>();
 	useEffect(() => {
-		const subscription = watch((data, {name}) => {
-			if (name == "clubId") {
+		const subscription = watch((data, info) => {
+			const { name, clubId, description, location, startTime, endTime } = data;
+			const club = officerClubs.find((val) => val.id == data.clubId);
+			if (club) {
+				setEventPreview({
+					name: name || "",
+					clubId: clubId || "",
+					description: description || "",
+					location: location || "",
+					liked: false,
+					id: "",
+					startTime: startTime?.toString() === "" || startTime == undefined ? new Date(Date.now()) : new Date(startTime),
+					endTime: endTime?.toString() === "" || endTime?.toString() == "Invalid Date" || !endTime ? new Date(Date.now()) : new Date(endTime),
+					club,
+				});
+			}
+			if (info.name == "clubId") {
 				router.replace(`/manage/${data.clubId}/create`);
 			}
 		});
 		return () => subscription.unsubscribe();
-	}, [router, watch]);
+	}, [router, watch, officerClubs]);
 
 	const createMutation = api.event.create.useMutation({
 		onSuccess: () => { location.reload(); }
 	})
 
 	const onSubmit = handleSubmit((data: z.infer<typeof createEventSchema>) => {
-		if (!createMutation.isLoading) {
+		if (!createMutation.isPending) {
 			createMutation.mutate(data);
 		}
 	});
 
-	return (<form onSubmit={(e) => void onSubmit(e)} className="w-full flex flex-row flex-wrap justify-between gap-10 overflow-x-clip text-[#4D5E80] pb-4">
+	return (<form onSubmit={(e) => void onSubmit(e)} className="w-full flex flex-row flex-wrap justify-start gap-10 overflow-x-clip text-[#4D5E80] pb-4">
 		<div className="form-fields flex flex-col flex-1 gap-10 min-w-[320px] max-w-[830px]">
-			<div className="create-dropdown text-xl font-bold py-2">
+			<div className="create-dropdown text-2xl font-bold py-2">
 				Create Club Event <span className="text-[#3361FF]">for </span>
 				<select {...register("clubId")} className="bg-inherit text-[#3361FF] max-w-xs outline-none text-ellipsis overflow-hidden whitespace-nowrap" defaultValue={clubId}>
 					{officerClubs.map((club) => {
@@ -91,7 +109,10 @@ const CreateEventForm = ({ clubId, officerClubs }: { clubId: string, officerClub
 			<TimeSelect register={register} setValue={setValue} getValues={getValues} watchStartTime={watchStartTime} />
 			<input className="bg-[#3361FF] text-white py-6 hover:cursor-pointer font-black text-xs rounded-md" type="submit" value="Create Event" />
 		</div>
-		<div className="form-preview w-64">hi</div>
+		<div className="form-preview w-64 flex flex-col gap-10">
+			<h1 className="text-lg font-bold">Preview</h1>
+			{eventPreview && <EventCardPreview event={eventPreview} />}
+		</div>
 	</form>)
 }
 export default CreateEventForm;
