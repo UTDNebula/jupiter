@@ -1,4 +1,3 @@
-'use server';
 import { type SelectEvent } from '@src/server/db/models';
 import {
   differenceInDays,

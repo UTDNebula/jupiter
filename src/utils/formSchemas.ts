@@ -42,6 +42,15 @@ export const editOfficerSchema = z.object({
     .array(),
 });
 
+export const createEventSchema = z.object({
+  clubId: z.string(),
+  name: z.string().min(1),
+  location: z.string().min(1),
+  description: z.string().max(1000),
+  startTime: z.coerce.date(),
+  endTime: z.coerce.date(),
+})
+
 export const feedbackFormSchema = z.object({
   rating: z.number().min(1).max(10),
   likes: z.string().default(''),

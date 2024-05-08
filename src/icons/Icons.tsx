@@ -367,3 +367,19 @@ export const CloseIcon = () => (
     />
   </svg>
 );
+
+export const UploadIcon = () => (
+  <svg 
+  xmlns="http://www.w3.org/2000/svg"
+  width="30"
+  height="30"
+  fill="none"
+  viewBox="0 0 30 30"
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M22.35 13.04C21.67 9.59 18.64 7 15 7C12.11 7 9.6 8.64 8.35 11.04C5.34 11.36 3 13.91 3 17C3 20.31 5.69 23 9 23H22C24.76 23 27 20.76 27 18C27 15.36 24.95 13.22 22.35 13.04ZM17 16V20H13V16H10L14.65 11.35C14.85 11.15 15.16 11.15 15.36 11.35L20 16H17Z"
+      fill="#C3CAD9"/>
+  </svg>
+)
