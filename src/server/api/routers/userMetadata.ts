@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
-import { and, eq, sql } from 'drizzle-orm';
+import { and, eq, or, sql } from 'drizzle-orm';
 
 import { insertUserMetadata } from '@src/server/db/models';
 import {
@@ -8,6 +8,8 @@ import {
   userMetadataToClubs,
   users,
 } from '@src/server/db/schema/users';
+import { type personalCats } from '@src/constants/categories';
+import { admin } from '@src/server/db/schema/admin';
 
 const byIdSchema = z.object({ id: z.string().uuid() });
 
@@ -86,4 +88,31 @@ export const userMetadataRouter = createTRPCRouter({
       });
       return await users;
     }),
+  getUserSidebarCapabilities: publicProcedure.query(async ({ ctx }) => {
+    const session = ctx.session;
+    const capabilites: (typeof personalCats)[number][] = [];
+    if (!session) return capabilites;
+    if (
+      await ctx.db.query.userMetadataToClubs.findFirst({
+        where: and(
+          eq(userMetadataToClubs.userId, session.user.id),
+          or(
+            eq(userMetadataToClubs.memberType, 'Officer'),
+            eq(userMetadataToClubs.memberType, 'President'),
+          ),
+        ),
+      })
+    ) {
+      capabilites.push('Your Clubs');
+    }
+    if (
+      (
+        await ctx.db.query.admin.findMany({
+          where: eq(admin.userId, session.user.id),
+        })
+      ).length === 1
+    )
+      capabilites.push('Admin');
+    return capabilites;
+  }),
 });
