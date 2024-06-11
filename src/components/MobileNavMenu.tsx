@@ -2,18 +2,15 @@
 
 import Image from 'next/image';
 import { type Dispatch, type SetStateAction } from 'react';
-import MobileNavItem from './MobileNavItem';
-import { usePathname } from 'next/navigation';
 
-import { mainCats, moreCats, routeMap } from '@src/constants/categories';
+import { mainCats, moreCats } from '@src/constants/categories';
+import SidebarItems from './SidebarItems';
 
 const MobileNavMenu = ({
   setIsOpen,
 }: {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const pathname = usePathname();
-
   return (
     <>
       <div
@@ -39,11 +36,7 @@ const MobileNavMenu = ({
           </h1>
           <div className="mb-5 mt-6">
             {mainCats.map((cat) => (
-              <MobileNavItem
-                key={cat}
-                active={pathname === routeMap[cat]}
-                cat={cat}
-              />
+              <SidebarItems key={cat} cat={cat} />
             ))}
           </div>
         </div>
@@ -53,11 +46,7 @@ const MobileNavMenu = ({
           </h1>
           <div className="mb-5 mt-6">
             {moreCats.map((cat) => (
-              <MobileNavItem
-                key={cat}
-                active={pathname === routeMap[cat]}
-                cat={cat}
-              />
+              <SidebarItems key={cat} cat={cat} />
             ))}
           </div>
         </div>
