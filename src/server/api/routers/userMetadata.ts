@@ -103,7 +103,7 @@ export const userMetadataRouter = createTRPCRouter({
         ),
       })
     ) {
-      capabilites.push('Your Clubs');
+      capabilites.push('Manage Clubs');
     }
     if (
       (

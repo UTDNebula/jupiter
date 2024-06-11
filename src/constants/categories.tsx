@@ -10,7 +10,7 @@ import {
 
 export const mainCats = ['Home', 'My Community', 'Events'] as const;
 export const moreCats = ['About', 'Feedback'] as const;
-export const personalCats = ['Your Clubs', 'Admin'] as const;
+export const personalCats = ['Manage Clubs', 'Admin'] as const;
 
 export type allCats =
   | (typeof mainCats)[number]
@@ -24,7 +24,7 @@ export const IconMap: {
   Events: EventsIcon,
   About: AboutIcon,
   Feedback: FeedbackIcon,
-  'Your Clubs': HomeIcon,
+  'Manage Clubs': HomeIcon,
   Admin: AdminIcon,
 };
 
@@ -36,6 +36,6 @@ export const routeMap: {
   Events: '/events',
   About: '/about',
   Feedback: '/feedback',
-  'Your Clubs': '/manage',
+  'Manage Clubs': '/manage',
   Admin: '/admin',
 };
