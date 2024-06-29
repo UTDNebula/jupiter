@@ -1,11 +1,15 @@
 'use client';
 import SidebarItems from './SidebarItems';
 import Image from 'next/image';
-import { mainCats, moreCats } from '@src/constants/categories';
-import { api } from '@src/trpc/react';
-const NavMenu = () => {
-  const personalCapabilites =
-    api.userMetadata.getUserSidebarCapabilities.useQuery();
+import {
+  mainCats,
+  moreCats,
+  type personalCats,
+} from '@src/constants/categories';
+type NavMenuProps = {
+  userCapabilites: Array<(typeof personalCats)[number]>;
+};
+const NavMenu = ({ userCapabilites }: NavMenuProps) => {
   return (
     <>
       <div className="flex w-full place-content-center items-center pb-7 pt-10">
@@ -33,10 +37,9 @@ const NavMenu = () => {
           More
         </h1>
         <div className="mb-5 mt-6">
-          {personalCapabilites.isSuccess &&
-            personalCapabilites.data.map((cat) => (
-              <SidebarItems key={cat} cat={cat} />
-            ))}
+          {userCapabilites.map((cat) => (
+            <SidebarItems key={cat} cat={cat} />
+          ))}
           {moreCats.map((cat) => (
             <SidebarItems key={cat} cat={cat} />
           ))}
