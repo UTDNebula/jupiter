@@ -2,15 +2,13 @@
 import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 type Props = {
   image: string;
-  isAdmin: boolean;
 };
 
-export const ProfileDropDown = ({ image, isAdmin }: Props) => {
-  const router = useRouter();
+export const ProfileDropDown = ({ image }: Props) => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
@@ -28,20 +26,15 @@ export const ProfileDropDown = ({ image, isAdmin }: Props) => {
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
         <DropdownMenu.Content className="mt-2 w-48 rounded-md border-gray-300 bg-slate-200 text-center shadow-md transition-all">
+          <DropdownMenu.Item className="p-3 transition-all hover:cursor-pointer hover:bg-slate-300">
+            <Link href={'/settings'}>Settings</Link>
+          </DropdownMenu.Item>
           <DropdownMenu.Item
             className="p-3 transition-all hover:cursor-pointer hover:bg-slate-300"
             onClick={() => void signOut()}
           >
             <button>Sign out</button>
           </DropdownMenu.Item>
-          {isAdmin && (
-            <DropdownMenu.Item
-              className="p-3 transition-all hover:cursor-pointer hover:bg-slate-300"
-              onClick={() => router.push('/admin')}
-            >
-              <button>Admin</button>
-            </DropdownMenu.Item>
-          )}
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
     </DropdownMenu.Root>
