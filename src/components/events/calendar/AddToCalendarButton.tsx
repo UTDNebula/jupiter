@@ -23,7 +23,6 @@ export default function AddToCalendarButton( {
       <button onClick={handlePopUp} >
         <CalendarButton />
       </button>
-      {/* //TODO Add if statement to bypass this popup if user is already signin to google and allow permission */}
       <CalendarPopUp isOpen={isOpen} onClose={handlePopUp} event={event} />
 
     </main>
