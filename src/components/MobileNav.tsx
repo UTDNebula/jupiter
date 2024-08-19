@@ -1,9 +1,15 @@
 'use client';
 
+import { type Dispatch, type SetStateAction } from 'react';
 import { useState } from 'react';
-import MobileNavMenu from './MobileNavMenu';
 
-const MobileNav = () => {
+import NavMenu from './NavMenu';
+import { type personalCats } from '@src/constants/categories';
+
+type NavMenuProps = {
+  userCapabilites: Array<(typeof personalCats)[number]>;
+};
+const MobileNav = ({ userCapabilites }: NavMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   if (!isOpen)
@@ -26,7 +32,30 @@ const MobileNav = () => {
       </div>
     );
 
-  return <MobileNavMenu setIsOpen={setIsOpen} />;
+  return (
+    <MobileNavMenu setIsOpen={setIsOpen} userCapabilites={userCapabilites} />
+  );
 };
 
+const MobileNavMenu = ({
+  setIsOpen,
+  userCapabilites,
+}: {
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  userCapabilites: Array<(typeof personalCats)[number]>;
+}) => {
+  return (
+    <>
+      <div
+        onClick={() => {
+          setIsOpen(false);
+        }}
+        className="fixed left-0 top-0 z-50 h-screen w-full bg-black bg-opacity-50"
+      ></div>
+      <nav className="p-y fixed left-0 top-0 z-50 h-screen w-1/2 bg-slate-100 max-[600px]:w-3/4 md:hidden">
+        <NavMenu userCapabilites={userCapabilites} />
+      </nav>
+    </>
+  );
+};
 export default MobileNav;

@@ -14,7 +14,13 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { selectEvent } from '@src/server/db/models';
 import { add, startOfDay } from 'date-fns';
-import { userMetadataToEvents } from '@src/server/db/schema/users';
+import {
+  userMetadataToClubs,
+  userMetadataToEvents,
+} from '@src/server/db/schema/users';
+import { createEventSchema } from '@src/utils/formSchemas';
+import { TRPCError } from '@trpc/server';
+import { events } from '@src/server/db/schema/events';
 
 const byClubIdSchema = z.object({
   clubId: z.string().default(''),
@@ -193,6 +199,25 @@ export const eventRouter = createTRPCRouter({
             eq(userMetadataToEvents.eventId, eventId),
           ),
         );
+    }),
+  create: protectedProcedure
+    .input(createEventSchema)
+    .mutation(async ({ input, ctx }) => {
+      const { clubId } = input;
+      const userId = ctx.session.user.id;
+
+      const isOfficer = await ctx.db.query.userMetadataToClubs.findFirst({
+        where: and(
+          eq(userMetadataToClubs.userId, userId),
+          eq(userMetadataToClubs.clubId, clubId),
+          inArray(userMetadataToClubs.memberType, ['Officer', 'President']),
+        ),
+      });
+      if (!isOfficer) {
+        throw new TRPCError({ code: 'UNAUTHORIZED' });
+      }
+
+      await ctx.db.insert(events).values({ ...input });
     }),
   byName: publicProcedure.input(byNameSchema).query(async ({ input, ctx }) => {
     const { name, sortByDate } = input;

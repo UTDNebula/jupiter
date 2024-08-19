@@ -92,8 +92,8 @@ export default function OrgTable({ clubs }: { clubs: Club[] }) {
             approved === 'pending'
               ? 'bg-yellow-500'
               : approved === 'approved'
-              ? 'bg-green-500'
-              : 'bg-red-500';
+                ? 'bg-green-500'
+                : 'bg-red-500';
 
           return (
             <div className="flex justify-center">

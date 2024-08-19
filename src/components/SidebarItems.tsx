@@ -26,7 +26,7 @@ const SidebarItems: FC<{ cat: allCats[number] }> = ({ cat }) => {
 
   return (
     <div
-      className={` ${
+      className={`group ${
         active || mouseOver
           ? `-my-2.5 mb-2.5 rounded-3xl bg-white py-2.5 shadow-md last:-mb-2.5`
           : 'mb-5'
@@ -36,21 +36,21 @@ const SidebarItems: FC<{ cat: allCats[number] }> = ({ cat }) => {
     >
       <div
         className=" 
-        flex h-full w-64 cursor-pointer  items-start rounded-lg bg-transparent px-5 text-sm transition-transform"
+        flex h-full w-full cursor-pointer items-start rounded-lg bg-transparent px-5 text-base transition-transform md:w-64 md:text-sm"
         onClick={() => void router.push(route)}
       >
         <div className="flex items-center gap-x-4">
           {Icon && (
             <Icon
               fill={`${
-                active || mouseOver ? 'fill-blue-primary' : 'fill-slate-500'
-              }`}
+                active ? 'fill-blue-primary' : 'fill-slate-500'
+              } group-hover:fill-blue-primary`}
             />
           )}
           <h1
-            className={`text-sm font-medium capitalize ${
-              active || mouseOver ? 'text-blue-primary' : 'text-slate-500'
-            }`}
+            className={`text-base font-medium capitalize md:text-sm ${
+              active ? 'text-blue-primary' : 'text-slate-500'
+            } group-hover:text-blue-primary`}
           >
             {cat}
           </h1>
