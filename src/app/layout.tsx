@@ -7,6 +7,8 @@ import { TRPCReactProvider } from '@src/trpc/react';
 import Sidebar from '@src/components/Sidebar';
 import { type Metadata } from 'next';
 
+import { Analytics } from '@vercel/analytics/react';
+
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
@@ -46,6 +48,7 @@ export default function RootLayout({
           <Sidebar />
           <div className="max-h-screen overflow-y-scroll">{children}</div>
         </TRPCReactProvider>
+        <Analytics />
       </body>
     </html>
   );
