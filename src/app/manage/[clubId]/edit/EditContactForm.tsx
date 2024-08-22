@@ -79,7 +79,7 @@ export default function EditContactForm({
   const submitForm = handleSubmit((data) => {
     if (dirtyFields.contacts !== undefined) {
       const { modified, created } = modifiedFields(dirtyFields.contacts, data);
-      if (!editContacts.isLoading) {
+      if (!editContacts.isPending) {
         editContacts.mutate({
           clubId: club.id,
           deleted: deleted,

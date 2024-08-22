@@ -7,14 +7,26 @@ await import('./src/env.mjs');
 /** @type {import("next").NextConfig} */
 const config = {
   images: {
-    domains: [
-      'lh3.googleusercontent.com',
-      'cdn.discordapp.com',
-      'jupiter.nlmc.workers.dev',
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+        pathname: '**',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.discordapp.com',
+        pathname: '**',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'jupiter.nlmc.workers.dev',
+        pathname: '**',
+        port: '',
+      },
     ],
-  },
-  experimental: {
-    serverActions: true,
   },
 };
 

@@ -4,7 +4,7 @@ import { type Row, type RowData, type Table } from '@tanstack/react-table';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
-type Officers = Awaited<ReturnType<typeof API.club.getOfficers.query>>;
+type Officers = Awaited<ReturnType<typeof API.club.getOfficers>>;
 
 type Props = {
   row: Row<Officers[number]>;

@@ -50,6 +50,13 @@
       "when": 1710890177407,
       "tag": "0006_narrow_mad_thinker",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1712936415961,
+      "tag": "0007_cool_stature",
+      "breakpoints": true
     }
   ]
 }

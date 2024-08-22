@@ -29,9 +29,9 @@ const EventLikeButton = ({ eventId, liked }: buttonProps) => {
       }}
     >
       {liked ? (
-        <CheckIcon fill = "fill-slate-800"/>
+        <CheckIcon fill="fill-slate-800" />
       ) : (
-        <PlusIcon fill = "fill-slate-800"/>
+        <PlusIcon fill="fill-slate-800" />
       )}
     </button>
   );

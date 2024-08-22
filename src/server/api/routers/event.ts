@@ -15,7 +15,10 @@ import { z } from 'zod';
 import { selectEvent } from '@src/server/db/models';
 import { type DateRange } from 'react-day-picker';
 import { add } from 'date-fns';
-import { userMetadataToEvents } from '@src/server/db/schema/users';
+import { userMetadataToClubs, userMetadataToEvents } from '@src/server/db/schema/users';
+import { createEventSchema } from '@src/utils/formSchemas';
+import { TRPCError } from '@trpc/server';
+import { events } from '@src/server/db/schema/events';
 
 function isDateRange(value: unknown): value is DateRange {
   return Boolean(value && typeof value === 'object' && 'from' in value);
@@ -114,16 +117,16 @@ export const eventRouter = createTRPCRouter({
         input.startTime.type === 'now'
           ? new Date()
           : input.startTime.type === 'distance'
-          ? add(new Date(), input.startTime.options)
-          : input.startTime.options.from ?? new Date();
+            ? add(new Date(), input.startTime.options)
+            : input.startTime.options.from ?? new Date();
       const endTime =
         input.startTime.type === 'distance'
           ? new Date()
           : input.startTime.type === 'range'
-          ? input.startTime.options.to
-            ? add(input.startTime.options.to, { days: 1 })
-            : add(startTime, { days: 1 })
-          : undefined;
+            ? input.startTime.options.to
+              ? add(input.startTime.options.to, { days: 1 })
+              : add(startTime, { days: 1 })
+            : undefined;
       const events = await ctx.db.query.events.findMany({
         where: (event) => {
           const whereElements: Array<SQL<unknown> | undefined> = [];
@@ -231,6 +234,25 @@ export const eventRouter = createTRPCRouter({
             eq(userMetadataToEvents.eventId, eventId),
           ),
         );
+    }),
+  create: protectedProcedure
+    .input(createEventSchema)
+    .mutation(async ({ input, ctx }) => {
+      const { clubId } = input
+      const userId = ctx.session.user.id;
+
+      const isOfficer = await ctx.db.query.userMetadataToClubs.findFirst({
+        where: and(
+          eq(userMetadataToClubs.userId, userId),
+          eq(userMetadataToClubs.clubId, clubId),
+          inArray(userMetadataToClubs.memberType, ["Officer", "President"])
+        )
+      });
+      if (!isOfficer) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      await ctx.db.insert(events).values({ ...input });
     }),
   byName: publicProcedure.input(byNameSchema).query(async ({ input, ctx }) => {
     const { name, sortByDate } = input;

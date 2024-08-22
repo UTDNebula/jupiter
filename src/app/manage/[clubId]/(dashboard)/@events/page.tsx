@@ -5,7 +5,7 @@ import { format, isSameDay } from 'date-fns';
 import { MoreIcon } from '@src/icons/Icons';
 
 const Events = async ({ params }: { params: { clubId: string } }) => {
-  const events = await api.event.byClubId.query({ clubId: params.clubId });
+  const events = await api.event.byClubId({ clubId: params.clubId });
   return (
     <div className="rounded-lg bg-white p-2 shadow-sm">
       <h3 className="text-xl font-bold text-blue-primary">Events</h3>

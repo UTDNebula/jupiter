@@ -106,18 +106,16 @@ export const EventSearchBar = () => {
   const [search, setSearch] = useState<string>('');
   const [res, setRes] = useState<Event[]>([]);
 
-  api.event.byName.useQuery(
+  const eventQuery = api.event.byName.useQuery(
     {
       name: search,
       sortByDate: true,
     },
-    {
-      onSuccess: (data) => {
-        setRes(data);
-      },
-      enabled: !!search,
-    },
+    { enabled: !!search },
   );
+  useEffect(() => {
+    if (eventQuery.data) setRes(eventQuery.data);
+  }, [eventQuery.data]);
 
   return (
     <SearchBar
@@ -136,16 +134,17 @@ type EventClubSearchBarProps = {
 export const EventClubSearchBar = ({ addClub }: EventClubSearchBarProps) => {
   const [search, setSearch] = useState('');
   const [res, setRes] = useState<Club[]>([]);
-  api.club.byName.useQuery(
+  const clubQuery = api.club.byName.useQuery(
     { name: search },
     {
-      onSuccess: (data) => {
-        setRes(data);
-        return data;
-      },
       enabled: !!search,
     },
   );
+  useEffect(() => {
+    if (clubQuery.data) {
+      setRes(clubQuery.data);
+    }
+  }, [clubQuery.data]);
   return (
     <SearchBar
       placeholder="Select a club"
@@ -168,19 +167,20 @@ type User = {
 export const UserSearchBar = ({ passUser }: UserSearchBarProps) => {
   const [search, setSearch] = useState('');
   const [res, setRes] = useState<User[]>([]);
-  api.userMetadata.searchByName.useQuery(
+  const userQuery = api.userMetadata.searchByName.useQuery(
     { name: search },
     {
-      onSuccess: (data) => {
-        const newData = data.map((val) => {
-          return { name: val.firstName + ' ' + val.lastName, ...val };
-        });
-        setRes(newData);
-        return newData;
-      },
       enabled: !!search,
     },
   );
+  useEffect(() => {
+    if (userQuery.data) {
+      const newData = userQuery.data.map((val) => {
+        return { name: val.firstName + ' ' + val.lastName, ...val };
+      });
+      setRes(newData);
+    }
+  }, [userQuery.data]);
   return (
     <SearchBar
       placeholder="Search for Someone"

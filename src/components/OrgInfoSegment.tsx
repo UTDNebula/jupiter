@@ -6,7 +6,7 @@ import { api } from '@src/trpc/server';
 const OrgInfoSegment: FC<{
   club: NonNullable<RouterOutputs['club']['getDirectoryInfo']>;
 }> = async ({ club }) => {
-  const isActive = await api.club.isActive.query({ id: club.id });
+  const isActive = await api.club.isActive({ id: club.id });
   const president = club.userMetadataToClubs.find(
     (officer) => officer.memberType === 'President',
   );

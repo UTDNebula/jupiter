@@ -4,32 +4,38 @@ import {
   FeedbackIcon,
   HomeIcon,
   type IconType,
-  LikedIcon,
-  SettingsIcon,
+  CommunityIcon,
+  AdminIcon,
 } from '../icons/Icons';
 
-export const mainCats = ['Home', 'Liked', 'Events'] as const;
-export const moreCats = ['Settings', 'About', 'Feedback'] as const;
+export const mainCats = ['Home', 'My Community', 'Events'] as const;
+export const moreCats = ['About', 'Feedback'] as const;
+export const personalCats = ['Manage Clubs', 'Admin'] as const;
 
-export type allCats = (typeof mainCats)[number] | (typeof moreCats)[number];
+export type allCats =
+  | (typeof mainCats)[number]
+  | (typeof moreCats)[number]
+  | (typeof personalCats)[number];
 export const IconMap: {
   [key in allCats[number]]: IconType;
 } = {
   Home: HomeIcon,
-  Liked: LikedIcon,
+  'My Community': CommunityIcon,
   Events: EventsIcon,
-  Settings: SettingsIcon,
   About: AboutIcon,
   Feedback: FeedbackIcon,
+  'Manage Clubs': HomeIcon,
+  Admin: AdminIcon,
 };
 
 export const routeMap: {
   [key in allCats[number]]: string;
 } = {
   Home: '/',
-  Liked: '/liked',
+  'My Community': '/community',
   Events: '/events',
-  Settings: '/settings',
   About: '/about',
   Feedback: '/feedback',
+  'Manage Clubs': '/manage',
+  Admin: '/admin',
 };

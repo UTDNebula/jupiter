@@ -7,7 +7,7 @@ import SettingsInput from './SettingsInput';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import ClubSelector from 'ClubSelector';
+import ClubSelector from '@src/components/ClubSelector';
 import { api } from '@src/trpc/react';
 import DeleteButton from './DeleteButton';
 import { useRouter } from 'next/navigation';
