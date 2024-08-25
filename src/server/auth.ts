@@ -8,12 +8,12 @@ import DiscordProvider from 'next-auth/providers/discord';
 import { env } from '@src/env.mjs';
 import { DrizzleAdapter } from '@auth/drizzle-adapter';
 import { db } from './db';
-import { eq } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 import { type InsertUserMetadata } from './db/models';
 import { type UserMetadata } from '@src/models/userMetadata';
 import { pgTable } from 'drizzle-orm/pg-core';
 import { userMetadata } from './db/schema/users';
-import { JWT } from "next-auth/jwt"
+import { accounts } from '@src/server/db/schema/users';
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -25,7 +25,6 @@ declare module 'next-auth' {
   interface Session extends DefaultSession {
     user: {
       id: string;
-      access_token?: string;
       // ...other properties
       // role: UserRole;
     } & DefaultSession['user'] &
@@ -36,14 +35,6 @@ declare module 'next-auth' {
   //   // ...other properties
   //   // role: UserRole;
   // }
-}
-// Extends the JWT type to add custom parameters for handling refresh token for Google Calendar 
-declare module "next-auth/jwt" {
-  interface JWT { 
-    accessToken?: string;
-    refreshToken?: string;
-    expiresAt?: number; 
-  }
 }
 
 export interface PreviewUser {
@@ -67,6 +58,7 @@ export const authOptions: NextAuthOptions = {
       let metadata = await db.query.userMetadata.findFirst({
         where: (metadata) => eq(metadata.id, user.id),
       });
+      
       if (!metadata) {
         const firstName = user.name?.split(' ')[0] ?? '';
         const lastName = user.name?.split(' ')[1] ?? '';
@@ -86,46 +78,66 @@ export const authOptions: NextAuthOptions = {
 
       if (session.user) {
         session.user = { ...session.user, ...metadata }; 
-        session.user.access_token = token.accessToken;
         // session.user.role = user.role; <-- put other properties on the session here
       }
 
-      
+      // // Try to do some Google Access Token stuff 
+      // const [googleAccount] = await db.query.accounts.findMany({
+      //   where: (googleAccount) => and ( eq( googleAccount.userId, user.id),
+      //                                   eq( googleAccount.provider, "google") ) 
+      // })
+      // console.log(googleAccount)
+      // if ( ! googleAccount ) { // This error shouldn't happen, but just in case
+      //   console.log("Unable to find google Account in the Databaase!")
+      //   return session
+      // }
+
+      // if ( googleAccount.expires_at * 1000 < Date.now() ) {
+      //   // access token has expired, so try to refresh it 
+
+
+      //   try {
+      //     const response = await fetch("https://oauth2.googleapis.com/token", {
+      //       method: "POST",
+      //       body: new URLSearchParams({
+      //         clientId: env.GOOGLE_CLIENT_ID,
+      //         clientSecret: env.GOOGLE_CLIENT_SECRET,
+      //         grant_type: "refresh_token",
+      //         refresh_token: googleAccount.refresh_token!
+      //       }),
+      //     })
+
+      //     const token_or_error_status = await response.json()
+          
+      //     // The above variable is an error status
+      //     if ( !response.ok ) throw token_or_error_status 
+          
+      //     // Token_or_error is a valid token, so do some parsing 
+      //     const newTokens = token_or_error_status as { 
+      //       access_token: string
+      //       expires_in: number
+      //       refresh_token?: string
+      //     }
+          
+      //     // Update the database and store the new refreshed access token in the database
+      //     await db.update(accounts).set({
+      //       access_token: newTokens.access_token,
+      //       expires_at: Math.floor( Date.now() / 1000 + newTokens.expires_in),
+      //       refresh_token: newTokens.refresh_token ?? googleAccount.refresh_token
+      //     }).where(and(
+      //       eq( accounts.provider, "google"),
+      //       eq( accounts.providerAccountId, googleAccount.providerAccountId),
+      //     ))
+
+      //   } catch (error) {
+      //     console.error("Error refreshing access_token!", error)
+      //   }
+      // }
 
       return session;
-    }, 
-    async jwt({ token, account }) {
-      if (account) {
-        token.accessToken  = account.access_token;
-        token.refreshToken = account.refresh_token;
-        token.expiresAt    = account.expires_at
-      }
-      
-      // Check that token is still valid 
-      if ( Date.now() < (token.expiresAt || 0 ) ) { return token; }
-      
-      // Token needs to be refreshed
-      const response = await fetch("https://oauth2.googleapis.com/token", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          clientId: env.GOOGLE_CLIENT_ID,
-          clientSecret: env.GOOGLE_CLIENT_SECRET,
-          grant_type: 'refresh_token',
-          refresh_token: token.refreshToken!,
-        }),
-      })
-
-      const refreshedToken = await response.json();
-      token.accessToken    = refreshedToken.access_token;
-      token.expiresAt      = Date.now() + refreshedToken.expires_in * 1000;
-
-      return token;
-    }
-
+    },
   },
+
   pages: {
     signIn: '/auth',
   },
@@ -133,11 +145,15 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
+      
       authorization: {
+        url: "openid https://www.googleapis.com/auth/calendar",
         params: {
-          scope: "openid profile email https://www.googleapis.com/auth/calendar.events"
-        } 
-      },
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
+        }
+      }
     }),
     DiscordProvider({
       clientId: env.DISCORD_CLIENT_ID,
