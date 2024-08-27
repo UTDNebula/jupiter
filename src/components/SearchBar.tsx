@@ -134,6 +134,7 @@ type EventClubSearchBarProps = {
 export const EventClubSearchBar = ({ addClub }: EventClubSearchBarProps) => {
   const [search, setSearch] = useState('');
   const [res, setRes] = useState<Club[]>([]);
+  const utils = api.useUtils();
   const clubQuery = api.club.byName.useQuery(
     { name: search },
     {
@@ -152,6 +153,7 @@ export const EventClubSearchBar = ({ addClub }: EventClubSearchBarProps) => {
       value={search}
       searchResults={res}
       onClick={(club) => {
+        void utils.club.byId.prefetch({ id: club.id });
         addClub(club.id);
         setSearch('');
       }}

@@ -1,75 +1,33 @@
-'use server';
-import { GridIcon, ListIcon } from '@src/icons/Icons';
-import EventCard from '@src/components/events/EventCard';
-import EventSidebar from '@src/components/events/EventSidebar';
-import { type RouterOutputs } from '@src/trpc/shared';
-import Link from 'next/link';
+'use client';
+import DateBrowser from '@src/components/events/DateBrowser';
+import { type eventParamsSchema } from '@src/utils/eventFilter';
+import useSyncedSearchParams from '@src/utils/useSyncedSearchParams';
+import { type ReactNode } from 'react';
 type Props = {
-  events: RouterOutputs['event']['findByFilters']['events'];
-  params: Record<string, string | string[] | undefined>;
+  children: ReactNode;
+  searchParams: eventParamsSchema;
 };
 
-const EventView = ({ events, params }: Props) => {
-  const view = (params?.view ?? 'list') as 'list' | 'grid';
-
+const EventView = ({ children, searchParams }: Props) => {
+  const [params, setParams] = useSyncedSearchParams(searchParams, '/events');
   return (
     <div className="w-full px-6">
-      <div className="flex flex-col pt-4 sm:flex-row sm:pb-12 md:pr-7.5">
-        <h1 className="text-left text-2xl font-bold text-[#4D5E80]">Events</h1>
-        <div className="relative z-0 hidden flex-row gap-x-16 md:ml-auto md:flex">
-          <Link
-            className={`z-20 flex flex-row items-center gap-x-4 ${
-              view === 'list'
-                ? ' -mr-7.5 rounded-full bg-white px-7.5 py-2.5'
-                : ''
-            }`}
-            href={{
-              pathname: '/events',
-              query: {
-                ...params,
-                view: 'list',
-              },
-            }}
-          >
-            <div className="h-7.5 w-7.5">
-              <ListIcon />
-            </div>
-            <p className="text-sm font-bold text-blue-primary">List view</p>
-          </Link>
-          <Link
-            className={`z-20 flex flex-row items-center gap-x-4 ${
-              view == 'grid'
-                ? '-ml-7.5 rounded-full bg-white px-7.5 py-2.5'
-                : 'mr-7.5'
-            }`}
-            href={{
-              pathname: '/events',
-              query: {
-                ...params,
-                view: 'grid',
-              },
-            }}
-          >
-            <div className="h-7.5 w-7.5">
-              <GridIcon />
-            </div>
-            <p className="text-sm font-bold text-blue-primary">Grid view</p>
-          </Link>
+      <div className="flex flex-col pt-4 md:flex-row md:items-end md:pb-12 md:pr-7.5">
+        <h1 className="h-min align-middle text-2xl font-bold text-[#4D5E80]">
+          Events
+        </h1>
+        <div className="relative z-0 mt-2.5 flex flex-row justify-center gap-x-16 md:ml-auto md:mt-0">
+          <DateBrowser filterState={params} setParams={setParams} />
         </div>
       </div>
-      <div className="container flex w-full flex-col overflow-x-clip sm:flex-row sm:space-x-7.5">
-        <EventSidebar />
+      <div className="container flex w-full flex-col overflow-x-clip sm:flex-row sm:space-x-7.5 ">
         <div
-          data-view={view}
+          data-view={'list'}
           className={
-            view === 'list'
-              ? 'group flex flex-col space-y-7.5 pt-10 sm:justify-start'
-              : 'group flex flex-wrap justify-center gap-x-10 gap-y-7.5 pt-10 sm:justify-start'
+            'md:items-normal group flex w-full flex-col items-center space-y-7.5 pt-10'
           }
         >
-          {events.map((event) => {
-            return <EventCard key={event.id} event={event} />;
-          })}
+          {children}
         </div>
       </div>
     </div>
