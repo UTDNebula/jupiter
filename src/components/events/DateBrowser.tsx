@@ -28,7 +28,7 @@ const DateBrowser = ({ filterState, setParams }: DateBrowserProps) => {
     }
   }, [dayPickerProps.selected]);
   return (
-    <div className="flex flex-row rounded-xl bg-white p-1 align-middle">
+    <div className="flex w-full flex-row justify-between rounded-3xl bg-white px-5 py-2.5 align-middle shadow-md md:w-fit">
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <button
         onClick={() => {
