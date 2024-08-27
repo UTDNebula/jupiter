@@ -22,10 +22,8 @@ const Events = async ({
   searchParams: (typeof eventParamsSchema)['_input'];
 }) => {
   const parsed = eventParamsSchema.parse(searchParams);
-  const { events } = await api.event.findByFilters({
+  const { events } = await api.event.findByDate({
     date: parsed.date,
-    club: parsed.clubs,
-    order: parsed.order,
   });
   return (
     <main className="pb-10 md:pl-72">

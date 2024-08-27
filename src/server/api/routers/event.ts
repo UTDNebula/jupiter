@@ -37,6 +37,9 @@ export const findByFilterSchema = z.object({
   order: z.enum(['soon', 'later', 'shortest duration', 'longest duration']),
   club: z.string().array(),
 });
+export const findByDateSchema = z.object({
+  date: z.date(),
+});
 
 const byIdSchema = z.object({
   id: z.string().default(''),
@@ -95,6 +98,48 @@ export const eventRouter = createTRPCRouter({
 
         throw e;
       }
+    }),
+  findByDate: publicProcedure
+    .input(findByDateSchema)
+    .query(async ({ input, ctx }) => {
+      const startTime = startOfDay(input.date);
+      const endTime = add(startTime, { days: 1 });
+      const events = await ctx.db.query.events.findMany({
+        where: (event) => {
+          return or(
+            between(event.startTime, startTime, endTime),
+            between(event.endTime, startTime, endTime),
+            and(lte(event.startTime, startTime), gte(event.endTime, startTime)),
+            and(lte(event.startTime, endTime), gte(event.endTime, endTime)),
+          );
+        },
+
+        with: {
+          club: true,
+        },
+        limit: 20,
+      });
+      if (ctx.session) {
+        const user = ctx.session.user;
+        const eventsWithLike = await Promise.all(
+          events.map(async (ev) => {
+            const liked = !!(await ctx.db.query.userMetadataToEvents.findFirst({
+              where: (userMetadataToEvents) =>
+                and(
+                  eq(userMetadataToEvents.userId, user.id),
+                  eq(userMetadataToEvents.eventId, ev.id),
+                ),
+            }));
+            return { ...ev, liked: liked };
+          }),
+        );
+        return { events: eventsWithLike };
+      }
+      return {
+        events: events.map((event) => {
+          return { ...event, liked: false };
+        }),
+      };
     }),
   findByFilters: publicProcedure
     .input(findByFilterSchema)
