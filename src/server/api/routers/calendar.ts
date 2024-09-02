@@ -36,27 +36,31 @@ export const calendarRouter = createTRPCRouter({
 
         const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
 
-        try {
-            const response =  calendar.events.insert({
-                calendarId: 'primary', 
-                resource: {
-                    summary: eventName,
-                    description: description,
-                    location: location, 
-                    start: {
-                        dateTime: startTime
-                    },
-                    end: {
-                        dateTime: endTime
-                    },
-                }
-            })
+        
+        const response = calendar.events.insert({
+            calendarId: 'primary', 
+            requestBody: {
+                summary: eventName,
+                description: description,
+                location: location, 
+                start: {
+                    dateTime: startTime.toDateString()
+                },
+                end: {
+                    dateTime: endTime.toDateString()
+                },
+            }
+        }, (error, response) => {
+            if (error) {
+                console.error("Error adding event:", error);
+                throw error;
+              } else {
+                console.log("Event added successfully:", response);
+              }
+        })
 
-            return response
-        } catch( error) {
-            console.error("Recieved an error when trying to add event to calendar: ", error)
-            throw error
-        }
+        return response
+
 
 
 
