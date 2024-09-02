@@ -54,7 +54,7 @@ export interface PreviewUser {
 export const authOptions: NextAuthOptions = {
   adapter: DrizzleAdapter(db, pgTable),
   callbacks: {
-    async session({ session, user, token }) {
+    async session({ session, user }) {
       let metadata = await db.query.userMetadata.findFirst({
         where: (metadata) => eq(metadata.id, user.id),
       });
@@ -74,68 +74,87 @@ export const authOptions: NextAuthOptions = {
           await db.insert(userMetadata).values(insert).returning()
         ).at(0);
       } 
-      
 
       if (session.user) {
         session.user = { ...session.user, ...metadata }; 
         // session.user.role = user.role; <-- put other properties on the session here
       }
 
-      // // Try to do some Google Access Token stuff 
-      // const [googleAccount] = await db.query.accounts.findMany({
-      //   where: (googleAccount) => and ( eq( googleAccount.userId, user.id),
-      //                                   eq( googleAccount.provider, "google") ) 
-      // })
-      // console.log(googleAccount)
-      // if ( ! googleAccount ) { // This error shouldn't happen, but just in case
-      //   console.log("Unable to find google Account in the Databaase!")
-      //   return session
-      // }
+      // Do some Google's Refresh Token rotation stuff  
+      const [googleAccount] = await db.query.accounts.findMany({
+        where: (googleAccount) => and ( eq( googleAccount.userId, user.id),
+                                        eq( googleAccount.provider, "google") ) 
+      })
 
-      // if ( googleAccount.expires_at * 1000 < Date.now() ) {
-      //   // access token has expired, so try to refresh it 
+      if ( ! googleAccount ) return session // User doesn't have google Account, so no need to check
 
+      if ( googleAccount.expires_at * 1000 < Date.now() ) return session // Token is still active 
 
-      //   try {
-      //     const response = await fetch("https://oauth2.googleapis.com/token", {
-      //       method: "POST",
-      //       body: new URLSearchParams({
-      //         clientId: env.GOOGLE_CLIENT_ID,
-      //         clientSecret: env.GOOGLE_CLIENT_SECRET,
-      //         grant_type: "refresh_token",
-      //         refresh_token: googleAccount.refresh_token!
-      //       }),
-      //     })
+      // Reach here, access token has expired, so try to refresh it 
 
-      //     const token_or_error_status = await response.json()
+      try {
+        const response = await fetch("https://oauth2.googleapis.com/token", {
+          method: "POST",
+          body: new URLSearchParams({
+            clientId: env.GOOGLE_CLIENT_ID,
+            clientSecret: env.GOOGLE_CLIENT_SECRET,
+            grant_type: "refresh_token",
+            refresh_token: googleAccount.refresh_token!
+          }),
+        })
+
+        const token_or_error_status = await response.json() as { token?: string, error?: string}
           
-      //     // The above variable is an error status
-      //     if ( !response.ok ) throw token_or_error_status 
+        // The above variable is an error status
+        if ( !response.ok ) throw token_or_error_status 
           
-      //     // Token_or_error is a valid token, so do some parsing 
-      //     const newTokens = token_or_error_status as { 
-      //       access_token: string
-      //       expires_in: number
-      //       refresh_token?: string
-      //     }
+        // Token_or_error is a valid token, so do some parsing 
+        const newTokens = token_or_error_status as { 
+          access_token: string
+          expires_in: number
+          refresh_token?: string
+        }
           
-      //     // Update the database and store the new refreshed access token in the database
-      //     await db.update(accounts).set({
-      //       access_token: newTokens.access_token,
-      //       expires_at: Math.floor( Date.now() / 1000 + newTokens.expires_in),
-      //       refresh_token: newTokens.refresh_token ?? googleAccount.refresh_token
-      //     }).where(and(
-      //       eq( accounts.provider, "google"),
-      //       eq( accounts.providerAccountId, googleAccount.providerAccountId),
-      //     ))
-
-      //   } catch (error) {
-      //     console.error("Error refreshing access_token!", error)
-      //   }
-      // }
-
+        // Update the database and store the new refreshed access token in the database
+        await db.update(accounts).set({
+          access_token: newTokens.access_token,
+          expires_at: Math.floor( Date.now() / 1000 + newTokens.expires_in),
+          refresh_token: newTokens.refresh_token ?? googleAccount.refresh_token
+        }).where(and(
+          eq( accounts.provider, "google"),
+          eq( accounts.providerAccountId, googleAccount.providerAccountId),
+        ))
+      } catch (error) {
+          console.error("Error refreshing access_token!", error)
+      }
+      
       return session;
     },
+    async signIn({account}) {
+      // There's something wrong with NextAuth where it doesn't automatically save the Google's refresh token ( but it will save Discord refresh token )
+      // into our database. So we have to manually save refreshToken into the database 
+      
+      if ( account?.provider.toLowerCase() != "google" ) return true 
+      
+      // Reach here, then we know the user log in with Google
+      // After the user Sign in, NextAuth will automatically create the session object and user object into our database for us, 
+      // so all we just have grab the correct entry and update the refresh Token column in our database 
+      try {
+        await db.update(accounts).set({
+              refresh_token: account.refresh_token
+            }).where(and(
+              eq( accounts.provider, "google"),
+              eq( accounts.providerAccountId, account.providerAccountId),
+            ))
+      } catch ( e ) { // Honestly, this code shouldn't ever run, but just for Sanity check and future debugging
+        console.log("Error when trying to save refresh_token into database! Error: ", e)
+        
+        // We return true because we still want to the user to be able to sign in to our app. If we were unable to save the refresh token into our
+        // database, it's not the end of the world, so we just continue, and hope next time user log in, we are able to save the refresh token 
+      }
+
+      return true
+    }
   },
 
   pages: {
@@ -147,8 +166,9 @@ export const authOptions: NextAuthOptions = {
       clientSecret: env.GOOGLE_CLIENT_SECRET,
       
       authorization: {
-        url: "openid https://www.googleapis.com/auth/calendar",
+        url: "https://accounts.google.com/o/oauth2/auth",
         params: {
+          scope: "openid https://www.googleapis.com/auth/calendar",
           prompt: "consent",
           access_type: "offline",
           response_type: "code",

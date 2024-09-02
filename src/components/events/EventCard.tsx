@@ -9,7 +9,7 @@ import EventLikeButton from '../EventLikeButton';
 import { getServerAuthSession } from '@src/server/auth';
 import AddToCalendarButton from './calendar/AddToCalendarButton';
 import AddToCalendarAuthorizedButton from './calendar/AddToCalendarAuthorizedButton';
-
+import { api } from '@src/trpc/server';
 
 type EventCardProps = {
   event: RouterOutputs['event']['findByFilters']['events'][number];
@@ -67,7 +67,7 @@ const HorizontalCard = async ({
             
           )}
           { session 
-            ?  <AddToCalendarAuthorizedButton event={event} session={session}  />  
+            ?  <AddToCalendarAuthorizedButton event={event} tokens={ await api.account.getToken({ userId: session.user.id, provider:"google"}) } /> 
             :  <AddToCalendarButton event={event} /> } 
           
           <Link
