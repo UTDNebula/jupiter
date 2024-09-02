@@ -168,7 +168,7 @@ export const authOptions: NextAuthOptions = {
       authorization: {
         url: "https://accounts.google.com/o/oauth2/auth",
         params: {
-          scope: "openid https://www.googleapis.com/auth/calendar",
+          scope: "https://www.googleapis.com/auth/calendar",
           prompt: "consent",
           access_type: "offline",
           response_type: "code",
