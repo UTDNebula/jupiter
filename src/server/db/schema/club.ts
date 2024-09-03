@@ -1,5 +1,12 @@
 import { relations, sql } from 'drizzle-orm';
-import { boolean, pgEnum, pgTable, text } from 'drizzle-orm/pg-core';
+import {
+  boolean,
+  integer,
+  pgEnum,
+  pgTable,
+  pgView,
+  text,
+} from 'drizzle-orm/pg-core';
 import { events } from './events';
 import { userMetadataToClubs } from './users';
 import { contacts } from './contacts';
@@ -35,3 +42,8 @@ export const clubRelations = relations(club, ({ many }) => ({
   userMetadataToClubs: many(userMetadataToClubs),
   carousel: many(carousel),
 }));
+
+export const usedTags = pgView('used_tags', {
+  tags: text('tags').notNull(),
+  count: integer('count').notNull(),
+}).existing();
