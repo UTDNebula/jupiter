@@ -44,19 +44,17 @@ export const calendarRouter = createTRPCRouter({
                 description: description,
                 location: location, 
                 start: {
-                    dateTime: startTime.toDateString()
+                    dateTime: startTime.toISOString()
                 },
                 end: {
-                    dateTime: endTime.toDateString()
+                    dateTime: endTime.toISOString()
                 },
             }
-        }, (error, response) => {
+        }, (error) => {
             if (error) {
                 console.error("Error adding event:", error);
                 throw error;
-              } else {
-                console.log("Event added successfully:", response);
-              }
+            } 
         })
 
         return response

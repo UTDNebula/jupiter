@@ -134,7 +134,7 @@ export const authOptions: NextAuthOptions = {
       // There's something wrong with NextAuth where it doesn't automatically save the Google's refresh token ( but it will save Discord refresh token )
       // into our database. So we have to manually save refreshToken into the database 
       
-      if ( account?.provider.toLowerCase() != "google" ) return true 
+      if ( account?.provider.toLowerCase() != "google" ) return account
       
       // Reach here, then we know the user log in with Google
       // After the user Sign in, NextAuth will automatically create the session object and user object into our database for us, 
@@ -153,7 +153,7 @@ export const authOptions: NextAuthOptions = {
         // database, it's not the end of the world, so we just continue, and hope next time user log in, we are able to save the refresh token 
       }
 
-      return true
+      return account
     }
   },
 
@@ -168,7 +168,7 @@ export const authOptions: NextAuthOptions = {
       authorization: {
         url: "https://accounts.google.com/o/oauth2/auth",
         params: {
-          scope: "https://www.googleapis.com/auth/calendar",
+          scope: "openid https://www.googleapis.com/auth/calendar",
           prompt: "consent",
           access_type: "offline",
           response_type: "code",
