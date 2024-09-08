@@ -29,6 +29,7 @@ const CreateEventForm = ({ clubId, officerClubs }: { clubId: string, officerClub
 	});
 	const router = useRouter();
 	const [watchDescription, watchStartTime] = watch(['description', 'startTime']);
+	const [redirecting, setRedirecting] = useState(false);
 	const [eventPreview, setEventPreview] = useState<RouterOutputs['event']['findByFilters']['events'][number]>({
 		name: "",
 		clubId,
@@ -65,11 +66,14 @@ const CreateEventForm = ({ clubId, officerClubs }: { clubId: string, officerClub
 	}, [router, watch, officerClubs]);
 
 	const createMutation = api.event.create.useMutation({
-		onSuccess: () => { location.reload(); }
+		onSuccess: (data) => { if (data) {
+			setRedirecting(true);
+			router.push(`/event/${data}`);
+		} }
 	})
 
 	const onSubmit = handleSubmit((data: z.infer<typeof createEventSchema>) => {
-		if (!createMutation.isPending) {
+		if (!createMutation.isPending && !redirecting) {
 			createMutation.mutate(data);
 		}
 	});
