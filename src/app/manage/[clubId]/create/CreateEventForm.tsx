@@ -24,6 +24,8 @@ const CreateEventForm = ({ clubId, officerClubs }: { clubId: string, officerClub
 		resolver: zodResolver(createEventSchema),
 		defaultValues: {
 			clubId: clubId,
+			startTime: new Date(Date.now()),
+			endTime: new Date(Date.now()),
 		},
 		mode: "onSubmit",
 	});
@@ -89,7 +91,7 @@ const CreateEventForm = ({ clubId, officerClubs }: { clubId: string, officerClub
 			<div className="event-pic w-full">
 				<h1 className="font-bold mb-4">Event Picture</h1>
 				<p className="upload-label text-xs font-bold mb-11">Drag or choose file to upload</p>
-				<div className="upload-box bg-[#E9EAEF] w-full h-48 rounded-md flex items-center flex-col justify-center gap-6">
+				<div className="upload-box bg-[#E9EAEF] w-full h-48 rounded-md flex items-center flex-col justify-center gap-6 opacity-50">
 					<UploadIcon />
 					<p className="font-bold text-xs">JPEG, PNG, or SVG</p>
 				</div>
