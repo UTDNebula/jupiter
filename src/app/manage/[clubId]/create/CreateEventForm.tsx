@@ -24,8 +24,6 @@ const CreateEventForm = ({ clubId, officerClubs }: { clubId: string, officerClub
 		resolver: zodResolver(createEventSchema),
 		defaultValues: {
 			clubId: clubId,
-			startTime: new Date(Date.now()),
-			endTime: new Date(Date.now()),
 		},
 		mode: "onSubmit",
 	});

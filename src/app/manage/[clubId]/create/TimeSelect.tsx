@@ -18,7 +18,9 @@ interface Props {
 const TimeSelect = ({ register, setValue, getValues, watchStartTime }: Props) => {
 	useEffect(() => {
 		// If start time is after end time, set end time to start time
-		if ((new Date(watchStartTime) > new Date(getValues('endTime')))) {
+		console.log(getValues("endTime"));
+		if ((new Date(watchStartTime) > new Date(getValues('endTime'))) 
+			|| (watchStartTime !== undefined && getValues('endTime').toString() === "")) {
 			setValue('endTime', watchStartTime);
 		}
 	}, [setValue, getValues, watchStartTime])
