@@ -102,7 +102,9 @@ $$;
 <details>
 <summary>Enums</summary><br />
 
-Currently, drizzle does not automatically create enums for you. You will have to create them manually. This [link](https://orm.drizzle.team/docs/column-types/pg#enum) should give you a good idea of how to create enums in postgres.
+Run the following command to create the proper enums:
+
+CREATE TYPE platform AS ENUM ('discord', 'youtube', 'twitch', 'facebook', 'twitter', 'instagram', 'website', 'email', 'other');
 
 </details> 
 <details>
