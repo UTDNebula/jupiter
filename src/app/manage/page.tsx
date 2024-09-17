@@ -1,3 +1,4 @@
+'use server';
 import { BaseHeader } from '@src/components/BaseHeader';
 import { getServerAuthSession } from '@src/server/auth';
 import { api } from '@src/trpc/server';
@@ -22,7 +23,7 @@ export default async function Page() {
           </h1>
           <Link
             type="button"
-            className="ml-auto flex flex-row items-center rounded-[1.875rem] bg-blue-primary px-8 py-4 text-white"
+            className="ml-auto flex flex-row items-center rounded-[1.875rem] bg-blue-primary px-6 py-3 text-white transition-colors hover:bg-blue-700"
             href={'/directory/create'}
           >
             <span className="h-min">New Club</span>
