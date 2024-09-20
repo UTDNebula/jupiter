@@ -20,6 +20,7 @@ const CreateEventForm = ({ clubId, officerClubs }: { clubId: string, officerClub
 		watch,
 		setValue,
 		getValues,
+		control,
 	} = useForm<z.infer<typeof createEventSchema>>({
 		resolver: zodResolver(createEventSchema),
 		defaultValues: {
@@ -29,7 +30,7 @@ const CreateEventForm = ({ clubId, officerClubs }: { clubId: string, officerClub
 	});
 	const router = useRouter();
 	const [watchDescription, watchStartTime] = watch(['description', 'startTime']);
-	const [redirecting, setRedirecting] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const [eventPreview, setEventPreview] = useState<RouterOutputs['event']['findByFilters']['events'][number]>({
 		name: "",
 		clubId,
@@ -53,8 +54,8 @@ const CreateEventForm = ({ clubId, officerClubs }: { clubId: string, officerClub
 					location: location || "",
 					liked: false,
 					id: "",
-					startTime: startTime?.toString() === "" || startTime == undefined ? new Date(Date.now()) : new Date(startTime),
-					endTime: endTime?.toString() === "" || endTime?.toString() == "Invalid Date" || !endTime ? new Date(Date.now()) : new Date(endTime),
+					startTime: startTime?.toString() === "" || startTime === undefined ? new Date(Date.now()) : new Date(startTime),
+					endTime: endTime?.toString() === "" || endTime?.toString() === "Invalid Date" || !endTime ? new Date(Date.now()) : new Date(endTime),
 					club,
 				});
 			}
@@ -67,13 +68,16 @@ const CreateEventForm = ({ clubId, officerClubs }: { clubId: string, officerClub
 
 	const createMutation = api.event.create.useMutation({
 		onSuccess: (data) => { if (data) {
-			setRedirecting(true);
 			router.push(`/event/${data}`);
-		} }
+		} },
+		onError: (e) => {
+			setLoading(false);
+		}
 	})
 
 	const onSubmit = handleSubmit((data: z.infer<typeof createEventSchema>) => {
-		if (!createMutation.isPending && !redirecting) {
+		if (!createMutation.isPending && !loading) {
+			setLoading(true);
 			createMutation.mutate(data);
 		}
 	});
@@ -122,8 +126,12 @@ const CreateEventForm = ({ clubId, officerClubs }: { clubId: string, officerClub
 					placeholder="Event description" />
 				</div>
 			</div>
-			<TimeSelect register={register} setValue={setValue} getValues={getValues} watchStartTime={watchStartTime} />
-			<input className="bg-[#3361FF] text-white py-6 hover:cursor-pointer font-black text-xs rounded-md" type="submit" value="Create Event" />
+			<TimeSelect setValue={setValue} getValues={getValues} watchStartTime={watchStartTime} control={control} />
+			<input 
+				type="submit" 
+				value="Create Event"
+				className={`bg-[#3361FF] ${loading ? "opacity-40" : ""} text-white py-6 hover:cursor-pointer font-black text-xs rounded-md`} 
+			/>
 		</div>
 		<div className="form-preview w-64 flex flex-col gap-14">
 			<h1 className="text-lg font-bold">Preview</h1>

@@ -1,48 +1,67 @@
 'use client'
-import { useEffect } from "react";
 import type { 
 	UseFormRegister,
 	UseFormSetValue,
 	UseFormGetValues,
+	Control
+} from "react-hook-form";
+import {
+	Controller
 } from "react-hook-form";
 import type { createEventSchema } from "@src/utils/formSchemas";
 import type { z } from "zod";
 
 interface Props {
-	register: UseFormRegister<z.infer<typeof createEventSchema>>,
 	setValue: UseFormSetValue<z.infer<typeof createEventSchema>>,
 	getValues: UseFormGetValues<z.infer<typeof createEventSchema>>,
 	watchStartTime: Date,
+	control: Control<z.infer<typeof createEventSchema>>,
 }
 
-const TimeSelect = ({ register, setValue, getValues, watchStartTime }: Props) => {
-	useEffect(() => {
-		// If start time is after end time, set end time to start time
-		console.log(getValues("endTime"));
-		if ((new Date(watchStartTime) > new Date(getValues('endTime'))) 
-			|| (watchStartTime !== undefined && getValues('endTime').toString() === "")) {
-			setValue('endTime', watchStartTime);
-		}
-	}, [setValue, getValues, watchStartTime])
-
+const TimeSelect = ({ setValue, getValues, watchStartTime, control }: Props) => {
 	return (<>
 		<div className="event-duration flex gap-32">
 			<div className="flex-1 justify-end flex flex-col">
 				<h1 className="font-bold mb-2 block">Duration</h1>
 				<label htmlFor="startTime" className="text-xs font-bold mb-2">Start Time</label>
-				<input {...register("startTime")} 
-					type="datetime-local"
-					className="outline-none w-full block p-2 text-xs rounded-md text-[#7D8FB3]"
-					/>
+				<Controller
+					control={control}
+					name="startTime"
+					render={({ field: { value, ref, onChange } }) => (
+						<input 
+							ref={ref}
+							type="datetime-local"
+							value={value ? new Date(value.getTime() - value.getTimezoneOffset() * 60 * 1000).toISOString().slice(0, 16) : ""}
+							onChange={(e) => {
+								if (!getValues("endTime") || new Date(e.currentTarget.value) > getValues("endTime")) {
+									// Add 1 hr to new start time
+									setValue("endTime", new Date(new Date(e.currentTarget.value).getTime() + 60 * 60 * 1000));
+								}
+								onChange(new Date(e.currentTarget.value));
+							}}
+							className="outline-none w-full block p-2 text-xs rounded-md text-[#7D8FB3]" />
+					)}
+					rules={{
+						required: true,
+					}} />
 			</div>
 			<div className="flex-1 justify-end flex flex-col">
 				<label htmlFor="endTime" className="text-xs font-bold mb-2">End Time</label>
-				<input {...register("endTime")} 
-					type="datetime-local" 
-					onInput={(e) => { if (new Date(e.currentTarget.value) < new Date(watchStartTime)) setValue('endTime', watchStartTime); }} 
-					min={watchStartTime?.toString()}
-					className="outline-none w-full block p-2 text-xs rounded-md text-[#7D8FB3]" 
-					/>
+				<Controller
+					control={control}
+					name="endTime"
+					render={({ field: { value, ref, onChange } }) => (
+						<input 
+							ref={ref}
+							type="datetime-local"
+							min={watchStartTime ? new Date(new Date(watchStartTime).getTime() - new Date(watchStartTime).getTimezoneOffset() * 60 * 1000).toISOString().slice(0, 16) : ""}
+							value={value ? new Date(value.getTime() - value.getTimezoneOffset() * 60 * 1000).toISOString().slice(0, 16) : ""}
+							onChange={(e) => onChange(new Date(e.currentTarget.value))}
+							className="outline-none w-full block p-2 text-xs rounded-md text-[#7D8FB3]" />
+					)}
+					rules={{
+						required: true,
+					}} />
 			</div>
 		</div>
 	</>);
