@@ -70,7 +70,7 @@ const CreateEventForm = ({ clubId, officerClubs }: { clubId: string, officerClub
 		onSuccess: (data) => { if (data) {
 			router.push(`/event/${data}`);
 		} },
-		onError: (e) => {
+		onError: () => {
 			setLoading(false);
 		}
 	})

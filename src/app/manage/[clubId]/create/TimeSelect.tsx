@@ -1,6 +1,5 @@
 'use client'
 import type { 
-	UseFormRegister,
 	UseFormSetValue,
 	UseFormGetValues,
 	Control
