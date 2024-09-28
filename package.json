@@ -13,7 +13,7 @@
     "drizzle:push": "dotenv drizzle-kit push:pg"
   },
   "dependencies": {
-    "@auth/drizzle-adapter": "^0.3.2",
+    "@auth/drizzle-adapter": "^0.3.17",
     "@hookform/resolvers": "^3.3.2",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-dialog": "^1.0.5",
@@ -35,7 +35,7 @@
     "google-auth-library": "^9.14.0",
     "googleapis": "^143.0.0",
     "next": "^14.2.2",
-    "next-auth": "^4.23.0",
+    "next-auth": "^4.24.7",
     "postgres": "^3.3.5",
     "react": "^18.2.0",
     "react-day-picker": "^8.9.1",

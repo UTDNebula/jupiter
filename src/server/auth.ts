@@ -166,7 +166,6 @@ export const authOptions: NextAuthOptions = {
       clientSecret: env.GOOGLE_CLIENT_SECRET,
       
       authorization: {
-        url: "https://accounts.google.com/o/oauth2/auth",
         params: {
           scope: "openid https://www.googleapis.com/auth/calendar",
           prompt: "consent",
