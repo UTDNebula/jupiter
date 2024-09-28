@@ -7,10 +7,14 @@ import { type RouterOutputs } from '@src/trpc/shared';
 import EventLikeButton from '../EventLikeButton';
 import { getServerAuthSession } from '@src/server/auth';
 import dynamic from 'next/dynamic';
-
+import { and, eq } from 'drizzle-orm';
 const EventTimeAlert = dynamic(() => import('./EventTimeAlert'), {
   ssr: false,
 });
+import AddToCalendarButton from './calendar/AddToCalendarButton';
+import AddToCalendarAuthorizedButton from './calendar/AddToCalendarAuthorizedButton';
+import { api } from '@src/trpc/server';
+import { db } from '@src/server/db';
 
 type EventCardProps = {
   event: RouterOutputs['event']['findByFilters']['events'][number];
@@ -62,10 +66,21 @@ const HorizontalCard = async ({
             {event.description}
           </p>
         </div>
-        <div className="ml-auto flex flex-row space-x-4">
+        <div className="ml-auto flex flex-row space-x-4 ">
           {session && (
             <EventLikeButton liked={event.liked} eventId={event.id} />
+            
           )}
+          { (session && db.query.accounts.findFirst({
+            where: (accounts) => 
+              and(
+                eq(accounts.userId, session.user.id),
+                eq(accounts.provider, "google"),
+              ) ,
+          }) !== undefined ) 
+            ?  <AddToCalendarAuthorizedButton event={event} tokens={ await api.account.getToken({ userId: session.user.id, provider:"google"}) } /> 
+            :  <AddToCalendarButton event={event} /> } 
+          
           <Link
             className=" h-10 w-10 rounded-full bg-blue-primary p-1.5 shadow-lg transition-colors hover:bg-blue-700 active:bg-blue-800"
             href={`/event/${event.id}`}
@@ -126,7 +141,7 @@ const VerticalCard = async ({
             </div>
           </h4>
         </div>
-        <div className="mt-auto flex flex-row space-x-4">
+        <div className="mt-auto flex flex-row space-x-4 ">
           <Link
             className=" h-10 w-10 rounded-full bg-blue-primary p-1.5 shadow-lg transition-colors hover:bg-blue-700 active:bg-blue-800"
             href={`/event/${event.id}`}
@@ -134,6 +149,8 @@ const VerticalCard = async ({
           >
             <MoreIcon fill="fill-white" />
           </Link>
+          <AddToCalendarButton event={event} />
+
           {session && (
             <EventLikeButton liked={event.liked} eventId={event.id} />
           )}

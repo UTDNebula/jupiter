@@ -74,7 +74,7 @@ export const accounts = pgTable(
     providerAccountId: text('providerAccountId').notNull(),
     refresh_token: text('refresh_token'),
     access_token: text('access_token'),
-    expires_at: integer('expires_at'),
+    expires_at: integer('expires_at').notNull(),
     token_type: text('token_type'),
     scope: text('scope'),
     id_token: text('id_token'),
