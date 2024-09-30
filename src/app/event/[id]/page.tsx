@@ -8,7 +8,7 @@ import Image from 'next/image';
 import CountdownTimer from './CountdownTimer';
 import Link from 'next/link';
 import { getServerAuthSession } from '@src/server/auth';
-import RegisterButton from '@src/components/RegisterButton';
+import RegisterButton from '@src/app/event/[id]/RegisterButton';
 
 type Params = { params: { id: string } };
 
