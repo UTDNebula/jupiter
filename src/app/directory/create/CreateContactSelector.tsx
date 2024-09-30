@@ -16,7 +16,7 @@ import {
   Website,
   Youtube,
   type logoProps,
-} from './ContactIcons';
+} from '@src/components/ContactIcons';
 import {
   type Control,
   type UseFormRegister,
