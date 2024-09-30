@@ -1,11 +1,11 @@
-import { type FC } from 'react';
+import { Key, type FC } from 'react';
 import DirectoryOrgs from './DirectoryOrgs';
 import { api } from '@src/trpc/server';
 import { getServerAuthSession } from '@src/server/auth';
 import InfiniteScrollGrid from './InfiniteScrollGrid';
 import ScrollTop from './ScrollTop';
 
-interface Props {
+export interface Props {
   tag?: string;
 }
 

@@ -1,9 +1,12 @@
 import Header from '@src/components/BaseHeader';
+import { api } from '@src/trpc/server';
 import { getServerAuthSession } from '@src/server/auth';
 import { type Metadata } from 'next';
 import Image from 'next/image';
 import React from 'react';
 import CommunityEvents from './communityEvents';
+import OrgDirectoryGrid from '@src/components/OrgDirectoryGrid';
+import OrgDirectoryCarousel from '@src/components/OrgDirectoryCarousel';
 
 export const metadata: Metadata = {
   title: 'My Community - Jupiter',
@@ -18,6 +21,7 @@ export const metadata: Metadata = {
 };
 
 const Community = async () => {
+  const { clubs } = await api.club.all({});
   const session = await getServerAuthSession();
 
   if (!session) {
@@ -41,6 +45,8 @@ const Community = async () => {
       <div className="mx-6 h-full p-2">
         <h1 className="text-2xl font-bold text-slate-500">Community Events</h1>
         <CommunityEvents />
+        <h1 className="text-2xl font-bold text-slate-500">Organizations</h1>
+        <OrgDirectoryCarousel clubs={clubs} session={session} />
       </div>
     </main>
   );
