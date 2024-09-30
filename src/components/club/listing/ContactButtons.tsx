@@ -1,5 +1,5 @@
 import type { SelectContact as Contacts } from '@src/server/db/models';
-import { logo } from '../../ContactIcons';
+import { logo } from '@src/icons/ContactIcons';
 import Link from 'next/link';
 
 type contentButtonProps = {

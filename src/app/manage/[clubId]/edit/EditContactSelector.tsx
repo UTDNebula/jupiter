@@ -23,7 +23,7 @@ import {
   Website,
   Youtube,
   type logoProps,
-} from '@src/components/ContactIcons';
+} from '@src/icons/ContactIcons';
 import { type modifyDeletedAction } from '@src/app/manage/[clubId]/edit/EditContactForm';
 import { type editClubContactSchema } from '@src/utils/formSchemas';
 
