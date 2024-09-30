@@ -1,7 +1,7 @@
 import { type FC } from 'react';
 import Image from 'next/image';
 import type { SelectClub as Club } from '@src/server/db/models';
-import JoinButton from '../JoinButton';
+import JoinButton from './JoinButton';
 import Link from 'next/link';
 import { type Session } from 'next-auth';
 
