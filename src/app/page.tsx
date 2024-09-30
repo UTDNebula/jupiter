@@ -1,7 +1,7 @@
 import Header from '../components/BaseHeader';
 import Carousel from '../components/Carousel';
-import TagFilter from '../components/TagFilter';
-import OrgDirectoryGrid from '../components/OrgDirectoryGrid';
+import TagFilter from '../components/club/directory/TagFilter';
+import OrgDirectoryGrid from '../components/club/directory/OrgDirectoryGrid';
 import type { Metadata } from 'next';
 import { api } from '@src/trpc/server';
 

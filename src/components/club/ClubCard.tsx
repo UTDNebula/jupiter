@@ -1,13 +1,13 @@
 import { type FC } from 'react';
 import Image from 'next/image';
 import type { SelectClub as Club } from '@src/server/db/models';
-import JoinButton from './JoinButton';
+import JoinButton from '../JoinButton';
 import Link from 'next/link';
 import { type Session } from 'next-auth';
 
 type Props = { club: Club; session: Session | null; priority: boolean };
 
-const OrgDirectoryCards: FC<Props> = ({ club, session, priority }) => {
+const ClubCard: FC<Props> = ({ club, session, priority }) => {
   const desc =
     club.description.length > 50
       ? club.description.slice(0, 150) + '...'
@@ -45,7 +45,7 @@ const OrgDirectoryCards: FC<Props> = ({ club, session, priority }) => {
   );
 };
 
-export const OrgDirectoryCardSkeleton: FC = () => {
+export const ClubCardSkeleton: FC = () => {
   return (
     <div className="flex h-full min-h-[600px] min-w-[300px] animate-pulse flex-col rounded-lg bg-white shadow-lg">
       <div className="h-48 bg-slate-300 sm:h-56 md:h-64 lg:h-72"></div>
@@ -59,4 +59,4 @@ export const OrgDirectoryCardSkeleton: FC = () => {
   );
 };
 
-export default OrgDirectoryCards;
+export default ClubCard;

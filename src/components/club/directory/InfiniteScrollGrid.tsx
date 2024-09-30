@@ -2,7 +2,7 @@
 import { api } from '@src/trpc/react';
 import { type Session } from 'next-auth';
 import { useEffect, useRef } from 'react';
-import DirectoryOrgs, { OrgDirectoryCardSkeleton } from './DirectoryOrgs';
+import DirectoryOrgs, { ClubCardSkeleton } from '../ClubCard';
 
 type Props = {
   session: Session | null;
@@ -67,11 +67,11 @@ export default function InfiniteScrollGrid({ session, tag }: Props) {
             }),
           )
         : Array.from({ length: 4 }, (_, index) => (
-            <OrgDirectoryCardSkeleton key={index} />
+            <ClubCardSkeleton key={index} />
           ))}
       {isFetchingNextPage &&
         Array.from({ length: 4 }, (_, index) => (
-          <OrgDirectoryCardSkeleton key={index} />
+          <ClubCardSkeleton key={index} />
         ))}
     </>
   );
