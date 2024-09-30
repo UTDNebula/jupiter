@@ -194,7 +194,7 @@ export const LeftArrowIcon: IconType = ({ fill }) => (
     width="30"
     height="30"
     viewBox="0 0 30 30"
-    fill="none"
+    fill={fill}
   >
     <path
       fillRule="evenodd"
@@ -211,7 +211,7 @@ export const RightArrowIcon: IconType = ({ fill }) => {
       width="30"
       height="30"
       viewBox="0 0 30 30"
-      fill="none"
+      fill={fill}
     >
       <path
         fillRule="evenodd"

@@ -2,11 +2,10 @@
 
 import { Key, type FC } from 'react';
 import React, { useEffect, useState } from 'react';
-import { api } from '@src/trpc/server';
 import DirectoryOrgs from './DirectoryOrgs';
-import { getServerAuthSession } from '@src/server/auth';
 import { Session } from 'next-auth';
 import { SelectClub } from '@src/server/db/models';
+import { LeftArrowIcon, RightArrowIcon } from '@src/icons/Icons';
 
 type Props = {
     clubs: SelectClub[],
@@ -30,13 +29,13 @@ const OrgDirectoryCarousel: FC<Props> = ({ clubs, session }) => {
                 {
                     <div className="buttons flex justify-between py-8">
                         {currentIndex > 0 && 
-                            <button onClick={prev} className="left-arrow w-12 h-12 bg-white absolute left-0">
-                                &lt;
+                            <button onClick={prev} className="left-arrow bg-white absolute left-0 p-2">
+                                <LeftArrowIcon fill={"black"}/>
                             </button>
                         }
                         {currentIndex < clubs.length - 1 &&
-                            <button onClick={next} className="right-arrow w-12 h-12 bg-white absolute right-0">
-                                &gt;
+                            <button onClick={next} className="right-arrow bg-white absolute right-0 p-2">
+                                <RightArrowIcon fill={"black"}/>
                             </button>
                         }
                     </div>
@@ -45,7 +44,7 @@ const OrgDirectoryCarousel: FC<Props> = ({ clubs, session }) => {
                     <div className="carousel-content-wrapper overflow-hidden w-full h-full">
                     <div
                         className="carousel-content flex w-full flex-shrink-0 flex-grow transition ease-in-out duration-500"
-                        style={{ transform: `translateX(-${currentIndex * 42.4}%)` }}
+                        style={{ transform: `translateX(-${currentIndex * 40.25}%)` }}
                     >
                         {clubs.map((club) => (
                             <div className="px-8 py-8">
