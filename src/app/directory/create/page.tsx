@@ -1,4 +1,4 @@
-import Header from '@src/components/BaseHeader';
+import Header from '@src/components/header/BaseHeader';
 import CreateClubForm from './createForm';
 import { getServerAuthSession } from '@src/server/auth';
 import { redirect } from 'next/navigation';

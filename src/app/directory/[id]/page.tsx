@@ -1,4 +1,4 @@
-import Header from '@src/components/BaseHeader';
+import Header from '@src/components/header/BaseHeader';
 import OrgHeader from '@src/components/OrgHeader';
 import OrgInfoSegment from '@src/components/OrgInfoSegment';
 import OrgUpcomingEvents from '@src/components/OrgUpcomingEvents';

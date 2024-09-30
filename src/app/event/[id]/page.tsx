@@ -1,4 +1,4 @@
-import { EventHeader } from '@src/components/BaseHeader';
+import { EventHeader } from '@src/components/header/BaseHeader';
 import { db } from '@src/server/db';
 import { and, eq } from 'drizzle-orm';
 import { type Metadata } from 'next';

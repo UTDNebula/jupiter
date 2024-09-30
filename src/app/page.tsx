@@ -1,4 +1,4 @@
-import Header from '../components/BaseHeader';
+import Header from '../components/header/BaseHeader';
 import Carousel from '../components/club/directory/Carousel';
 import TagFilter from '../components/club/directory/TagFilter';
 import OrgDirectoryGrid from '../components/club/directory/OrgDirectoryGrid';
