@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { useState, type TouchEventHandler } from 'react';
-import { LeftArrowIcon, RightArrowIcon } from '../icons/Icons';
+import { LeftArrowIcon, RightArrowIcon } from '../../../icons/Icons';
 import Link from 'next/link';
 import { type SelectClub } from '@src/server/db/models';
 

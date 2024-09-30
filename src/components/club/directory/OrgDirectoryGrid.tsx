@@ -3,7 +3,7 @@ import DirectoryOrgs from '../ClubCard';
 import { api } from '@src/trpc/server';
 import { getServerAuthSession } from '@src/server/auth';
 import InfiniteScrollGrid from './InfiniteScrollGrid';
-import ScrollTop from '../../ScrollTop';
+import ScrollTop from './ScrollTop';
 
 interface Props {
   tag?: string;

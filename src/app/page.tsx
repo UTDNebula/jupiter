@@ -1,5 +1,5 @@
 import Header from '../components/BaseHeader';
-import Carousel from '../components/Carousel';
+import Carousel from '../components/club/directory/Carousel';
 import TagFilter from '../components/club/directory/TagFilter';
 import OrgDirectoryGrid from '../components/club/directory/OrgDirectoryGrid';
 import type { Metadata } from 'next';
