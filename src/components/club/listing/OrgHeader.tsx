@@ -4,7 +4,7 @@ import type {
   SelectClub,
   SelectContact as Contacts,
 } from '@src/server/db/models';
-import JoinButton from './JoinButton';
+import JoinButton from '../JoinButton';
 import { getServerAuthSession } from '@src/server/auth';
 import Link from 'next/link';
 import { api } from '@src/trpc/server';

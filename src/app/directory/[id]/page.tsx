@@ -1,7 +1,7 @@
 import Header from '@src/components/header/BaseHeader';
-import OrgHeader from '@src/components/OrgHeader';
-import OrgInfoSegment from '@src/components/OrgInfoSegment';
-import OrgUpcomingEvents from '@src/components/OrgUpcomingEvents';
+import OrgHeader from '@src/components/club/listing/OrgHeader';
+import OrgInfoSegment from '@src/components/club/listing/OrgInfoSegment';
+import OrgUpcomingEvents from '@src/components/club/listing/OrgUpcomingEvents';
 import { api } from '@src/trpc/server';
 import { db } from '@src/server/db';
 import { eq } from 'drizzle-orm';
