@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { MoreIcon } from '../../icons/Icons';
 import { type RouterOutputs } from '@src/trpc/shared';
-import EventLikeButton from '../EventLikeButton';
+import EventLikeButton from './EventLikeButton';
 import { getServerAuthSession } from '@src/server/auth';
 import dynamic from 'next/dynamic';
 
