@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react';
 import { ProfileDropDown } from './ProfileDropDown';
 import { getServerAuthSession } from '@src/server/auth';
-import { ClubSearchBar, EventSearchBar } from './SearchBar';
+import { ClubSearchBar } from './searchBar/ClubSearchBar';
+import { EventSearchBar } from './searchBar/EventSearchBar';
 import SignInButton from './signInButton';
 import MobileNav from './MobileNav';
 import { api } from '@src/trpc/server';

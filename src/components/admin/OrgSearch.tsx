@@ -2,7 +2,7 @@
 
 import { api } from '@src/trpc/react';
 import { useState } from 'react';
-import { SearchBar } from '../SearchBar';
+import { DebouncedSearchBar } from '../searchBar/DebouncedSearchBar';
 import { type SelectClub } from '@src/server/db/models';
 
 type Props = {
@@ -21,7 +21,7 @@ export default function OrgSearch({ setOrg }: Props) {
     setSearch('');
   };
   return (
-    <SearchBar
+    <DebouncedSearchBar
       placeholder="Search for Clubs"
       setSearch={setSearch}
       searchResults={data || []}
