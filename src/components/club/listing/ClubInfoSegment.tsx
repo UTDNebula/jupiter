@@ -3,7 +3,7 @@ import { type FC } from 'react';
 import { type RouterOutputs } from '@src/trpc/shared';
 import { api } from '@src/trpc/server';
 
-const OrgInfoSegment: FC<{
+const ClubInfoSegment: FC<{
   club: NonNullable<RouterOutputs['club']['getDirectoryInfo']>;
 }> = async ({ club }) => {
   const isActive = await api.club.isActive({ id: club.id });
@@ -87,4 +87,4 @@ const OrgInfoSegment: FC<{
   );
 };
 
-export default OrgInfoSegment;
+export default ClubInfoSegment;

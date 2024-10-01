@@ -6,7 +6,7 @@ import { type SelectClub } from '@src/server/db/models';
 type Props = {
   club: SelectClub;
 };
-export default function OrgDescription({ club }: Props) {
+export default function ClubDescription({ club }: Props) {
   return (
     <Dialog.Root>
       <Dialog.Trigger className="rounded-md bg-slate-300 px-3 py-2 font-medium text-blue-500 transition-colors hover:bg-slate-400 hover:text-blue-700 focus:outline-none focus:ring focus:ring-blue-300">

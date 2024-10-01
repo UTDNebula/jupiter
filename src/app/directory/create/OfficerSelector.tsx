@@ -7,7 +7,7 @@ import {
   type FieldErrors,
 } from 'react-hook-form';
 import { type z } from 'zod';
-import { UserSearchBar } from '../../../components/searchBar/UserSearchBar';
+import { UserSearchBar } from '@src/components/searchBar/UserSearchBar';
 
 type OfficerSelectorProps = {
   control: Control<z.infer<typeof createClubSchema>>;

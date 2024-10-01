@@ -2,7 +2,7 @@
 import { api } from '@src/trpc/react';
 import { type Session } from 'next-auth';
 import { useEffect, useRef } from 'react';
-import DirectoryOrgs, { ClubCardSkeleton } from '../ClubCard';
+import ClubCard, { ClubCardSkeleton } from '../ClubCard';
 
 type Props = {
   session: Session | null;
@@ -21,7 +21,7 @@ export default function InfiniteScrollGrid({ session, tag }: Props) {
     );
 
   const observer = useRef<IntersectionObserver>();
-  const lastOrgElementRef = useRef<HTMLDivElement>(null);
+  const lastClubElementRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isLoading || isFetchingNextPage) return;
@@ -35,8 +35,8 @@ export default function InfiniteScrollGrid({ session, tag }: Props) {
       }
     });
 
-    if (lastOrgElementRef.current) {
-      observer.current.observe(lastOrgElementRef.current);
+    if (lastClubElementRef.current) {
+      observer.current.observe(lastClubElementRef.current);
     }
 
     return () => {
@@ -54,14 +54,10 @@ export default function InfiniteScrollGrid({ session, tag }: Props) {
                 clubIndex === page.clubs.length - 1;
               return (
                 <div
-                  ref={isLastElement ? lastOrgElementRef : null}
+                  ref={isLastElement ? lastClubElementRef : null}
                   key={club.id}
                 >
-                  <DirectoryOrgs
-                    club={club}
-                    session={session}
-                    priority={false}
-                  />
+                  <ClubCard club={club} session={session} priority={false} />
                 </div>
               );
             }),

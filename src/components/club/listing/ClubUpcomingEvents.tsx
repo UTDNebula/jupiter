@@ -4,7 +4,7 @@ import { type FC } from 'react';
 
 const MAX_DESCRIPTION_LENGTH = 150;
 
-const OrgUpcomingEvents: FC<{ clubId: string }> = async ({ clubId }) => {
+const ClubUpcomingEvents: FC<{ clubId: string }> = async ({ clubId }) => {
   const cur_time = new Date();
 
   const data = await api.event.byClubId({
@@ -51,4 +51,4 @@ const OrgUpcomingEvents: FC<{ clubId: string }> = async ({ clubId }) => {
   );
 };
 
-export default OrgUpcomingEvents;
+export default ClubUpcomingEvents;

@@ -13,7 +13,7 @@ type Club = SelectClub & {
   contacts?: Contacts[];
   tags: string[];
 };
-const OrgHeader = async ({ club }: { club: Club }) => {
+const ClubHeader = async ({ club }: { club: Club }) => {
   const session = await getServerAuthSession();
   const memberType = await api.club.memberType({ id: club.id });
   return (
@@ -83,4 +83,4 @@ const OrgHeader = async ({ club }: { club: Club }) => {
   );
 };
 
-export default OrgHeader;
+export default ClubHeader;

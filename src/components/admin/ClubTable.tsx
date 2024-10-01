@@ -18,11 +18,11 @@ import { useRouter } from 'next/navigation';
 import { type Club, fuzzyFilter } from '@src/utils/table';
 import StatusFilter from './StatusFilter';
 
-export default function OrgTable({ clubs }: { clubs: Club[] }) {
+export default function ClubTable({ clubs }: { clubs: Club[] }) {
   const router = useRouter();
   const parentRef = useRef<HTMLDivElement>(null);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const { mutate } = api.admin.deleteOrg.useMutation({
+  const { mutate } = api.admin.deleteClub.useMutation({
     onSuccess: () => router.refresh(),
   });
 

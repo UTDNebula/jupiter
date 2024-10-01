@@ -6,10 +6,10 @@ import { DebouncedSearchBar } from '../searchBar/DebouncedSearchBar';
 import { type SelectClub } from '@src/server/db/models';
 
 type Props = {
-  setOrg: ({ id, name }: { id: string; name: string }) => void;
+  setClub: ({ id, name }: { id: string; name: string }) => void;
 };
 
-export default function OrgSearch({ setOrg }: Props) {
+export default function ClubSearch({ setClub }: Props) {
   const [search, setSearch] = useState<string>('');
   const { data } = api.club.byName.useQuery(
     { name: search },
@@ -17,7 +17,7 @@ export default function OrgSearch({ setOrg }: Props) {
   );
 
   const onClickSearchResult = (club: SelectClub) => {
-    setOrg({ id: club.id, name: club.name });
+    setClub({ id: club.id, name: club.name });
     setSearch('');
   };
   return (

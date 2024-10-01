@@ -1,11 +1,11 @@
-import OrgTable from '@src/components/admin/OrgTable';
+import ClubTable from '@src/components/admin/ClubTable';
 import { api } from '@src/trpc/server';
 
 export default async function Page() {
-  const clubs = await api.admin.allOrgs();
+  const clubs = await api.admin.allClubs();
   return (
     <div className="m-5 md:pl-72">
-      <OrgTable clubs={clubs} />
+      <ClubTable clubs={clubs} />
     </div>
   );
 }
