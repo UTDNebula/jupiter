@@ -64,6 +64,15 @@ export const clubRouter = createTRPCRouter({
 
     return clubs.slice(0, 5);
   }),
+  byNameNoLimit: publicProcedure.input(byNameSchema).query(async ({ input, ctx }) => {
+    const { name } = input;
+    const clubs = await ctx.db.query.club.findMany({
+      where: (club) =>
+        and(ilike(club.name, `%${name}%`), eq(club.approved, 'approved')),
+    });
+
+    return clubs;
+  }),
   byId: publicProcedure.input(byIdSchema).query(async ({ input, ctx }) => {
     const { id } = input;
     try {

@@ -25,6 +25,7 @@ type SearchBarProps<T extends SearchElement> = {
   setSearch: Dispatch<SetStateAction<string>>;
   searchResults?: Array<T>;
   onClick?: (input: T) => void;
+  handleKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 };
 
 export const SearchBar = <T extends SearchElement>({
@@ -33,6 +34,7 @@ export const SearchBar = <T extends SearchElement>({
   setSearch,
   searchResults,
   onClick,
+  handleKeyDown,
 }: SearchBarProps<T>) => {
   const [input, setInput] = useState<string>(value ?? '');
   const [focused, setFocused] = useState(false);
@@ -62,6 +64,7 @@ export const SearchBar = <T extends SearchElement>({
           onChange={handleSearch}
           onFocus={() => setFocused(true)}
           onBlur={() => setTimeout(() => setFocused(false), 300)}
+          onKeyDown={handleKeyDown}
         />
         {input && focused && searchResults && searchResults.length > 0 && (
           <div className="absolute left-0 right-0 top-full z-50 mt-1 rounded-sm shadow-lg">
@@ -92,12 +95,18 @@ export const ClubSearchBar = () => {
   const onClickSearchResult = (club: Club) => {
     router.push(`/directory/${club.id}`);
   };
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      router.push(`/clubSearch?search=${encodeURIComponent(search)}`);
+    }
+  };
   return (
     <SearchBar
       placeholder="Search for Clubs"
       setSearch={setSearch}
       searchResults={data || []}
       onClick={onClickSearchResult}
+      handleKeyDown={handleKeyDown}
     />
   );
 };
