@@ -1,5 +1,5 @@
 import { type FC } from 'react';
-import DirectoryOrgs from './DirectoryOrgs';
+import ClubCard from '../ClubCard';
 import { api } from '@src/trpc/server';
 import { getServerAuthSession } from '@src/server/auth';
 import InfiniteScrollGrid from './InfiniteScrollGrid';
@@ -9,14 +9,14 @@ interface Props {
   tag?: string;
 }
 
-const OrgDirectoryGrid: FC<Props> = async ({ tag }) => {
+const ClubDirectoryGrid: FC<Props> = async ({ tag }) => {
   const { clubs } = await api.club.all({ tag, limit: 9 });
   const session = await getServerAuthSession();
 
   return (
     <div className="grid w-full auto-rows-fr grid-cols-[repeat(auto-fill,320px)] justify-center gap-16 pb-4">
       {clubs.map((club) => (
-        <DirectoryOrgs key={club.id} club={club} session={session} priority />
+        <ClubCard key={club.id} club={club} session={session} priority />
       ))}
       {clubs.length === 9 && <InfiniteScrollGrid tag={tag} session={session} />}
       <ScrollTop />
@@ -24,4 +24,4 @@ const OrgDirectoryGrid: FC<Props> = async ({ tag }) => {
   );
 };
 
-export default OrgDirectoryGrid;
+export default ClubDirectoryGrid;

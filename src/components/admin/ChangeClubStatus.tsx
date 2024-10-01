@@ -4,27 +4,27 @@ import { api } from '@src/trpc/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-type Props = { status: 'approved' | 'pending' | 'rejected'; orgId: string };
+type Props = { status: 'approved' | 'pending' | 'rejected'; clubId: string };
 
-export default function ChangeOrgStatus({ status: initial, orgId }: Props) {
+export default function ChangeClubStatus({ status: initial, clubId }: Props) {
   const router = useRouter();
   const [status, setStatus] = useState<Props['status']>(initial);
-  const { mutate } = api.admin.changeOrgStatus.useMutation({
+  const { mutate } = api.admin.changeClubStatus.useMutation({
     onSuccess: () => router.refresh(),
   });
 
   function onChange(e: React.ChangeEvent<HTMLSelectElement>) {
     switch (e.target.value) {
       case 'approved':
-        mutate({ orgId, status: 'approved' });
+        mutate({ clubId: clubId, status: 'approved' });
         setStatus('approved');
         break;
       case 'pending':
-        mutate({ orgId, status: 'pending' });
+        mutate({ clubId: clubId, status: 'pending' });
         setStatus('pending');
         break;
       case 'rejected':
-        mutate({ orgId, status: 'rejected' });
+        mutate({ clubId: clubId, status: 'rejected' });
         setStatus('rejected');
         break;
     }

@@ -1,9 +1,9 @@
 import { api } from '@src/trpc/server';
 import EditClubForm from './EditClubForm';
-import Header from '@src/components/BaseHeader';
+import Header from '@src/components/header/BaseHeader';
 import { notFound } from 'next/navigation';
 import EditContactForm from './EditContactForm';
-import BackButton from '@src/components/BlueBackButton';
+import { BlueBackButton } from '@src/components/backButton';
 
 export default async function Page({
   params: { clubId },
@@ -17,7 +17,7 @@ export default async function Page({
       <div className="md:pl-72">
         <Header />
         <div className="flex h-full w-full flex-col gap-y-5 p-5">
-          <BackButton />
+          <BlueBackButton />
           <EditClubForm club={club} />
           <EditContactForm club={club} />
         </div>
