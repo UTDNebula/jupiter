@@ -22,12 +22,12 @@ export const ClubSearchComponent = ({
     return <p />;
   }
   if (data.length === 0) {
-    return <p>No results found for "{userSearch}".</p>;
+    return <p>No results found</p>;
   }
 
   return (
     <div className="grid w-full auto-rows-fr grid-cols-[repeat(auto-fill,320px)] justify-center gap-16 pb-4">
-      {data.map((club: Club, index: number) => (
+      {data.map((club: Club) => (
         <DirectoryOrgs key={club.id} club={club} session={session} priority />
       ))}
     </div>
