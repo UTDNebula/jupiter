@@ -18,6 +18,8 @@ export type DebouncedSearchBarProps<T extends SearchElement> = {
   setSearch: Dispatch<SetStateAction<string>>;
   searchResults?: Array<T>;
   onClick?: (input: T) => void;
+  submitButton?: boolean;
+  submitLogic?: () => void;
 };
 export const DebouncedSearchBar = <T extends SearchElement>({
   placeholder,
@@ -25,6 +27,8 @@ export const DebouncedSearchBar = <T extends SearchElement>({
   setSearch,
   searchResults,
   onClick,
+  submitButton,
+  submitLogic,
 }: DebouncedSearchBarProps<T>) => {
   const [input, setInput] = useState<string>(value ?? '');
   const [focused, setFocused] = useState(false);
@@ -48,6 +52,8 @@ export const DebouncedSearchBar = <T extends SearchElement>({
         onChange={handleSearch}
         onFocus={() => setFocused(true)}
         onBlur={() => setTimeout(() => setFocused(false), 300)}
+        submitButton={submitButton}
+        submitLogic={submitLogic}
       />
       {input && focused && searchResults && searchResults.length > 0 && (
         <div className="absolute left-0 right-0 top-full z-50 mt-1 rounded-sm shadow-lg">
