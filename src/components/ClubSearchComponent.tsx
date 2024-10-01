@@ -1,7 +1,7 @@
 'use client';
 import { api } from '@src/trpc/react';
 import DirectoryOrgs from './DirectoryOrgs';
-import type { SelectClub as Club } from '@src/server/db/models'; // Assuming you use this type
+import type { SelectClub as Club } from '@src/server/db/models';
 import { type Session } from 'next-auth';
 
 interface ClubSearchComponentProps {

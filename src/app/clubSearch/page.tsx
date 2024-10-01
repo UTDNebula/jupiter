@@ -1,5 +1,6 @@
 import Header from '@src/components/BaseHeader';
 import { ClubSearchComponent } from '@src/components/ClubSearchComponent';
+import { getServerAuthSession } from '@src/server/auth';
 
 type Params = {
   searchParams: { [key: string]: string | undefined };
@@ -8,12 +9,13 @@ type Params = {
 const clubSearch = async (props: Params) => {
   const { searchParams } = props;
   const userSearch = searchParams['search'] || '';
+  const session = await getServerAuthSession();
 
   return (
     <main className="md:pl-72">
       <div>
         <Header />
-        <ClubSearchComponent userSearch={userSearch} />
+        <ClubSearchComponent userSearch={userSearch} session={session} />
       </div>
     </main>
   );
