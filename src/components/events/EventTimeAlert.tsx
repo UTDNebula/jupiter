@@ -10,6 +10,7 @@ import { type ReactNode } from 'react';
 type EventTimeAlertProps = {
   event: SelectEvent;
 };
+
 type BaseProps = { children: ReactNode; className?: string };
 const Base = ({ children, className }: BaseProps) => {
   return (
@@ -22,19 +23,43 @@ const Base = ({ children, className }: BaseProps) => {
     </div>
   );
 };
-const EventTimeAlert = ({ event }: EventTimeAlertProps) => {
-  const now = new Date();
+
+import React, {useState, useEffect} from 'react';
+
+const EventTimeAlert = ({ event }: EventTimeAlertProps) => 
+{
+  const [now, setNow] = useState(new Date());  
+  
+  useEffect(() => {
+    const intervalId = setInterval(() =>
+    {
+      setNow (new Date());
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+
+  }, []);
+
   const start = event.startTime;
   const hourDiff = differenceInHours(start, now);
-  if (event.startTime.getTime() < Date.now()) {
-    if (event.endTime.getTime() < Date.now()) {
+
+  if (event.startTime.getTime() < Date.now())
+  {
+    if (event.endTime.getTime() < Date.now()) 
+    {
       return <Base className="bg-red-600">over :(</Base>;
-    } else {
+    } 
+    else 
+    {
       return <Base className="bg-green-600">NOW</Base>;
     }
-  } else {
-    if (differenceInDays(start, now) < 1) {
-      if (hourDiff < 1) {
+  } 
+  else 
+  {
+    if (differenceInDays(start, now) < 1) 
+    {
+      if (hourDiff < 1) 
+      {
         return (
           <Base className="bg-red-600">
             {differenceInMinutes(start, now)} minutes
@@ -45,7 +70,9 @@ const EventTimeAlert = ({ event }: EventTimeAlertProps) => {
       } else {
         return <Base className="bg-black">{hourDiff} hours</Base>;
       }
-    } else {
+    } 
+    else 
+    {
       return (
         <Base className="bg-black">{differenceInDays(start, now)} days</Base>
       );
