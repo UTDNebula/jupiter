@@ -1,6 +1,6 @@
 'use client';
 
-import { Key, type FC } from 'react';
+import { Key, useRef, type FC } from 'react';
 import React, { useEffect, useState } from 'react';
 import DirectoryOrgs from './DirectoryOrgs';
 import { Session } from 'next-auth';
@@ -14,13 +14,19 @@ type Props = {
 
 const OrgDirectoryCarousel: FC<Props> = ({ clubs, session }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const clubCard = useRef(null);
+    const clubCardElement: HTMLDivElement = clubCard.current!;
+    let clubCardWidth = 40;
+    if (clubCardElement!) {
+        clubCardWidth = clubCardElement.scrollWidth / 9.05;
+    }
 
     function prev() {
-        setCurrentIndex(currentIndex - 1)
+        setCurrentIndex(currentIndex - 1);
     }
 
     function next() {
-        setCurrentIndex(currentIndex + 1)
+        setCurrentIndex(currentIndex + 1);
     }
 
     if (session) {
@@ -42,16 +48,16 @@ const OrgDirectoryCarousel: FC<Props> = ({ clubs, session }) => {
                 }
                 <div className="carousel-wrapper flex w-full relative">
                     <div className="carousel-content-wrapper overflow-hidden w-full h-full">
-                    <div
-                        className="carousel-content flex w-full flex-shrink-0 flex-grow transition ease-in-out duration-500"
-                        style={{ transform: `translateX(-${currentIndex * 40.25}%)` }}
-                    >
-                        {clubs.map((club) => (
-                            <div className="px-8 py-8">
-                                <DirectoryOrgs key={club.id} club={club} session={session} priority />
-                            </div>
-                        ))}
-                    </div>
+                        <div
+                            className="carousel-content flex w-full flex-shrink-0 flex-grow transition ease-in-out duration-500"
+                            style={{ transform: `translateX(-${currentIndex * clubCardWidth}%)` }}
+                        >
+                            {clubs.map((club) => (
+                                <div className="pr-8 py-8" ref={clubCard}>
+                                    <DirectoryOrgs key={club.id} club={club} session={session} priority />
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
