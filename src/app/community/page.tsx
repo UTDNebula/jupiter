@@ -4,8 +4,7 @@ import { getServerAuthSession } from '@src/server/auth';
 import { type Metadata } from 'next';
 import Image from 'next/image';
 import React from 'react';
-import CommunityEvents from './communityEvents';
-import OrgDirectoryGrid from '@src/components/OrgDirectoryGrid';
+import CommunityEvents from '../../components/CommunityEvents';
 import OrgDirectoryCarousel from '@src/components/OrgDirectoryCarousel';
 
 export const metadata: Metadata = {
@@ -23,6 +22,7 @@ export const metadata: Metadata = {
 const Community = async () => {
   const { clubs } = await api.club.all({});
   const session = await getServerAuthSession();
+  const events = await api.userMetadata.getEvents();
 
   if (!session) {
     return (
@@ -43,10 +43,14 @@ const Community = async () => {
     <main className="h-full md:pl-72">
       <Header />
       <div className="mx-6 h-full p-2">
-        <h1 className="text-2xl font-bold text-slate-500">Community Events</h1>
-        <CommunityEvents />
-        <h1 className="text-2xl font-bold text-slate-500">Organizations</h1>
-        <OrgDirectoryCarousel clubs={clubs} session={session} />
+        <div className="pb-8">
+          <h1 className="text-2xl font-bold text-slate-500">Community Events</h1>
+          <CommunityEvents events={events} />
+        </div>
+        <div className="pb-8">
+          <h1 className="text-2xl font-bold text-slate-500">Organizations</h1>
+          <OrgDirectoryCarousel clubs={clubs} session={session} />
+        </div>
       </div>
     </main>
   );

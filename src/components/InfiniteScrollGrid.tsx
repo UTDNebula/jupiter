@@ -3,6 +3,7 @@ import { api } from '@src/trpc/react';
 import { type Session } from 'next-auth';
 import { useEffect, useRef } from 'react';
 import DirectoryOrgs, { OrgDirectoryCardSkeleton } from './DirectoryOrgs';
+import { type SelectClub } from '@src/server/db/models';
 
 type Props = {
   session: Session | null;
@@ -14,7 +15,7 @@ export default function InfiniteScrollGrid({ session, tag }: Props) {
     api.club.all.useInfiniteQuery(
       { tag, limit: 9 },
       {
-        getNextPageParam: (lastPage: { clubs: string | any[]; cursor: any; }) =>
+        getNextPageParam: (lastPage: { clubs: SelectClub[]; cursor: any; }) =>
           lastPage.clubs.length < 9 ? undefined : lastPage.cursor,
         initialCursor: 9,
       },
@@ -25,7 +26,6 @@ export default function InfiniteScrollGrid({ session, tag }: Props) {
 
   useEffect(() => {
     if (isLoading || isFetchingNextPage) return;
-
     if (observer.current) observer.current.disconnect();
 
     observer.current = new IntersectionObserver((entries) => {
@@ -47,7 +47,7 @@ export default function InfiniteScrollGrid({ session, tag }: Props) {
   return (
     <>
       {data && !isLoading
-        ? data.pages.map((page: { clubs: any[]; }, index: number) =>
+        ? data.pages.map((page: { clubs: SelectClub[]; }, index: number) =>
             page.clubs.map((club, clubIndex) => {
               const isLastElement =
                 index === data.pages.length - 1 &&

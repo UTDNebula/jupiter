@@ -1,10 +1,10 @@
 'use client';
 
-import { Key, useRef, type FC } from 'react';
-import React, { useEffect, useState } from 'react';
+import { useRef, type FC } from 'react';
+import React, { useState } from 'react';
 import DirectoryOrgs from './DirectoryOrgs';
-import { Session } from 'next-auth';
-import { SelectClub } from '@src/server/db/models';
+import { type Session } from 'next-auth';
+import { type SelectClub } from '@src/server/db/models';
 import { LeftArrowIcon, RightArrowIcon } from '@src/icons/Icons';
 
 type Props = {
@@ -16,9 +16,9 @@ const OrgDirectoryCarousel: FC<Props> = ({ clubs, session }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const clubCard = useRef(null);
     const clubCardElement: HTMLDivElement = clubCard.current!;
-    let clubCardWidth = 40;
-    if (clubCardElement!) {
-        clubCardWidth = clubCardElement.scrollWidth / 9.05;
+    let clubCardWidth = 0;
+    if (clubCardElement) {
+        clubCardWidth = clubCardElement.scrollWidth;
     }
 
     function prev() {
@@ -33,7 +33,7 @@ const OrgDirectoryCarousel: FC<Props> = ({ clubs, session }) => {
         return (
             <div className="carousel-container w-full flex flex-col relative">
                 {
-                    <div className="buttons flex justify-between py-8">
+                    <div className="buttons flex justify-between pt-4 pb-8">
                         {currentIndex > 0 && 
                             <button onClick={prev} className="left-arrow bg-white absolute left-0 p-2">
                                 <LeftArrowIcon fill={"black"}/>
@@ -50,10 +50,10 @@ const OrgDirectoryCarousel: FC<Props> = ({ clubs, session }) => {
                     <div className="carousel-content-wrapper overflow-hidden w-full h-full">
                         <div
                             className="carousel-content flex w-full flex-shrink-0 flex-grow transition ease-in-out duration-500"
-                            style={{ transform: `translateX(-${currentIndex * clubCardWidth}%)` }}
+                            style={{ transform: `translateX(-${currentIndex * clubCardWidth}px)` }}
                         >
                             {clubs.map((club) => (
-                                <div className="pr-8 py-8" ref={clubCard}>
+                                <div className="pr-8 py-8" key={club.id} ref={clubCard}>
                                     <DirectoryOrgs key={club.id} club={club} session={session} priority />
                                 </div>
                             ))}

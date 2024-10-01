@@ -1,4 +1,3 @@
-import { Key, type FC } from 'react';
 import DirectoryOrgs from './DirectoryOrgs';
 import { api } from '@src/trpc/server';
 import { getServerAuthSession } from '@src/server/auth';
@@ -6,10 +5,10 @@ import InfiniteScrollGrid from './InfiniteScrollGrid';
 import ScrollTop from './ScrollTop';
 
 export interface Props {
-  tag?: string;
+  tag: string;
 }
 
-const OrgDirectoryGrid: FC<Props> = async ({ tag }) => {
+const OrgDirectoryGrid = async ({ tag }: Props) => {
   const { clubs } = await api.club.all({ tag, limit: 9 });
   const session = await getServerAuthSession();
 

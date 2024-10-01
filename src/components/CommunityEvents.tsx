@@ -1,11 +1,12 @@
-'use server';
-
 import EventCard from '@src/components/events/EventCard';
-import { api } from '@src/trpc/server';
+import { SelectEvent } from '@src/server/db/models';
 import Link from 'next/link';
 
-const CommunityEvents = async () => {
-  const events = await api.userMetadata.getEvents();
+type Props = {
+  events: SelectEvent[]
+}
+
+const CommunityEvents = ({ events }: Props) => {
   if (events.length == 0) {
     return (
       <div className="font-bold text-slate-500">
@@ -24,7 +25,7 @@ const CommunityEvents = async () => {
   }
   return (
     <div
-      className="group flex w-full flex-col items-center space-y-7.5 pt-10 sm:items-start"
+      className="group flex w-full flex-col items-center space-y-7.5 pt-4 sm:items-start"
       data-view={'list'}
     >
       {events.map((event) => (
