@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import type { SelectClub as Club } from '@src/server/db/models';
 import { api } from '@src/trpc/react';
 import { DebouncedSearchBar } from './DebouncedSearchBar';
@@ -9,29 +9,30 @@ type EventClubSearchBarProps = {
 };
 export const EventClubSearchBar = ({ addClub }: EventClubSearchBarProps) => {
   const [search, setSearch] = useState('');
-  const [res, setRes] = useState<Club[]>([]);
   const utils = api.useUtils();
-  const clubQuery = api.club.byName.useQuery(
+  const { data } = api.club.byName.useQuery(
     { name: search },
     {
       enabled: !!search,
     },
   );
-  useEffect(() => {
-    if (clubQuery.data) {
-      setRes(clubQuery.data);
-    }
-  }, [clubQuery.data]);
+  const submit = (club: Club) => {
+    void utils.club.byId.prefetch({ id: club.id });
+    addClub(club.id);
+    setSearch('');
+  };
   return (
     <DebouncedSearchBar
       placeholder="Select a club"
       setSearch={setSearch}
       value={search}
-      searchResults={res}
-      onClick={(club) => {
-        void utils.club.byId.prefetch({ id: club.id });
-        addClub(club.id);
-        setSearch('');
+      searchResults={data || []}
+      onClick={submit}
+      submitButton
+      submitLogic={() => {
+        if (data && data[0]) {
+          submit(data[0]);
+        }
       }}
     />
   );
