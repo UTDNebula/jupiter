@@ -2,7 +2,7 @@
 import { format, isSameDay } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
-import { MoreIcon } from '../../icons/Icons';
+import { MoreIcon } from '@src/icons/Icons';
 import { type RouterOutputs } from '@src/trpc/shared';
 import EventLikeButton from './EventLikeButton';
 import { getServerAuthSession } from '@src/server/auth';
