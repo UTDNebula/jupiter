@@ -15,7 +15,7 @@ export default function InfiniteScrollGrid({ session, tag }: Props) {
     api.club.all.useInfiniteQuery(
       { tag, limit: 9 },
       {
-        getNextPageParam: (lastPage: { clubs: SelectClub[]; cursor: any; }) =>
+        getNextPageParam: (lastPage) =>
           lastPage.clubs.length < 9 ? undefined : lastPage.cursor,
         initialCursor: 9,
       },
@@ -47,7 +47,7 @@ export default function InfiniteScrollGrid({ session, tag }: Props) {
   return (
     <>
       {data && !isLoading
-        ? data.pages.map((page: { clubs: SelectClub[]; }, index: number) =>
+        ? data.pages.map((page: { clubs: SelectClub[] }, index: number) =>
             page.clubs.map((club, clubIndex) => {
               const isLastElement =
                 index === data.pages.length - 1 &&
