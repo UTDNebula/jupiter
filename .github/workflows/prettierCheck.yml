@@ -19,4 +19,4 @@ jobs:
       - name: generate errors/summary
         run: .github/workflows/generateCheck.sh
         env:
-          status: ${{ steps.prettier.outcome == 'success' && 0 || 1 }}
+          status: ${{ steps.prettier.outcome }}
