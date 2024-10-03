@@ -16,9 +16,11 @@ jobs:
           npm i --no-save prettier prettier-plugin-tailwindcss
           mv package.json.bak package.json
       - name: Run prettier
+        id: prettier
+        continue-on-error: true
         run: |
-          files=`npx prettier . -l` || st=$? && st=$?
-          echo status=`echo $st`>>"$GITHUB_ENV"
-          echo files=`echo $files`>> "$GITHUB_ENV"
+          echo "files=${npx prettier . -l}">> "$GITHUB_ENV"
       - name: generate errors/summary
         run: .github/workflows/generateCheck.sh
+        env:
+          status: ${{ success() && 0 || 1 }}
