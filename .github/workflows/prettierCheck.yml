@@ -11,15 +11,11 @@ jobs:
           node-version: 18
           cache: 'npm'
       - name: Run npm install
-        run: |
-          mv package.json package.json.bak
-          npm i --no-save prettier prettier-plugin-tailwindcss
-          mv package.json.bak package.json
+        run: npm ci
       - name: Run prettier
         id: prettier
         continue-on-error: true
-        run: |
-          echo files=`npx prettier . -l` >> "$GITHUB_ENV"
+        run: echo files=`npx prettier . -l` >> "$GITHUB_ENV"
       - name: generate errors/summary
         run: .github/workflows/generateCheck.sh
         env:
