@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { UserSearchBar } from '@src/components/SearchBar';
+import { UserSearchBar } from '@src/components/searchBar/UserSearchBar';
 import { api } from '@src/trpc/react';
 import { editOfficerSchema } from '@src/utils/formSchemas';
 import { useRouter } from 'next/navigation';
