@@ -21,6 +21,12 @@ export const ClubSearchBar = () => {
       setSearch={setSearch}
       searchResults={data || []}
       onClick={onClickSearchResult}
+      submitButton
+      submitLogic={() => {
+        if (data && data[0]) {
+          onClickSearchResult(data[0]);
+        }
+      }}
     />
   );
 };
