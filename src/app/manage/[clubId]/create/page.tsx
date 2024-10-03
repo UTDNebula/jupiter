@@ -29,4 +29,3 @@ const Page = async ({ params }: { params: { clubId: string } }) => {
   );
 };
 export default Page;
-
