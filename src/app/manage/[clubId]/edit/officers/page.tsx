@@ -1,5 +1,5 @@
-import Header from '@src/components/BaseHeader';
-import BackButton from '@src/components/BlueBackButton';
+import Header from '@src/components/header/BaseHeader';
+import { BlueBackButton } from '@src/components/backButton';
 import EditOfficerForm from './EditOfficerForm';
 import { api } from '@src/trpc/server';
 import { getServerAuthSession } from '@src/server/auth';
@@ -28,7 +28,7 @@ export default async function Page({
     <main className="h-full md:pl-72">
       <Header />
       <div className="flex flex-col gap-y-2 px-5">
-        <BackButton />
+        <BlueBackButton />
         <h1 className="text-2xl font-extrabold text-blue-primary">
           Edit club officers
         </h1>

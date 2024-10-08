@@ -1,4 +1,4 @@
-import { EventHeader } from '@src/components/BaseHeader';
+import { EventHeader } from '@src/components/header/BaseHeader';
 import { db } from '@src/server/db';
 import { and, eq } from 'drizzle-orm';
 import { type Metadata } from 'next';
@@ -8,7 +8,7 @@ import Image from 'next/image';
 import CountdownTimer from './CountdownTimer';
 import Link from 'next/link';
 import { getServerAuthSession } from '@src/server/auth';
-import RegisterButton from '@src/components/RegisterButton';
+import RegisterButton from '@src/app/event/[id]/RegisterButton';
 
 type Params = { params: { id: string } };
 
