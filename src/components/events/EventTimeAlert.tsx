@@ -6,6 +6,7 @@ import {
   differenceInMinutes,
 } from 'date-fns';
 import { type ReactNode } from 'react';
+import {useState, useEffect} from 'react';
 
 type EventTimeAlertProps = {
   event: SelectEvent;
@@ -24,16 +25,16 @@ const Base = ({ children, className }: BaseProps) => {
   );
 };
 
-import React, {useState, useEffect} from 'react';
+
 
 const EventTimeAlert = ({ event }: EventTimeAlertProps) => 
 {
-  const [now, setNow] = useState(new Date());  
+  const [now, setNow] = useState(Date.now());  
   
   useEffect(() => {
     const intervalId = setInterval(() =>
     {
-      setNow (new Date());
+      setNow (Date.now());
     }, 1000);
 
     return () => clearInterval(intervalId);
@@ -43,9 +44,9 @@ const EventTimeAlert = ({ event }: EventTimeAlertProps) =>
   const start = event.startTime;
   const hourDiff = differenceInHours(start, now);
 
-  if (event.startTime.getTime() < Date.now())
+  if (event.startTime.getTime() < now)
   {
-    if (event.endTime.getTime() < Date.now()) 
+    if (event.endTime.getTime() < now) 
     {
       return <Base className="bg-red-600">over :(</Base>;
     } 
