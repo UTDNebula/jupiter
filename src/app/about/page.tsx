@@ -1,4 +1,4 @@
-import Header from '@src/components/BaseHeader';
+import Header from '@src/components/header/BaseHeader';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
