@@ -7,7 +7,7 @@ import { TRPCReactProvider } from '@src/trpc/react';
 import Sidebar from '@src/components/nav/Sidebar';
 import { type Metadata } from 'next';
 
-import GoogleAnalytics from '@src/components/googleAnalytics';
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -43,12 +43,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <GoogleAnalytics />
       <body className={`font-sans ${inter.variable}`}>
         <TRPCReactProvider headers={headers()}>
           <Sidebar />
           <div className="max-h-screen overflow-y-scroll">{children}</div>
         </TRPCReactProvider>
+        <GoogleAnalytics gaId="G-FYTBHVKNG6" />
       </body>
     </html>
   );
