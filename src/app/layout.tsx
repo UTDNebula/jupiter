@@ -8,6 +8,7 @@ import Sidebar from '@src/components/nav/Sidebar';
 import { type Metadata } from 'next';
 
 import { Analytics } from '@vercel/analytics/react';
+import GoogleAnalytics from '@src/components/googleAnalytics';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -43,6 +44,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <GoogleAnalytics />
       <body className={`font-sans ${inter.variable}`}>
         <TRPCReactProvider headers={headers()}>
           <Sidebar />
