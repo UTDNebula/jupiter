@@ -7,7 +7,6 @@ import { TRPCReactProvider } from '@src/trpc/react';
 import Sidebar from '@src/components/nav/Sidebar';
 import { type Metadata } from 'next';
 
-import { Analytics } from '@vercel/analytics/react';
 import GoogleAnalytics from '@src/components/googleAnalytics';
 
 const inter = Inter({
@@ -50,7 +49,6 @@ export default function RootLayout({
           <Sidebar />
           <div className="max-h-screen overflow-y-scroll">{children}</div>
         </TRPCReactProvider>
-        <Analytics />
       </body>
     </html>
   );
