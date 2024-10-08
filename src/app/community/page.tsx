@@ -22,9 +22,8 @@ export const metadata: Metadata = {
 const Community = async () => {
   const { clubs } = await api.club.all({});
   const session = await getServerAuthSession();
-  const events = await api.userMetadata.getEvents();
 
-  if (!session) {
+  if (!session || !api.userMetadata) {
     return (
       <main className="h-full md:pl-72">
         <Header />
@@ -39,6 +38,9 @@ const Community = async () => {
       </main>
     );
   }
+
+  const events = await api.userMetadata.getEvents();
+
   return (
     <main className="h-full md:pl-72">
       <Header />

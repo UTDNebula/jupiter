@@ -2,8 +2,22 @@ import EventCard from '@src/components/events/EventCard';
 import { SelectEvent } from '@src/server/db/models';
 import Link from 'next/link';
 
+type Event = SelectEvent & {
+  liked: boolean;
+  club: {
+    id: string;
+    name: string;
+    description: string;
+    image: string;
+    tags: string[];
+    approved: "approved" | "rejected" | "pending";
+    profileImage: string | null;
+    soc: boolean;
+  }
+}
+
 type Props = {
-  events: SelectEvent[]
+  events: Event[];
 }
 
 const CommunityEvents = ({ events }: Props) => {
