@@ -2,10 +2,10 @@
 
 import { useRef, type FC } from 'react';
 import React, { useState } from 'react';
-import DirectoryOrgs from './DirectoryOrgs';
 import { type Session } from 'next-auth';
 import { type SelectClub } from '@src/server/db/models';
 import { LeftArrowIcon, RightArrowIcon } from '@src/icons/Icons';
+import ClubCard from './club/ClubCard';
 
 type Props = {
     clubs: SelectClub[],
@@ -54,7 +54,7 @@ const OrgDirectoryCarousel: FC<Props> = ({ clubs, session }) => {
                         >
                             {clubs.map((club) => (
                                 <div className="pr-8 py-8" key={club.id} ref={clubCard}>
-                                    <DirectoryOrgs key={club.id} club={club} session={session} priority />
+                                    <ClubCard key={club.id} club={club} session={session} priority />
                                 </div>
                             ))}
                         </div>

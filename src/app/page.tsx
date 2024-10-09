@@ -33,7 +33,7 @@ const Home = async (props: Params) => {
           <Carousel clubs={onlyClubs} />
         </div>
         <TagFilter tags={tags} />
-        <ClubDirectoryGrid tag={props.searchParams.tag!} />
+        <ClubDirectoryGrid tag={props.searchParams.tag} />
       </div>
     </main>
   );
