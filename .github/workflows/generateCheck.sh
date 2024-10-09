@@ -1,4 +1,4 @@
-if [ $files == '' ]; then
+if [ -z "${files}" ]; then
   echo "## Formatting Check passed 🥳" >>$GITHUB_STEP_SUMMARY
   echo "All files are formatted correctly" >>$GITHUB_STEP_SUMMARY
   exit 0
