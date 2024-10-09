@@ -16,7 +16,7 @@ jobs:
         id: prettier
         continue-on-error: true
         run: |
-          echo "files=howdy" >> "$GITHUB_ENV"
+          echo files=$(npx prettier . -l | sed -e '1,4d' ) >> "$GITHUB_ENV"
       - name: generate errors/summary
         run: .github/workflows/generateCheck.sh
         env:

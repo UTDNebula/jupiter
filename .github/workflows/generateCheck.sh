@@ -3,7 +3,6 @@ if [ -z "${files}" ]; then
   echo "All files are formatted correctly" >>$GITHUB_STEP_SUMMARY
   exit 0
 else
-  files=$(echo "$files" | sed -e '1,4d')
   echo "## Formatting Check Failed 😅" >>$GITHUB_STEP_SUMMARY
   echo "Please run prettier using \`npx prettier . --write\` in order to format your code" >>$GITHUB_STEP_SUMMARY
   echo "### Files with bad formatting:" >>$GITHUB_STEP_SUMMARY
