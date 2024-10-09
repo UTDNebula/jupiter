@@ -1,8 +1,8 @@
 'use client';
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { zodResolver } from '@hookform/resolvers/zod';
-import ContactSelector from '@src/components/CreateContactSelector';
-import OfficerSelector from '@src/components/OfficerSelector';
+import ContactSelector from '@src/app/directory/create/CreateContactSelector';
+import OfficerSelector from '@src/app/directory/create/OfficerSelector';
 import { api } from '@src/trpc/react';
 import { createClubSchema } from '@src/utils/formSchemas';
 import { useRouter } from 'next/navigation';

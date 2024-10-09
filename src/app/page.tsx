@@ -1,7 +1,7 @@
-import Header from '../components/BaseHeader';
-import Carousel from '../components/Carousel';
-import TagFilter from '../components/TagFilter';
-import OrgDirectoryGrid from '../components/OrgDirectoryGrid';
+import Header from '../components/header/BaseHeader';
+import Carousel from '../components/club/directory/Carousel';
+import TagFilter from '../components/club/directory/TagFilter';
+import ClubDirectoryGrid from '../components/club/directory/ClubDirectoryGrid';
 import type { Metadata } from 'next';
 import { api } from '@src/trpc/server';
 
@@ -33,7 +33,7 @@ const Home = async (props: Params) => {
           <Carousel clubs={onlyClubs} />
         </div>
         <TagFilter tags={tags} />
-        <OrgDirectoryGrid tag={props.searchParams.tag!} />
+        <ClubDirectoryGrid tag={props.searchParams.tag!} />
       </div>
     </main>
   );

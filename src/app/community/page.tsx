@@ -1,4 +1,4 @@
-import Header from '@src/components/BaseHeader';
+import Header from '@src/components/header/BaseHeader';
 import { api } from '@src/trpc/server';
 import { getServerAuthSession } from '@src/server/auth';
 import { type Metadata } from 'next';

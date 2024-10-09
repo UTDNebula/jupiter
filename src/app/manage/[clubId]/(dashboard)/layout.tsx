@@ -1,5 +1,5 @@
-import Header from '@src/components/BaseHeader';
-import BackButton from '@src/components/BlueBackButton';
+import Header from '@src/components/header/BaseHeader';
+import { BlueBackButton } from '@src/components/backButton';
 import { getServerAuthSession } from '@src/server/auth';
 import { api } from '@src/trpc/server';
 import { signInRoute } from '@src/utils/redirect';
@@ -30,7 +30,7 @@ const Layout = async ({
       <Header />
       <main className="px-5">
         <div className="flex w-full flex-row gap-x-4 align-middle">
-          <BackButton />
+          <BlueBackButton />
           <h1 className="bg-gradient-to-br from-blue-primary to-blue-700 bg-clip-text text-2xl font-extrabold text-transparent">
             {club.name}
           </h1>

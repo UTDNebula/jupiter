@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from '@src/components/BaseHeader';
+import Header from '@src/components/header/BaseHeader';
 import { type Metadata } from 'next';
 import Form from '@src/app/feedback/Form';
 
