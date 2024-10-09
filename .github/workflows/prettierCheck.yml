@@ -16,8 +16,7 @@ jobs:
         id: prettier
         continue-on-error: true
         run: |
-          files=`npx prettier . -l`
-          echo $files
+          export files=`npx prettier . -l`
       - name: generate errors/summary
         run: .github/workflows/generateCheck.sh
         env:
