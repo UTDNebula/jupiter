@@ -7,7 +7,7 @@ import { TRPCReactProvider } from '@src/trpc/react';
 import Sidebar from '@src/components/nav/Sidebar';
 import { type Metadata } from 'next';
 
-import { GoogleAnalytics } from '@next/third-parties/google';
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const inter = Inter({
   subsets: ['latin'],
