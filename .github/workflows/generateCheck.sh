@@ -1,4 +1,6 @@
-if [ -z "${files}" ]; then
+files=$(npx prettier . -l)
+status=$?
+if [ status == 0 ]; then
   echo "## Formatting Check passed 🥳" >>$GITHUB_STEP_SUMMARY
   echo "All files are formatted correctly" >>$GITHUB_STEP_SUMMARY
   exit 0
