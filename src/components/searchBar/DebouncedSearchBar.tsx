@@ -45,7 +45,7 @@ export const DebouncedSearchBar = <T extends SearchElement>({
   }, [input, setSearch]);
 
   return (
-    <div className="relative mr-3 w-full max-w-xs md:max-w-sm lg:max-w-md">
+    <div className="pointer-events-auto relative mr-3 w-full max-w-xs md:max-w-sm lg:max-w-md">
       <SearchBar
         placeholder={placeholder}
         tabIndex={0}
