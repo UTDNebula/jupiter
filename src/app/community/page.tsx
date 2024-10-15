@@ -46,7 +46,9 @@ const Community = async () => {
       <Header />
       <div className="mx-6 h-full p-2">
         <div className="pb-8">
-          <h1 className="text-2xl font-bold text-slate-500">Community Events</h1>
+          <h1 className="text-2xl font-bold text-slate-500">
+            Community Events
+          </h1>
           <CommunityEvents events={events} />
         </div>
         <div className="pb-8">

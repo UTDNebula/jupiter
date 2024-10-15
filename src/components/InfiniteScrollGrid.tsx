@@ -57,11 +57,7 @@ export default function InfiniteScrollGrid({ session, tag }: Props) {
                   ref={isLastElement ? lastOrgElementRef : null}
                   key={club.id}
                 >
-                  <ClubCard
-                    club={club}
-                    session={session}
-                    priority={false}
-                  />
+                  <ClubCard club={club} session={session} priority={false} />
                 </div>
               );
             }),

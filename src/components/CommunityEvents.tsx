@@ -10,15 +10,15 @@ type Event = SelectEvent & {
     description: string;
     image: string;
     tags: string[];
-    approved: "approved" | "rejected" | "pending";
+    approved: 'approved' | 'rejected' | 'pending';
     profileImage: string | null;
     soc: boolean;
-  }
-}
+  };
+};
 
 type Props = {
   events: Event[];
-}
+};
 
 const CommunityEvents = ({ events }: Props) => {
   if (events.length == 0) {
