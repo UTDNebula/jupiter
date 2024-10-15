@@ -2,7 +2,6 @@
 import { type FC, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { IconMap, type allCats, routeMap } from '@src/constants/categories';
-import { RightChevron } from '@src/icons/Icons';
 
 const SidebarItems: FC<{ cat: allCats[number] }> = ({ cat }) => {
   const Icon = IconMap[cat];

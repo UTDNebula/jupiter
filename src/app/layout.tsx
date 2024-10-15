@@ -4,7 +4,6 @@ import { Inter } from 'next/font/google';
 import { headers } from 'next/headers';
 
 import { TRPCReactProvider } from '@src/trpc/react';
-import Sidebar from '@src/components/nav/Sidebar';
 import { type Metadata } from 'next';
 
 import { Analytics } from '@vercel/analytics/react';
