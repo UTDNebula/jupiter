@@ -55,9 +55,6 @@ const SidebarItems: FC<{ cat: allCats[number] }> = ({ cat }) => {
             {cat}
           </h1>
         </div>
-        <div className="ml-auto">
-          <RightChevron />
-        </div>
       </div>
     </div>
   );

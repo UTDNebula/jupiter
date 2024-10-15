@@ -26,7 +26,7 @@ const Home = async (props: Params) => {
   const featured = await api.club.getCarousel();
   const onlyClubs = featured.map((item) => item.club);
   return (
-    <main className="md:pl-72">
+    <main className="">
       <Header />
       <div className="px-2 md:px-5">
         <div className="relative block w-full">

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 const About = () => {
   return (
-    <main className="h-full md:pl-72">
+    <main className="h-full ">
       <Header />
       <div className="mx-6 h-full">
         <h1 className="p-2 py-12 text-2xl font-bold text-slate-500">

@@ -1,3 +1,4 @@
+'use server';
 import { api } from '@src/trpc/server';
 import NavMenu from './NavMenu';
 
@@ -6,7 +7,7 @@ const Sidebar = async () => {
   const userSidebarCapabilities =
     await api.userMetadata.getUserSidebarCapabilities();
   return (
-    <div className="absolute hidden h-full w-72 bg-slate-100 md:block">
+    <div className="hidden w-72 bg-slate-100 md:block">
       <NavMenu userCapabilites={userSidebarCapabilities} />
     </div>
   );
