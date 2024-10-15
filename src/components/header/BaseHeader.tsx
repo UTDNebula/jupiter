@@ -4,7 +4,6 @@ import { getServerAuthSession } from '@src/server/auth';
 import { ClubSearchBar } from '../searchBar/ClubSearchBar';
 import { EventSearchBar } from '../searchBar/EventSearchBar';
 import SignInButton from './signInButton';
-import MobileNav from '../nav/MobileNav';
 import { api } from '@src/trpc/server';
 import NewSidebar from '../nav/Slide';
 

@@ -1,4 +1,3 @@
-import Header from '../components/header/BaseHeader';
 import TagFilter from '../components/club/directory/TagFilter';
 import ClubDirectoryGrid from '../components/club/directory/ClubDirectoryGrid';
 import type { Metadata } from 'next';
@@ -23,7 +22,7 @@ type Params = {
 
 const Home = async (props: Params) => {
   const tags = await api.club.distinctTags();
-  const featured = await api.club.getCarousel();
+  // const featured = await api.club.getCarousel();
   // const onlyClubs = featured.map((item) => item.club);
   return (
     <main className="">
