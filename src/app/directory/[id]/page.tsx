@@ -2,6 +2,7 @@ import Header from '@src/components/BaseHeader';
 import OrgHeader from '@src/components/OrgHeader';
 import OrgInfoSegment from '@src/components/OrgInfoSegment';
 import OrgUpcomingEvents from '@src/components/OrgUpcomingEvents';
+import OrgContactLinks from '@src/components/OrgContactLinks';
 import { api } from '@src/trpc/server';
 import { db } from '@src/server/db';
 import { eq } from 'drizzle-orm';
@@ -18,6 +19,7 @@ const OrganizationPage = async ({ params }: { params: { id: string } }) => {
       <div className="mb-5 flex flex-col space-y-4 px-3">
         <OrgHeader club={club} />
         <OrgInfoSegment club={club} />
+        <OrgContactLinks club={club} />
         <OrgUpcomingEvents clubId={club.id} />
       </div>
     </main>
