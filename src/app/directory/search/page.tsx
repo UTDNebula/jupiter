@@ -1,5 +1,5 @@
 import Header from '@src/components/header/BaseHeader';
-import { ClubSearchComponent } from '@src/components/ClubSearchComponent';
+import { ClubSearchComponent } from './ClubSearch';
 import { getServerAuthSession } from '@src/server/auth';
 
 type Params = {

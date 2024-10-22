@@ -2,7 +2,7 @@
 import { api } from '@src/trpc/react';
 import type { SelectClub as Club } from '@src/server/db/models';
 import { type Session } from 'next-auth';
-import ClubCard from './club/ClubCard';
+import ClubCard from '@src/components/club/ClubCard';
 
 interface ClubSearchComponentProps {
   userSearch: string;
