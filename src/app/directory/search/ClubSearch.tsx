@@ -23,7 +23,7 @@ export const ClubSearchComponent = ({
   }
   if (data.length === 0) {
     return (
-      <div className="text-4xl font-bold text-slate-500 text-center">
+      <div className="text-center text-4xl font-bold text-slate-500">
         No Search Results Found
       </div>
     );
