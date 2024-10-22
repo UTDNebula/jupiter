@@ -1,4 +1,4 @@
-import ProviderButton from '@src/components/ProviderButtons';
+import ProviderButton from '@src/app/auth/ProviderButtons';
 import { getServerAuthSession } from '@src/server/auth';
 import { getProviders } from 'next-auth/react';
 import { redirect } from 'next/navigation';

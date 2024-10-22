@@ -2,7 +2,7 @@ import { getServerAuthSession } from '@src/server/auth';
 import SettingsForm from '@src/components/settings/SettingsForm';
 import { type Metadata } from 'next';
 import { redirect } from 'next/navigation';
-import Header from '@src/components/BaseHeader';
+import Header from '@src/components/header/BaseHeader';
 import { signInRoute } from '@src/utils/redirect';
 export const metadata: Metadata = {
   title: 'Settings - Jupiter',

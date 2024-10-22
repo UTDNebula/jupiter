@@ -1,8 +1,8 @@
 'use client';
 import { api } from '@src/trpc/react';
-import DirectoryOrgs from './DirectoryOrgs';
 import type { SelectClub as Club } from '@src/server/db/models';
 import { type Session } from 'next-auth';
+import ClubCard from './club/ClubCard';
 
 interface ClubSearchComponentProps {
   userSearch: string;
@@ -28,7 +28,7 @@ export const ClubSearchComponent = ({
   return (
     <div className="grid w-full auto-rows-fr grid-cols-[repeat(auto-fill,320px)] justify-center gap-16 pb-4">
       {data.map((club: Club) => (
-        <DirectoryOrgs key={club.id} club={club} session={session} priority />
+        <ClubCard key={club.id} club={club} session={session} priority />
       ))}
     </div>
   );

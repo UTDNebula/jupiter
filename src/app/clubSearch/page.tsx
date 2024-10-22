@@ -1,4 +1,4 @@
-import Header from '@src/components/BaseHeader';
+import Header from '@src/components/header/BaseHeader';
 import { ClubSearchComponent } from '@src/components/ClubSearchComponent';
 import { getServerAuthSession } from '@src/server/auth';
 

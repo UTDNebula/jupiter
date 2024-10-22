@@ -1,4 +1,4 @@
-import { EventHeader } from '@src/components/BaseHeader';
+import { EventHeader } from '@src/components/header/BaseHeader';
 import { api } from '@src/trpc/server';
 import EventView from './eventView';
 import { type Metadata } from 'next';
