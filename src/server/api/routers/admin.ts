@@ -4,7 +4,8 @@ import { and, eq, gt } from 'drizzle-orm';
 import { club } from '@src/server/db/schema/club';
 import { userMetadataToClubs } from '@src/server/db/schema/users';
 import { type DateRange } from 'react-day-picker';
-import { carousel } from '@src/server/db/schema/admin';
+import { admin, carousel } from '@src/server/db/schema/admin';
+import role from '@src/models/role';
 
 function isDateRange(value: unknown): value is DateRange {
   return Boolean(value && typeof value === 'object' && 'from' in value);
@@ -18,6 +19,10 @@ const updateOfficer = z.object({
   officerId: z.string(),
   clubId: z.string(),
   role: z.enum(['President', 'Officer', 'Member']),
+});
+
+const updateAdmin = z.object({
+  userId: z.string(),
 });
 
 const carouselSchema = z.object({
@@ -61,6 +66,21 @@ export const adminRouter = createTRPCRouter({
             eq(userMetadataToClubs.userId, input.officerId),
           ),
         );
+    }),
+    addAdmin: adminProcedure
+    .input(updateAdmin)
+    .mutation(async ({ ctx, input }) => {
+      // Check if the user is already an admin
+      const exists = await ctx.db.query.admin.findFirst({
+        where: (userMetadataToAdmin) =>
+          eq(userMetadataToAdmin.userId, input.userId), // Corrected the condition to check userId
+      });
+      if (!exists) {
+        await ctx.db.insert(admin).values({
+          userId: input.userId
+        });
+      }
+      return;
     }),
   addOfficer: adminProcedure
     .input(updateOfficer)

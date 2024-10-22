@@ -1,4 +1,5 @@
 import { selectContact } from '@src/server/db/models';
+import { admin } from '@src/server/db/schema/admin';
 import { z } from 'zod';
 
 export const createClubSchema = z.object({
@@ -57,4 +58,16 @@ export const feedbackFormSchema = z.object({
   dislikes: z.string().default(''),
   features: z.string().default(''),
   submit_on: z.date().default(new Date()),
+});
+
+export const editAdminSchema = z.object({
+  admin: z
+    .object({
+      userId: z.string(),
+      name: z.string(),
+      locked: z.boolean(),
+      title: z.string().min(1),
+      position: z.enum(['Admin']),
+    })
+    .array(),
 });
