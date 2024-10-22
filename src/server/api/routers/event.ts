@@ -262,8 +262,11 @@ export const eventRouter = createTRPCRouter({
         throw new TRPCError({ code: 'UNAUTHORIZED' });
       }
 
-      const res = await ctx.db.insert(events).values({ ...input }).returning({ id: events.id });
-      if (res.length == 0) throw "Failed to add event";
+      const res = await ctx.db
+        .insert(events)
+        .values({ ...input })
+        .returning({ id: events.id });
+      if (res.length == 0) throw 'Failed to add event';
       return res[0]?.id;
     }),
   byName: publicProcedure.input(byNameSchema).query(async ({ input, ctx }) => {

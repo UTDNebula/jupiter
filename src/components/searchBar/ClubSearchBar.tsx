@@ -21,6 +21,10 @@ export const ClubSearchBar = () => {
       setSearch={setSearch}
       searchResults={data || []}
       onClick={onClickSearchResult}
+      submitButton
+      submitLogic={() => {
+        router.push(`/directory/search?search=${encodeURIComponent(search)}`);
+      }}
     />
   );
 };

@@ -11,12 +11,12 @@ import {
 } from 'drizzle-orm';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 import { z } from 'zod';
-import { selectContact } from '@src/server/db/models';
 import { clubEditRouter } from './clubEdit';
 import { userMetadataToClubs } from '@src/server/db/schema/users';
 import { club, usedTags } from '@src/server/db/schema/club';
 import { contacts } from '@src/server/db/schema/contacts';
 import { carousel } from '@src/server/db/schema/admin';
+import { createClubSchema as baseClubSchema } from '@src/utils/formSchemas';
 const byNameSchema = z.object({
   name: z.string().default(''),
 });
@@ -35,22 +35,19 @@ const allSchema = z.object({
   limit: z.number().min(1).max(50).default(10),
   initialCursor: z.number().min(0).default(0),
 });
-const createClubSchema = z.object({
-  name: z.string().min(3),
-  description: z.string().min(1),
-  officers: z
-    .object({
-      id: z.string().min(1),
-      position: z.string().min(1),
-      president: z.boolean(),
-    })
-    .array()
-    .min(1),
-  contacts: selectContact
-    .omit({ clubId: true, url: true })
-    .extend({ url: z.string().url() })
-    .array(),
-});
+const createClubSchema = baseClubSchema
+  .omit({ clubId: true, officers: true })
+  .extend({
+    officers: z
+      .object({
+        id: z.string().min(1),
+        position: z.string(),
+        president: z.boolean(),
+      })
+      .array()
+      .min(1),
+  });
+
 export const clubRouter = createTRPCRouter({
   edit: clubEditRouter,
   byName: publicProcedure.input(byNameSchema).query(async ({ input, ctx }) => {
@@ -64,6 +61,17 @@ export const clubRouter = createTRPCRouter({
 
     return clubs.slice(0, 5);
   }),
+  byNameNoLimit: publicProcedure
+    .input(byNameSchema)
+    .query(async ({ input, ctx }) => {
+      const { name } = input;
+      const clubs = await ctx.db.query.club.findMany({
+        where: (club) =>
+          and(ilike(club.name, `%${name}%`), eq(club.approved, 'approved')),
+      });
+
+      return clubs;
+    }),
   byId: publicProcedure.input(byIdSchema).query(async ({ input, ctx }) => {
     const { id } = input;
     try {
