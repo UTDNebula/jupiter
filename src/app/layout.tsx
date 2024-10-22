@@ -4,8 +4,10 @@ import { Inter } from 'next/font/google';
 import { headers } from 'next/headers';
 
 import { TRPCReactProvider } from '@src/trpc/react';
-import Sidebar from '@src/components/Sidebar';
+import Sidebar from '@src/components/nav/Sidebar';
 import { type Metadata } from 'next';
+
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -46,6 +48,7 @@ export default function RootLayout({
           <Sidebar />
           <div className="max-h-screen overflow-y-scroll">{children}</div>
         </TRPCReactProvider>
+        <GoogleAnalytics gaId="G-FYTBHVKNG6" />
       </body>
     </html>
   );

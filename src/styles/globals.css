@@ -92,3 +92,9 @@ a {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+@layer utilities {
+  .items-normal {
+    align-items: normal;
+  }
+}

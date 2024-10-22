@@ -8,10 +8,10 @@ export default function Page() {
       </h1>
       <div className="flex justify-center gap-x-5 pt-20">
         <Link
-          href="/admin/orgs"
+          href="/admin/clubs"
           className="rounded-md bg-slate-300 px-2 py-1 text-blue-500 transition-colors hover:bg-slate-400 hover:text-blue-600"
         >
-          Manage Orgs
+          Manage Clubs
         </Link>
         <Link
           href="/admin/users"

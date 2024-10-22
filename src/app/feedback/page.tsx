@@ -1,8 +1,7 @@
 import React from 'react';
-import Header from '@src/components/BaseHeader';
+import Header from '@src/components/header/BaseHeader';
 import { type Metadata } from 'next';
-import  Form  from '@src/app/feedback/Form';
-
+import Form from '@src/app/feedback/Form';
 
 export const metadata: Metadata = {
   title: 'Feedback - Jupiter',
@@ -16,15 +15,13 @@ export const metadata: Metadata = {
   },
 };
 
-
 const Feedback = () => {
-
   return (
     <main className="h-full md:pl-72 ">
       <Header />
 
-      <div className="flex h-full w-full flex-row mb-20 " > 
-        <section className='bg-white m-auto justift-center items-center text-center py-6 px-10 shadow-lg rounded-lg mt-3'>
+      <div className="mb-20 flex h-full w-full flex-row ">
+        <section className="justift-center m-auto mt-3 items-center rounded-lg bg-white px-10 py-6 text-center shadow-lg">
           <Form />
         </section>
       </div>

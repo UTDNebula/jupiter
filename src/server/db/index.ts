@@ -19,4 +19,6 @@ const schema = {
   ...admin,
 };
 
-export const db = drizzle(postgres(env.DATABASE_URL), { schema });
+export const db = drizzle(postgres(env.DATABASE_URL, { prepare: false }), {
+  schema,
+});

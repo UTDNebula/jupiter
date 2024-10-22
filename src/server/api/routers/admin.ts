@@ -25,13 +25,13 @@ const carouselSchema = z.object({
   range: z.custom<DateRange>((val) => isDateRange(val)),
 });
 
-const changeOrgStatusSchema = z.object({
-  orgId: z.string(),
+const changeClubStatusSchema = z.object({
+  clubId: z.string(),
   status: z.enum(['approved', 'pending', 'rejected']),
 });
 
 export const adminRouter = createTRPCRouter({
-  allOrgs: adminProcedure.query(async ({ ctx }) => {
+  allClubs: adminProcedure.query(async ({ ctx }) => {
     const orgs = await ctx.db.query.club.findMany({
       columns: {
         id: true,
@@ -44,7 +44,7 @@ export const adminRouter = createTRPCRouter({
     });
     return orgs;
   }),
-  deleteOrg: adminProcedure
+  deleteClub: adminProcedure
     .input(deleteSchema)
     .mutation(async ({ ctx, input }) => {
       await ctx.db.delete(club).where(eq(club.id, input.id));
@@ -103,13 +103,13 @@ export const adminRouter = createTRPCRouter({
 
     return carousels;
   }),
-  addOrgCarousel: adminProcedure
+  addClubCarousel: adminProcedure
     .input(carouselSchema)
     .mutation(async ({ ctx, input }) => {
       if (!input.range.from || !input.range.to)
         throw new Error('Invalid date range');
 
-      // Check if there is already a carousel for this org
+      // Check if there is already a carousel for this club
       const exists = await ctx.db.query.carousel.findFirst({
         where: (carousel) => eq(carousel.orgId, input.orgId),
       });
@@ -130,17 +130,17 @@ export const adminRouter = createTRPCRouter({
         endTime: input.range.to,
       });
     }),
-  removeOrgCarousel: adminProcedure
+  removeClubCarousel: adminProcedure
     .input(deleteSchema)
     .mutation(async ({ ctx, input }) => {
       await ctx.db.delete(carousel).where(eq(carousel.orgId, input.id));
     }),
-  changeOrgStatus: adminProcedure
-    .input(changeOrgStatusSchema)
+  changeClubStatus: adminProcedure
+    .input(changeClubStatusSchema)
     .mutation(async ({ ctx, input }) => {
       await ctx.db
         .update(club)
         .set({ approved: input.status })
-        .where(eq(club.id, input.orgId));
+        .where(eq(club.id, input.clubId));
     }),
 });

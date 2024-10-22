@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import EditContactSelector from '@src/components/EditContactSelector';
+import EditContactSelector from '@src/app/manage/[clubId]/edit/EditContactSelector';
 import { type SelectClub, type SelectContact } from '@src/server/db/models';
 import { api } from '@src/trpc/react';
 import { type contact } from '@src/utils/contact';

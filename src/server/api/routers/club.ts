@@ -13,7 +13,7 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { clubEditRouter } from './clubEdit';
 import { userMetadataToClubs } from '@src/server/db/schema/users';
-import { club } from '@src/server/db/schema/club';
+import { club, usedTags } from '@src/server/db/schema/club';
 import { contacts } from '@src/server/db/schema/contacts';
 import { carousel } from '@src/server/db/schema/admin';
 import { createClubSchema as baseClubSchema } from '@src/utils/formSchemas';
@@ -61,6 +61,17 @@ export const clubRouter = createTRPCRouter({
 
     return clubs.slice(0, 5);
   }),
+  byNameNoLimit: publicProcedure
+    .input(byNameSchema)
+    .query(async ({ input, ctx }) => {
+      const { name } = input;
+      const clubs = await ctx.db.query.club.findMany({
+        where: (club) =>
+          and(ilike(club.name, `%${name}%`), eq(club.approved, 'approved')),
+      });
+
+      return clubs;
+    }),
   byId: publicProcedure.input(byIdSchema).query(async ({ input, ctx }) => {
     const { id } = input;
     try {
@@ -116,14 +127,10 @@ export const clubRouter = createTRPCRouter({
   }),
   distinctTags: publicProcedure.query(async ({ ctx }) => {
     try {
-      const tags = await ctx.db.selectDistinct({ tags: club.tags }).from(club);
-      const tagSet = new Set<string>(['All']);
-      tags.forEach((club) => {
-        club.tags.forEach((tag) => {
-          tagSet.add(tag);
-        });
-      });
-      return Array.from(tagSet);
+      const tags = (await ctx.db.select().from(usedTags)).map(
+        (obj) => obj.tags,
+      );
+      return tags;
     } catch (e) {
       console.error(e);
       return [];
