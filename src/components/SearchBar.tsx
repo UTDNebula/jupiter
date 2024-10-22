@@ -5,6 +5,7 @@ import {
   useState,
   type ChangeEvent,
   useEffect,
+  KeyboardEvent,
 } from 'react';
 import { SearchIcon } from '../icons/Icons';
 import { useRouter } from 'next/navigation';
@@ -25,6 +26,7 @@ type SearchBarProps<T extends SearchElement> = {
   setSearch: Dispatch<SetStateAction<string>>;
   searchResults?: Array<T>;
   onClick?: (input: T) => void;
+  onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void; // Add this line
 };
 
 export const SearchBar = <T extends SearchElement>({
@@ -33,12 +35,15 @@ export const SearchBar = <T extends SearchElement>({
   setSearch,
   searchResults,
   onClick,
+  onKeyDown, // Add this line
 }: SearchBarProps<T>) => {
   const [input, setInput] = useState<string>(value ?? '');
   const [focused, setFocused] = useState(false);
+
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
+
   useEffect(() => {
     const handler = setTimeout(() => {
       setSearch(input);
@@ -60,6 +65,7 @@ export const SearchBar = <T extends SearchElement>({
           className="h-10 w-full rounded-full border pl-10 pr-3 focus:outline-none"
           tabIndex={0}
           onChange={handleSearch}
+          onKeyDown={onKeyDown} // Add this line
           onFocus={() => setFocused(true)}
           onBlur={() => setTimeout(() => setFocused(false), 300)}
         />
@@ -101,6 +107,7 @@ export const ClubSearchBar = () => {
     />
   );
 };
+
 export const EventSearchBar = () => {
   const router = useRouter();
   const [search, setSearch] = useState<string>('');
@@ -113,9 +120,16 @@ export const EventSearchBar = () => {
     },
     { enabled: !!search },
   );
+
   useEffect(() => {
     if (eventQuery.data) setRes(eventQuery.data);
   }, [eventQuery.data]);
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      router.push(`/search?query=${search}`);
+    }
+  };
 
   return (
     <SearchBar
@@ -125,12 +139,15 @@ export const EventSearchBar = () => {
       onClick={(event) => {
         router.push(`/event/${event.id}`);
       }}
+      onKeyDown={handleKeyDown} // Add this line
     />
   );
 };
+
 type EventClubSearchBarProps = {
   addClub: (value: string) => void;
 };
+
 export const EventClubSearchBar = ({ addClub }: EventClubSearchBarProps) => {
   const [search, setSearch] = useState('');
   const [res, setRes] = useState<Club[]>([]);
@@ -160,12 +177,15 @@ export const EventClubSearchBar = ({ addClub }: EventClubSearchBarProps) => {
     />
   );
 };
+
 type UserSearchBarProps = {
   passUser: (user: { id: string; name: string }) => void;
 };
+
 type User = {
   name: string;
 } & SelectUserMetadata;
+
 export const UserSearchBar = ({ passUser }: UserSearchBarProps) => {
   const [search, setSearch] = useState('');
   const [res, setRes] = useState<User[]>([]);
