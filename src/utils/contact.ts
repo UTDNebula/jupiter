@@ -8,63 +8,42 @@ const emailSchema = z.object({
 const discordSchema = z.object({
   platform: z.literal('discord'),
   clubId: z.string().optional(),
-  url: z
-    .string()
-    .url('Vaid url required')
-    .regex(/https:\/\/discord\.(gg|com)\/.+/, 'Must be a discord link'),
+  url: z.string().url('Valid url required'),
 });
 
 const youtubeSchema = z.object({
   platform: z.literal('youtube'),
   clubId: z.string().optional(),
-  url: z
-    .string()
-    .url('Vaid url required')
-    .regex(/https:\/\/youtube\.(com)\/.+/, 'Must be a youtube link'),
+  url: z.string().url('Valid url required'),
 });
 
 const twitchSchema = z.object({
   platform: z.literal('twitch'),
   clubId: z.string().optional(),
-  url: z
-    .string()
-    .url('Vaid url required')
-    .regex(/https:\/\/twitch\.(tv)\/.+/, 'Must be a twitch link'),
+  url: z.string().url('Valid url required'),
 });
 
 const facebookSchema = z.object({
   platform: z.literal('facebook'),
   clubId: z.string().optional(),
-  url: z
-    .string()
-    .url('Vaid url required')
-    .regex(/https:\/\/facebook\.(com)\/.+/, 'Must be a facebook link'),
+  url: z.string().url('Valid url required'),
 });
 
 const twitterSchema = z.object({
   platform: z.literal('twitter'),
   clubId: z.string().optional(),
-  url: z
-    .string()
-    .url('Vaid url required')
-    .regex(/https:\/\/(twitter|x)\.(com)\/.+/, 'Must be a twitter link'),
+  url: z.string().url('Valid url required'),
 });
 const instagramSchema = z.object({
   platform: z.literal('instagram'),
   clubId: z.string().optional(),
-  url: z
-    .string()
-    .url('Vaid url required')
-    .regex(/https:\/\/www\.instagram\.(com)\/.+/, 'Must be a instagram link'),
+  url: z.string().url('Valid url required'),
 });
 
 const websiteSchema = z.object({
   platform: z.literal('website'),
   clubId: z.string().optional(),
-  url: z
-    .string()
-    .url('Vaid url required')
-    .regex(/https?:\/\/.*\.?.+\..+\/.+/, 'Must be a valid website link'),
+  url: z.string().url('Valid url required'),
 });
 
 const otherSchema = z.object({
