@@ -7,15 +7,17 @@ import NavMenu from './NavMenu';
 import { type personalCats } from '@src/constants/categories';
 const NewSidebar = ({
   userCapabilities,
+  hamburger,
 }: {
   userCapabilities: Array<(typeof personalCats)[number]>;
+  hamburger: 'white' | 'black';
 }) => {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
         <button className="text-black-500 px-3 py-1">
           <svg
-            className={' h-7 w-7 fill-black'}
+            className={` h-7 w-7 fill-${hamburger}`}
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
           >
