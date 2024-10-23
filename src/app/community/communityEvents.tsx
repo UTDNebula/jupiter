@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 const CommunityEvents = async () => {
   const events = await api.userMetadata.getEvents();
-  if (events.length == 0) {
+  if (events.length === 0) {
     return (
       <div className="font-bold text-slate-500">
         <div>You haven&apos;t added any community events yet 😭</div>
@@ -24,11 +24,13 @@ const CommunityEvents = async () => {
   }
   return (
     <div
-      className="group flex w-full flex-col items-center space-y-7.5 pt-10 sm:items-start"
+      className="group flex w-full flex-col space-y-7.5 pt-10"
       data-view={'list'}
     >
       {events.map((event) => (
-        <EventCard key={event.id} event={event} />
+        <div className="w-full" key={event.id}> 
+          <EventCard event={event} />
+        </div>
       ))}
     </div>
   );
