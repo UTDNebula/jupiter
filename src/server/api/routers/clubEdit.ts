@@ -1,6 +1,6 @@
 import { db } from '@src/server/db';
 import { createTRPCRouter, protectedProcedure } from '../trpc';
-import { and, eq, inArray, sql } from 'drizzle-orm';
+import { and, eq, inArray } from 'drizzle-orm';
 import { editClubSchema } from '@src/utils/formSchemas';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
@@ -136,20 +136,21 @@ export const clubEditRouter = createTRPCRouter({
             ),
           );
       }
-      const promises: Promise<unknown>[] = [];
-      for (const modded of input.modified) {
-        const prom = ctx.db
-          .update(userMetadataToClubs)
-          .set({ title: modded.title })
-          .where(
-            and(
-              eq(userMetadataToClubs.userId, modded.userId),
-              eq(userMetadataToClubs.clubId, input.clubId),
-            ),
-          );
-        promises.push(prom);
-      }
-      await Promise.allSettled(promises);
+      // TODO: link to officers table
+      // const promises: Promise<unknown>[] = [];
+      // for (const modded of input.modified) {
+      //   const prom = ctx.db
+      //     .update(userMetadataToClubs)
+      //     .set({ title: modded.title })
+      //     .where(
+      //       and(
+      //         eq(userMetadataToClubs.userId, modded.userId),
+      //         eq(userMetadataToClubs.clubId, input.clubId),
+      //       ),
+      //     );
+      //   promises.push(prom);
+      // }
+      // await Promise.allSettled(promises);
       if (input.created.length === 0) return;
 
       await ctx.db
@@ -164,7 +165,7 @@ export const clubEditRouter = createTRPCRouter({
         )
         .onConflictDoUpdate({
           target: [userMetadataToClubs.userId, userMetadataToClubs.clubId],
-          set: { memberType: 'Officer' as const, title: sql`excluded.title` },
+          set: { memberType: 'Officer' as const},
           where: eq(userMetadataToClubs.memberType, 'Member'),
         });
     }),
