@@ -165,7 +165,7 @@ export const clubEditRouter = createTRPCRouter({
         )
         .onConflictDoUpdate({
           target: [userMetadataToClubs.userId, userMetadataToClubs.clubId],
-          set: { memberType: 'Officer' as const},
+          set: { memberType: 'Officer' as const },
           where: eq(userMetadataToClubs.memberType, 'Member'),
         });
     }),
