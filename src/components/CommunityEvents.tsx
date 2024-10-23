@@ -39,16 +39,13 @@ const CommunityEvents = ({ events }: Props) => {
   }
   return (
     <div
-      className="group flex flex-row overflow-x-auto place-content-start items-center pt-4 sm:items-start"
+      className="group flex flex-row place-content-start items-center overflow-x-auto pt-4 sm:items-start"
       data-view={'list'}
     >
       {events.map((event) => (
-
-        // let's see if this works        
-        <div className="flex flex-shrink-0 items-center pr-4">
+        <div className="flex flex-shrink-0 items-center pr-4" key={event.id}>
           <EventCard key={event.id} event={event} />
         </div>
-        
       ))}
     </div>
   );
