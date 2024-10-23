@@ -1,11 +1,26 @@
-'use server';
-
 import EventCard from '@src/components/events/EventCard';
-import { api } from '@src/trpc/server';
+import { SelectEvent } from '@src/server/db/models';
 import Link from 'next/link';
 
-const CommunityEvents = async () => {
-  const events = await api.userMetadata.getEvents();
+type Event = SelectEvent & {
+  liked: boolean;
+  club: {
+    id: string;
+    name: string;
+    description: string;
+    image: string;
+    tags: string[];
+    approved: 'approved' | 'rejected' | 'pending';
+    profileImage: string | null;
+    soc: boolean;
+  };
+};
+
+type Props = {
+  events: Event[];
+};
+
+const CommunityEvents = ({ events }: Props) => {
   if (events.length == 0) {
     return (
       <div className="font-bold text-slate-500">
@@ -24,11 +39,13 @@ const CommunityEvents = async () => {
   }
   return (
     <div
-      className="group flex w-full flex-col items-center space-y-7.5 pt-10 sm:items-start"
+      className="group flex flex-row place-content-start items-center overflow-x-auto pt-4 sm:items-start"
       data-view={'list'}
     >
       {events.map((event) => (
-        <EventCard key={event.id} event={event} />
+        <div className="flex flex-shrink-0 items-center pr-4" key={event.id}>
+          <EventCard key={event.id} event={event} />
+        </div>
       ))}
     </div>
   );
