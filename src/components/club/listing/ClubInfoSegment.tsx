@@ -73,7 +73,7 @@ const ClubInfoSegment: FC<{
                           officer.userMetadata.lastName}
                       </p>
                       <p className="mt-2 text-sm text-slate-400">
-                        {officer.title ?? 'Officer'}
+                        Officer {/* TODO: link to officers table */}
                       </p>
                     </div>
                   </div>

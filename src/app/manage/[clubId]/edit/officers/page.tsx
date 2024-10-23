@@ -21,7 +21,7 @@ export default async function Page({
     name: officer.userMetadata.firstName + ' ' + officer.userMetadata.lastName,
     locked: officer.memberType == 'President' || role == 'Officer',
     position: officer.memberType as 'President' | 'Officer',
-    title: officer.title as string,
+    title: '', // TODO: link from officers table
   }));
 
   return (
