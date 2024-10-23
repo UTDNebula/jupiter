@@ -23,8 +23,8 @@ const HorizontalCard = async ({
 }) => {
   const session = await getServerAuthSession();
   return (
-    <div className="container flex h-40 flex-row overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-lg">
-      <div className="relative h-[160px] w-1/3 max-w-[225px]">
+    <div className="container flex w-full h-auto flex-row overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-lg">
+      <div className="relative h-[160px] w-1/3 max-w-[300px]">
         <div className="h-[160px]">
           <Image
             fill
@@ -78,6 +78,7 @@ const HorizontalCard = async ({
     </div>
   );
 };
+
 const VerticalCard = async ({
   event,
 }: {
