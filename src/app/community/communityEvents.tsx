@@ -28,7 +28,7 @@ const CommunityEvents = async () => {
       data-view={'list'}
     >
       {events.map((event) => (
-        <div className="w-full" key={event.id}> 
+        <div className="w-full" key={event.id}>
           <EventCard event={event} />
         </div>
       ))}
