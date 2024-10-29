@@ -5,7 +5,7 @@ import { club } from '@src/server/db/schema/club';
 import { userMetadataToClubs } from '@src/server/db/schema/users';
 import { type DateRange } from 'react-day-picker';
 import { admin, carousel } from '@src/server/db/schema/admin';
-import role from '@src/models/role';
+
 
 function isDateRange(value: unknown): value is DateRange {
   return Boolean(value && typeof value === 'object' && 'from' in value);
