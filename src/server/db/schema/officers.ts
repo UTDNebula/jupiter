@@ -3,7 +3,7 @@ import { pgTable, text, boolean, uuid } from 'drizzle-orm/pg-core';
 import { club } from './club';
 
 export const officers = pgTable('officers', {
-  id: uuid('id').defaultRandom().notNull().primaryKey(),
+  id: uuid('id').defaultRandom().primaryKey(),
   clubId: text('club_id')
     .notNull()
     .references(() => club.id),
