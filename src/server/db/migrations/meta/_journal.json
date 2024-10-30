@@ -64,6 +64,13 @@
       "when": 1729719886854,
       "tag": "0008_military_mole_man",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1730246133518,
+      "tag": "0009_unknown_mastermind",
+      "breakpoints": true
     }
   ]
 }
