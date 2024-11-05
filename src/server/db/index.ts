@@ -7,6 +7,7 @@ import * as events from './schema/events';
 import * as users from './schema/users';
 import * as forms from './schema/forms';
 import * as admin from './schema/admin';
+import * as officers from './schema/officers';
 import { neon } from '@neondatabase/serverless';
 
 const schema = {
@@ -16,6 +17,7 @@ const schema = {
   ...users,
   ...forms,
   ...admin,
+  ...officers,
 };
 
 const neon_client = neon(env.DATABASE_URL);
