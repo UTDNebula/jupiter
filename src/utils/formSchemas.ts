@@ -36,6 +36,15 @@ export const editOfficerSchema = z.object({
     })
     .array(),
 });
+export const editListedOfficerSchema = z.object({
+  officers: z
+    .object({
+      id: z.string().optional(),
+      name: z.string(),
+      position: z.string().min(1),
+    })
+    .array(),
+});
 
 export const createEventSchema = z.object({
   clubId: z.string(),
