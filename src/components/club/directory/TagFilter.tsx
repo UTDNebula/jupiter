@@ -13,6 +13,8 @@ const TagFilter = ({ tags }: { tags: string[] }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const setSelected = (tag: string) =>
     router.replace(`/?tag=${tag}`, { scroll: false });
+  const deselect = (tag: string) =>
+    router.replace(`/`, { scroll: false });
 
   const handleScrollLeft = () => {
     const container = scrollContainerRef.current;
@@ -46,7 +48,12 @@ const TagFilter = ({ tags }: { tags: string[] }) => {
                   ? 'bg-blue-primary text-white hover:bg-blue-700'
                   : 'bg-gray-100 text-slate-600 hover:bg-gray-200'
               } whitespace-nowrap rounded-3xl px-8 py-4 text-sm font-extrabold transition-colors duration-200 focus:outline-none md:text-xs`}
-              onClick={() => setSelected(tag)}
+              onClick={() => 
+                {
+                  selectedTag === tag
+                  ? deselect(tag)
+                  : setSelected(tag)
+                }}
             >
               {tag}
             </button>
