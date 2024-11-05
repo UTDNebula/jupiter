@@ -1,6 +1,4 @@
-import postgres from 'postgres';
-import { drizzle } from 'drizzle-orm/postgres-js';
-
+import { drizzle } from 'drizzle-orm/neon-http';
 import { env } from '@src/env.mjs';
 
 import * as club from './schema/club';
@@ -9,6 +7,7 @@ import * as events from './schema/events';
 import * as users from './schema/users';
 import * as forms from './schema/forms';
 import * as admin from './schema/admin';
+import { neon } from '@neondatabase/serverless';
 
 const schema = {
   ...club,
@@ -19,6 +18,7 @@ const schema = {
   ...admin,
 };
 
-export const db = drizzle(postgres(env.DATABASE_URL, { prepare: false }), {
+const neon_client = neon(env.DATABASE_URL);
+export const db = drizzle(neon_client, {
   schema,
 });
