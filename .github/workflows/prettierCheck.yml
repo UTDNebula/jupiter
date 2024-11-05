@@ -12,13 +12,5 @@ jobs:
           cache: 'npm'
       - name: Run npm install
         run: npm ci
-      - name: Run prettier
-        id: prettier
-        continue-on-error: true
-        run: |
-          files=`npx prettier . -l` 
-          echo files=$files >> "$GITHUB_ENV"
-      - name: generate errors/summary
+      - name: Run prettier & generate problems
         run: .github/workflows/generateCheck.sh
-        env:
-          status: ${{ steps.prettier.outcome }}
