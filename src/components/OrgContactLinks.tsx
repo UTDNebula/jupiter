@@ -20,7 +20,7 @@ const OrgContactLinks = async ({ club }: { club: Club }) => {
     <div className="relative">
       <div className="h-full w-full">
         <Image
-          src={'/images/wideWave.jpg'}
+          src={'/images/lightBlueBG.png'}
           alt="Picture of the club"
           style={{
             width: '100%',
@@ -36,11 +36,11 @@ const OrgContactLinks = async ({ club }: { club: Club }) => {
         <div className="flex h-full w-full p-8 flex-row">
           <div className="flex h-full flex-col justify-center">
             <h1
-              className={`w-fit rounded-full bg-black bg-opacity-50 p-2 text-center font-bold text-slate-100  ${
+              className={`w-fit rounded-full p-2 text-center font-bold text-customBlue ${
                 club.name.length > 10 ? 'text-2xl' : 'text-4xl'
               }`}
             >
-              {"Contacts"}
+              {"Contact Information"}
             </h1>
           </div>
           <div className="ml-auto flex h-min flex-row items-center gap-x-12 self-center">

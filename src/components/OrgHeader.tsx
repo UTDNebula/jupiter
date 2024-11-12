@@ -43,15 +43,15 @@ const OrgHeader = async ({ club }: { club: Club }) => {
                     query: { tag: tag },
                   }}
                   key={tag}
-                  className="m-2 h-min rounded-full bg-black bg-opacity-50 px-4 py-2 align-middle font-semibold text-slate-100"
+                  className="m-2 h-min rounded-full px-4 py-2 align-middle font-semibold text-slate-100 text-1xl"
                 >
                   {tag}
                 </Link>
               ))}
             </div>
             <h1
-              className={`mt-auto w-fit rounded-full bg-black bg-opacity-50 p-2 text-center font-bold text-slate-100  ${
-                club.name.length > 10 ? 'text-2xl' : 'text-4xl'
+              className={`mt-auto w-fit rounded-full p-2 text-center font-bold text-slate-100  ${
+                club.name.length > 10 ? 'text-5xl' : 'text-10xl'
               }`}
             >
               {club.name}

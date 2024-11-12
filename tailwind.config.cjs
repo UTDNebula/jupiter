@@ -10,6 +10,7 @@ const config = {
         blue: {
           primary: '#3361FF',
         },
+        customBlue: '#4A72FE',
       },
       backgroundColor: {
         events: '#FF6633',
