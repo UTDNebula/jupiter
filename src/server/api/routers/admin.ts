@@ -6,7 +6,6 @@ import { userMetadataToClubs } from '@src/server/db/schema/users';
 import { type DateRange } from 'react-day-picker';
 import { admin, carousel } from '@src/server/db/schema/admin';
 
-
 function isDateRange(value: unknown): value is DateRange {
   return Boolean(value && typeof value === 'object' && 'from' in value);
 }
@@ -67,7 +66,7 @@ export const adminRouter = createTRPCRouter({
           ),
         );
     }),
-    addAdmin: adminProcedure
+  addAdmin: adminProcedure
     .input(updateAdmin)
     .mutation(async ({ ctx, input }) => {
       // Check if the user is already an admin
@@ -77,7 +76,7 @@ export const adminRouter = createTRPCRouter({
       });
       if (!exists) {
         await ctx.db.insert(admin).values({
-          userId: input.userId
+          userId: input.userId,
         });
       }
       return;

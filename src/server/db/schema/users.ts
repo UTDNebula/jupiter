@@ -40,10 +40,7 @@ export const clubRoleEnum = pgEnum('member_type', [
   'Member',
 ]);
 
-export const adminRoleEnum = pgEnum('admin_type', [
-  'Admin',
-  'Not Admin',
-]);
+export const adminRoleEnum = pgEnum('admin_type', ['Admin', 'Not Admin']);
 
 export const users = pgTable('user', {
   id: text('id').notNull().primaryKey(),

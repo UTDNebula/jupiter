@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 type AdminState = {
   name: string;
-  userId:string;
+  userId: string;
 };
 
 export default function AddAdmin() {
@@ -29,7 +29,7 @@ export default function AddAdmin() {
           passUser={(user) =>
             setPerson({
               name: user.name,
-              userId:user.id, // Set selected role when user is selected
+              userId: user.id, // Set selected role when user is selected
             })
           }
         />
@@ -40,7 +40,7 @@ export default function AddAdmin() {
           onClick={() => {
             if (!toAdd) return;
             mutate({
-              userId:toAdd.userId
+              userId: toAdd.userId,
             });
           }}
           disabled={!toAdd || !toAdd.name}
