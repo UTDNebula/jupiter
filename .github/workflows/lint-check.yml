@@ -20,6 +20,9 @@ jobs:
       - name: Run npm install
         run: npm ci
 
+      - name: Set up test environment file
+        run: echo "GOOGLE_CLIENT_ID=dummy" > .env.test.local && echo "GOOGLE_CLIENT_SECRET=dummy" >> .env.test.local && echo "NEXTAUTH_URL=dummy" >> .env.test.local && echo "NEXTAUTH_SECRET=dummy" >> .env.test.local && echo "DATABASE_URL=dummy" >> .env.test.local && echo "DISCORD_CLIENT_ID=dummy" >> .env.test.local && echo "DISCORD_CLIENT_SECRET=dummy" >> .env.test.local
+
       - name: Run ESLint
         run: npm run lint:check
 
