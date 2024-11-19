@@ -30,7 +30,7 @@ export const ClubSearchComponent = ({
   }
 
   return (
-    <div className="flex flex-col w-full gap-4 pb-4">
+    <div className="flex w-full flex-col gap-4 pb-4">
       {data.map((club: Club) => (
         <HorizontalClubCard key={club.id} club={club} session={session} />
       ))}

@@ -10,15 +10,19 @@ interface HorizontalClubCardProps {
   session: Session | null;
 }
 
-const HorizontalClubCard: React.FC<HorizontalClubCardProps> = ({ club, session }) => {
+const HorizontalClubCard: React.FC<HorizontalClubCardProps> = ({
+  club,
+  session,
+}) => {
   const desc =
     club.description.length > 50
       ? club.description.slice(0, 150) + '...'
       : club.description;
-  const name = club.name.length > 20 ? club.name.slice(0, 30) + '...' : club.name;
+  const name =
+    club.name.length > 20 ? club.name.slice(0, 30) + '...' : club.name;
 
   return (
-    <div className="flex h-48 w-full rounded-lg bg-white shadow-lg overflow-hidden">
+    <div className="flex h-48 w-full overflow-hidden rounded-lg bg-white shadow-lg">
       <div className="relative w-1/3">
         <Image
           src={club.profileImage ? club.profileImage : club.image}
@@ -27,14 +31,14 @@ const HorizontalClubCard: React.FC<HorizontalClubCardProps> = ({ club, session }
           layout="fill"
         />
       </div>
-      <div className="flex flex-col w-2/3 p-4">
-        <div className="flex justify-between items-center">
+      <div className="flex w-2/3 flex-col p-4">
+        <div className="flex items-center justify-between">
           <h1 className="text-lg font-medium text-slate-800">{name}</h1>
           <div className="flex space-x-2">
             <JoinButton session={session} clubID={club.id} />
             <Link
               href={`/directory/${club.id}`}
-              className="bg-blue-100 hover:bg-blue-200 text-blue-600 text-center px-4 py-2 rounded-md"
+              className="rounded-md bg-blue-100 px-4 py-2 text-center text-blue-600 hover:bg-blue-200"
             >
               Learn More
             </Link>
