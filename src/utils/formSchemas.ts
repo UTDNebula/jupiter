@@ -62,3 +62,15 @@ export const feedbackFormSchema = z.object({
   features: z.string().default(''),
   submit_on: z.date().default(new Date()),
 });
+
+export const editAdminSchema = z.object({
+  admin: z
+    .object({
+      userId: z.string(),
+      name: z.string(),
+      locked: z.boolean(),
+      title: z.string().min(1),
+      position: z.enum(['Admin']),
+    })
+    .array(),
+});
