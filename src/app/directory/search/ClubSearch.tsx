@@ -2,7 +2,7 @@
 import { api } from '@src/trpc/react';
 import type { SelectClub as Club } from '@src/server/db/models';
 import { type Session } from 'next-auth';
-import ClubCard from '@src/components/club/ClubCard';
+import HorizontalClubCard from '@src/components/club/HorizontalClubCard';
 
 interface ClubSearchComponentProps {
   userSearch: string;
@@ -30,9 +30,9 @@ export const ClubSearchComponent = ({
   }
 
   return (
-    <div className="grid w-full auto-rows-fr grid-cols-[repeat(auto-fill,320px)] justify-center gap-16 pb-4">
+    <div className="flex flex-col w-full gap-4 pb-4">
       {data.map((club: Club) => (
-        <ClubCard key={club.id} club={club} session={session} priority />
+        <HorizontalClubCard key={club.id} club={club} session={session} />
       ))}
     </div>
   );
