@@ -4,9 +4,10 @@ import { db } from '@src/server/db';
 import { eq } from 'drizzle-orm';
 import { notFound } from 'next/navigation';
 
-type Props = { params: { id: string } };
+type PageProps = { searchParams: Promise<{ id: string }> };
 
-export default async function Page({ params: { id } }: Props) {
+export default async function Page({ searchParams }: PageProps) {
+  const { id } = await searchParams;
   const org = await db.query.club.findFirst({
     where: (club) => eq(club.id, id),
   });

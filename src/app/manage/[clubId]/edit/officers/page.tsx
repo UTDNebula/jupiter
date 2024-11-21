@@ -8,12 +8,16 @@ import { signInRoute } from '@src/utils/redirect';
 import EditListedOfficerForm from './EditListedOfficerForm';
 
 export default async function Page({
-  params: { clubId },
+  params,
 }: {
-  params: { clubId: string };
+  params: Promise<{ clubId: string }>;
 }) {
+  const { clubId } = await params;
   const session = await getServerAuthSession();
-  if (!session) redirect(signInRoute(`manage/${clubId}/edit/officers`));
+  if (!session) {
+    const route = await signInRoute(`manage/${clubId}/edit/officers`);
+    redirect(route);
+  }
   const role = await api.club.memberType({ id: clubId });
   const officers = await api.club.getOfficers({ id: clubId });
   const listedOfficers = await api.club.getListedOfficers({ id: clubId });

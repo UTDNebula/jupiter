@@ -8,8 +8,9 @@ import { eq } from 'drizzle-orm';
 import { type Metadata } from 'next';
 import NotFound from '@src/components/NotFound';
 
-const ClubPage = async ({ params }: { params: { id: string } }) => {
-  const club = await api.club.getDirectoryInfo({ id: params.id });
+const ClubPage = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id } = await params;
+  const club = await api.club.getDirectoryInfo({ id });
   if (!club) return <NotFound elementType="Club" />;
 
   return (
@@ -29,9 +30,9 @@ export default ClubPage;
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  const id = params.id;
+  const { id } = await params;
 
   const found = await db.query.club.findFirst({
     where: (club) => eq(club.id, id),

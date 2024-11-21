@@ -19,12 +19,12 @@ export const metadata: Metadata = {
 };
 
 type Props = {
-  searchParams: Promise<{ [key: string]: string | undefined }>
+  searchParams: Promise<{ [key: string]: string | undefined }>;
 };
 
 const Home = async ({ searchParams }: Props) => {
   const params = await searchParams;
-  void api.club.all.prefetch({ tag: params.tag});
+  void api.club.all.prefetch({ tag: params.tag });
   const [tags, featured, session] = await Promise.all([
     api.club.distinctTags(),
     api.club.getCarousel(),

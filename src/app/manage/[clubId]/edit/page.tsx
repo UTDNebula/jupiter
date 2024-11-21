@@ -6,10 +6,11 @@ import EditContactForm from './EditContactForm';
 import { BlueBackButton } from '@src/components/backButton';
 
 export default async function Page({
-  params: { clubId },
+  params,
 }: {
-  params: { clubId: string };
+  params: Promise<{ clubId: string }>;
 }) {
+  const { clubId } = await params;
   const club = await api.club.byId({ id: clubId });
   if (!club) notFound();
   return (

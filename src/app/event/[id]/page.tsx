@@ -10,12 +10,13 @@ import Link from 'next/link';
 import { getServerAuthSession } from '@src/server/auth';
 import RegisterButton from '@src/app/event/[id]/RegisterButton';
 
-type Params = { params: { id: string } };
+type Params = { params: Promise<{ id: string }> };
 
 export default async function EventsPage({ params }: Params) {
+  const { id } = await params;
   const session = await getServerAuthSession();
   const res = await db.query.events.findFirst({
-    where: (events) => eq(events.id, params.id),
+    where: (events) => eq(events.id, id),
     with: { club: true },
   });
 
@@ -114,9 +115,9 @@ export default async function EventsPage({ params }: Params) {
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  const id = params.id;
+  const { id } = await params;
 
   const found = await db.query.events.findFirst({
     where: (events) => eq(events.id, id),

@@ -36,15 +36,16 @@ export const viewport = {
   themeColor: '#573DFF',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const headersList = await headers();
   return (
     <html lang="en">
       <body className={`font-sans ${inter.variable}`}>
-        <TRPCReactProvider headers={headers()}>
+        <TRPCReactProvider headers={headersList}>
           <Sidebar />
           <div className="max-h-screen overflow-y-scroll">{children}</div>
         </TRPCReactProvider>

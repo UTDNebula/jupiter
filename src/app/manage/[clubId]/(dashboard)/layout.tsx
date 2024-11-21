@@ -16,7 +16,10 @@ const Layout = async ({
   events: ReactNode;
 }) => {
   const session = await getServerAuthSession();
-  if (!session) redirect(signInRoute(`manage/${params.clubId}`));
+  if (!session) {
+    const route = await signInRoute(`manage/${params.clubId}`);
+    redirect(route);
+  }
   const canAccess = await api.club.isOfficer({ id: params.clubId });
   if (!canAccess) {
     return <div className="md:pl-72">You can&apos;t access this 😢</div>;

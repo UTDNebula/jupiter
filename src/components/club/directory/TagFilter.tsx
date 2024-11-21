@@ -8,10 +8,9 @@ const scrollAmount = 300;
 type Props = {
   tags: string[];
   selectedTag?: string;
-}
+};
 
 const TagFilter = ({ tags, selectedTag }: Props) => {
-
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const handleScrollLeft = () => {

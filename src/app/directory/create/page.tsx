@@ -6,7 +6,10 @@ import { signInRoute } from '@src/utils/redirect';
 
 export default async function Page() {
   const session = await getServerAuthSession();
-  if (!session) redirect(signInRoute('directory/create'));
+  if (!session) {
+    const route = await signInRoute('directory/create');
+    redirect(route);
+  }
   return (
     <main>
       <div className="md:pl-72">

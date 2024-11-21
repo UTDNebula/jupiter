@@ -14,5 +14,6 @@ const createContext = cache(async () => {
 
 const caller = createCallerFactory(appRouter)(createContext);
 
-export const { trpc: api, HydrateClient } = createHydrationHelpers<typeof appRouter>(caller, () => new QueryClient());
-
+export const { trpc: api, HydrateClient } = createHydrationHelpers<
+  typeof appRouter
+>(caller, () => new QueryClient());

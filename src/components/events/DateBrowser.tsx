@@ -22,10 +22,14 @@ const DATE_FORMAT = 'MM/dd/yyyy';
 
 const DateBrowser = ({ filterState }: DateBrowserProps) => {
   const inputId = useId();
-  const [month, setMonth] = useState<Date>(() => filterState.date ?? new Date());
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(filterState.date);
+  const [month, setMonth] = useState<Date>(
+    () => filterState.date ?? new Date(),
+  );
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
+    filterState.date,
+  );
   const [inputValue, setInputValue] = useState(() =>
-    filterState.date ? format(filterState.date, DATE_FORMAT) : ''
+    filterState.date ? format(filterState.date, DATE_FORMAT) : '',
   );
   const router = useRouter();
 
@@ -51,15 +55,16 @@ const DateBrowser = ({ filterState }: DateBrowserProps) => {
 
   const handleNavigateDate = (direction: 'forward' | 'back') => {
     const baseDate = selectedDate ?? new Date();
-    const newDate = direction === 'forward'
-      ? addDays(baseDate, 1)
-      : subDays(baseDate, 1);
+    const newDate =
+      direction === 'forward' ? addDays(baseDate, 1) : subDays(baseDate, 1);
     handleDateChange(newDate);
   };
 
   useEffect(() => {
     if (!selectedDate) return;
-    router.push(`/events?date=${encodeURIComponent(selectedDate.toISOString())}`);
+    router.push(
+      `/events?date=${encodeURIComponent(selectedDate.toISOString())}`,
+    );
   }, [selectedDate, router]);
 
   return (
@@ -105,7 +110,6 @@ const DateBrowser = ({ filterState }: DateBrowserProps) => {
                 mode="single"
                 className="rounded-md border p-2"
               />
-
             </div>
           </PopoverContent>
         </PopoverPortal>

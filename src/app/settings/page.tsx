@@ -19,7 +19,8 @@ const Settings = async () => {
   const session = await getServerAuthSession();
 
   if (!session) {
-    redirect(signInRoute('settings'));
+    const route = await signInRoute('settings');
+    redirect(route);
   }
 
   return (

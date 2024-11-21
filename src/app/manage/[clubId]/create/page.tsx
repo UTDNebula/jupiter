@@ -5,15 +5,17 @@ import { signInRoute } from '@src/utils/redirect';
 import { redirect, notFound } from 'next/navigation';
 import CreateEventForm from './CreateEventForm';
 
-const Page = async ({ params }: { params: { clubId: string } }) => {
+const Page = async ({ params }: { params: Promise<{ clubId: string }> }) => {
   const session = await getServerAuthSession();
+  const { clubId } = await params;
   if (!session) {
-    redirect(signInRoute(`manage/${params.clubId}/create`));
+    const route = await signInRoute(`manage/${clubId}/create`);
+    redirect(route);
   }
 
   const officerClubs = await api.club.getOfficerClubs();
   const currentClub = officerClubs.filter((val) => {
-    return val.id == params.clubId;
+    return val.id == clubId;
   })[0];
   if (!currentClub) {
     notFound();

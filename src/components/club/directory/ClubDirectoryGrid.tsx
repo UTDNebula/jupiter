@@ -16,7 +16,7 @@ export default function ClubDirectoryGrid({ session }: Props) {
 
   const { data, refetch } = api.club.all.useQuery(
     { tag: tag ?? undefined },
-    { staleTime: 1000 * 60 * 5 }
+    { staleTime: 1000 * 60 * 5 },
   );
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export default function ClubDirectoryGrid({ session }: Props) {
   if (!data) return <ClubDirectoryGridSkeleton />;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {data?.clubs.map((club) => (
         <ClubCard key={club.id} club={club} session={session} priority />
       ))}
@@ -35,9 +35,11 @@ export default function ClubDirectoryGrid({ session }: Props) {
 }
 
 function ClubDirectoryGridSkeleton() {
-  return <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-    {Array.from({ length: 12 }).map((_, index) => (
-      <ClubCardSkeleton key={index} />
+  return (
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {Array.from({ length: 12 }).map((_, index) => (
+        <ClubCardSkeleton key={index} />
       ))}
     </div>
+  );
 }
