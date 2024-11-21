@@ -1,27 +1,43 @@
-import { type FC } from 'react';
-import ClubCard from '../ClubCard';
-import { api } from '@src/trpc/server';
-import { getServerAuthSession } from '@src/server/auth';
-import InfiniteScrollGrid from './InfiniteScrollGrid';
-import ScrollTop from './ScrollTop';
+'use client';
 
-interface Props {
-  tag?: string;
-}
+import { api } from '@src/trpc/react';
+import { useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
+import ClubCard, { ClubCardSkeleton } from '../ClubCard';
+import type { Session } from 'next-auth';
 
-const ClubDirectoryGrid: FC<Props> = async ({ tag }) => {
-  const { clubs } = await api.club.all({ tag, limit: 9 });
-  const session = await getServerAuthSession();
-
-  return (
-    <div className="grid w-full auto-rows-fr grid-cols-[repeat(auto-fill,320px)] justify-center gap-16 pb-4">
-      {clubs.map((club) => (
-        <ClubCard key={club.id} club={club} session={session} priority />
-      ))}
-      {clubs.length === 9 && <InfiniteScrollGrid tag={tag} session={session} />}
-      <ScrollTop />
-    </div>
-  );
+type Props = {
+  session: Session | null;
 };
 
-export default ClubDirectoryGrid;
+export default function ClubDirectoryGrid({ session }: Props) {
+  const searchParams = useSearchParams();
+  const tag = searchParams.get('tag');
+
+  const { data, refetch } = api.club.all.useQuery(
+    { tag: tag ?? undefined },
+    { staleTime: 1000 * 60 * 5 }
+  );
+
+  useEffect(() => {
+    void refetch();
+  }, [tag, refetch]);
+
+  if (!data) return <ClubDirectoryGridSkeleton />;
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {data?.clubs.map((club) => (
+        <ClubCard key={club.id} club={club} session={session} priority />
+      ))}
+    </div>
+  );
+}
+
+function ClubDirectoryGridSkeleton() {
+  return <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    {Array.from({ length: 12 }).map((_, index) => (
+      <ClubCardSkeleton key={index} />
+      ))}
+    </div>
+}

@@ -1,18 +1,18 @@
 'use client';
 import { useRef } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { LeftArrowIcon, RightArrowIcon } from '@src/icons/Icons';
+import Link from 'next/link';
 
 const scrollAmount = 300;
 
-const TagFilter = ({ tags }: { tags: string[] }) => {
-  const router = useRouter();
-  const params = useSearchParams();
-  const selectedTag = params.get('tag') || 'All';
+type Props = {
+  tags: string[];
+  selectedTag?: string;
+}
+
+const TagFilter = ({ tags, selectedTag }: Props) => {
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const setSelected = (tag: string) =>
-    router.replace(`/?tag=${tag}`, { scroll: false });
 
   const handleScrollLeft = () => {
     const container = scrollContainerRef.current;
@@ -25,6 +25,7 @@ const TagFilter = ({ tags }: { tags: string[] }) => {
     if (!container) return;
     container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
   };
+
   return (
     <div className="flex w-full justify-center py-9" id="top">
       <div className="relative flex w-full items-center space-x-1">
@@ -39,17 +40,20 @@ const TagFilter = ({ tags }: { tags: string[] }) => {
           ref={scrollContainerRef}
         >
           {tags.map((tag, key) => (
-            <button
+            <Link
               key={key}
+              href={tag === selectedTag ? '/' : `/?tag=${tag}`}
               className={`${
                 selectedTag === tag
                   ? 'bg-blue-primary text-white hover:bg-blue-700'
                   : 'bg-gray-100 text-slate-600 hover:bg-gray-200'
               } whitespace-nowrap rounded-3xl px-8 py-4 text-sm font-extrabold transition-colors duration-200 focus:outline-none md:text-xs`}
-              onClick={() => setSelected(tag)}
+              scroll={false}
+              prefetch
+              replace
             >
               {tag}
-            </button>
+            </Link>
           ))}
         </div>
         <button

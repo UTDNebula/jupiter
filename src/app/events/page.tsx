@@ -16,20 +16,16 @@ export const metadata: Metadata = {
     description: 'Get connected on campus.',
   },
 };
-const Events = async ({
-  searchParams,
-}: {
-  searchParams: (typeof eventParamsSchema)['_input'];
-}) => {
+const Events = async ({ searchParams: paramsPromise }: { searchParams: Promise<(typeof eventParamsSchema)['_input']> }) => {
+  const searchParams = await paramsPromise
   const parsed = eventParamsSchema.parse(searchParams);
-  const { events } = await api.event.findByDate({
-    date: parsed.date,
-  });
+  const { events } = await api.event.findByDate({ date: parsed.date });
   return (
     <main className="pb-10 md:pl-72">
       <EventHeader />
       <EventView searchParams={parsed}>
-        {events.map((event) => {
+        { events.length === 0 && <div>No events found for this date</div>}
+        { events.map((event) => {
           return <EventCard key={event.id} event={event} />;
         })}
       </EventView>

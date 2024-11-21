@@ -11,8 +11,8 @@ import { db } from './db';
 import { eq } from 'drizzle-orm';
 import { type InsertUserMetadata } from './db/models';
 import { type UserMetadata } from '@src/models/userMetadata';
-import { pgTable } from 'drizzle-orm/pg-core';
 import { userMetadata } from './db/schema/users';
+import { type Adapter } from 'next-auth/adapters';
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -50,7 +50,7 @@ export interface PreviewUser {
  */
 
 export const authOptions: NextAuthOptions = {
-  adapter: DrizzleAdapter(db, pgTable),
+  adapter: DrizzleAdapter(db) as Adapter,
   callbacks: {
     async session({ session, user }) {
       let metadata = await db.query.userMetadata.findFirst({

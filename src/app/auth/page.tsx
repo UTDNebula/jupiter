@@ -6,14 +6,14 @@ import Image from 'next/image';
 import BackButton from '@src/components/backButton';
 
 export default async function Auth({
-  searchParams,
+  searchParams: paramsPromise,
 }: {
-  searchParams: { [key: string]: string };
+  searchParams: Promise<{ [key: string]: string }>;
 }) {
+  const params = await paramsPromise;
   const session = await getServerAuthSession();
-  if (session) {
-    return redirect(searchParams['callbackUrl'] ?? '/');
-  }
+  if (session) return redirect(params['callbackUrl'] ?? '/');
+
   const providers = await getProviders();
 
   return (

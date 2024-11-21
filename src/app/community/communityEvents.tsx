@@ -1,5 +1,3 @@
-'use server';
-
 import EventCard from '@src/components/events/EventCard';
 import { api } from '@src/trpc/server';
 import Link from 'next/link';
