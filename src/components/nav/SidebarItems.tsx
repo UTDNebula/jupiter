@@ -39,8 +39,8 @@ const SidebarItems: FC<{ cat: allCats[number] }> = ({ cat }) => {
             <Icon fill={active ? 'fill-blue-primary' : 'fill-slate-500'} />
           )}
           <h1
-            className={`text-base font-medium capitalize md:text-sm
-            transition-colors duration-200 ${
+            className={`text-base font-medium capitalize transition-colors
+            duration-200 md:text-sm ${
               active
                 ? 'text-blue-primary'
                 : 'text-slate-500 group-hover:text-blue-primary'
@@ -49,12 +49,12 @@ const SidebarItems: FC<{ cat: allCats[number] }> = ({ cat }) => {
             {cat}
           </h1>
         </div>
-        <div className={`ml-auto transition-transform duration-200 ${
-          active || mouseOver ? 'translate-x-0' : '-translate-x-1'
+        <div
+          className={`ml-auto transition-transform duration-200 ${
+            active || mouseOver ? 'translate-x-0' : '-translate-x-1'
           }`}
         >
-          <RightChevron
-          />
+          <RightChevron />
         </div>
       </div>
     </div>

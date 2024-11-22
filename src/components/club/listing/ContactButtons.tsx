@@ -36,7 +36,7 @@ const ContactButtons = ({ contacts }: contentButtonProps) => {
               </Link>
             </button>
           )}
-          </Fragment>
+        </Fragment>
       ))}
     </div>
   );
