@@ -1,3 +1,4 @@
+'use client';
 import { RightArrowIcon, SearchIcon } from '@src/icons/Icons';
 import { type ComponentProps } from 'react';
 

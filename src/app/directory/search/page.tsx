@@ -8,11 +8,11 @@ type Params = {
 
 const clubSearch = async (props: Params) => {
   const params = await props.searchParams;
-  const userSearch = params['search'] || '';
+  const userSearch = params['q'] || '';
   const session = await getServerAuthSession();
 
   return (
-    <main className="md:pl-72">
+    <main className="md:pl-72 min-h-screen">
       <div>
         <Header />
         <ClubSearchComponent userSearch={userSearch} session={session} />

@@ -5,6 +5,7 @@ import {
   useEffect,
   type Dispatch,
   type SetStateAction,
+  type KeyboardEvent,
 } from 'react';
 import { SearchBar } from '.';
 
@@ -32,20 +33,44 @@ export const DebouncedSearchBar = <T extends SearchElement>({
 }: DebouncedSearchBarProps<T>) => {
   const [input, setInput] = useState<string>(value ?? '');
   const [focused, setFocused] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
   useEffect(() => {
     const handler = setTimeout(() => {
       setSearch(input);
+      setSelectedIndex(-1);
     }, 300);
     return () => {
       clearTimeout(handler);
     };
   }, [input, setSearch]);
 
+  function handleKeyDown(e: KeyboardEvent<HTMLDivElement>) {
+    switch(e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        setSelectedIndex(Math.min(selectedIndex + 1, searchResults?.length ?? 0));
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        setSelectedIndex(Math.max(selectedIndex - 1, 0));
+        break;
+      case 'Enter':
+        if (searchResults && searchResults[selectedIndex]) {
+          onClick?.(searchResults[selectedIndex]);
+        }
+        break;
+    }
+  }
+
   return (
-    <div className="relative mr-3 w-full max-w-xs md:max-w-sm lg:max-w-md">
+    <div
+      className="relative mr-3 w-full max-w-xs md:max-w-sm lg:max-w-md"
+      onKeyDown={handleKeyDown}
+    >
       <SearchBar
         placeholder={placeholder}
         tabIndex={0}
@@ -56,12 +81,18 @@ export const DebouncedSearchBar = <T extends SearchElement>({
         submitLogic={submitLogic}
       />
       {input && focused && searchResults && searchResults.length > 0 && (
-        <div className="absolute left-0 right-0 top-full z-50 mt-1 rounded-sm shadow-lg">
-          {searchResults.map((item) => (
+        <div className="absolute left-0 right-0 top-full z-50 mt-2 max-h-[300px] overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+          {searchResults.map((item, i) => (
             <button
               type="button"
-              key={item.name}
-              className="w-full bg-gray-50 px-4 py-2 text-left font-semibold hover:bg-gray-200"
+              key={item.id}
+              className={`w-full px-4 py-2.5 text-left text-sm transition-colors duration-150
+                ${selectedIndex === i
+                  ? 'bg-blue-50 text-blue-700'
+                  : 'text-gray-700 hover:bg-gray-50'
+                }
+                ${i !== searchResults.length - 1 ? 'border-b border-gray-100' : ''}
+              `}
               onClick={() => (onClick ? onClick(item) : null)}
             >
               {item.name}
