@@ -1,7 +1,9 @@
 import Header from '../components/header/BaseHeader';
 import Carousel from '../components/club/directory/Carousel';
 import TagFilter from '../components/club/directory/TagFilter';
-import ClubDirectoryGrid, { ClubDirectoryGridSkeleton } from '../components/club/directory/ClubDirectoryGrid';
+import ClubDirectoryGrid, {
+  ClubDirectoryGridSkeleton,
+} from '../components/club/directory/ClubDirectoryGrid';
 import type { Metadata } from 'next';
 import { api } from '@src/trpc/server';
 import { getServerAuthSession } from '@src/server/auth';

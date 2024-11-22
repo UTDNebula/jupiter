@@ -6,7 +6,11 @@ type SearchBarProps = Omit<ComponentProps<'input'>, 'type'> & {
   submitLogic?: () => void;
 };
 
-export const SearchBar = ({ submitButton, submitLogic, ...props }: SearchBarProps) => {
+export const SearchBar = ({
+  submitButton,
+  submitLogic,
+  ...props
+}: SearchBarProps) => {
   return (
     <div className="relative">
       <span className="absolute inset-y-0 flex items-center pl-3">
