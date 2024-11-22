@@ -1,10 +1,11 @@
 import Header from '../components/header/BaseHeader';
 import Carousel from '../components/club/directory/Carousel';
 import TagFilter from '../components/club/directory/TagFilter';
-import ClubDirectoryGrid from '../components/club/directory/ClubDirectoryGrid';
+import ClubDirectoryGrid, { ClubDirectoryGridSkeleton } from '../components/club/directory/ClubDirectoryGrid';
 import type { Metadata } from 'next';
 import { api } from '@src/trpc/server';
 import { getServerAuthSession } from '@src/server/auth';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: 'Jupiter - Nebula',
@@ -40,7 +41,9 @@ const Home = async ({ searchParams }: Props) => {
           <Carousel clubs={onlyClubs} />
         </div>
         <TagFilter tags={tags} selectedTag={params.tag} />
-        <ClubDirectoryGrid session={session} />
+        <Suspense fallback={<ClubDirectoryGridSkeleton />}>
+          <ClubDirectoryGrid session={session} tag={params.tag} />
+        </Suspense>
       </div>
     </main>
   );

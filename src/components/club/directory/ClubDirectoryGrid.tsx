@@ -1,40 +1,28 @@
-'use client';
-
-import { api } from '@src/trpc/react';
-import { useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { api } from '@src/trpc/server';
 import ClubCard, { ClubCardSkeleton } from '../ClubCard';
 import type { Session } from 'next-auth';
+import InfiniteScrollGrid from './InfiniteScrollGrid';
 
 type Props = {
   session: Session | null;
+  tag?: string;
 };
 
-export default function ClubDirectoryGrid({ session }: Props) {
-  const searchParams = useSearchParams();
-  const tag = searchParams.get('tag');
-
-  const { data, refetch } = api.club.all.useQuery(
-    { tag: tag ?? undefined },
-    { staleTime: 1000 * 60 * 5 },
-  );
-
-  useEffect(() => {
-    void refetch();
-  }, [tag, refetch]);
-
-  if (!data) return <ClubDirectoryGridSkeleton />;
+export default async function ClubDirectoryGrid({ session, tag }: Props) {
+  const data = await api.club.all({ tag, limit: 9 });
 
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {data?.clubs.map((club) => (
+      {data.clubs.map((club) => (
         <ClubCard key={club.id} club={club} session={session} priority />
       ))}
+      {data.clubs.length === 0 && <div>No clubs found</div>}
+      {data.clubs.length === 9 && <InfiniteScrollGrid session={session} />}
     </div>
   );
 }
 
-function ClubDirectoryGridSkeleton() {
+export function ClubDirectoryGridSkeleton() {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {Array.from({ length: 12 }).map((_, index) => (

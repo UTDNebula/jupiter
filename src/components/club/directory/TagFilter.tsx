@@ -40,6 +40,9 @@ const TagFilter = ({ tags, selectedTag }: Props) => {
         >
           {tags.map((tag, key) => (
             <Link
+              ref={(ref) => {
+                if (tag === selectedTag && ref) scrollToTag(ref);
+              }}
               key={key}
               href={tag === selectedTag ? '/' : `/?tag=${tag}`}
               className={`${
@@ -65,5 +68,10 @@ const TagFilter = ({ tags, selectedTag }: Props) => {
     </div>
   );
 };
+
+function scrollToTag(container?: HTMLAnchorElement) {
+  if (!container) return;
+  container.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+}
 
 export default TagFilter;

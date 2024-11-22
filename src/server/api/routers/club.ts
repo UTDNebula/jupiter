@@ -78,10 +78,6 @@ export const clubRouter = createTRPCRouter({
     }
   }),
   all: publicProcedure.input(allSchema).query(async ({ ctx, input }) => {
-    ctx.headers.set(
-      'Cache-Control',
-      'public, s-maxage=300, stale-while-revalidate=59',
-    );
     const userID = ctx.session?.user.id;
     try {
       let query = ctx.db
