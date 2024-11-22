@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import type { SelectContact as Contacts } from '@src/server/db/models';
 import { logo } from '@src/icons/ContactIcons';
 import Link from 'next/link';
@@ -22,7 +23,7 @@ const ContactButtons = ({ contacts }: contentButtonProps) => {
   return (
     <div className="flex flex-row content-center gap-x-4">
       {contacts.map((item) => (
-        <>
+        <Fragment key={item.url}>
           {item.platform === 'email' ? (
             <EmailButton item={item} />
           ) : (
@@ -35,7 +36,7 @@ const ContactButtons = ({ contacts }: contentButtonProps) => {
               </Link>
             </button>
           )}
-        </>
+          </Fragment>
       ))}
     </div>
   );
