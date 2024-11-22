@@ -18,32 +18,31 @@ const HorizontalCard = async ({
 }) => {
   const session = await getServerAuthSession();
   return (
-    <div className="container flex h-40 flex-row overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-lg">
-      <div className="relative h-[160px] w-1/3 max-w-[225px]">
-        <div className="h-[160px]">
-          <Image
-            fill
-            src={'/event_default.jpg'}
-            alt="event image"
-            className="object-cover object-left"
-          />
-        </div>
-        <div className="absolute inset-0 p-2 text-white">
+    <div className="flex h-44 w-full flex-row overflow-hidden rounded-lg bg-white shadow-sm transition-all duration-200 hover:shadow-lg">
+      <div className="relative h-full w-1/3 max-w-[225px] overflow-hidden">
+        <Image
+          fill
+          src={'/event_default.jpg'}
+          alt="event image"
+          className="object-cover"
+          sizes="(max-width: 225px) 100vw, 225px"
+        />
+        <div className="absolute inset-0 p-3">
           <EventTimeAlert event={event} />
         </div>
       </div>
-      <div className="flex w-full flex-row px-6 py-5">
-        <div className="flex flex-col space-y-2.5">
-          <h3 className="font-bold">{event.name}</h3>
-          <h4 className="whitespace-nowrap text-xs font-bold">
+      <div className="flex w-full flex-row gap-4 px-6 py-5">
+        <div className="flex flex-col space-y-3">
+          <h3 className="text-lg font-bold leading-tight">{event.name}</h3>
+          <h4 className="flex flex-wrap items-center gap-x-2 text-sm font-medium">
             <Link
               href={`/directory/${event.clubId ?? ''}`}
               className="hover:text-blue-primary"
               scroll
             >
               {event.club.name}
-            </Link>{' '}
-            •<wbr />
+            </Link>
+            <span className="text-gray-400">•</span>
             <span className="text-blue-primary">
               {format(event.startTime, 'E, MMM d, p')}
               {isSameDay(event.startTime, event.endTime) ? (
@@ -53,16 +52,16 @@ const HorizontalCard = async ({
               )}
             </span>
           </h4>
-          <p className="line-clamp-3 overflow-clip text-ellipsis text-xs font-bold">
+          <p className="line-clamp-2 text-sm text-gray-600">
             {event.description}
           </p>
         </div>
-        <div className="ml-auto flex flex-row space-x-4">
+        <div className="ml-auto flex flex-row items-start gap-3">
           {session && (
             <EventLikeButton liked={event.liked} eventId={event.id} />
           )}
           <Link
-            className=" h-10 w-10 rounded-full bg-blue-primary p-1.5 shadow-lg transition-colors hover:bg-blue-700 active:bg-blue-800"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-primary shadow-md transition-colors hover:bg-blue-700 active:bg-blue-800"
             href={`/event/${event.id}`}
             passHref
           >
@@ -140,7 +139,7 @@ const VerticalCard = async ({
 
 const EventCard = ({ event }: EventCardProps) => {
   return (
-    <div>
+    <div className="w-full">
       <div className="hidden lg:group-data-[view=list]:contents">
         <HorizontalCard event={event} />
       </div>

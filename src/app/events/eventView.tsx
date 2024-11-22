@@ -28,7 +28,7 @@ const EventView = ({ children, searchParams }: Props) => {
 
       <section
         aria-labelledby="events-heading"
-        className="container flex w-full flex-col overflow-x-clip sm:flex-row sm:space-x-7.5"
+        className="w-full"
       >
         <div
           data-view="list"
