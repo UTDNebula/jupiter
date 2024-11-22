@@ -26,10 +26,7 @@ const EventView = ({ children, searchParams }: Props) => {
         </nav>
       </div>
 
-      <section
-        aria-labelledby="events-heading"
-        className="w-full"
-      >
+      <section aria-labelledby="events-heading" className="w-full">
         <div
           data-view="list"
           className="group flex w-full flex-col items-center space-y-7.5 pt-10 md:items-start"
