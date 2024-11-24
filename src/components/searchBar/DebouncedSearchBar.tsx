@@ -59,8 +59,9 @@ export const DebouncedSearchBar = <T extends SearchElement>({
         setSelectedIndex(Math.max(selectedIndex - 1, 0));
         break;
       case 'Enter':
-        if (searchResults && searchResults[selectedIndex]) {
-          onClick?.(searchResults[selectedIndex]);
+        const selectedItem = searchResults?.[selectedIndex];
+        if (selectedItem) {
+          onClick?.(selectedItem);
         }
         break;
     }
