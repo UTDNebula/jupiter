@@ -25,6 +25,16 @@ type SearchBarProps<T extends SearchElement> = {
   onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
 };
 
+const debounce = (func: (...args: any[]) => void, delay: number) => {
+  let timeoutId: NodeJS.Timeout;
+  return (...args: any[]) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+};
+
 export const SearchBar = <T extends SearchElement>({
   placeholder,
   value,
@@ -40,14 +50,11 @@ export const SearchBar = <T extends SearchElement>({
     setInput(e.target.value);
   };
 
+  const debouncedSetSearch = debounce(setSearch, 300);
+
   useEffect(() => {
-    const handler = setTimeout(() => {
-      setSearch(input);
-    }, 300);
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [input, setSearch]);
+    debouncedSetSearch(input);
+  }, [input, debouncedSetSearch]);
 
   return (
     <div className="mr-3 w-full max-w-xs md:max-w-sm lg:max-w-md">
