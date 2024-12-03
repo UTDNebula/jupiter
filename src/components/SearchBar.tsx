@@ -9,12 +9,8 @@ import {
 } from 'react';
 import { SearchIcon } from '../icons/Icons';
 import { useRouter } from 'next/navigation';
-import type {
-  SelectClub as Club,
-  SelectUserMetadata,
-} from '@src/server/db/models';
-import { api } from '@src/trpc/react';
 import type { SelectEvent as Event } from '@src/server/db/models';
+import { api } from '@src/trpc/react';
 
 type SearchElement = {
   id: string;
@@ -26,7 +22,7 @@ type SearchBarProps<T extends SearchElement> = {
   setSearch: Dispatch<SetStateAction<string>>;
   searchResults?: Array<T>;
   onClick?: (input: T) => void;
-  onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void; // Add this line
+  onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
 };
 
 export const SearchBar = <T extends SearchElement>({
@@ -35,7 +31,7 @@ export const SearchBar = <T extends SearchElement>({
   setSearch,
   searchResults,
   onClick,
-  onKeyDown, // Add this line
+  onKeyDown,
 }: SearchBarProps<T>) => {
   const [input, setInput] = useState<string>(value ?? '');
   const [focused, setFocused] = useState(false);
@@ -65,7 +61,7 @@ export const SearchBar = <T extends SearchElement>({
           className="h-10 w-full rounded-full border pl-10 pr-3 focus:outline-none"
           tabIndex={0}
           onChange={handleSearch}
-          onKeyDown={onKeyDown} // Add this line
+          onKeyDown={onKeyDown}
           onFocus={() => setFocused(true)}
           onBlur={() => setTimeout(() => setFocused(false), 300)}
         />
@@ -74,7 +70,7 @@ export const SearchBar = <T extends SearchElement>({
             {searchResults.map((item) => (
               <button
                 type="button"
-                key={item.name}
+                key={item.id}
                 className="w-full bg-gray-50 px-4 py-2 text-left font-semibold hover:bg-gray-200"
                 onClick={() => (onClick ? onClick(item) : null)}
               >
@@ -85,26 +81,6 @@ export const SearchBar = <T extends SearchElement>({
         )}
       </div>
     </div>
-  );
-};
-
-export const ClubSearchBar = () => {
-  const router = useRouter();
-  const [search, setSearch] = useState<string>('');
-  const { data } = api.club.byName.useQuery(
-    { name: search },
-    { enabled: !!search },
-  );
-  const onClickSearchResult = (club: Club) => {
-    router.push(`/directory/${club.id}`);
-  };
-  return (
-    <SearchBar
-      placeholder="Search for Clubs"
-      setSearch={setSearch}
-      searchResults={data || []}
-      onClick={onClickSearchResult}
-    />
   );
 };
 
@@ -127,7 +103,10 @@ export const EventSearchBar = () => {
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      router.push(`/search?query=${search}`);
+      setSearch(search);
+      setTimeout(() => {
+        router.push(`/events?query=${search}`);
+      }, 0);
     }
   };
 
@@ -139,80 +118,7 @@ export const EventSearchBar = () => {
       onClick={(event) => {
         router.push(`/event/${event.id}`);
       }}
-      onKeyDown={handleKeyDown} // Add this line
-    />
-  );
-};
-
-type EventClubSearchBarProps = {
-  addClub: (value: string) => void;
-};
-
-export const EventClubSearchBar = ({ addClub }: EventClubSearchBarProps) => {
-  const [search, setSearch] = useState('');
-  const [res, setRes] = useState<Club[]>([]);
-  const utils = api.useUtils();
-  const clubQuery = api.club.byName.useQuery(
-    { name: search },
-    {
-      enabled: !!search,
-    },
-  );
-  useEffect(() => {
-    if (clubQuery.data) {
-      setRes(clubQuery.data);
-    }
-  }, [clubQuery.data]);
-  return (
-    <SearchBar
-      placeholder="Select a club"
-      setSearch={setSearch}
-      value={search}
-      searchResults={res}
-      onClick={(club) => {
-        void utils.club.byId.prefetch({ id: club.id });
-        addClub(club.id);
-        setSearch('');
-      }}
-    />
-  );
-};
-
-type UserSearchBarProps = {
-  passUser: (user: { id: string; name: string }) => void;
-};
-
-type User = {
-  name: string;
-} & SelectUserMetadata;
-
-export const UserSearchBar = ({ passUser }: UserSearchBarProps) => {
-  const [search, setSearch] = useState('');
-  const [res, setRes] = useState<User[]>([]);
-  const userQuery = api.userMetadata.searchByName.useQuery(
-    { name: search },
-    {
-      enabled: !!search,
-    },
-  );
-  useEffect(() => {
-    if (userQuery.data) {
-      const newData = userQuery.data.map((val) => {
-        return { name: val.firstName + ' ' + val.lastName, ...val };
-      });
-      setRes(newData);
-    }
-  }, [userQuery.data]);
-  return (
-    <SearchBar
-      placeholder="Search for Someone"
-      setSearch={setSearch}
-      value={search}
-      searchResults={res}
-      onClick={(user) => {
-        passUser({ id: user.id, name: user.name });
-        setSearch('');
-      }}
+      onKeyDown={handleKeyDown}
     />
   );
 };
