@@ -1,17 +1,12 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { UserSearchBar } from '@src/components/SearchBar';
+import { UserSearchBar } from '@src/components/searchBar/UserSearchBar';
 import { api } from '@src/trpc/react';
 import { editOfficerSchema } from '@src/utils/formSchemas';
 import { useRouter } from 'next/navigation';
 import { useReducer } from 'react';
-import {
-  type FieldErrors,
-  type UseFormRegister,
-  useFieldArray,
-  useForm,
-} from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { type z } from 'zod';
 
 type x = {
@@ -69,14 +64,12 @@ type EditOfficerFormProps = {
     userId: string;
     name: string;
     locked: boolean;
-    title: string;
     position: 'President' | 'Officer';
   }[];
 };
 const EditOfficerForm = ({ clubId, officers }: EditOfficerFormProps) => {
   const {
     control,
-    register,
     handleSubmit,
     reset,
     formState: { errors, dirtyFields, isDirty },
@@ -143,11 +136,9 @@ const EditOfficerForm = ({ clubId, officers }: EditOfficerFormProps) => {
             {fields.map((field, index) => (
               <OfficerItem
                 key={field.id}
-                register={register}
                 index={index}
                 id={field.userId}
                 remove={removeItem}
-                errors={errors}
                 locked={field.locked}
                 name={field.name}
               />
@@ -181,23 +172,13 @@ const EditOfficerForm = ({ clubId, officers }: EditOfficerFormProps) => {
 };
 export default EditOfficerForm;
 type OfficerItemProps = {
-  register: UseFormRegister<z.infer<typeof editOfficerSchema>>;
   remove: (index: number, userId: string) => void;
   id: string;
   index: number;
   name: string;
   locked: boolean;
-  errors: FieldErrors<z.infer<typeof editOfficerSchema>>;
 };
-const OfficerItem = ({
-  register,
-  index,
-  id,
-  name,
-  remove,
-  errors,
-  locked,
-}: OfficerItemProps) => {
+const OfficerItem = ({ index, id, name, remove, locked }: OfficerItemProps) => {
   return (
     <div className="flex flex-row items-center rounded-md bg-slate-300 p-2">
       <div className="flex flex-col">
@@ -205,21 +186,6 @@ const OfficerItem = ({
           <h4 className="mb-1 bg-slate-300 text-xl font-bold text-black">
             {name}
           </h4>
-        </div>
-        <div>
-          <input
-            type="text"
-            placeholder="Position"
-            className="bg-slate-300 font-semibold text-black"
-            {...register(`officers.${index}.title` as const)}
-            aria-invalid={errors.officers && !!errors.officers[index]?.title}
-            disabled={locked}
-          />
-          {errors.officers && errors.officers[index]?.title && (
-            <p className="text-red-500">
-              {errors.officers[index]?.title?.message}
-            </p>
-          )}
         </div>
       </div>
       <button

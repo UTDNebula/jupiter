@@ -1,5 +1,5 @@
-import { selectContact } from '@src/server/db/models';
 import { z } from 'zod';
+import { contactSchema } from './contact';
 
 export const createClubSchema = z.object({
   name: z.string().min(3, 'Club name must be at least 3 characters long'),
@@ -14,15 +14,10 @@ export const createClubSchema = z.object({
     })
     .array()
     .min(1),
-  contacts: selectContact
-    .omit({ clubId: true, url: true })
-    .extend({ url: z.string().url() })
-    .array(),
+  contacts: contactSchema.array(),
 });
 export const editClubContactSchema = z.object({
-  contacts: selectContact
-    .extend({ clubId: z.string().optional(), url: z.string().url() })
-    .array(),
+  contacts: contactSchema.array(),
 });
 
 export const editClubSchema = z.object({
@@ -41,6 +36,15 @@ export const editOfficerSchema = z.object({
     })
     .array(),
 });
+export const editListedOfficerSchema = z.object({
+  officers: z
+    .object({
+      id: z.string().optional(),
+      name: z.string(),
+      position: z.string().min(1),
+    })
+    .array(),
+});
 
 export const createEventSchema = z.object({
   clubId: z.string(),
@@ -49,7 +53,7 @@ export const createEventSchema = z.object({
   description: z.string().max(1000),
   startTime: z.coerce.date(),
   endTime: z.coerce.date(),
-})
+});
 
 export const feedbackFormSchema = z.object({
   rating: z.number().min(1).max(10),

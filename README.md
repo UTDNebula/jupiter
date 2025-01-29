@@ -104,7 +104,12 @@ $$;
 
 Currently, drizzle does not automatically create enums for you. You will have to create them manually. This [link](https://orm.drizzle.team/docs/column-types/pg#enum) should give you a good idea of how to create enums in postgres.
 
-</details> </br>
+</details> 
+<details>
+<summary>Tag View</summary>
+  there is a sql query in `src/server/db/tagView.sql` that you need to run in order for tags to work properly.
+  This query sets up a view that queries the different tags from clubs and orders them by how many clubs have those tags in descending order.
+</details></br>
 
 Once you have added the `DATABASE_URL` to your `.env` file, and have all the necessary extensions as well as enums, you will need to run the following commands to create the tables in your database.
 

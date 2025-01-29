@@ -1,7 +1,7 @@
 'use client';
 
 import { api } from '@src/trpc/react';
-import { UserSearchBar } from '../SearchBar';
+import { UserSearchBar } from '../searchBar/UserSearchBar';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 

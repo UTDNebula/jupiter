@@ -1,4 +1,4 @@
-import Header from '@src/components/BaseHeader';
+import Header from '@src/components/header/BaseHeader';
 import React from 'react';
 import { type FC } from 'react';
 

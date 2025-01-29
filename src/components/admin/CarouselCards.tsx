@@ -11,7 +11,7 @@ type Props = {
 
 export default function CarouselCard({ item }: Props) {
   const router = useRouter();
-  const { mutate } = api.admin.removeOrgCarousel.useMutation({
+  const { mutate } = api.admin.removeClubCarousel.useMutation({
     onSuccess: () => router.refresh(),
   });
   return (

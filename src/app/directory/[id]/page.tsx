@@ -1,14 +1,14 @@
-import Header from '@src/components/BaseHeader';
-import OrgHeader from '@src/components/OrgHeader';
-import OrgInfoSegment from '@src/components/OrgInfoSegment';
-import OrgUpcomingEvents from '@src/components/OrgUpcomingEvents';
+import Header from '@src/components/header/BaseHeader';
+import ClubHeader from '@src/components/club/listing/ClubHeader';
+import ClubInfoSegment from '@src/components/club/listing/ClubInfoSegment';
+import ClubUpcomingEvents from '@src/components/club/listing/ClubUpcomingEvents';
 import { api } from '@src/trpc/server';
 import { db } from '@src/server/db';
 import { eq } from 'drizzle-orm';
 import { type Metadata } from 'next';
 import NotFound from '@src/components/NotFound';
 
-const OrganizationPage = async ({ params }: { params: { id: string } }) => {
+const ClubPage = async ({ params }: { params: { id: string } }) => {
   const club = await api.club.getDirectoryInfo({ id: params.id });
   if (!club) return <NotFound elementType="Club" />;
 
@@ -16,15 +16,15 @@ const OrganizationPage = async ({ params }: { params: { id: string } }) => {
     <main className="w-full md:pl-72">
       <Header />
       <div className="mb-5 flex flex-col space-y-4 px-3">
-        <OrgHeader club={club} />
-        <OrgInfoSegment club={club} />
-        <OrgUpcomingEvents clubId={club.id} />
+        <ClubHeader club={club} />
+        <ClubInfoSegment club={club} />
+        <ClubUpcomingEvents clubId={club.id} />
       </div>
     </main>
   );
 };
 
-export default OrganizationPage;
+export default ClubPage;
 
 export async function generateMetadata({
   params,

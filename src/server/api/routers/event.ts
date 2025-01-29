@@ -13,16 +13,14 @@ import {
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 import { z } from 'zod';
 import { selectEvent } from '@src/server/db/models';
-import { type DateRange } from 'react-day-picker';
-import { add } from 'date-fns';
-import { userMetadataToClubs, userMetadataToEvents } from '@src/server/db/schema/users';
+import { add, startOfDay } from 'date-fns';
+import {
+  userMetadataToClubs,
+  userMetadataToEvents,
+} from '@src/server/db/schema/users';
 import { createEventSchema } from '@src/utils/formSchemas';
 import { TRPCError } from '@trpc/server';
 import { events } from '@src/server/db/schema/events';
-
-function isDateRange(value: unknown): value is DateRange {
-  return Boolean(value && typeof value === 'object' && 'from' in value);
-}
 
 const byClubIdSchema = z.object({
   clubId: z.string().default(''),
@@ -35,21 +33,12 @@ const byDateRangeSchema = z.object({
   endTime: z.date(),
 });
 export const findByFilterSchema = z.object({
-  startTime: z.union([
-    z.object({
-      type: z.literal('now'),
-    }),
-    z.object({
-      type: z.literal('distance'),
-      options: z.object({ days: z.number().int() }),
-    }),
-    z.object({
-      type: z.literal('range'),
-      options: z.custom<DateRange>((val) => isDateRange(val)),
-    }),
-  ]),
+  date: z.date(),
   order: z.enum(['soon', 'later', 'shortest duration', 'longest duration']),
   club: z.string().array(),
+});
+export const findByDateSchema = z.object({
+  date: z.date(),
 });
 
 const byIdSchema = z.object({
@@ -110,46 +99,67 @@ export const eventRouter = createTRPCRouter({
         throw e;
       }
     }),
+  findByDate: publicProcedure
+    .input(findByDateSchema)
+    .query(async ({ input, ctx }) => {
+      const startTime = startOfDay(input.date);
+      const endTime = add(startTime, { days: 1 });
+      const events = await ctx.db.query.events.findMany({
+        where: (event) => {
+          return or(
+            between(event.startTime, startTime, endTime),
+            between(event.endTime, startTime, endTime),
+            and(lte(event.startTime, startTime), gte(event.endTime, startTime)),
+            and(lte(event.startTime, endTime), gte(event.endTime, endTime)),
+          );
+        },
+
+        with: {
+          club: true,
+        },
+        limit: 20,
+      });
+      if (ctx.session) {
+        const user = ctx.session.user;
+        const eventsWithLike = await Promise.all(
+          events.map(async (ev) => {
+            const liked = !!(await ctx.db.query.userMetadataToEvents.findFirst({
+              where: (userMetadataToEvents) =>
+                and(
+                  eq(userMetadataToEvents.userId, user.id),
+                  eq(userMetadataToEvents.eventId, ev.id),
+                ),
+            }));
+            return { ...ev, liked: liked };
+          }),
+        );
+        return { events: eventsWithLike };
+      }
+      return {
+        events: events.map((event) => {
+          return { ...event, liked: false };
+        }),
+      };
+    }),
   findByFilters: publicProcedure
     .input(findByFilterSchema)
     .query(async ({ input, ctx }) => {
-      const startTime =
-        input.startTime.type === 'now'
-          ? new Date()
-          : input.startTime.type === 'distance'
-            ? add(new Date(), input.startTime.options)
-            : input.startTime.options.from ?? new Date();
-      const endTime =
-        input.startTime.type === 'distance'
-          ? new Date()
-          : input.startTime.type === 'range'
-            ? input.startTime.options.to
-              ? add(input.startTime.options.to, { days: 1 })
-              : add(startTime, { days: 1 })
-            : undefined;
+      const startTime = startOfDay(input.date);
+      const endTime = add(startTime, { days: 1 });
       const events = await ctx.db.query.events.findMany({
         where: (event) => {
           const whereElements: Array<SQL<unknown> | undefined> = [];
-          if (!endTime) {
-            whereElements.push(
-              or(
-                gte(event.startTime, startTime),
+          whereElements.push(
+            or(
+              between(event.startTime, startTime, endTime),
+              between(event.endTime, startTime, endTime),
+              and(
+                lte(event.startTime, startTime),
                 gte(event.endTime, startTime),
               ),
-            );
-          } else {
-            whereElements.push(
-              or(
-                between(event.startTime, startTime, endTime),
-                between(event.endTime, startTime, endTime),
-                and(
-                  lte(event.startTime, startTime),
-                  gte(event.endTime, startTime),
-                ),
-                and(lte(event.startTime, endTime), gte(event.endTime, endTime)),
-              ),
-            );
-          }
+              and(lte(event.startTime, endTime), gte(event.endTime, endTime)),
+            ),
+          );
 
           if (input.club.length !== 0) {
             whereElements.push(inArray(event.clubId, input.club));
@@ -238,21 +248,26 @@ export const eventRouter = createTRPCRouter({
   create: protectedProcedure
     .input(createEventSchema)
     .mutation(async ({ input, ctx }) => {
-      const { clubId } = input
+      const { clubId } = input;
       const userId = ctx.session.user.id;
 
       const isOfficer = await ctx.db.query.userMetadataToClubs.findFirst({
         where: and(
           eq(userMetadataToClubs.userId, userId),
           eq(userMetadataToClubs.clubId, clubId),
-          inArray(userMetadataToClubs.memberType, ["Officer", "President"])
-        )
+          inArray(userMetadataToClubs.memberType, ['Officer', 'President']),
+        ),
       });
       if (!isOfficer) {
-        throw new TRPCError({ code: "UNAUTHORIZED" });
+        throw new TRPCError({ code: 'UNAUTHORIZED' });
       }
 
-      await ctx.db.insert(events).values({ ...input });
+      const res = await ctx.db
+        .insert(events)
+        .values({ ...input })
+        .returning({ id: events.id });
+      if (res.length == 0) throw 'Failed to add event';
+      return res[0]?.id;
     }),
   byName: publicProcedure.input(byNameSchema).query(async ({ input, ctx }) => {
     const { name, sortByDate } = input;

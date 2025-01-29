@@ -1,9 +1,17 @@
 import { relations, sql } from 'drizzle-orm';
-import { boolean, pgEnum, pgTable, text } from 'drizzle-orm/pg-core';
+import {
+  boolean,
+  integer,
+  pgEnum,
+  pgTable,
+  pgView,
+  text,
+} from 'drizzle-orm/pg-core';
 import { events } from './events';
 import { userMetadataToClubs } from './users';
 import { contacts } from './contacts';
 import { carousel } from './admin';
+import { officers } from './officers';
 
 export const approvedEnum = pgEnum('approved_enum', [
   'approved',
@@ -32,6 +40,12 @@ export const club = pgTable('club', {
 export const clubRelations = relations(club, ({ many }) => ({
   contacts: many(contacts),
   events: many(events),
+  officers: many(officers),
   userMetadataToClubs: many(userMetadataToClubs),
   carousel: many(carousel),
 }));
+
+export const usedTags = pgView('used_tags', {
+  tags: text('tags').notNull(),
+  count: integer('count').notNull(),
+}).existing();
