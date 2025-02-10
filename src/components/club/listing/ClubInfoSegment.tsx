@@ -59,13 +59,6 @@ const ClubInfoSegment: FC<{
               <div className="flex flex-col justify-center align-middle">
                 {club.officers.map((officer) => (
                   <div className="mt-5 flex flex-row" key={officer.id}>
-                    <Image
-                      src={club.image}
-                      alt="Picture of the author"
-                      width={60}
-                      height={60}
-                      className="m-3 rounded-full"
-                    />
                     <div className="mx-5 flex flex-col justify-center align-middle">
                       <p className="text-left text-sm text-slate-600">
                         {officer.name}
