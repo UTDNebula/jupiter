@@ -47,7 +47,7 @@ const ClubInfoSegment: FC<{
             </p>
           </div>
         </div>
-        <div className="w-full">
+        <div className="w-full md:w-2/3">
           <p className="whitespace-pre-wrap text-slate-700">
             {club.description}
           </p>
