@@ -57,8 +57,8 @@ const FormAvatar = ({
           src={previewUrl}
           alt={label ?? 'Avatar preview'}
           sx={{
-            width: 144,
-            height: 144,
+            width: { xs: 108, sm: 144 },
+            height: { xs: 108, sm: 144 },
             borderRadius: '1.25rem',
           }}
           className="bg-cornflower-50 dark:bg-cornflower-950 transition-colors group-hover:bg-cornflower-100 dark:group-hover:bg-cornflower-900"
@@ -82,7 +82,7 @@ const FormAvatar = ({
       </label>
 
       {file?.name && (
-        <p className="max-w-[144px] truncate text-xs text-slate-500 dark:text-slate-400">
+        <p className="max-w-27 truncate text-xs text-slate-500 dark:text-slate-400 sm:max-w-36">
           {file.name}
         </p>
       )}

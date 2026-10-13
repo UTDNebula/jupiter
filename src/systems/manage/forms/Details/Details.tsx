@@ -202,7 +202,8 @@ const Details = ({ club }: DetailsProps) => {
                             .join('. ') + '.'
                         : undefined
                     }
-                    className="w-48 grow"
+                    className="w-full md:w-[70%]"
+                    aspectRatio={4.5}
                   />
                 )}
               </form.Field>
