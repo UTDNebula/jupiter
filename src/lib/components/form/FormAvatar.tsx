@@ -61,7 +61,7 @@ const FormAvatar = ({
             height: { xs: 108, sm: 144 },
             borderRadius: '1.25rem',
           }}
-          className="bg-cornflower-50 dark:bg-cornflower-950 transition-colors group-hover:bg-cornflower-100 dark:group-hover:bg-cornflower-900"
+          className="bg-cornflower-50 dark:bg-cornflower-950 transition-all duration-200 group-hover:scale-[1.03] group-hover:bg-cornflower-100 dark:group-hover:bg-cornflower-900 group-active:scale-[0.98]"
         >
           {!previewUrl && (
             <div className="flex flex-col items-center justify-center p-2 text-slate-500 dark:text-slate-400">

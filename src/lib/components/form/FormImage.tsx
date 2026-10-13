@@ -34,7 +34,7 @@ const FormImage = ({
         </p>
       )}
       <div
-        className={`bg-cornflower-50 dark:bg-cornflower-950 has-[:hover]:bg-cornflower-100 dark:has-[:hover]:bg-cornflower-900 relative flex w-full flex-col items-center justify-center gap-2 overflow-hidden rounded-[1.25rem] p-8 transition-colors ${aspectRatio ? '' : 'h-48'}`}
+        className={`bg-cornflower-50 dark:bg-cornflower-950 has-[:hover]:bg-cornflower-100 dark:has-[:hover]:bg-cornflower-900 has-[:hover]:scale-[1.02] has-[:active]:scale-[0.98] relative flex w-full flex-col items-center justify-center gap-2 overflow-hidden rounded-[1.25rem] p-8 transition-all duration-200 ${aspectRatio ? '' : 'h-48'}`}
         style={aspectRatio ? { aspectRatio } : undefined}
       >
         {previewUrl ? (
