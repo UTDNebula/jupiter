@@ -39,10 +39,7 @@ const EventRegisterButton = ({
   const toggleRegistration = useMutation(
     api.user.events.toggleRegistration.mutationOptions({
       onMutate: async ({ eventId }) => {
-        const queryKey = [
-          ['user', 'events', 'registerState'],
-          { input: { eventId }, type: 'query' },
-        ];
+        const queryKey = api.user.events.registerState.queryKey({ eventId });
 
         // Cancel outgoing refetches
         await queryClient.cancelQueries({ queryKey });
@@ -52,7 +49,7 @@ const EventRegisterButton = ({
           queryClient.getQueryData<typeof registerState>(queryKey);
 
         // Optimistically update the cache
-        queryClient.setQueryData(queryKey, (old: typeof registerState) => {
+        queryClient.setQueryData(queryKey, (old) => {
           if (!old) return old;
 
           const isRegistered = old.registered;
@@ -89,10 +86,7 @@ const EventRegisterButton = ({
       },
       onSettled: (_data, _error, { eventId }) => {
         queryClient.invalidateQueries({
-          queryKey: [
-            ['user', 'events', 'registerState'],
-            { input: { eventId }, type: 'query' },
-          ],
+          queryKey: api.user.events.registerState.queryKey({ eventId }),
         });
       },
     }),
