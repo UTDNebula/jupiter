@@ -37,7 +37,6 @@ const FormImage = ({
         )}
         {previewUrl ? (
           <>
-            
             <Image
               src={previewUrl}
               alt="Preview image"
