@@ -52,7 +52,7 @@ const FormImage = ({
               <button
                 type="button"
                 onClick={() => void onDelete()}
-                className="text-royal dark:text-cornflower-300 text-sm underline"
+                className="text-royal dark:text-cornflower-300 relative z-10 text-sm underline"
               >
                 Remove Image
               </button>
