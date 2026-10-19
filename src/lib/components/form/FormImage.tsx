@@ -9,6 +9,7 @@ interface FormImageProps {
   fallbackUrl?: string;
   onBlur: () => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onDelete: () => void | Promise<void>;
   helperText?: string;
   className?: string;
 }
@@ -19,6 +20,7 @@ const FormImage = ({
   onBlur,
   value: file,
   onChange,
+  onDelete,
   helperText,
   className,
 }: FormImageProps) => {
@@ -35,13 +37,20 @@ const FormImage = ({
         {previewUrl ? (
           <>
             {previewUrl && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={previewUrl}
-                alt="Preview image"
-                className="max-h-full rounded-lg"
-              />
+              <button
+                type="button"
+                onClick={() => void onDelete()}
+                className="text-royal dark:text-cornflower-300 text-sm underline"
+              >
+                Remove Image
+              </button>
             )}
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={previewUrl}
+              alt="Preview image"
+              className="max-h-full rounded-lg"
+            />
             {file?.name && (
               <p className="text-xs text-slate-800 dark:text-slate-200">
                 {file.name}
