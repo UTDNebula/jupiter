@@ -37,6 +37,18 @@ const FormImage = ({
         )}
         {previewUrl ? (
           <>
+            
+            <Image
+              src={previewUrl}
+              alt="Preview image"
+              className="max-h-full rounded-lg"
+            />
+
+            {file?.name && (
+              <p className="text-xs text-slate-800 dark:text-slate-200">
+                {file.name}
+              </p>
+            )}
             {previewUrl && (
               <button
                 type="button"
@@ -45,16 +57,6 @@ const FormImage = ({
               >
                 Remove Image
               </button>
-            )}
-            <Image
-              src={previewUrl}
-              alt="Preview image"
-              className="max-h-full rounded-lg"
-            />
-            {file?.name && (
-              <p className="text-xs text-slate-800 dark:text-slate-200">
-                {file.name}
-              </p>
             )}
           </>
         ) : (
