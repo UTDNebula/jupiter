@@ -1,6 +1,11 @@
 import { z } from 'zod';
 
-const isProduction = process.env.NODE_ENV === 'production';
+/** True when using `npm run dev` */
+export const isDevelopment = process.env.NODE_ENV === 'development';
+/** True when using `npm run build` and `npm run start`, or on all Vercel deployments */
+export const isProduction = process.env.NODE_ENV === 'production';
+/** True when using `npm run test` */
+export const isTest = process.env.NODE_ENV === 'test';
 
 /**
  * Specify your server-side environment variables schema here. This way you can ensure the app isn't
@@ -79,28 +84,10 @@ const server = z.object({
  */
 const client = z.object({
   NEXT_PUBLIC_SENTRY_DSN: z.string().optional(),
-  NEXT_PUBLIC_SYNCFUSION_LICENSE_KEY: z.string().optional(),
+  NEXT_PUBLIC_SYNCFUSION_LICENSE_KEY: isProduction
+    ? z.string().min(1)
+    : z.string().optional(),
 });
-
-/**
- * Returns `undefined` if {@linkcode input} string is only whitespace. Otherwise, returns {@linkcode input}
- * @param {string | undefined} input
- * @returns {string | undefined}
- */
-const clean = (input) => {
-  const trimmed = input?.trim();
-  return trimmed !== '' ? trimmed : undefined;
-};
-
-/**
- * Evaluates a string and evaluates whether it is truthy or not. Redefines "false" and "0" to be falsey
- * @param {string | undefined} string
- * @returns {boolean}
- */
-const truthy = (string) =>
-  Boolean(string) &&
-  string !== 'false' &&
-  (string?.trim() === '' || Number(string) !== 0);
 
 /**
  * You can't destruct `process.env` as a regular object in the Next.js edge runtimes (e.g.
@@ -122,7 +109,7 @@ const processEnv = {
   NEBULA_API_URL: clean(process.env.NEBULA_API_URL),
   NEBULA_API_STORAGE_BUCKET: clean(process.env.NEBULA_API_STORAGE_BUCKET),
   NEBULA_API_KEY: clean(process.env.NEBULA_API_KEY),
-  NEBULA_API_STORAGE_KEY: clean(process.env.NEBULA_API_STORAGE_KEY),
+  NEBULA_API_STORAGE_KEY: clean(process.env.NEBULA_API_KEY),
   NEBULA_API_EMAIL_KEY: clean(process.env.NEBULA_API_EMAIL_KEY),
   GEMINI_SERVICE_ACCOUNT: clean(process.env.GEMINI_SERVICE_ACCOUNT),
   NEXT_PUBLIC_SYNCFUSION_LICENSE_KEY: clean(
@@ -134,8 +121,32 @@ const processEnv = {
   AUTH_TRUSTED_ORIGINS: clean(process.env.AUTH_TRUSTED_ORIGINS),
 };
 
-// Don't touch the part below
-// --------------------------
+////////////////////////////////////////////////////////////////////////////////
+// Utilities and Handling - Don't touch stuff below
+////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Returns `undefined` if {@linkcode input} string is only whitespace. Otherwise, returns {@linkcode input}
+ * @param {string | undefined} input
+ * @returns {string | undefined}
+ */
+export function clean(input) {
+  const trimmed = input?.trim();
+  return trimmed !== '' ? trimmed : undefined;
+}
+
+/**
+ * Evaluates a string and evaluates whether it is truthy or not. Redefines "false" and "0" to be falsey
+ * @param {string | boolean | undefined} string
+ * @returns {boolean}
+ */
+export function truthy(string) {
+  return typeof string === 'string'
+    ? Boolean(string) &&
+        string !== 'false' &&
+        (string?.trim() === '' || Number(string) !== 0)
+    : (string ?? false);
+}
 
 const merged = server.extend(client.shape);
 
