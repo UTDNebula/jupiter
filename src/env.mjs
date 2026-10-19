@@ -79,9 +79,7 @@ const server = z.object({
  */
 const client = z.object({
   NEXT_PUBLIC_SENTRY_DSN: z.string().optional(),
-  NEXT_PUBLIC_SYNCFUSION_LICENSE_KEY: isProduction
-    ? z.string().min(1)
-    : z.string().optional(),
+  NEXT_PUBLIC_SYNCFUSION_LICENSE_KEY: z.string().optional(),
 });
 
 /**
@@ -124,7 +122,7 @@ const processEnv = {
   NEBULA_API_URL: clean(process.env.NEBULA_API_URL),
   NEBULA_API_STORAGE_BUCKET: clean(process.env.NEBULA_API_STORAGE_BUCKET),
   NEBULA_API_KEY: clean(process.env.NEBULA_API_KEY),
-  NEBULA_API_STORAGE_KEY: clean(process.env.NEBULA_API_KEY),
+  NEBULA_API_STORAGE_KEY: clean(process.env.NEBULA_API_STORAGE_KEY),
   NEBULA_API_EMAIL_KEY: clean(process.env.NEBULA_API_EMAIL_KEY),
   GEMINI_SERVICE_ACCOUNT: clean(process.env.GEMINI_SERVICE_ACCOUNT),
   NEXT_PUBLIC_SYNCFUSION_LICENSE_KEY: clean(
