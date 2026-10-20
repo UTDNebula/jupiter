@@ -21,6 +21,7 @@ import EventRegisterButton, {
   EventRegisterButtonSkeleton,
 } from './EventRegisterButton';
 import EventTimeAlert from './EventTimeAlert';
+import EventDurationAlert from './EventDurationAlert';
 
 export type EventCardVariants = 'card' | 'list';
 
@@ -200,8 +201,9 @@ const EventCard = ({
           <div className="flex min-h-0 flex-1 flex-col">
             <div className="relative min-h-40 w-full shrink-0">
               {EventImage}
-              <div className="pointer-events-none absolute inset-0 p-2">
+              <div className="pointer-events-none absolute inset-0 flex items-start gap-1.5 p-2">
                 <EventTimeAlert event={event} />
+                <EventDurationAlert event={event}/>
               </div>
               {event.google && (
                 <div className="absolute top-0 right-0 p-2">
