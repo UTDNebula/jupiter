@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import { BaseCard } from '@nebula-library/components/BaseCard';
 import { addVersionToImage } from '@/lib/utils/imageCacheBust';
@@ -7,7 +9,7 @@ type ClubBannerProps = {
   club: Pick<SelectClub, 'bannerImage' | 'updatedAt'>;
 };
 
-const ClubBanner = async ({ club }: ClubBannerProps) => {
+const ClubBanner = ({ club }: ClubBannerProps) => {
   if (!club.bannerImage) {
     return null;
   }

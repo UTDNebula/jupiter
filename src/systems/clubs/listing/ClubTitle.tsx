@@ -1,10 +1,12 @@
+'use client';
+
 import Image from 'next/image';
 import { addVersionToImage } from '@/lib/utils/imageCacheBust';
 import { ClubTags } from '@/systems/clubs/ClubTags';
 import { type RouterOutputs } from '@/trpc/shared';
 import JoinButton from '../JoinButton';
 
-const ClubTitle = async ({
+const ClubTitle = ({
   club,
 }: {
   club: NonNullable<RouterOutputs['club']['getDirectoryInfo']>;

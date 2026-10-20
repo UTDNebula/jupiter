@@ -15,12 +15,48 @@ import {
   createTRPCRouter,
   publicProcedure,
 } from '@/server/api/trpc';
+import { db } from '@/server/db';
 import { club, usedTags } from '@/server/db/schema/club';
 import { membershipForms } from '@/server/db/schema/membershipForms';
 import { officers as officersTable } from '@/server/db/schema/officers';
 import { userMetadataToClubs } from '@/server/db/schema/users';
 import { clubIdSchema, clubSlugSchema } from '../baseSchemas';
 import { byNameSchema, searchSchema, searchTagSchema } from './inputSchemas';
+
+async function findClubByName(name: string) {
+  if (!name) return;
+
+  const results = await db.query.club.findFirst({
+    where: (club) =>
+      and(
+        eq(club.approved, 'approved'),
+        or(ilike(club.name, `%${name}%`), ilike(club.alias, `%${name}%`)),
+      ),
+    with: {
+      userMetadataToClubs: {
+        columns: {
+          userId: true, // Only fetch the ID to keep the payload small
+        },
+      },
+      contacts: {
+        orderBy: (contacts, { asc }) => asc(contacts.displayOrder),
+      },
+      officers: {
+        orderBy: (officers, { asc }) => asc(officers.displayOrder),
+      },
+    },
+  });
+
+  if (!results) return null;
+
+  const { userMetadataToClubs, ...clubData } = results;
+
+  return {
+    ...clubData,
+    numMembers: userMetadataToClubs.length,
+    lastEventDate: null,
+  };
+}
 
 const clubPublicRouter = createTRPCRouter({
   byName: publicProcedure.input(byNameSchema).query(async ({ input, ctx }) => {
