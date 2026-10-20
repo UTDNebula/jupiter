@@ -64,3 +64,25 @@ export const eventsRelation = relations(events, ({ one, many }) => ({
   club: one(club, { fields: [events.clubId], references: [club.id] }),
   userMetadataToEvents: many(userMetadataToEvents),
 }));
+
+export const eventCollaborations = pgTable(
+  'event_collaborations',
+  {
+    id: text('id')
+      .default(sql`nanoid(20)`)
+      .primaryKey(),
+    eventId: text('event_id')
+      .notNull()
+      .references(() => events.id, { onDelete: 'cascade' }),
+    inviteeClubId: text('invitee_club_id')
+      .notNull()
+      .references(() => club.id, { onDelete: 'cascade' }),
+    status: statusEnum('status').notNull().default('pending'),
+  },
+  (t) => [
+    index('event_collaborations_invitee_club_idx').on(
+      t.inviteeClubId,
+      t.status,
+    ),
+  ],
+);
